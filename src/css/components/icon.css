@@ -1,0 +1,273 @@
+/* wrap lại các icon */
+.wrap-icon {
+    width: 24px;
+    height: 24px;
+    min-height: 24px;
+    min-width: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+/* all icon sidebar */
+
+/* icon default */
+
+.icon-overview-default {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -33px -1630px;
+    width: 18px;
+    height: 20px;
+}
+
+.icon-cash-default {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -78px -1631px;
+    width: 14px;
+    height: 18px;
+    /* transform: scale(1.4, 1.1); */
+}
+
+.icon-cashBank-default {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -121px -1633px;
+    width: 16px;
+    height: 16px;
+}
+
+.icon-buy-default {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -165px -1632px;
+    width: 16px;
+    height: 18px;
+}
+
+.icon-sell-default {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -206px -1631px;
+    width: 20px;
+    height: 18px;
+}
+
+.icon-invoice-managemnet-default {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -254px -1632px;
+    width: 14px;
+    height: 17px;
+}
+
+.icon-store-default {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -294px -1632px;
+    width: 18px;
+    height: 17px;
+}
+
+.icon-tool-default {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -339px -1633px;
+    width: 18px;
+    height: 17px;
+}
+
+.icon-assets-default {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -382px -1632px;
+    width: 17px;
+    height: 18px;
+}
+
+.icon-tax-default {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -427px -1634px;
+    width: 16px;
+    height: 16px;
+}
+.icon-cost-default {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -471px -1633px;
+    width: 17px;
+    height: 17px;
+}
+
+.icon-general-default {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -514px -1632px;
+    width: 16px;
+    height: 18px;
+}
+
+.icon-budget-default {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -382px -1664px;
+    width: 16px;
+    height: 16px;
+}
+
+.icon-report-default {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -552px -1636px;
+    width: 14px;
+    height: 13px;
+}
+
+.icon-financial-default {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -207px -1667px;
+    width: 17px;
+    height: 14px;
+}
+
+/* icon hover */
+
+.icon-overview-hover {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -33px -1587px;
+    width: 18px;
+    height: 20px;
+}
+
+.icon-cash-hover {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -78px -1588px;
+    width: 14px;
+    height: 18px;
+    /* transform: scale(1.4, 1.1); */
+}
+
+.icon-cashBank-hover {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -121px -1590px;
+    width: 16px;
+    height: 16px;
+}
+
+.icon-buy-hover {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -165px -1589px;
+    width: 16px;
+    height: 18px;
+}
+
+.icon-sell-hover {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -206px -1588px;
+    width: 20px;
+    height: 18px;
+}
+
+.icon-invoice-managemnet-hover {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -254px -1589px;
+    width: 14px;
+    height: 17px;
+}
+
+.icon-store-hover {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -294px -1589px;
+    width: 18px;
+    height: 17px;
+}
+
+.icon-tool-hover {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -339px -1590px;
+    width: 18px;
+    height: 17px;
+}
+
+.icon-assets-hover {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -382px -1589px;
+    width: 17px;
+    height: 18px;
+}
+
+.icon-tax-hover {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -427px -1591px;
+    width: 16px;
+    height: 16px;
+}
+.icon-cost-hover {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -471px -1590px;
+    width: 17px;
+    height: 17px;
+}
+
+.icon-general-hover {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat-514px -1590px;
+    width: 15px;
+    height: 16px;
+}
+
+.icon-budget-hover {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -427px -1664px;
+    width: 16px;
+    height: 16px;
+}
+
+.icon-report-hover {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -552px -1593px;
+    width: 14px;
+    height: 13px;
+}
+
+.icon-financial-hover {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -251px -1667px;
+    width: 17px;
+    height: 14px;
+}
+
+/* icon arrow */
+.icon-arrow {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -1129px -365px;
+    width: 14px;
+    height: 8px;
+}
+
+/* icon dropdown */
+.icon-dropdown,
+.input__icon-dropdown {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -564px -365px;
+    width: 8px;
+    height: 5px;
+    display: inline-block;
+}
+
+/* icon search */
+.input__icon-search {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -1041px -89px;
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+    transform: scale(0.91);
+}
+
+/* icon question */
+.form__header-icon-question {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -732px -31px;
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+    transform: scale(0.81);
+}
+
+/* icon close */
+.icon-close {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -147px -147px;
+    width: 18px;
+    height: 18px;
+    transform: scale(0.72);
+    cursor: pointer;
+}
+
+/* toast icon warning */
+/* .toast__icon-warning {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat no-repeat -817px -145px;
+    width: 22px;
+    height: 23px;
+    transform: scale(0.91);
+} */
+
+/* toast icon success */
+
+/* .toast__icon-success {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat no-repeat -1602px -258px;
+    width: 20px;
+    height: 20px;
+} */
+
+/* toast icon  */
+.toast__icon-success,
+.toast__icon-warning,
+.toast__icon-close,
+.toast__icon-info {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* dialog icon error */
+.dialog__icon-error {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -752px -462px;
+    width: 36px;
+    height: 36px;
+}

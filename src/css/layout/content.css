@@ -1,0 +1,56 @@
+.content {
+    width: 100%;
+    height: calc(100% - var(--header-size));
+    background-color: #eeeff1;
+    padding: 24px 24px 48px 24px;
+}
+
+/* begin header content*/
+
+.content__header {
+    width: 100%;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* begin main content*/
+.content__main {
+    width: 100%;
+    height: calc(100% - 36px);
+    margin-top: 16px;
+    background-color: var(--white-color);
+    box-shadow: 0 3px 20px rgba(0, 0, 0, 0.039);
+    border-radius: var(--border-radius);
+    display: flex;
+    flex-direction: column;
+}
+
+.content__main-right {
+    height: 60px;
+    width: 100%;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    column-gap: 12px;
+    justify-content: end;
+    border-top-right-radius: var(--border-radius);
+    border-top-left-radius: var(--border-radius);
+}
+
+.content__main-refresh-icon {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -1098px -90px;
+    width: 20px;
+    height: 21px;
+}
+
+/* content body */
+.content__main-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow-x: scroll;
+    overflow-y: scroll;
+    position: relative;
+}

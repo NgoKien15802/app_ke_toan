@@ -1,0 +1,169 @@
+:root {
+    /* color primary */
+    --color-primary: #50b83c;
+    --white-color: #ffffff;
+
+    /* border color primary */
+    --boder-primary: #e0e0e0;
+
+    /* button color */
+    --btn-color-primary-hover: #5dc748;
+    --btn-color-primary-press: #118044;
+    --btn-opa-primary-disable: 56%;
+
+    /* size */
+    --sidebar-size: 200px;
+    --header-size: 56px;
+    --border-radius: 4px;
+
+    /* độ rộng cột thứ nhất, thứ 2 */
+    --size-column-first: 56px;
+    --size-column-second: 150px;
+    --size-row: 48px;
+
+    /* bg tooltip để thay đổi khi thông báo lỗi hoặc thông báo */
+    --bg-tooltip: #041434;
+
+    /* icon light */
+    --i-normal-light: #666666;
+    --i-hover-focus-light: #1fb6ff;
+    --i-op-disable-light: 50%;
+
+    /* icon dark */
+    --i-normal-dark: #7b8798;
+    --i-hover-focus-dark: #ffff;
+    --i-disable-dark: #4b5b73;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    /* mặc định của html là 100%. nên con nó dùng 1rem = 16px => cần chuyển về 1rem = 10px  */
+    font-size: 62.5%;
+}
+
+body {
+    font-family: "Roboto", sans-serif;
+    font-size: 1.4rem;
+}
+
+/* css chung */
+
+/* heading title */
+.heading {
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: #1f1f20;
+}
+
+/* scroll customize */
+
+button {
+    outline: none;
+    border: 0;
+}
+.scrollbar_customize::-webkit-scrollbar {
+    background-color: #f1f1f1;
+    width: 10px;
+    height: 10px;
+    border-radius: 10px;
+}
+
+.scrollbar_customize::-webkit-scrollbar-thumb {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #dadada;
+    border-radius: 10px;
+}
+
+/* text align- center */
+.text-align-center {
+    text-align: center;
+}
+
+/* text align- left */
+.text-align-left {
+    text-align: left;
+}
+
+/* text align- center */
+.text-align-right {
+    text-align: right;
+}
+
+/* flex css */
+.m-flex {
+    display: flex;
+}
+
+.m-flex-col-gap-8 {
+    column-gap: 8px;
+}
+
+.m-flex-row-gap-8 {
+    column-gap: 8px;
+}
+
+/* required */
+.error-info,
+.required {
+    color: #e61d1d;
+}
+
+/* .m-row */
+.m-row + .m-row {
+    margin-top: 24px;
+}
+
+/* w-50% */
+.w-50 {
+    width: 50%;
+}
+
+.ml-16 {
+    margin-left: 16px;
+}
+
+.ml-8 {
+    margin-left: 8px;
+}
+
+/* show element */
+.d-block {
+    display: block;
+}
+
+/* show element dạng flex */
+.d-flex {
+    display: flex;
+}
+
+/* ẩn */
+.d-none {
+    display: none;
+}
+
+/* quay 180 deg */
+.rorate-180 {
+    transform: rotate(180deg);
+}
+
+/*  */
+.border-focus {
+    border: 1px solid #50b83c;
+    outline: none;
+}
+
+.outline-focus {
+    outline: 1px solid #50b83c !important;
+}
+
+/* show giữa */
+.show-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

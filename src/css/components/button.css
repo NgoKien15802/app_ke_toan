@@ -1,0 +1,153 @@
+/* .btn {
+    background-color: #50b83c;
+    border: none;
+    color: white;
+    height: 36px;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: var(--border-radius);
+} */
+
+.btn {
+    min-width: 80px;
+    height: 36px;
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    font-size: 1.4rem;
+    display: inline-block;
+    text-align: center;
+    line-height: 36px;
+    outline: none;
+}
+
+/* primary */
+.btn-primary {
+    background-color: var(--color-primary);
+    padding: 0 16px;
+    color: #fff;
+}
+
+/* default */
+
+.btn-default {
+    background-color: var(--white-color);
+    color: #1f1f1f;
+    border: 1px solid var(--boder-primary);
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background-color: var(--btn-color-primary-hover);
+    cursor: pointer;
+}
+
+.btn-default:hover {
+    background-color: var(--boder-primary);
+}
+
+/* icon button */
+
+.btn-primary-svg {
+    width: 20px;
+    height: 20px;
+}
+
+.btn-primary-icon {
+    display: inline-flex;
+    align-items: center;
+    column-gap: 4px;
+    padding-left: 12px;
+    padding-right: 16px;
+}
+
+/* link button */
+.link-btn {
+    width: auto;
+    height: 36px;
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    font-size: 1.4rem;
+    text-align: left;
+    display: inline-block;
+    text-align: center;
+    line-height: 36px;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.btn-link-primary {
+    color: var(--color-primary);
+}
+
+.btn-link-primary:active {
+    color: var(--btn-color-primary-press);
+}
+
+/* button plus */
+.btn-plus {
+    height: 36px;
+    padding: 8px;
+    border-radius: var(--border-radius);
+    background-color: rgba(80, 184, 60, 0.1);
+    display: inline-block;
+}
+
+.btn-plus-svg {
+    width: 20px;
+    height: 20px;
+    color: var(--color-primary);
+}
+
+/* combox button */
+.combox-btn {
+    display: inline-flex;
+    align-items: center;
+    padding-left: 12px;
+}
+
+.btn-primary-svg {
+    margin-right: 4px;
+}
+
+.combox-btn-text {
+    margin-right: 16px;
+}
+
+.combox-btn-mark {
+    height: 100%;
+    width: 1px;
+    background-color: var(--white-color);
+}
+
+.combox-btn-svg {
+    width: 20px;
+    height: 20px;
+    color: var(--white-color);
+    margin: 0 12px;
+}
+
+.btn-primary:active {
+    background-color: var(--btn-color-primary-press);
+}
+
+.btn-plus:active {
+    background-color: var(--btn-color-primary-press);
+}
+.btn-plus:active .btn-plus-svg {
+    color: var(--white-color);
+}
+
+.btn-default:active {
+    background-color: #cccc;
+}
+
+button {
+    cursor: pointer;
+}
+
+button:disabled {
+    opacity: var(--btn-opa-primary-disable);
+    pointer-events: none;
+}

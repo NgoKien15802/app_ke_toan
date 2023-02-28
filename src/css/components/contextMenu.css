@@ -1,0 +1,35 @@
+.contextmenu__fun-list {
+    min-width: 100px;
+    height: auto;
+    border: 1px solid var(--boder-primary);
+    padding: 5px 0;
+    z-index: 3;
+    position: fixed;
+    background-color: var(--white-color);
+    display: none;
+}
+
+.contextmenu__fun-item {
+    list-style: none;
+}
+.contextmenu__fun-link {
+    display: inline-block;
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    width: 100%;
+    padding: 5px 10px;
+    color: #1f1f1f;
+    font-size: 1.4rem;
+    font-weight: 400;
+    margin-top: 5px;
+}
+
+.contextmenu__fun-list
+    .contextmenu__fun-item:first-child
+    .contextmenu__fun-link {
+    margin-top: 0;
+}
+
+.contextmenu__fun-link:hover {
+    background-color: rgba(80, 184, 60, 0.1);
+}

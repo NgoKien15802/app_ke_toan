@@ -1,0 +1,32 @@
+@import url(./layout/header.css);
+@import url(./layout/sidebar.css);
+@import url(./layout/content.css);
+@import url(./components/button.css);
+@import url(./components/input.css);
+@import url(./components/table.css);
+@import url(./components/icon.css);
+@import url(./components/paging.css);
+@import url(./components/dropdown.css);
+@import url(./components/popup.css);
+@import url(./components/radio.css);
+@import url(./components/toast.css);
+@import url(./components/dialog.css);
+@import url(./components/tooltips.css);
+@import url(./components/checkbox.css);
+@import url(./components/contextMenu.css);
+@import url(./components/loading.css);
+@import url(./components/combobox.css);
+@import url(./base.css);
+
+.container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+}
+
+.wrapper {
+    width: calc(100% - var(--sidebar-size));
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
