@@ -1,154 +1,108 @@
-<template >
+<template>
     <div class="sidebar">
-                <div class="sidebar__header">
-                    <div
-                        class="sidebar__header-menu icon-normal-dark wrap-icon"
-                    >
-                        <div class="sidebar__header-menu-img"></div>
-                    </div>
-                    <img
-                        src="../../assets/img/Logo_Module_TiengViet_White.66947422.svg"
-                        alt=""
-                        class="sidebar__header-logo"
-                    />
-                </div>
-
-                <div class="sidebar__list scrollbar_customize">
-                    <div class="sidebar__item">
-                        <div class="sidebar__item-icon wrap-icon">
-                            <div
-                                class="sidebar__item-icon-img icon-normal-dark icon-overview-default"
-                            ></div>
-                        </div>
-                        <span class="sidebar__item-text">Tổng quan</span>
-                    </div>
-                    <div class="sidebar__item">
-                        <div class="sidebar__item-icon wrap-icon">
-                            <div
-                                class="sidebar__item-icon-img icon-normal-dark icon-cash-default"
-                            ></div>
-                        </div>
-                        <span class="sidebar__item-text">Tiền mặt</span>
-                    </div>
-                    <div class="sidebar__item">
-                        <div class="sidebar__item-icon wrap-icon">
-                            <div
-                                class="sidebar__item-icon-img icon-normal-dark icon-cashBank-default"
-                            ></div>
-                        </div>
-                        <span class="sidebar__item-text">Tiền gửi</span>
-                    </div>
-                    <div class="sidebar__item">
-                        <div class="sidebar__item-icon wrap-icon">
-                            <div
-                                class="sidebar__item-icon-img icon-normal-dark icon-buy-default"
-                            ></div>
-                        </div>
-                        <span class="sidebar__item-text">Mua hàng</span>
-                    </div>
-                    <div class="sidebar__item">
-                        <div class="sidebar__item-icon wrap-icon">
-                            <div
-                                class="sidebar__item-icon-img icon-normal-dark icon-sell-default"
-                            ></div>
-                        </div>
-                        <span class="sidebar__item-text">Bán hàng</span>
-                    </div>
-                    <div class="sidebar__item">
-                        <div class="sidebar__item-icon wrap-icon">
-                            <div
-                                class="sidebar__item-icon-img icon-normal-dark icon-invoice-managemnet-default"
-                            ></div>
-                        </div>
-                        <span class="sidebar__item-text">Quản lý hóa đơn</span>
-                    </div>
-                    <div class="sidebar__item">
-                        <div class="sidebar__item-icon wrap-icon">
-                            <div
-                                class="sidebar__item-icon-img icon-normal-dark icon-store-default"
-                            ></div>
-                        </div>
-                        <span class="sidebar__item-text">Kho</span>
-                    </div>
-                    <div class="sidebar__item">
-                        <div class="sidebar__item-icon wrap-icon">
-                            <div
-                                class="sidebar__item-icon-img icon-normal-dark icon-tool-default"
-                            ></div>
-                        </div>
-                        <span class="sidebar__item-text">Công cụ dụng cụ</span>
-                    </div>
-                    <div class="sidebar__item">
-                        <div class="sidebar__item-icon wrap-icon">
-                            <div
-                                class="sidebar__item-icon-img icon-normal-dark icon-assets-default"
-                            ></div>
-                        </div>
-                        <span class="sidebar__item-text">tài sản cố định</span>
-                    </div>
-
-                    <div class="sidebar__item">
-                        <div class="sidebar__item-icon wrap-icon">
-                            <div
-                                class="sidebar__item-icon-img icon-normal-dark icon-tax-default"
-                            ></div>
-                        </div>
-                        <span class="sidebar__item-text">Thuế</span>
-                    </div>
-                    <div class="sidebar__item">
-                        <div class="sidebar__item-icon wrap-icon">
-                            <div
-                                class="sidebar__item-icon-img icon-normal-dark icon-cost-default"
-                            ></div>
-                        </div>
-                        <span class="sidebar__item-text">Giá thành</span>
-                    </div>
-
-                    <div class="sidebar__item">
-                        <div class="sidebar__item-icon wrap-icon">
-                            <div
-                                class="sidebar__item-icon-img icon-normal-dark icon-general-default"
-                            ></div>
-                        </div>
-                        <span class="sidebar__item-text">Tổng hợp</span>
-                    </div>
-
-                    <div class="sidebar__item">
-                        <div class="sidebar__item-icon wrap-icon">
-                            <div
-                                class="sidebar__item-icon-img icon-normal-dark icon-budget-default"
-                            ></div>
-                        </div>
-                        <span class="sidebar__item-text">Ngân sách</span>
-                    </div>
-
-                    <div class="sidebar__item">
-                        <div class="sidebar__item-icon wrap-icon">
-                            <div
-                                class="sidebar__item-icon-img icon-normal-dark icon-report-default"
-                            ></div>
-                        </div>
-                        <span class="sidebar__item-text">Báo cáo</span>
-                    </div>
-
-                    <div class="sidebar__item">
-                        <div class="sidebar__item-icon wrap-icon">
-                            <div
-                                class="sidebar__item-icon-img icon-normal-dark icon-financial-default"
-                            ></div>
-                        </div>
-                        <span class="sidebar__item-text"
-                            >Phân tích tài chính</span
-                        >
-                    </div>
-                </div>
+        <div class="sidebar__header">
+            <div class="sidebar__header-menu icon-normal-dark wrap-icon">
+                <div class="sidebar__header-menu-img"></div>
             </div>
+            <img
+                src="../../assets/img/Logo_Module_TiengViet_White.66947422.svg"
+                alt=""
+                class="sidebar__header-logo"
+            />
+        </div>
+
+        <div class="sidebar__list scrollbar_customize">
+            <MmenuItem
+                v-for="(menuItem, index) in menuItems"
+                :key="index"
+                :className="menuItem.icon"
+                :text="menuItem.text"
+            ></MmenuItem>
+        </div>
+    </div>
 </template>
+
 <script>
+import MmenuItem from "../base/MmenuItem.vue";
+import MISAresource from "../../js/resource";
 export default {
-    name:"TheSidebar"
- 
-}
+    name: "TheSidebar",
+    components: {
+        MmenuItem,
+    },
+    data() {
+        return {
+            MISAresource,
+            menuItems: [
+                {
+                    icon: "icon-overview-default",
+                    text: MISAresource.vi.Overview,
+                },
+
+                {
+                    icon: "icon-cash-default",
+                    text: MISAresource.vi.Cash,
+                },
+                {
+                    icon: "icon-cashBank-default",
+                    text: MISAresource.vi.Banking,
+                },
+                {
+                    icon: "icon-buy-default",
+                    text: MISAresource.vi.Buy,
+                },
+                {
+                    icon: "icon-sell-default",
+                    text: MISAresource.vi.Sales,
+                },
+                {
+                    icon: "icon-invoice-managemnet-default",
+                    text: MISAresource.vi.InvoiceManaging,
+                },
+                {
+                    icon: "icon-store-default",
+                    text: MISAresource.vi.Store,
+                },
+                {
+                    icon: " icon-tool-default",
+                    text: MISAresource.vi.Equipments,
+                },
+                {
+                    icon: " icon-assets-default",
+                    text: MISAresource.vi.FixedAssets,
+                },
+                {
+                    icon: "icon-tax-default",
+                    text: MISAresource.vi.Tax,
+                },
+                {
+                    icon: " icon-cost-default",
+                    text: MISAresource.vi.CostOfProduction,
+                },
+
+                {
+                    icon: " icon-general-default",
+                    text: MISAresource.vi.General,
+                },
+                {
+                    icon: "icon-budget-default",
+                    text: MISAresource.vi.Budget,
+                },
+                {
+                    icon: "icon-report-default",
+                    text: MISAresource.vi.Report,
+                },
+                {
+                    icon: " icon-financial-default",
+                    text: MISAresource.vi.FinancialAnalysis,
+                },
+            ],
+        };
+    },
+};
+/* 
+
+*/
 </script>
 <style scoped>
 @import url(../../css/layout/sidebar.css);

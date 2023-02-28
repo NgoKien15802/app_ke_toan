@@ -1,21 +1,19 @@
-<template >
+<template>
     <div class="wrapper">
         <TheHeaderVue></TheHeaderVue>
         <TheContentVue></TheContentVue>
     </div>
 </template>
 <script>
-import TheContentVue from './TheContent.vue'
-import TheHeaderVue from './TheHeader.vue'
+import TheContentVue from "./TheContent.vue";
+import TheHeaderVue from "./TheHeader.vue";
 
 export default {
-    name:"TheMain",
-    components:{
+    name: "TheMain",
+    components: {
         TheHeaderVue,
-        TheContentVue
-    }
-}
+        TheContentVue,
+    },
+};
 </script>
-<style scoped>
-
-</style>
+<style scoped></style>
