@@ -1,10 +1,15 @@
 <template>
-    <button :class="kind !== 'link' ? `btn ${className}` : className" :id="id">
+    <button
+        :tabindex="tabindex"
+        :class="kind !== 'link' ? `btn ${className}` : className"
+        :id="id"
+    >
         {{ text }}
     </button>
 </template>
 <script>
 export default {
+    // eslint-disable-next-line vue/multi-word-component-names
     name: "Mbutton",
     props: {
         text: {
@@ -23,6 +28,10 @@ export default {
         },
         id: {
             type: String,
+        },
+        tabindex: {
+            type: String,
+            default: "",
         },
     },
 };

@@ -55,6 +55,40 @@ const MISAResouce = {
 
         // tooltip
         TooltipIdentityNumber: "Số chứng minh nhân dân",
+        TooltipPhoneNumber: "Điện thoại di động",
+        TooltipFixPhoneNumber: "Điện thoại cố định",
+        TooltipHelp: "Giúp",
+        TooltipClose: "Đóng",
+
+        // popup
+        Enter: "Nhập",
+        EmployeeInfo: "Thông tin nhân viên",
+        Customer: "Là khách hàng",
+        supplier: "Là nhà cung cấp",
+        LabelEmployeeCode: "Mã",
+        LabelEmployeeName: "Tên",
+        LabelDepartmentName: "Đơn vị",
+        LabelJobTitle: "Chức danh",
+        LabelDateOfBirth: "Ngày sinh",
+        LabelGender: "Giới tính",
+        LabelMale: "Nam",
+        LabelFemale: "Nữ",
+        LabelOther: "Khác",
+        LabelIdentityNumber: "Số CMND",
+        LabelIdentityDate: "Ngày cấp",
+        LabelIdentityPlace: "Nơi cấp",
+        LabelAddress: "Địa chỉ",
+        LabelPhoneNumber: "ĐT di động",
+        LabelLandlineNumber: "ĐT cố định",
+        LabelEmail: "Email",
+        LabelBankAccount: "Tài khoản ngân hàng",
+        LabelBankName: "Tên ngân hàng",
+        LabelBankBranch: "Chi nhánh",
+
+        // button
+        Destroy: "Hủy",
+        SaveEndAdd: "Cất và thêm",
+        Save: "Cất",
     },
     en: {
         // Employee
@@ -109,6 +143,37 @@ const MISAResouce = {
         Budget: "Budget",
         Report: "Report",
         FinancialAnalysis: "Financial analysis",
+
+        // popup
+        EmployeeInfo: "Employee infomation",
+        Customer: "Is a customer",
+        supplier: "Is a supplier",
+        LabelEmployeeCode: "ID",
+        LabelEmployeeName: "Name",
+        LabelDepartmentName: "Department",
+        LabelJobTitle: "Job title",
+        LabelDateOfBirth: "Date of birth",
+        LabelGender: "Gender",
+        LabelMale: "Male",
+        LabelFemale: "Female",
+        LabelOther: "Other",
+        LabelIdentityNumber: "Identity Number",
+        LabelIdentityDate: "Identity date",
+        LabelIdentityPlace: "Identity place",
+        LabelAddress: "Address",
+        LabelPhoneNumber: "Phone number",
+        LabelLandlineNumber: "Fix Number",
+        LabelEmail: "Email",
+        LabelBankAccount: "Bank account",
+        LabelBankName: "Bank name",
+        LabelBankBranch: "Bank branch",
+        TooltipHelp: "Help",
+        TooltipClose: "Close",
+
+        // button
+        Destroy: "Destroy",
+        SaveEndAdd: "Save End Add",
+        Save: "Save",
     },
 };
 export default MISAResouce;

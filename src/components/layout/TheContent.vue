@@ -42,11 +42,18 @@
                     <!-- begin table -->
                     <TheTable></TheTable>
                     <!-- end table -->
+
+                    <!-- begin dialog -->
+
+                    <!-- end dialog -->
                 </div>
 
                 <!-- begin paging -->
                 <ThePaging></ThePaging>
                 <!-- end paging -->
+
+                <!-- begin popup -->
+                <ThePopup></ThePopup>
             </div>
         </div>
     </div>
@@ -57,6 +64,7 @@ import Mbutton from "../base/Mbutton.vue";
 import Mheading from "../base/Mheading.vue";
 import TheTable from "./TheTable.vue";
 import ThePaging from "./ThePaging.vue";
+import ThePopup from "./ThePopup.vue";
 export default {
     name: "TheContent",
     data() {
@@ -69,6 +77,7 @@ export default {
         Mheading,
         TheTable,
         ThePaging,
+        ThePopup,
     },
 };
 </script>

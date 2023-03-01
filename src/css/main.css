@@ -1,11 +1,9 @@
 @import url(./layout/header.css);
 @import url(./layout/sidebar.css);
 @import url(./layout/content.css);
-@import url(./components/input.css);
 @import url(./components/icon.css);
 @import url(./components/dropdown.css);
-@import url(./components/popup.css);
-@import url(./components/radio.css);
+
 @import url(./components/toast.css);
 @import url(./components/dialog.css);
 @import url(./components/tooltips.css);

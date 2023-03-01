@@ -17,11 +17,12 @@
                 <th class="text-align-center">
                     {{ MISAResouce.vi.DateOfBirth }}
                 </th>
-                <th class="text-align-center tooltip">
-                    {{ MISAResouce.vi.IdentityNumber
-                    }}<span class="tooltiptext">{{
-                        MISAResouce.vi.TooltipIdentityNumber
-                    }}</span>
+                <th class="text-align-center">
+                    <Thetooltip
+                        kind="title"
+                        :text="MISAResouce.vi.IdentityNumber"
+                        :subtext="MISAResouce.vi.TooltipIdentityNumber"
+                    ></Thetooltip>
                 </th>
                 <th class="text-align-center">
                     {{ MISAResouce.vi.JobTitle }}
@@ -52,6 +53,7 @@
 import MISAResouce from "@/js/resource";
 import TheTdTable from "./TheTdTable.vue";
 import Mcheckbox from "../base/Mcheckbox.vue";
+import Thetooltip from "../base/Mtooltip.vue";
 export default {
     name: "TheTable",
     data() {
@@ -62,6 +64,7 @@ export default {
     components: {
         TheTdTable,
         Mcheckbox,
+        Thetooltip,
     },
 };
 </script>
