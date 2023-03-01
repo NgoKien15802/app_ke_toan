@@ -34,7 +34,10 @@
                             </div>
                         </div>
 
-                        <div class="wrap-icon confirm__close-popup">
+                        <div
+                            class="wrap-icon confirm__close-popup"
+                            @click="closePopup"
+                        >
                             <div class="icon-close tooltip">
                                 <Mtooltip
                                     kind="close"
@@ -95,39 +98,7 @@
                                     <span class="required">*</span></label
                                 >
 
-                                <mcombobox
-                                    api="https://apidemo.laptrinhweb.edu.vn/api/v1/Departments"
-                                    modelname="DepartmentName"
-                                    class="input__wrapper-combobox combobox dropdown-popup-wrapper"
-                                >
-                                    <button
-                                        class="input__icon btn-combobox popup__combobox-icon"
-                                    >
-                                        <mdiv
-                                            class="input__icon-dropdown"
-                                        ></mdiv>
-                                    </button>
-                                    <Minput
-                                        tabindex="3"
-                                        autocomplete="off"
-                                        name="DepartmentName"
-                                        id="donvi"
-                                        style="border: none"
-                                        :required="true"
-                                        className="combobox-input"
-                                        kind="combobox"
-                                        :placeHolder="
-                                            MISAResouce.vi.LabelDepartmentName.toLowerCase()
-                                        "
-                                    />
-
-                                    <mdiv class="option__wrapper-combobox">
-                                        <mul
-                                            class="option__list-combobox scrollbar_customize"
-                                        >
-                                        </mul>
-                                    </mdiv>
-                                </mcombobox>
+                                <Mcombobox></Mcombobox>
                             </div>
 
                             <div class="m-row">
@@ -378,7 +349,8 @@
                     <Mbutton
                         class="btn btn-default close__add-employee"
                         tabindex="19"
-                        :text="MISAResouce.vi.Destroy"
+                        :text="MISAResouce.vi.BtnDestroy"
+                        :click="closePopup"
                     >
                     </Mbutton>
                 </div>
@@ -387,7 +359,7 @@
                         <Mbutton
                             class="btn btn-default close__add-employee"
                             tabindex="17"
-                            :text="MISAResouce.vi.Save"
+                            :text="MISAResouce.vi.BtnSave"
                         >
                         </Mbutton>
                     </div>
@@ -395,7 +367,7 @@
                         <Mbutton
                             class="btn btn-primary close__add-employee"
                             tabindex="18"
-                            :text="MISAResouce.vi.SaveEndAdd"
+                            :text="MISAResouce.vi.btnSaveEndAdd"
                         >
                         </Mbutton>
                     </div>
@@ -412,13 +384,16 @@ import Mtooltip from "../base/Mtooltip.vue";
 import Minput from "../base/Minput.vue";
 import Mradio from "../base/Mradio.vue";
 import Mbutton from "../base/Mbutton.vue";
+import Mcombobox from "../base/Mcombobox.vue";
 export default {
     name: "ThePopup",
+
     data() {
         return {
             MISAResouce,
         };
     },
+
     components: {
         Mheading,
         Mcheckbox,
@@ -426,6 +401,21 @@ export default {
         Minput,
         Mradio,
         Mbutton,
+        Mcombobox,
+    },
+
+    methods: {
+        /**
+         * Hàm đóng popup khi click vào icon close
+         * Author: KienNT (1/3/2023)
+         */
+        closePopup() {
+            try {
+                this.$emit("onClosePopup");
+            } catch (error) {
+                console.log(error);
+            }
+        },
     },
 };
 </script>

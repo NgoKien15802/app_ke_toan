@@ -3,6 +3,7 @@
         :tabindex="tabindex"
         :class="kind !== 'link' ? `btn ${className}` : className"
         :id="id"
+        @click="click"
     >
         {{ text }}
     </button>
@@ -32,6 +33,9 @@ export default {
         tabindex: {
             type: String,
             default: "",
+        },
+        click: {
+            type: Function,
         },
     },
 };

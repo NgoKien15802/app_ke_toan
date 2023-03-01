@@ -86,9 +86,14 @@ const MISAResouce = {
         LabelBankBranch: "Chi nhánh",
 
         // button
-        Destroy: "Hủy",
-        SaveEndAdd: "Cất và thêm",
-        Save: "Cất",
+        BtnDestroy: "Hủy",
+        BtnSaveEndAdd: "Cất và thêm",
+        BtnSave: "Cất",
+        BtnClose: "Đóng",
+
+        // title dialog
+        DialogNotifyError: "Thông báo lỗi",
+        DialogWarning: "Cảnh báo",
     },
     en: {
         // Employee
@@ -171,9 +176,14 @@ const MISAResouce = {
         TooltipClose: "Close",
 
         // button
-        Destroy: "Destroy",
-        SaveEndAdd: "Save End Add",
-        Save: "Save",
+        BtnDestroy: "Destroy",
+        BtnSaveEndAdd: "Save End Add",
+        BtnSave: "Save",
+        BtnClose: "Close",
+
+        // title dialog
+        DialogNotifyError: "Error! ",
+        DialogWarning: "Warning",
     },
 };
 export default MISAResouce;

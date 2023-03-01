@@ -10,6 +10,7 @@
                 id="addEmployee"
                 kind="primary"
                 className="btn-primary"
+                :click="showPopup"
             ></Mbutton>
         </div>
 
@@ -53,7 +54,17 @@
                 <!-- end paging -->
 
                 <!-- begin popup -->
-                <ThePopup></ThePopup>
+                <ThePopup
+                    v-if="isShowPopup"
+                    @onClosePopup="closePopup"
+                ></ThePopup>
+
+                <!-- begin dialog -->
+                <Mdialog
+                    iconClass="dialog__icon-error"
+                    :title="MISAResouce.vi.DialogNotifyError"
+                    message="Không được để trống"
+                ></Mdialog>
             </div>
         </div>
     </div>
@@ -65,11 +76,13 @@ import Mheading from "../base/Mheading.vue";
 import TheTable from "./TheTable.vue";
 import ThePaging from "./ThePaging.vue";
 import ThePopup from "./ThePopup.vue";
+import Mdialog from "../base/Mdialog.vue";
 export default {
     name: "TheContent",
     data() {
         return {
             MISAResouce,
+            isShowPopup: false,
         };
     },
     components: {
@@ -78,6 +91,32 @@ export default {
         TheTable,
         ThePaging,
         ThePopup,
+        Mdialog,
+    },
+    methods: {
+        /**
+         * Hàm hiển thị popup khi click vào thêm mới nhân viên
+         * Author: KienNT (1/3/2023)
+         */
+        showPopup() {
+            try {
+                this.isShowPopup = true;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
+         * Hàm đóng popup khi click vào icon close từ con
+         * Author: KienNT (1/3/2023)
+         */
+        closePopup() {
+            try {
+                this.isShowPopup = false;
+            } catch (error) {
+                console.log(error);
+            }
+        },
     },
 };
 </script>
