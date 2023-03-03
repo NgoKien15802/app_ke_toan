@@ -10,7 +10,7 @@
 </template>
 <script>
 export default {
-    name: "Mcheckbox",
+    name: "MCheckbox",
     props: {
         id: {
             type: String,

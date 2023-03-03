@@ -3,7 +3,7 @@
         <thead>
             <tr class="table__field">
                 <th class="text-align-center">
-                    <Mcheckbox></Mcheckbox>
+                    <MCheckbox></MCheckbox>
                 </th>
                 <th class="text-align-center">
                     {{ MISAResouce.vi.EmployeeCode }}
@@ -45,26 +45,130 @@
             </tr>
         </thead>
         <tbody>
-            <TheTdTable></TheTdTable>
+            <tr v-for="(employee, index) in employees" :key="index">
+                <td class="text-align-center">
+                    <MCheckbox></MCheckbox>
+                </td>
+                <td class="text-align-left">{{ employee?.EmployeeCode }}</td>
+                <td class="text-align-left">{{ employee?.FullName }}</td>
+                <td class="text-align-left" style="min-width: 200px">
+                    {{ formatGender(employee?.Gender) }}
+                </td>
+                <td class="text-align-center">
+                    {{ formatDate(employee?.DateOfBirth) }}
+                </td>
+                <td class="text-align-left">{{ employee?.IdentityNumber }}</td>
+                <td class="text-align-left">{{ employee?.PositionName }}</td>
+                <td class="text-align-left">{{ employee?.DepartmentName }}</td>
+                <td class="text-align-left"></td>
+                <td class="text-align-left"></td>
+                <td class="text-align-left"></td>
+                <td class="dropdown-fun text-align-center">
+                    <MButton
+                        kind="link"
+                        className="link-btn btn-link-primary"
+                        :text="MISAResouce.vi.Fix"
+                    ></MButton>
+
+                    <div class="input__icon-box ml-8">
+                        <div class="icon-dropdown"></div>
+                    </div>
+                </td>
+            </tr>
         </tbody>
     </table>
 </template>
 <script>
+import axios from "axios";
 import MISAResouce from "@/js/resource";
-import TheTdTable from "./TheTdTable.vue";
-import Mcheckbox from "../base/Mcheckbox.vue";
 import Thetooltip from "../base/Mtooltip.vue";
+import MISAEnum from "@/js/enum";
 export default {
     name: "TheTable",
+
     data() {
         return {
+            employees: [],
             MISAResouce,
+            pageSize: 20,
+            pageIndex: 1,
         };
     },
+
     components: {
-        TheTdTable,
-        Mcheckbox,
         Thetooltip,
+    },
+
+    /**
+     * Thực hiện lấy dữ liệu khi chuẩn bị mounted vào DOM
+     * Author: KienNT (02/03/2023)
+     */
+    created() {
+        try {
+            axios
+                .get("https://apidemo.laptrinhweb.edu.vn/api/v1/Employees")
+                .then(this.$emit("hideShowLoading", true))
+                .then((response) => {
+                    this.employees = response.data;
+                    setTimeout(this.$emit("hideShowLoading", false), 500);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        } catch (error) {
+            console.log(error);
+        }
+    },
+
+    computed: {
+        /**
+         * Hàm thực hiện format date
+         * Author: KienNT (02/03/2023)
+         * @param (value): tham số là chuỗi date cần format
+         */
+        formatDate() {
+            return (dateTime) => {
+                try {
+                    if (dateTime) {
+                        const date = new Date(dateTime);
+                        const day =
+                            date.getDate() < 10
+                                ? `0${date.getDate()}`
+                                : date.getDate();
+                        const month =
+                            date.getMonth() + 1 < 10
+                                ? `0${date.getMonth()}`
+                                : date.getMonth();
+                        const year = date.getFullYear();
+                        return `${day}/${month}/${year}`;
+                    }
+                    return "";
+                } catch (error) {
+                    console.log(error);
+                }
+            };
+        },
+
+        /**
+         * Hàm thực hiện format gender
+         * Author: KienNT (02/03/2023)
+         */
+        formatGender() {
+            return (gender) => {
+                try {
+                    if (gender) {
+                        return gender === MISAEnum.Gender.Male
+                            ? "Nam"
+                            : gender === MISAEnum.Gender.Female
+                            ? "Nữ"
+                            : "Khác";
+                    }
+                    return "";
+                } catch (error) {
+                    console.log(error);
+                }
+            };
+        },
     },
 };
 </script>

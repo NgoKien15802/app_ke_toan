@@ -113,6 +113,10 @@ button {
     color: #e61d1d;
 }
 
+.input-required {
+    border-color: #e61d1d !important;
+}
+
 /* .m-row */
 .m-row + .m-row {
     margin-top: 24px;

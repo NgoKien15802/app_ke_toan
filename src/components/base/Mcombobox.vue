@@ -2,7 +2,7 @@
     <div class="input__wrapper-combobox combobox dropdown-popup-wrapper">
         <button class="input__icon btn-combobox popup__combobox-icon">
             <div class="input__icon-dropdown"></div></button
-        ><Minput
+        ><MInput
             tabindex="3"
             autocomplete="off"
             name="DepartmentName"
@@ -26,13 +26,8 @@
 </template>
 <script>
 import MISAResouce from "@/js/resource";
-import Minput from "./Minput.vue";
 export default {
-    // eslint-disable-next-line vue/multi-word-component-names
-    name: "Mcombobox",
-    components: {
-        Minput,
-    },
+    name: "MCombobox",
     data() {
         return {
             MISAResouce,

@@ -2,16 +2,16 @@
     <div class="content">
         <div class="content__header">
             <div class="content__header-title">
-                <Mheading :text="MISAResouce.vi.Employee"></Mheading>
+                <MHeading :text="MISAResouce.vi.Employee"></MHeading>
             </div>
 
-            <Mbutton
+            <MButton
                 :text="MISAResouce.vi.AddNewEmployee"
                 id="addEmployee"
                 kind="primary"
                 className="btn-primary"
                 :click="showPopup"
-            ></Mbutton>
+            ></MButton>
         </div>
 
         <div class="content__main">
@@ -41,7 +41,7 @@
             <div class="content__main-body scrollbar_customize">
                 <div class="content__main-table">
                     <!-- begin table -->
-                    <TheTable></TheTable>
+                    <TheTable @hideShowLoading="hideShowLoading"></TheTable>
                     <!-- end table -->
 
                     <!-- begin dialog -->
@@ -57,46 +57,43 @@
                 <ThePopup
                     v-if="isShowPopup"
                     @onClosePopup="closePopup"
+                    @hideShowLoading="hideShowLoading"
                 ></ThePopup>
 
                 <!-- begin dialog -->
-                <Mdialog
-                    iconClass="dialog__icon-error"
-                    :title="MISAResouce.vi.DialogNotifyError"
-                    message="Không được để trống"
-                ></Mdialog>
+
+                <!-- loading -->
+                <Mloading v-if="isLoading"></Mloading>
             </div>
         </div>
     </div>
 </template>
 <script>
 import MISAResouce from "@/js/resource";
-import Mbutton from "../base/Mbutton.vue";
-import Mheading from "../base/Mheading.vue";
 import TheTable from "./TheTable.vue";
 import ThePaging from "./ThePaging.vue";
 import ThePopup from "./ThePopup.vue";
-import Mdialog from "../base/Mdialog.vue";
+import Mloading from "../base/Mloading.vue";
 export default {
     name: "TheContent",
     data() {
         return {
             MISAResouce,
             isShowPopup: false,
+            isLoading: false,
+            newEmployeeCode: "",
         };
     },
     components: {
-        Mbutton,
-        Mheading,
         TheTable,
         ThePaging,
         ThePopup,
-        Mdialog,
+        Mloading,
     },
     methods: {
         /**
-         * Hàm hiển thị popup khi click vào thêm mới nhân viên
-         * Author: KienNT (1/3/2023)
+         * Hàm hiển thị popup khi click vào thêm mới nhân viên và lấy mã từ Call API
+         * Author: KienNT (01/03/2023)
          */
         showPopup() {
             try {
@@ -108,11 +105,24 @@ export default {
 
         /**
          * Hàm đóng popup khi click vào icon close từ con
-         * Author: KienNT (1/3/2023)
+         * Author: KienNT (01/03/2023)
          */
         closePopup() {
             try {
                 this.isShowPopup = false;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
+         * Hàm hiện thị và ẩn loading khi load dữ liệu
+         * Author: KienNT (02/03/2023)
+         * @param (isLoading): tham số là true, false ẩn hiển
+         */
+        hideShowLoading(isLoading) {
+            try {
+                this.isLoading = isLoading;
             } catch (error) {
                 console.log(error);
             }

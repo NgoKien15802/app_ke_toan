@@ -17,11 +17,12 @@
                 <div class=""></div>
                 <div class="dialog__footer-right">
                     <div class=""></div>
-                    <Mbutton
+                    <MButton
                         class="btn-primary dialog-close flex-end"
-                        :text="MISAResouce.vi.BtnClose"
+                        :text="textButton"
+                        :click="hideShowDialogError"
                     >
-                    </Mbutton>
+                    </MButton>
                 </div>
             </div>
         </div>
@@ -29,10 +30,8 @@
 </template>
 <script>
 import MISAResouce from "@/js/resource";
-import Mbutton from "./Mbutton.vue";
 export default {
-    // eslint-disable-next-line vue/multi-word-component-names
-    name: "Mdialog",
+    name: "MDialog",
     props: {
         title: {
             type: String,
@@ -46,13 +45,26 @@ export default {
             type: String,
             default: "",
         },
+        textButton: {
+            type: String,
+            default: "",
+        },
     },
     data() {
         return {
             MISAResouce,
         };
     },
-    components: { Mbutton },
+
+    methods: {
+        /**
+         * Hàm gửi emit đóng dialog
+         * Author: KienNT (02/03/2023)
+         */
+        hideShowDialogError() {
+            this.$emit("hideShowDialogError", false);
+        },
+    },
 };
 </script>
 <style scoped>

@@ -10,8 +10,7 @@
 </template>
 <script>
 export default {
-    // eslint-disable-next-line vue/multi-word-component-names
-    name: "Mbutton",
+    name: "MButton",
     props: {
         text: {
             type: String,
@@ -21,7 +20,6 @@ export default {
         kind: {
             type: String,
             default: "primary",
-            required: true,
         },
         className: {
             type: String,

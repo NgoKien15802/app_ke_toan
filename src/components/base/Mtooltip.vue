@@ -4,17 +4,19 @@
         <span class="tooltiptext">{{ subtext }}</span>
     </span>
 
+    <span v-else-if="kind === 'error'" class="tooltiptext-error">{{
+        subtext
+    }}</span>
+
     <span v-else class="tooltiptext">{{ subtext }}</span>
 </template>
 <script>
 export default {
-    // eslint-disable-next-line vue/multi-word-component-names
-    name: "Thetooltip",
+    name: "MTooltip",
     props: {
         text: {
             type: String,
             default: "",
-            required: true,
         },
         subtext: {
             type: String,

@@ -4,11 +4,11 @@
             <div class="popup__form-wrapper">
                 <div class="popup__form-header">
                     <div class="form__header-left">
-                        <Mheading
+                        <MHeading
                             :text="MISAResouce.vi.EmployeeInfo"
-                        ></Mheading>
+                        ></MHeading>
                         <div class="form__header-left-check">
-                            <Mcheckbox id="infoKH"></Mcheckbox>
+                            <MCheckbox id="infoKH"></MCheckbox>
                             <label
                                 for="infoKH"
                                 class="form__header-check-text"
@@ -16,7 +16,7 @@
                             >
                         </div>
                         <div class="form__header-left-check">
-                            <Mcheckbox id="infoNCC"></Mcheckbox>
+                            <MCheckbox id="infoNCC"></MCheckbox>
                             <label
                                 for="infoNCC"
                                 class="form__header-check-text"
@@ -27,10 +27,10 @@
                     <div class="form__header-right">
                         <div class="form__header-question wrap-icon">
                             <div class="form__header-icon-question tooltip">
-                                <Mtooltip
+                                <MTooltip
                                     kind="help"
                                     :subtext="MISAResouce.vi.TooltipHelp"
-                                ></Mtooltip>
+                                ></MTooltip>
                             </div>
                         </div>
 
@@ -39,10 +39,10 @@
                             @click="closePopup"
                         >
                             <div class="icon-close tooltip">
-                                <Mtooltip
+                                <MTooltip
                                     kind="close"
                                     :subtext="MISAResouce.vi.TooltipClose"
-                                ></Mtooltip>
+                                ></MTooltip>
                             </div>
                         </div>
                     </div>
@@ -53,42 +53,87 @@
                     <div class="popup__form-body-info">
                         <div class="popup__form-body-left">
                             <div class="popup__form-body-row m-row">
-                                <div class="form__group form__group-first">
+                                <div
+                                    class="form__group form__group-first"
+                                    :class="{
+                                        'tooltip-error':
+                                            isTooltip.isTooltipEmployeeCode,
+                                    }"
+                                >
                                     <label for="employeeId" class="form__label"
                                         >{{ MISAResouce.vi.LabelEmployeeCode }}
                                         <span class="required">*</span></label
                                     >
-                                    <Minput
+                                    <MInput
                                         id="employeeId"
                                         name="EmployeeCode"
                                         tabindex="1"
                                         autocomplete="off"
+                                        v-model="newEmployee.EmployeeCode"
                                         kind="default"
+                                        :isShowTooltip="
+                                            isTooltip.isTooltipEmployeeCode
+                                        "
                                         :required="true"
                                         :placeHolder="
                                             MISAResouce.vi.LabelEmployeeCode.toLowerCase()
                                         "
-                                    ></Minput>
+                                        @blur="
+                                            isEmpty(newEmployee.EmployeeCode)
+                                                ? (isTooltip.isTooltipEmployeeCode = true)
+                                                : (isTooltip.isTooltipEmployeeCode = false)
+                                        "
+                                    />
+                                    <MTooltip
+                                        v-if="isTooltip.isTooltipEmployeeCode"
+                                        :subtext="
+                                            MISAResouce.vi.LabelEmployeeCode +
+                                            MISAResouce.vi.ErrorEmpty
+                                        "
+                                        kind="error"
+                                    ></MTooltip>
                                 </div>
 
-                                <div class="form__group form__group-second">
+                                <div
+                                    class="form__group form__group-second"
+                                    :class="{
+                                        'tooltip-error':
+                                            isTooltip.isTooltipEmployeeName,
+                                    }"
+                                >
                                     <label for="ten" class="form__label"
                                         >{{ MISAResouce.vi.LabelEmployeeName }}
                                         <span class="required">*</span></label
                                     >
 
-                                    <Minput
+                                    <MInput
                                         tabindex="2"
                                         name="FullName"
                                         autocomplete="off"
                                         id="ten"
-                                        class="input--required"
                                         kind="default"
+                                        v-model="newEmployee.FullName"
+                                        :isShowTooltip="
+                                            isTooltip.isTooltipEmployeeName
+                                        "
                                         :required="true"
                                         :placeHolder="
                                             MISAResouce.vi.LabelEmployeeName.toLowerCase()
                                         "
-                                    ></Minput>
+                                        @blur="
+                                            isEmpty(newEmployee.FullName)
+                                                ? (isTooltip.isTooltipEmployeeName = true)
+                                                : (isTooltip.isTooltipEmployeeName = false)
+                                        "
+                                    ></MInput>
+                                    <MTooltip
+                                        v-if="isTooltip.isTooltipEmployeeName"
+                                        :subtext="
+                                            MISAResouce.vi.LabelEmployeeName +
+                                            MISAResouce.vi.ErrorEmpty
+                                        "
+                                        kind="error"
+                                    ></MTooltip>
                                 </div>
                             </div>
 
@@ -106,7 +151,7 @@
                                     <label for="chucdanh" class="form__label">{{
                                         MISAResouce.vi.LabelJobTitle
                                     }}</label>
-                                    <Minput
+                                    <MInput
                                         tabindex="4"
                                         id="chucdanh"
                                         name="PositionName"
@@ -114,6 +159,7 @@
                                         :placeHolder="
                                             MISAResouce.vi.LabelJobTitle.toLowerCase()
                                         "
+                                        v-model="newEmployee.PositionName"
                                     />
                                 </div>
                             </div>
@@ -122,17 +168,43 @@
                             <div
                                 class="popup__form-body-row m-row popup__form-checkbox"
                             >
-                                <div class="form__group form__group-first">
+                                <div
+                                    class="form__group form__group-first"
+                                    :class="{
+                                        'tooltip-error':
+                                            isTooltip.isTooltipDateOfBirth,
+                                    }"
+                                >
                                     <label for="ngaysinh" class="form__label"
                                         >{{ MISAResouce.vi.LabelDateOfBirth }}
                                     </label>
-                                    <Minput
+                                    <MInput
                                         type="date"
                                         tabindex="5"
                                         name="DateOfBirth"
                                         id="ngaysinh"
                                         kind="default"
+                                        v-model="newEmployee.DateOfBirth"
+                                        :isShowTooltip="
+                                            isTooltip.isTooltipDateOfBirth
+                                        "
+                                        @blur="
+                                            isInValid(
+                                                newEmployee.DateOfBirth,
+                                                'date'
+                                            )
+                                                ? (isTooltip.isTooltipDateOfBirth = true)
+                                                : (isTooltip.isTooltipDateOfBirth = false)
+                                        "
                                     />
+                                    <MTooltip
+                                        v-if="isTooltip.isTooltipDateOfBirth"
+                                        :subtext="
+                                            MISAResouce.vi.LabelDateOfBirth +
+                                            MISAResouce.vi.ErrorDate
+                                        "
+                                        kind="error"
+                                    ></MTooltip>
                                 </div>
 
                                 <div
@@ -143,25 +215,31 @@
                                     </label>
 
                                     <div class="input__radio-wrapper">
-                                        <Mradio
+                                        <MRadio
                                             id="nam"
                                             :text="MISAResouce.vi.LabelMale"
-                                        ></Mradio>
-                                        <Mradio
+                                        ></MRadio>
+                                        <MRadio
                                             id="nu"
                                             :text="MISAResouce.vi.LabelFemale"
-                                        ></Mradio>
-                                        <Mradio
+                                        ></MRadio>
+                                        <MRadio
                                             id="other"
                                             :text="MISAResouce.vi.LabelOther"
-                                        ></Mradio>
+                                        ></MRadio>
                                     </div>
                                 </div>
                             </div>
                             <div class="popup__form-body-row m-row">
-                                <div class="form__group form__group-second">
+                                <div
+                                    class="form__group form__group-second"
+                                    :class="{
+                                        'tooltip-error':
+                                            isTooltip.isTooltipIdentityNumber,
+                                    }"
+                                >
                                     <label for="cmnd" class="form__label">
-                                        <Mtooltip
+                                        <MTooltip
                                             :text="
                                                 MISAResouce.vi.IdentityNumber
                                             "
@@ -170,31 +248,78 @@
                                                     .TooltipIdentityNumber
                                             "
                                             kind="title"
-                                        ></Mtooltip>
+                                        ></MTooltip>
                                     </label>
-                                    <Minput
+                                    <MInput
                                         id="cmnd"
                                         name="IdentityNumber"
                                         tabindex="7"
                                         kind="default"
                                         class="check-number"
+                                        v-model="newEmployee.IdentityNumber"
                                         :placeHolder="
                                             MISAResouce.vi.TooltipIdentityNumber.toLowerCase()
                                         "
+                                        :isShowTooltip="
+                                            isTooltip.isTooltipIdentityNumber
+                                        "
+                                        @blur="
+                                            isInValid(
+                                                newEmployee.IdentityNumber,
+                                                'number'
+                                            )
+                                                ? (isTooltip.isTooltipIdentityNumber = true)
+                                                : (isTooltip.isTooltipIdentityNumber = false)
+                                        "
                                     />
+
+                                    <MTooltip
+                                        v-if="isTooltip.isTooltipIdentityNumber"
+                                        :subtext="
+                                            MISAResouce.vi.LabelIdentityNumber +
+                                            MISAResouce.vi.ErrorNotNumber
+                                        "
+                                        kind="error"
+                                    ></MTooltip>
                                 </div>
 
-                                <div class="form__group form__group-first">
+                                <div
+                                    class="form__group form__group-first"
+                                    :class="{
+                                        'tooltip-error':
+                                            isTooltip.isTooltipIdentityDate,
+                                    }"
+                                >
                                     <label for="ngaycap" class="form__label"
                                         >{{ MISAResouce.vi.LabelIdentityDate }}
                                     </label>
-                                    <Minput
+                                    <MInput
                                         type="date"
                                         name="IdentityDate"
                                         id="ngaycap"
                                         tabindex="8"
                                         kind="default"
+                                        v-model="newEmployee.IdentityDate"
+                                        :isShowTooltip="
+                                            isTooltip.isTooltipIdentityDate
+                                        "
+                                        @blur="
+                                            isInValid(
+                                                newEmployee.IdentityDate,
+                                                'date'
+                                            )
+                                                ? (isTooltip.isTooltipIdentityDate = true)
+                                                : (isTooltip.isTooltipIdentityDate = false)
+                                        "
                                     />
+                                    <MTooltip
+                                        v-if="isTooltip.isTooltipIdentityDate"
+                                        :subtext="
+                                            MISAResouce.vi.LabelIdentityDate +
+                                            MISAResouce.vi.ErrorDate
+                                        "
+                                        kind="error"
+                                    ></MTooltip>
                                 </div>
                             </div>
                             <div class="m-row">
@@ -202,7 +327,7 @@
                                     <label for="noicap" class="form__label">{{
                                         MISAResouce.vi.LabelIdentityPlace
                                     }}</label>
-                                    <Minput
+                                    <MInput
                                         id="noicap"
                                         tabindex="9"
                                         name="IdentityPlace"
@@ -210,6 +335,7 @@
                                         :placeHolder="
                                             MISAResouce.vi.LabelIdentityPlace.toLowerCase()
                                         "
+                                        v-model="newEmployee.IdentityPlace"
                                     />
                                 </div>
                             </div>
@@ -222,7 +348,7 @@
                                 <label for="diachi" class="form__label">{{
                                     MISAResouce.vi.LabelAddress
                                 }}</label>
-                                <Minput
+                                <MInput
                                     id="diachi"
                                     tabindex="10"
                                     name="Address"
@@ -230,21 +356,28 @@
                                     :placeHolder="
                                         MISAResouce.vi.LabelAddress.toLowerCase()
                                     "
+                                    v-model="newEmployee.Address"
                                 />
                             </div>
                         </div>
                         <div class="m-row form__group-contact-second">
-                            <div class="form__group form__group-contact-input">
+                            <div
+                                class="form__group form__group-contact-input"
+                                :class="{
+                                    'tooltip-error':
+                                        isTooltip.isTooltipPhoneNumber,
+                                }"
+                            >
                                 <label for="sodienthoai" class="form__label">
-                                    <Mtooltip
+                                    <MTooltip
                                         kind="title"
                                         :text="MISAResouce.vi.LabelPhoneNumber"
                                         :subtext="
                                             MISAResouce.vi.TooltipPhoneNumber
                                         "
-                                    ></Mtooltip>
+                                    ></MTooltip>
                                 </label>
-                                <Minput
+                                <MInput
                                     id="sodienthoai"
                                     tabindex="11"
                                     name="PhoneNumber"
@@ -253,11 +386,37 @@
                                     :placeHolder="
                                         MISAResouce.vi.TooltipPhoneNumber.toLowerCase()
                                     "
+                                    v-model="newEmployee.PhoneNumber"
+                                    :isShowTooltip="
+                                        isTooltip.isTooltipPhoneNumber
+                                    "
+                                    @blur="
+                                        isInValid(
+                                            newEmployee.PhoneNumber,
+                                            'number'
+                                        )
+                                            ? (isTooltip.isTooltipPhoneNumber = true)
+                                            : (isTooltip.isTooltipPhoneNumber = false)
+                                    "
                                 />
+                                <MTooltip
+                                    v-if="isTooltip.isTooltipPhoneNumber"
+                                    :subtext="
+                                        MISAResouce.vi.LabelPhoneNumber +
+                                        MISAResouce.vi.ErrorNotNumber
+                                    "
+                                    kind="error"
+                                ></MTooltip>
                             </div>
-                            <div class="form__group form__group-contact-input">
+                            <div
+                                class="form__group form__group-contact-input"
+                                :class="{
+                                    'tooltip-error':
+                                        isTooltip.isTooltipLandlineNumber,
+                                }"
+                            >
                                 <label for="sodienthoaiCD" class="form__label">
-                                    <Mtooltip
+                                    <MTooltip
                                         kind="title"
                                         :text="
                                             MISAResouce.vi.LabelLandlineNumber
@@ -265,9 +424,9 @@
                                         :subtext="
                                             MISAResouce.vi.TooltipFixPhoneNumber
                                         "
-                                    ></Mtooltip>
+                                    ></MTooltip>
                                 </label>
-                                <Minput
+                                <MInput
                                     tabindex="12"
                                     id="sodienthoaiCD"
                                     name="LandlineNumber"
@@ -275,13 +434,38 @@
                                     :placeHolder="
                                         MISAResouce.vi.TooltipFixPhoneNumber.toLowerCase()
                                     "
+                                    v-model="newEmployee.LandlineNumber"
+                                    :isShowTooltip="
+                                        isTooltip.isTooltipLandlineNumber
+                                    "
+                                    @blur="
+                                        isInValid(
+                                            newEmployee.LandlineNumber,
+                                            'number'
+                                        )
+                                            ? (isTooltip.isTooltipLandlineNumber = true)
+                                            : (isTooltip.isTooltipLandlineNumber = false)
+                                    "
                                 />
+                                <MTooltip
+                                    v-if="isTooltip.isTooltipLandlineNumber"
+                                    :subtext="
+                                        MISAResouce.vi.LabelLandlineNumber +
+                                        MISAResouce.vi.ErrorNotNumber
+                                    "
+                                    kind="error"
+                                ></MTooltip>
                             </div>
-                            <div class="form__group form__group-contact-input">
+                            <div
+                                class="form__group form__group-contact-input"
+                                :class="{
+                                    'tooltip-error': isTooltip.isTooltipEmail,
+                                }"
+                            >
                                 <label for="email" class="form__label">{{
                                     MISAResouce.vi.LabelEmail
                                 }}</label>
-                                <Minput
+                                <MInput
                                     type="email"
                                     id="email"
                                     tabindex="13"
@@ -290,15 +474,36 @@
                                     :placeHolder="
                                         MISAResouce.vi.LabelEmail.toLowerCase()
                                     "
+                                    v-model="newEmployee.Email"
+                                    :isShowTooltip="isTooltip.isTooltipEmail"
+                                    @blur="
+                                        isInValid(newEmployee.Email, 'email')
+                                            ? (isTooltip.isTooltipEmail = true)
+                                            : (isTooltip.isTooltipEmail = false)
+                                    "
                                 />
+                                <MTooltip
+                                    v-if="isTooltip.isTooltipEmail"
+                                    :subtext="
+                                        MISAResouce.vi.LabelEmail +
+                                        MISAResouce.vi.ErrorEmail
+                                    "
+                                    kind="error"
+                                ></MTooltip>
                             </div>
                         </div>
                         <div class="m-row form__group-contact-second">
-                            <div class="form__group form__group-contact-input">
+                            <div
+                                class="form__group form__group-contact-input"
+                                :class="{
+                                    'tooltip-error':
+                                        isTooltip.isTooltipBankAccount,
+                                }"
+                            >
                                 <label for="taikhoan" class="form__label">{{
                                     MISAResouce.vi.LabelBankAccount
                                 }}</label>
-                                <Minput
+                                <MInput
                                     name="BankAccount"
                                     id="taikhoan"
                                     tabindex="14"
@@ -307,13 +512,33 @@
                                     :placeHolder="
                                         MISAResouce.vi.LabelBankAccount.toLowerCase()
                                     "
+                                    v-model="newEmployee.BankAccount"
+                                    :isShowTooltip="
+                                        isTooltip.isTooltipBankAccount
+                                    "
+                                    @blur="
+                                        isInValid(
+                                            newEmployee.BankAccount,
+                                            'number'
+                                        )
+                                            ? (isTooltip.isTooltipBankAccount = true)
+                                            : (isTooltip.isTooltipBankAccount = false)
+                                    "
                                 />
+                                <MTooltip
+                                    v-if="isTooltip.isTooltipBankAccount"
+                                    :subtext="
+                                        MISAResouce.vi.LabelBankAccount +
+                                        MISAResouce.vi.ErrorNotNumber
+                                    "
+                                    kind="error"
+                                ></MTooltip>
                             </div>
                             <div class="form__group form__group-contact-input">
                                 <label for="tennganhang" class="form__label">{{
                                     MISAResouce.vi.LabelBankName
                                 }}</label>
-                                <Minput
+                                <MInput
                                     id="tennganhang"
                                     tabindex="15"
                                     name="BankName"
@@ -322,13 +547,14 @@
                                     :placeHolder="
                                         MISAResouce.vi.LabelBankName.toLowerCase()
                                     "
+                                    v-model="newEmployee.BankName"
                                 />
                             </div>
                             <div class="form__group form__group-contact-input">
                                 <label for="chinhanh" class="form__label">{{
                                     MISAResouce.vi.LabelBankBranch
                                 }}</label>
-                                <Minput
+                                <MInput
                                     tabindex="16"
                                     id="chinhanh"
                                     name="BankBranch"
@@ -336,6 +562,7 @@
                                     :placeHolder="
                                         MISAResouce.vi.LabelBankBranch.toLowerCase()
                                     "
+                                    v-model="newEmployee.BankBranch"
                                 />
                             </div>
                         </div>
@@ -346,72 +573,420 @@
             <!-- footer popup -->
             <div class="popup__form-footer">
                 <div class="popup__form-footer-left">
-                    <Mbutton
+                    <MButton
                         class="btn btn-default close__add-employee"
                         tabindex="19"
                         :text="MISAResouce.vi.BtnDestroy"
                         :click="closePopup"
                     >
-                    </Mbutton>
+                    </MButton>
                 </div>
                 <div class="popup__form-footer-right">
                     <div>
-                        <Mbutton
+                        <MButton
                             class="btn btn-default close__add-employee"
                             tabindex="17"
                             :text="MISAResouce.vi.BtnSave"
+                            :click="btnSaveAndClose"
                         >
-                        </Mbutton>
+                        </MButton>
                     </div>
                     <div>
-                        <Mbutton
+                        <MButton
                             class="btn btn-primary close__add-employee"
                             tabindex="18"
-                            :text="MISAResouce.vi.btnSaveEndAdd"
+                            :text="MISAResouce.vi.BtnSaveEndAdd"
                         >
-                        </Mbutton>
+                        </MButton>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- begin dialog -->
+        <MDialog
+            v-if="isDialogError"
+            iconClass="dialog__icon-error"
+            :title="MISAResouce.vi.DialogNotifyError"
+            :message="errorMessage[0]"
+            :textButton="MISAResouce.vi.BtnClose"
+            @hideShowDialogError="hideShowDialogError"
+        ></MDialog>
     </div>
 </template>
 <script>
 import MISAResouce from "@/js/resource";
-import Mheading from "../base/Mheading.vue";
-import Mcheckbox from "../base/Mcheckbox.vue";
-import Mtooltip from "../base/Mtooltip.vue";
-import Minput from "../base/Minput.vue";
-import Mradio from "../base/Mradio.vue";
-import Mbutton from "../base/Mbutton.vue";
 import Mcombobox from "../base/Mcombobox.vue";
+import axios from "axios";
+
 export default {
     name: "ThePopup",
-
+    props: {
+        employeeIdSelect: {
+            type: String,
+            default: "",
+        },
+    },
     data() {
         return {
             MISAResouce,
+            newEmployee: { EmployeeCode: "" },
+            isDialogError: false,
+            employeeCode: "",
+            isTooltip: {
+                isTooltipEmployeeCode: false,
+                isTooltipEmployeeName: false,
+                isTooltipDateOfBirth: false,
+                isTooltipIdentityNumber: false,
+                isTooltipIdentityDate: false,
+                isTooltipPhoneNumber: false,
+                isTooltipLandlineNumber: false,
+                isTooltipEmail: false,
+                isTooltipBankAccount: false,
+            },
+            errorMessage: [],
         };
     },
 
     components: {
-        Mheading,
-        Mcheckbox,
-        Mtooltip,
-        Minput,
-        Mradio,
-        Mbutton,
         Mcombobox,
+    },
+
+    created() {
+        try {
+            /**
+             * Call API lấy ra id bất kỳ khi click btn thêm nhân viên mới
+             * Author: KienNT (03/03/2023)
+             */
+            if (this.isEmpty(this.employeeIdSelect))
+                axios
+                    .get(
+                        "https://apidemo.laptrinhweb.edu.vn/api/v1/Employees/NewEmployeeCode"
+                    )
+                    .then(this.$emit("hideShowLoading", true))
+                    .then((response) => {
+                        this.newEmployee.EmployeeCode = response.data;
+                        this.$emit("hideShowLoading", false);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+        } catch (error) {
+            console.log(error);
+        }
+    },
+
+    watch: {
+        /**
+         * Theo dõi đối tượng employee có thay đổi hay không. Nếu thay đổi thì binding bên input luôn
+         * Author: KienNT (01/03/2023)
+         */
+        newEmployee: {
+            handler: function (newValue) {
+                this.newEmployee.EmployeeCode = newValue.EmployeeCode;
+            },
+            deep: true,
+        },
     },
 
     methods: {
         /**
          * Hàm đóng popup khi click vào icon close
-         * Author: KienNT (1/3/2023)
+         * Author: KienNT (01/03/2023)
          */
         closePopup() {
             try {
                 this.$emit("onClosePopup");
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        /**
+         * Hàm validate thành công thì cất data và đóng form
+         * Author: KienNT (02/03/2023)
+         */
+        btnSaveAndClose() {
+            if (this.handleValidate()) {
+                console.log("success");
+            } else {
+                this.hideShowDialogError(true);
+            }
+        },
+
+        /**
+         * Hàm validate form
+         * Author: KienNT (02/03/2023)
+         */
+        handleValidate() {
+            try {
+                // check mã
+                if (this.isEmpty(this.newEmployee.EmployeeCode)) {
+                    this.isTooltip.isTooltipEmployeeCode = true;
+                    this.errorMessage.push(
+                        MISAResouce.vi.LabelEmployeeCode +
+                            MISAResouce.vi.ErrorEmpty
+                    );
+                } else {
+                    this.isTooltip.isTooltipEmployeeCode = false;
+                    const index = this.errorMessage.indexOf(
+                        MISAResouce.vi.LabelEmployeeCode +
+                            MISAResouce.vi.ErrorEmpty
+                    );
+                    this.errorMessage.splice(index, 1);
+                }
+
+                // check tên
+                if (this.isEmpty(this.newEmployee.FullName)) {
+                    this.isTooltip.isTooltipEmployeeName = true;
+                    this.errorMessage.push(
+                        MISAResouce.vi.LabelEmployeeName +
+                            MISAResouce.vi.ErrorEmpty
+                    );
+                } else {
+                    this.isTooltip.isTooltipEmployeeName = false;
+                    const index = this.errorMessage.indexOf(
+                        MISAResouce.vi.LabelEmployeeName +
+                            MISAResouce.vi.ErrorEmpty
+                    );
+                    this.errorMessage.splice(index, 1);
+                }
+
+                // nếu có value thì mới check
+                if (!this.isEmpty(this.newEmployee.DateOfBirth)) {
+                    // check input date
+                    if (this.isInValid(this.newEmployee.DateOfBirth, "date")) {
+                        this.isTooltip.isTooltipDateOfBirth = true;
+                        this.errorMessage.push(
+                            MISAResouce.vi.LabelDateOfBirth +
+                                MISAResouce.vi.ErrorDate
+                        );
+                    } else {
+                        this.isTooltip.isTooltipDateOfBirth = false;
+                        const index = this.errorMessage.indexOf(
+                            MISAResouce.vi.LabelDateOfBirth +
+                                MISAResouce.vi.ErrorDate
+                        );
+                        this.errorMessage.splice(index, 1);
+                    }
+                }
+
+                // nếu có value thì mới check
+                if (!this.isEmpty(this.newEmployee.IdentityNumber)) {
+                    // check input phải là số
+                    if (
+                        this.isInValid(
+                            this.newEmployee.IdentityNumber,
+                            "number"
+                        )
+                    ) {
+                        this.isTooltip.isTooltipIdentityNumber = true;
+                        this.errorMessage.push(
+                            MISAResouce.vi.LabelIdentityNumber +
+                                MISAResouce.vi.ErrorNotNumber
+                        );
+                    } else {
+                        this.isTooltip.isTooltipIdentityNumber = false;
+                        const index = this.errorMessage.indexOf(
+                            MISAResouce.vi.LabelIdentityNumber +
+                                MISAResouce.vi.ErrorNotNumber
+                        );
+                        this.errorMessage.splice(index, 1);
+                    }
+                }
+                // nếu có value thì mới check
+                if (!this.isEmpty(this.newEmployee.IdentityDate)) {
+                    // check input date
+                    if (this.isInValid(this.newEmployee.IdentityDate, "date")) {
+                        this.isTooltip.isTooltipIdentityDate = true;
+                        this.errorMessage.push(
+                            MISAResouce.vi.LabelIdentityDate +
+                                MISAResouce.vi.ErrorDate
+                        );
+                    } else {
+                        this.isTooltip.isTooltipIdentityDate = false;
+                        const index = this.errorMessage.indexOf(
+                            MISAResouce.vi.LabelIdentityDate +
+                                MISAResouce.vi.ErrorDate
+                        );
+                        this.errorMessage.splice(index, 1);
+                    }
+                }
+                // nếu có value thì mới check
+                if (!this.isEmpty(this.newEmployee.PhoneNumber)) {
+                    // check input phải là số
+                    if (
+                        this.isInValid(this.newEmployee.PhoneNumber, "number")
+                    ) {
+                        this.isTooltip.isTooltipPhoneNumber = true;
+                        this.errorMessage.push(
+                            MISAResouce.vi.LabelPhoneNumber +
+                                MISAResouce.vi.ErrorNotNumber
+                        );
+                    } else {
+                        this.isTooltip.isTooltipPhoneNumber = false;
+                        const index = this.errorMessage.indexOf(
+                            MISAResouce.vi.LabelPhoneNumber +
+                                MISAResouce.vi.ErrorNotNumber
+                        );
+                        this.errorMessage.splice(index, 1);
+                    }
+                }
+                // nếu có value thì mới check
+                if (!this.isEmpty(this.newEmployee.LandlineNumber)) {
+                    // check input phải là số
+                    if (
+                        this.isInValid(
+                            this.newEmployee.LandlineNumber,
+                            "number"
+                        )
+                    ) {
+                        this.isTooltip.isTooltipLandlineNumber = true;
+                        this.errorMessage.push(
+                            MISAResouce.vi.LabelLandlineNumber +
+                                MISAResouce.vi.ErrorNotNumber
+                        );
+                    } else {
+                        this.isTooltip.isTooltipLandlineNumber = false;
+                        const index = this.errorMessage.indexOf(
+                            MISAResouce.vi.LabelLandlineNumber +
+                                MISAResouce.vi.ErrorNotNumber
+                        );
+                        this.errorMessage.splice(index, 1);
+                    }
+                }
+
+                // nếu có value thì mới check
+                if (!this.isEmpty(this.newEmployee.Email)) {
+                    // check input phải là số
+                    if (this.isInValid(this.newEmployee.Email, "email")) {
+                        this.isTooltip.isTooltipEmail = true;
+                        this.errorMessage.push(
+                            MISAResouce.vi.LabelEmail +
+                                MISAResouce.vi.ErrorEmail
+                        );
+                    } else {
+                        this.isTooltip.isTooltipEmail = false;
+                        const index = this.errorMessage.indexOf(
+                            MISAResouce.vi.LabelEmail +
+                                MISAResouce.vi.ErrorEmail
+                        );
+                        this.errorMessage.splice(index, 1);
+                    }
+                }
+
+                // nếu có value thì mới check
+                if (!this.isEmpty(this.newEmployee.BankAccount)) {
+                    // check input phải là số
+                    if (
+                        this.isInValid(this.newEmployee.BankAccount, "number")
+                    ) {
+                        this.isTooltip.isTooltipBankAccount = true;
+                        this.errorMessage.push(
+                            MISAResouce.vi.LabelBankAccount +
+                                MISAResouce.vi.ErrorNotNumber
+                        );
+                    } else {
+                        this.isTooltip.isTooltipBankAccount = false;
+                        const index = this.errorMessage.indexOf(
+                            MISAResouce.vi.LabelBankAccount +
+                                MISAResouce.vi.ErrorNotNumber
+                        );
+                        this.errorMessage.splice(index, 1);
+                    }
+                }
+                if (this.errorMessage.length > 0) {
+                    return false;
+                } else {
+                    return true;
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
+         * Hàm kiểm tra input có rỗng không
+         * Author: KienNT (02/03/2023)
+         * @param (value): tham số là giá trị chuỗi từ input
+         */
+        isEmpty(value) {
+            try {
+                if (value === "" || value === null || value === undefined) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
+         * Hàm kiểm tra input date có đúng là trước ngày hiện tại không
+         * Author: KienNT (02/03/2023)
+         * @param (value): tham số là giá trị chuỗi từ input và loại nào: date,...
+         */
+        isInValid(value, kind) {
+            try {
+                if (!this.isEmpty(value)) {
+                    let timenow;
+                    let inputDate;
+                    let regex;
+                    switch (kind) {
+                        case "date":
+                            timenow = new Date();
+                            inputDate = new Date(value);
+                            if (timenow < inputDate) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+
+                        case "number":
+                            if (isNaN(value)) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        case "email":
+                            regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                            // nếu ko đúng địng dạng thì ...
+                            if (!regex.test(value)) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+
+                        default:
+                            break;
+                    }
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
+         * Hàm ẩn hiện tooltip
+         * Author: KienNT (02/03/2023)
+         * @param (value): tham số là true, false để hiển thị tooltip
+         */
+        hideShowTooltip(isTooltip) {
+            try {
+                this.isTooltip = isTooltip;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
+         * Hàm ẩn hiện dialog
+         * Author: KienNT (02/03/2023)
+         * @param (value): tham số là true, false để hiển thị dialog
+         */
+        hideShowDialogError(isDialogError) {
+            try {
+                this.isDialogError = isDialogError;
             } catch (error) {
                 console.log(error);
             }

@@ -9,19 +9,22 @@
         :style="style"
         :class="[
             kind === 'default'
-                ? '  input-default form__group-input ' + className
+                ? ' input-default form__group-input ' + className
                 : className,
             required ? ' input--required ' : '',
+            isShowTooltip ? 'input-required' : '',
         ]"
         :placeholder="MISAResouce.vi.Enter + ' ' + placeHolder"
+        v-model="value"
     />
+    <!-- @input="$emit('update:modelValue', $event.target.value)" -->
 </template>
 <script>
 import MISAResouce from "@/js/resource";
 export default {
-    // eslint-disable-next-line vue/multi-word-component-names
-    name: "Minput",
+    name: "MInput",
     props: {
+        modelValue: [String, Number, Boolean],
         type: {
             type: String,
             default: "text",
@@ -66,12 +69,32 @@ export default {
             type: String,
             default: "off",
         },
+        isShowTooltip: {
+            type: Boolean,
+        },
     },
+    watch: {
+        /**
+         * Theo dõi sự thay đổi value thì hàm sẽ được gọi đến thằng ngoài để update value
+         * Author: KienNT (03/03/2023)
+         */
+        value: function (newValue) {
+            this.$emit("update:modelValue", newValue);
+        },
+    },
+
+    updated() {
+        this.value = this.modelValue;
+    },
+
     data() {
         return {
             MISAResouce,
+            value: null,
         };
     },
+
+    components: {},
 };
 </script>
 <style scoped>

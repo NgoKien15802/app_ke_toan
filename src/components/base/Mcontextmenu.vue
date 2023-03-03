@@ -24,8 +24,7 @@
 <script>
 import MISAResouce from "@/js/resource";
 export default {
-    // eslint-disable-next-line vue/multi-word-component-names
-    name: "Mcontextmenu",
+    name: "MContextmenu",
     data() {
         return {
             MISAResouce,
