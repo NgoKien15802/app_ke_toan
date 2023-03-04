@@ -41,7 +41,10 @@
             <div class="content__main-body scrollbar_customize">
                 <div class="content__main-table">
                     <!-- begin table -->
-                    <TheTable @hideShowLoading="hideShowLoading"></TheTable>
+                    <TheTable
+                        @hideShowLoading="hideShowLoading"
+                        @onDoubleClick="onDoubleClick"
+                    ></TheTable>
                     <!-- end table -->
 
                     <!-- begin dialog -->
@@ -58,6 +61,7 @@
                     v-if="isShowPopup"
                     @onClosePopup="closePopup"
                     @hideShowLoading="hideShowLoading"
+                    :employeeIdSelected="employeeIdSelected"
                 ></ThePopup>
 
                 <!-- begin dialog -->
@@ -81,7 +85,7 @@ export default {
             MISAResouce,
             isShowPopup: false,
             isLoading: false,
-            newEmployeeCode: "",
+            employeeIdSelected: "",
         };
     },
     components: {
@@ -98,6 +102,21 @@ export default {
         showPopup() {
             try {
                 this.isShowPopup = true;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
+         * Hàm handle khi double click và lấy id employee
+         * Author: KienNT (04/03/2023)
+         */
+        onDoubleClick(employee) {
+            try {
+                this.isShowPopup = true;
+                this.employeeIdSelected = employee.EmployeeId;
+                // eslint-disable-next-line no-debugger
+                debugger;
             } catch (error) {
                 console.log(error);
             }

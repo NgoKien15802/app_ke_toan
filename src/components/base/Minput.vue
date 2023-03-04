@@ -3,6 +3,7 @@
         :type="type"
         :id="id"
         :name="name"
+        ref="minput"
         :tabindex="tabindex"
         :autocomplete="autocomplete"
         class="input__type reset-input"
@@ -72,7 +73,12 @@ export default {
         isShowTooltip: {
             type: Boolean,
         },
+        isFocus: {
+            type: Boolean,
+            required: false,
+        },
     },
+
     watch: {
         /**
          * Theo dõi sự thay đổi value thì hàm sẽ được gọi đến thằng ngoài để update value
@@ -80,6 +86,30 @@ export default {
          */
         value: function (newValue) {
             this.$emit("update:modelValue", newValue);
+        },
+    },
+
+    /**
+     * khi được mounted
+     * Author: KienNT (03/03/2023)
+     */
+    mounted() {
+        if (this.isFocus) {
+            this.setFocus();
+        }
+    },
+
+    methods: {
+        /**
+         * Set focus khi được mounted và có props isFocus = true
+         * Author: KienNT (03/03/2023)
+         */
+        setFocus() {
+            this.$nextTick(function () {
+                if (this.isFocus) {
+                    this.$refs["minput"].focus();
+                }
+            });
         },
     },
 

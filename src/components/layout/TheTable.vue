@@ -45,7 +45,11 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="(employee, index) in employees" :key="index">
+            <tr
+                v-for="(employee, index) in employees"
+                :key="index"
+                @dblclick="doubleClickRow(employee)"
+            >
                 <td class="text-align-center">
                     <MCheckbox></MCheckbox>
                 </td>
@@ -110,7 +114,7 @@ export default {
                 .then(this.$emit("hideShowLoading", true))
                 .then((response) => {
                     this.employees = response.data;
-                    setTimeout(this.$emit("hideShowLoading", false), 500);
+                    this.$emit("hideShowLoading", false);
                 })
                 .catch((error) => {
                     console.log(error);
@@ -168,6 +172,16 @@ export default {
                     console.log(error);
                 }
             };
+        },
+    },
+
+    methods: {
+        /**
+         * Hàm gửi emit lên cha để lấy id employee
+         * Author: KienNT (04/03/2023)
+         */
+        doubleClickRow(employee) {
+            this.$emit("onDoubleClick", employee);
         },
     },
 };

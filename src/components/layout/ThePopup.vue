@@ -75,9 +75,11 @@
                                             isTooltip.isTooltipEmployeeCode
                                         "
                                         :required="true"
+                                        ref="txtEmployeeCode"
                                         :placeHolder="
                                             MISAResouce.vi.LabelEmployeeCode.toLowerCase()
                                         "
+                                        :isFocus="true"
                                         @blur="
                                             isEmpty(newEmployee.EmployeeCode)
                                                 ? (isTooltip.isTooltipEmployeeCode = true)
@@ -116,6 +118,8 @@
                                         :isShowTooltip="
                                             isTooltip.isTooltipEmployeeName
                                         "
+                                        ref="txtFullName"
+                                        :isFocus="true"
                                         :required="true"
                                         :placeHolder="
                                             MISAResouce.vi.LabelEmployeeName.toLowerCase()
@@ -156,6 +160,7 @@
                                         id="chucdanh"
                                         name="PositionName"
                                         kind="default"
+                                        ref="txtPositionName"
                                         :placeHolder="
                                             MISAResouce.vi.LabelJobTitle.toLowerCase()
                                         "
@@ -184,6 +189,7 @@
                                         name="DateOfBirth"
                                         id="ngaysinh"
                                         kind="default"
+                                        ref="txtDateOfBirth"
                                         v-model="newEmployee.DateOfBirth"
                                         :isShowTooltip="
                                             isTooltip.isTooltipDateOfBirth
@@ -255,6 +261,7 @@
                                         name="IdentityNumber"
                                         tabindex="7"
                                         kind="default"
+                                        ref="txtIdentityNumber"
                                         class="check-number"
                                         v-model="newEmployee.IdentityNumber"
                                         :placeHolder="
@@ -272,7 +279,6 @@
                                                 : (isTooltip.isTooltipIdentityNumber = false)
                                         "
                                     />
-
                                     <MTooltip
                                         v-if="isTooltip.isTooltipIdentityNumber"
                                         :subtext="
@@ -297,6 +303,7 @@
                                         type="date"
                                         name="IdentityDate"
                                         id="ngaycap"
+                                        ref="txtIdentityDate"
                                         tabindex="8"
                                         kind="default"
                                         v-model="newEmployee.IdentityDate"
@@ -332,6 +339,7 @@
                                         tabindex="9"
                                         name="IdentityPlace"
                                         kind="default"
+                                        ref="txtIdentityPlace"
                                         :placeHolder="
                                             MISAResouce.vi.LabelIdentityPlace.toLowerCase()
                                         "
@@ -353,6 +361,7 @@
                                     tabindex="10"
                                     name="Address"
                                     kind="default"
+                                    ref="txtAddress"
                                     :placeHolder="
                                         MISAResouce.vi.LabelAddress.toLowerCase()
                                     "
@@ -383,6 +392,7 @@
                                     name="PhoneNumber"
                                     class="check-number"
                                     kind="default"
+                                    ref="txtPhoneNumber"
                                     :placeHolder="
                                         MISAResouce.vi.TooltipPhoneNumber.toLowerCase()
                                     "
@@ -431,6 +441,7 @@
                                     id="sodienthoaiCD"
                                     name="LandlineNumber"
                                     kind="default"
+                                    ref="txtLandlineNumber"
                                     :placeHolder="
                                         MISAResouce.vi.TooltipFixPhoneNumber.toLowerCase()
                                     "
@@ -470,6 +481,7 @@
                                     id="email"
                                     tabindex="13"
                                     name="Email"
+                                    ref="txtEmail"
                                     kind="default"
                                     :placeHolder="
                                         MISAResouce.vi.LabelEmail.toLowerCase()
@@ -509,6 +521,7 @@
                                     tabindex="14"
                                     class="check-number"
                                     kind="default"
+                                    ref="txtBankAccount"
                                     :placeHolder="
                                         MISAResouce.vi.LabelBankAccount.toLowerCase()
                                     "
@@ -542,6 +555,7 @@
                                     id="tennganhang"
                                     tabindex="15"
                                     name="BankName"
+                                    ref="txtBankName"
                                     class="check-string"
                                     kind="default"
                                     :placeHolder="
@@ -558,6 +572,7 @@
                                     tabindex="16"
                                     id="chinhanh"
                                     name="BankBranch"
+                                    ref="txtBankBranch"
                                     kind="default"
                                     :placeHolder="
                                         MISAResouce.vi.LabelBankBranch.toLowerCase()
@@ -622,7 +637,7 @@ import axios from "axios";
 export default {
     name: "ThePopup",
     props: {
-        employeeIdSelect: {
+        employeeIdSelected: {
             type: String,
             default: "",
         },
@@ -654,11 +669,12 @@ export default {
 
     created() {
         try {
+            console.log(this.employeeIdSelected);
             /**
              * Call API lấy ra id bất kỳ khi click btn thêm nhân viên mới
              * Author: KienNT (03/03/2023)
              */
-            if (this.isEmpty(this.employeeIdSelect))
+            if (this.isEmpty(this.employeeIdSelected))
                 axios
                     .get(
                         "https://apidemo.laptrinhweb.edu.vn/api/v1/Employees/NewEmployeeCode"
@@ -687,6 +703,14 @@ export default {
             },
             deep: true,
         },
+    },
+
+    mounted() {
+        /**
+         * Gọi hàm set focus bên input
+         * Author: KienNT (04/03/2023)
+         */
+        this.$refs["txtFullName"].setFocus();
     },
 
     methods: {
@@ -732,24 +756,17 @@ export default {
                         MISAResouce.vi.LabelEmployeeCode +
                             MISAResouce.vi.ErrorEmpty
                     );
-                    this.errorMessage.splice(index, 1);
+                    if (index !== -1) {
+                        this.errorMessage.splice(index, 1);
+                    }
                 }
 
                 // check tên
-                if (this.isEmpty(this.newEmployee.FullName)) {
-                    this.isTooltip.isTooltipEmployeeName = true;
-                    this.errorMessage.push(
-                        MISAResouce.vi.LabelEmployeeName +
-                            MISAResouce.vi.ErrorEmpty
-                    );
-                } else {
-                    this.isTooltip.isTooltipEmployeeName = false;
-                    const index = this.errorMessage.indexOf(
-                        MISAResouce.vi.LabelEmployeeName +
-                            MISAResouce.vi.ErrorEmpty
-                    );
-                    this.errorMessage.splice(index, 1);
-                }
+                this.checkField(
+                    "isTooltipEmployeeName",
+                    this.newEmployee.FullName,
+                    MISAResouce.vi.LabelEmployeeName
+                );
 
                 // nếu có value thì mới check
                 if (!this.isEmpty(this.newEmployee.DateOfBirth)) {
@@ -766,7 +783,9 @@ export default {
                             MISAResouce.vi.LabelDateOfBirth +
                                 MISAResouce.vi.ErrorDate
                         );
-                        this.errorMessage.splice(index, 1);
+                        if (index !== -1) {
+                            this.errorMessage.splice(index, 1);
+                        }
                     }
                 }
 
@@ -790,7 +809,9 @@ export default {
                             MISAResouce.vi.LabelIdentityNumber +
                                 MISAResouce.vi.ErrorNotNumber
                         );
-                        this.errorMessage.splice(index, 1);
+                        if (index !== -1) {
+                            this.errorMessage.splice(index, 1);
+                        }
                     }
                 }
                 // nếu có value thì mới check
@@ -808,7 +829,9 @@ export default {
                             MISAResouce.vi.LabelIdentityDate +
                                 MISAResouce.vi.ErrorDate
                         );
-                        this.errorMessage.splice(index, 1);
+                        if (index !== -1) {
+                            this.errorMessage.splice(index, 1);
+                        }
                     }
                 }
                 // nếu có value thì mới check
@@ -828,7 +851,9 @@ export default {
                             MISAResouce.vi.LabelPhoneNumber +
                                 MISAResouce.vi.ErrorNotNumber
                         );
-                        this.errorMessage.splice(index, 1);
+                        if (index !== -1) {
+                            this.errorMessage.splice(index, 1);
+                        }
                     }
                 }
                 // nếu có value thì mới check
@@ -851,7 +876,9 @@ export default {
                             MISAResouce.vi.LabelLandlineNumber +
                                 MISAResouce.vi.ErrorNotNumber
                         );
-                        this.errorMessage.splice(index, 1);
+                        if (index !== -1) {
+                            this.errorMessage.splice(index, 1);
+                        }
                     }
                 }
 
@@ -870,7 +897,9 @@ export default {
                             MISAResouce.vi.LabelEmail +
                                 MISAResouce.vi.ErrorEmail
                         );
-                        this.errorMessage.splice(index, 1);
+                        if (index !== -1) {
+                            this.errorMessage.splice(index, 1);
+                        }
                     }
                 }
 
@@ -891,7 +920,9 @@ export default {
                             MISAResouce.vi.LabelBankAccount +
                                 MISAResouce.vi.ErrorNotNumber
                         );
-                        this.errorMessage.splice(index, 1);
+                        if (index !== -1) {
+                            this.errorMessage.splice(index, 1);
+                        }
                     }
                 }
                 if (this.errorMessage.length > 0) {
@@ -901,6 +932,21 @@ export default {
                 }
             } catch (error) {
                 console.log(error);
+            }
+        },
+
+        checkField(fieldName, fieldValue, errorLabel) {
+            if (this.isEmpty(fieldValue)) {
+                this.isTooltip[fieldName] = true;
+                this.errorMessage.push(errorLabel + MISAResouce.vi.ErrorEmpty);
+            } else {
+                this.isTooltip[fieldName] = false;
+                const index = this.errorMessage.indexOf(
+                    errorLabel + MISAResouce.vi.ErrorEmpty
+                );
+                if (index !== -1) {
+                    this.errorMessage.splice(index, 1);
+                }
             }
         },
 
