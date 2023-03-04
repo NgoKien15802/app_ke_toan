@@ -152,30 +152,22 @@ export default {
                 }
             };
         },
+    },
 
+    methods: {
         /**
          * Hàm thực hiện format gender
          * Author: KienNT (02/03/2023)
          */
-        formatGender() {
-            return (gender) => {
-                try {
-                    if (gender) {
-                        return gender === MISAEnum.Gender.Male
-                            ? "Nam"
-                            : gender === MISAEnum.Gender.Female
-                            ? "Nữ"
-                            : "Khác";
-                    }
-                    return "";
-                } catch (error) {
-                    console.log(error);
-                }
-            };
+        formatGender(gender) {
+            if (gender === MISAEnum.Gender.Male) {
+                return "Nam";
+            } else if (gender === MISAEnum.Gender.Female) {
+                return "Nữ";
+            } else {
+                return "Khác";
+            }
         },
-    },
-
-    methods: {
         /**
          * Hàm gửi emit lên cha để lấy id employee
          * Author: KienNT (04/03/2023)

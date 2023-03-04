@@ -4,9 +4,7 @@
             <div class="popup__form-wrapper">
                 <div class="popup__form-header">
                     <div class="form__header-left">
-                        <MHeading
-                            :text="MISAResouce.vi.EmployeeInfo"
-                        ></MHeading>
+                        <MHeading :text="textTitlePopup"></MHeading>
                         <div class="form__header-left-check">
                             <MCheckbox id="infoKH"></MCheckbox>
                             <label
@@ -119,7 +117,6 @@
                                             isTooltip.isTooltipEmployeeName
                                         "
                                         ref="txtFullName"
-                                        :isFocus="true"
                                         :required="true"
                                         :placeHolder="
                                             MISAResouce.vi.LabelEmployeeName.toLowerCase()
@@ -224,14 +221,29 @@
                                         <MRadio
                                             id="nam"
                                             :text="MISAResouce.vi.LabelMale"
+                                            :checked="
+                                                newEmployee.Gender ===
+                                                MISAEnum.Gender.Male
+                                            "
                                         ></MRadio>
                                         <MRadio
                                             id="nu"
                                             :text="MISAResouce.vi.LabelFemale"
+                                            :checked="
+                                                newEmployee.Gender ===
+                                                MISAEnum.Gender.Female
+                                            "
                                         ></MRadio>
                                         <MRadio
                                             id="other"
                                             :text="MISAResouce.vi.LabelOther"
+                                            :checked="
+                                                newEmployee.Gender !==
+                                                    MISAEnum.Gender.Male &&
+                                                newEmployee.Gender !==
+                                                    MISAEnum.Gender.Female &&
+                                                !isEmpty(newEmployee.Gender)
+                                            "
                                         ></MRadio>
                                     </div>
                                 </div>
@@ -592,7 +604,7 @@
                         class="btn btn-default close__add-employee"
                         tabindex="19"
                         :text="MISAResouce.vi.BtnDestroy"
-                        :click="closePopup"
+                        :click="destroyPopup"
                     >
                     </MButton>
                 </div>
@@ -631,23 +643,30 @@
 </template>
 <script>
 import MISAResouce from "@/js/resource";
+import MISAEnum from "@/js/enum";
 import Mcombobox from "../base/Mcombobox.vue";
 import axios from "axios";
 
 export default {
     name: "ThePopup",
     props: {
+        employeeInput: {
+            type: Object,
+        },
         employeeIdSelected: {
             type: String,
-            default: "",
+        },
+        textTitlePopup: {
+            type: String,
         },
     },
     data() {
         return {
             MISAResouce,
-            newEmployee: { EmployeeCode: "" },
+            MISAEnum,
+            newEmployee: {},
             isDialogError: false,
-            employeeCode: "",
+            oldEmployee: {},
             isTooltip: {
                 isTooltipEmployeeCode: false,
                 isTooltipEmployeeName: false,
@@ -659,6 +678,17 @@ export default {
                 isTooltipEmail: false,
                 isTooltipBankAccount: false,
             },
+            isFocus: {
+                isFocusEmployeeCode: false,
+                isFocusEmployeeName: false,
+                isFocusDateOfBirth: false,
+                isFocusIdentityNumber: false,
+                isFocusIdentityDate: false,
+                isFocusPhoneNumber: false,
+                isFocusLandlineNumber: false,
+                isFocusEmail: false,
+                isFocusBankAccount: false,
+            },
             errorMessage: [],
         };
     },
@@ -669,12 +699,11 @@ export default {
 
     created() {
         try {
-            console.log(this.employeeIdSelected);
             /**
              * Call API lấy ra id bất kỳ khi click btn thêm nhân viên mới
              * Author: KienNT (03/03/2023)
              */
-            if (this.isEmpty(this.employeeIdSelected))
+            if (this.isEmpty(this.employeeIdSelected)) {
                 axios
                     .get(
                         "https://apidemo.laptrinhweb.edu.vn/api/v1/Employees/NewEmployeeCode"
@@ -687,6 +716,14 @@ export default {
                     .catch((error) => {
                         console.log(error);
                     });
+            } else {
+                // lưu trữ dữ liệu gốc
+                this.oldEmployee = JSON.stringify(this.employeeInput);
+
+                //  Chuyển dữ liệu từ props sang data. sau đó binding
+
+                this.newEmployee = this.employeeInput;
+            }
         } catch (error) {
             console.log(error);
         }
@@ -710,7 +747,7 @@ export default {
          * Gọi hàm set focus bên input
          * Author: KienNT (04/03/2023)
          */
-        this.$refs["txtFullName"].setFocus();
+        // this.$refs["txtFullName"].setFocus();
     },
 
     methods: {
@@ -720,20 +757,44 @@ export default {
          */
         closePopup() {
             try {
+                // kiểm tra dữ liệu đã thay đổi chưa
+                const newEmployeeData = JSON.stringify(this.newEmployee);
+                if (this.oldEmployee !== newEmployeeData) {
+                    alert("ddax thay doi");
+                    return;
+                } else {
+                    this.$emit("onClosePopup");
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
+         * Hàm đóng popup khi click btn hủy
+         * Author: KienNT (01/03/2023)
+         */
+        destroyPopup() {
+            try {
                 this.$emit("onClosePopup");
             } catch (error) {
                 console.log(error);
             }
         },
+
         /**
          * Hàm validate thành công thì cất data và đóng form
          * Author: KienNT (02/03/2023)
          */
         btnSaveAndClose() {
-            if (this.handleValidate()) {
-                console.log("success");
-            } else {
-                this.hideShowDialogError(true);
+            try {
+                if (this.handleValidate()) {
+                    console.log("success");
+                } else {
+                    this.hideShowDialogError(true);
+                }
+            } catch (error) {
+                console.log(error);
             }
         },
 
@@ -744,22 +805,11 @@ export default {
         handleValidate() {
             try {
                 // check mã
-                if (this.isEmpty(this.newEmployee.EmployeeCode)) {
-                    this.isTooltip.isTooltipEmployeeCode = true;
-                    this.errorMessage.push(
-                        MISAResouce.vi.LabelEmployeeCode +
-                            MISAResouce.vi.ErrorEmpty
-                    );
-                } else {
-                    this.isTooltip.isTooltipEmployeeCode = false;
-                    const index = this.errorMessage.indexOf(
-                        MISAResouce.vi.LabelEmployeeCode +
-                            MISAResouce.vi.ErrorEmpty
-                    );
-                    if (index !== -1) {
-                        this.errorMessage.splice(index, 1);
-                    }
-                }
+                this.checkField(
+                    "isTooltipEmployeeCode",
+                    this.newEmployee.EmployeeCode,
+                    MISAResouce.vi.LabelEmployeeCode
+                );
 
                 // check tên
                 this.checkField(
@@ -783,9 +833,8 @@ export default {
                             MISAResouce.vi.LabelDateOfBirth +
                                 MISAResouce.vi.ErrorDate
                         );
-                        if (index !== -1) {
-                            this.errorMessage.splice(index, 1);
-                        }
+
+                        this.errorMessage.splice(index, 1);
                     }
                 }
 
@@ -809,9 +858,8 @@ export default {
                             MISAResouce.vi.LabelIdentityNumber +
                                 MISAResouce.vi.ErrorNotNumber
                         );
-                        if (index !== -1) {
-                            this.errorMessage.splice(index, 1);
-                        }
+
+                        this.errorMessage.splice(index, 1);
                     }
                 }
                 // nếu có value thì mới check
@@ -829,9 +877,8 @@ export default {
                             MISAResouce.vi.LabelIdentityDate +
                                 MISAResouce.vi.ErrorDate
                         );
-                        if (index !== -1) {
-                            this.errorMessage.splice(index, 1);
-                        }
+
+                        this.errorMessage.splice(index, 1);
                     }
                 }
                 // nếu có value thì mới check
@@ -851,9 +898,8 @@ export default {
                             MISAResouce.vi.LabelPhoneNumber +
                                 MISAResouce.vi.ErrorNotNumber
                         );
-                        if (index !== -1) {
-                            this.errorMessage.splice(index, 1);
-                        }
+
+                        this.errorMessage.splice(index, 1);
                     }
                 }
                 // nếu có value thì mới check
@@ -876,9 +922,8 @@ export default {
                             MISAResouce.vi.LabelLandlineNumber +
                                 MISAResouce.vi.ErrorNotNumber
                         );
-                        if (index !== -1) {
-                            this.errorMessage.splice(index, 1);
-                        }
+
+                        this.errorMessage.splice(index, 1);
                     }
                 }
 
@@ -897,9 +942,8 @@ export default {
                             MISAResouce.vi.LabelEmail +
                                 MISAResouce.vi.ErrorEmail
                         );
-                        if (index !== -1) {
-                            this.errorMessage.splice(index, 1);
-                        }
+
+                        this.errorMessage.splice(index, 1);
                     }
                 }
 
@@ -920,9 +964,8 @@ export default {
                             MISAResouce.vi.LabelBankAccount +
                                 MISAResouce.vi.ErrorNotNumber
                         );
-                        if (index !== -1) {
-                            this.errorMessage.splice(index, 1);
-                        }
+
+                        this.errorMessage.splice(index, 1);
                     }
                 }
                 if (this.errorMessage.length > 0) {
@@ -935,6 +978,10 @@ export default {
             }
         },
 
+        /**
+         * Hàm check isEmpty
+         * Author: KienNT (04/03/2023)
+         */
         checkField(fieldName, fieldValue, errorLabel) {
             if (this.isEmpty(fieldValue)) {
                 this.isTooltip[fieldName] = true;
@@ -944,9 +991,8 @@ export default {
                 const index = this.errorMessage.indexOf(
                     errorLabel + MISAResouce.vi.ErrorEmpty
                 );
-                if (index !== -1) {
-                    this.errorMessage.splice(index, 1);
-                }
+
+                this.errorMessage.splice(index, 1);
             }
         },
 

@@ -6,6 +6,7 @@
             :value="text"
             name="GenderName"
             :id="id"
+            :checked="checked"
         />
         <span class="ms__radio">
             <span class="ms__radio-border"></span>
@@ -26,6 +27,10 @@ export default {
         text: {
             type: String,
             default: "Nam",
+        },
+        checked: {
+            type: Boolean,
+            default: false,
         },
     },
 };

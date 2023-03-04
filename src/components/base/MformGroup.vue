@@ -1,4 +1,4 @@
-<!-- <template>
+<template>
     <div
         class="form__group form__group-contact-input"
         :class="{ 'tooltip-error': isTooltip }"
@@ -22,9 +22,9 @@
         <MTooltip v-if="isTooltip" :subtext="tooltipSubtext" kind="error" />
     </div>
 </template>
-
 <script>
 export default {
+    name: "MFormGroup",
     props: {
         labelFor: {
             type: String,
@@ -68,11 +68,11 @@ export default {
             isTooltip: false,
         };
     },
-    methods: {  
+    methods: {
         handleBlur() {
             if (
-                isInValid(this.value, "number") ||
-                isInValid(this.value, "email")
+                this.isInValid(this.value, "number") ||
+                this.isInValid(this.value, "email")
             ) {
                 this.isTooltip = true;
                 this.$emit("error");
@@ -81,13 +81,12 @@ export default {
                 this.$emit("valid");
             }
         },
-
         /**
          * Hàm kiểm tra input có rỗng không
          * Author: KienNT (02/03/2023)
          * @param (value): tham số là giá trị chuỗi từ input
          */
-         isEmpty(value) {
+        isEmpty(value) {
             try {
                 if (value === "" || value === null || value === undefined) {
                     return true;
@@ -99,12 +98,12 @@ export default {
             }
         },
 
-           /**
+        /**
          * Hàm kiểm tra input date có đúng là trước ngày hiện tại không
          * Author: KienNT (02/03/2023)
          * @param (value): tham số là giá trị chuỗi từ input và loại nào: date,...
          */
-         isInValid(value, kind) {
+        isInValid(value, kind) {
             try {
                 if (!this.isEmpty(value)) {
                     let timenow;
@@ -142,37 +141,8 @@ export default {
             } catch (error) {
                 console.log(error);
             }
-
+        },
     },
-}
-
-
-<template>
-  <div>
-    <MyInputGroup
-      labelFor="sodienthoaiCD"
-      labelText="{{ MISAResouce.vi.LabelLandlineNumber }}"
-      tooltipKind="title"
-      tooltipSubtext="{{ MISAResouce.vi.TooltipFixPhoneNumber }}"
-      inputId="sodienthoaiCD"
-      inputName="LandlineNumber"
-      inputKind="default"
-      inputPlaceholder="{{ MISAResouce.vi.TooltipFixPhoneNumber.toLowerCase() }}"
-      :value="newEmployee.LandlineNumber"
-      @valid="handleValidLandlineNumber"
-      @error="handleInvalidLandlineNumber"
-    />
-    <MyInputGroup
-      labelFor="email"
-      labelText="{{ MISAResouce.vi.LabelEmail }}"
-      tooltipKind="error"
-      tooltipSubtext="{{ MISAResouce.vi.LabelEmail + MISAResouce.vi.ErrorEmail }}"
-      inputId="email"
-      inputName="Email"
-      inputKind="default"
-      inputPlaceholder="{{ MISAResouce.vi.LabelEmail.toLowerCase() }}"
-      :value="newEmployee.Email"
-      @valid="handleValidEmail"
-      @error="handleInvalidEmail"
-    />
-  -->
+};
+</script>
+<style></style>

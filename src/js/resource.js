@@ -65,6 +65,7 @@ const MISAResouce = {
         // popup
         Enter: "Nhập",
         EmployeeInfo: "Thông tin nhân viên",
+        EditEmployeeInfo: "Sửa nhân viên",
         Customer: "Là khách hàng",
         supplier: "Là nhà cung cấp",
         LabelEmployeeCode: "Mã",
@@ -155,6 +156,7 @@ const MISAResouce = {
 
         // popup
         EmployeeInfo: "Employee infomation",
+        EditEmployeeInfo: "edit employee infomation",
         Customer: "Is a customer",
         supplier: "Is a supplier",
         LabelEmployeeCode: "ID",

@@ -81,7 +81,7 @@ export default {
 
     watch: {
         /**
-         * Theo dõi sự thay đổi value thì hàm sẽ được gọi đến thằng ngoài để update value
+         * Theo dõi sự thay đổi value thì hàm sẽ được gọi bên ngoài để update value
          * Author: KienNT (03/03/2023)
          */
         value: function (newValue) {
@@ -89,10 +89,6 @@ export default {
         },
     },
 
-    /**
-     * khi được mounted
-     * Author: KienNT (03/03/2023)
-     */
     mounted() {
         if (this.isFocus) {
             this.setFocus();
@@ -113,6 +109,9 @@ export default {
         },
     },
 
+    created() {
+        this.value = this.modelValue;
+    },
     updated() {
         this.value = this.modelValue;
     },
