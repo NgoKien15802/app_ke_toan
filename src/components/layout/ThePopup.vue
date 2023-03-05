@@ -77,7 +77,6 @@
                                         :placeHolder="
                                             MISAResouce.vi.LabelEmployeeCode.toLowerCase()
                                         "
-                                        :isFocus="true"
                                         @blur="
                                             isEmpty(newEmployee.EmployeeCode)
                                                 ? (isTooltip.isTooltipEmployeeCode = true)
@@ -614,7 +613,7 @@
                             class="btn btn-default close__add-employee"
                             tabindex="17"
                             :text="MISAResouce.vi.BtnSave"
-                            :click="btnSaveAndClose"
+                            :click="() => btnSaveAndClose(true)"
                         >
                         </MButton>
                     </div>
@@ -623,6 +622,7 @@
                             class="btn btn-primary close__add-employee"
                             tabindex="18"
                             :text="MISAResouce.vi.BtnSaveEndAdd"
+                            :click="() => btnSaveAndClose(false)"
                         >
                         </MButton>
                     </div>
@@ -638,6 +638,19 @@
             :message="errorMessage[0]"
             :textButton="MISAResouce.vi.BtnClose"
             @hideShowDialogError="hideShowDialogError"
+            kind="error"
+        ></MDialog>
+        <MDialog
+            v-if="isDialogNotify"
+            iconClass="dialog__icon-notify"
+            :title="MISAResouce.vi.DialogNotify"
+            :message="MISAResouce.vi.MessageNotify"
+            :btnNoNotify="MISAResouce.vi.BtnNo"
+            :textButton="MISAResouce.vi.BtnYes"
+            :btnDestroyNotify="MISAResouce.vi.BtnDestroy"
+            @onClickBtnDestroy="onClickBtnDestroy"
+            @destroyPopup="destroyPopup"
+            kind="notify"
         ></MDialog>
     </div>
 </template>
@@ -665,7 +678,9 @@ export default {
             MISAResouce,
             MISAEnum,
             newEmployee: {},
+            errorExistId: "",
             isDialogError: false,
+            isDialogNotify: false,
             oldEmployee: {},
             isTooltip: {
                 isTooltipEmployeeCode: false,
@@ -704,18 +719,7 @@ export default {
              * Author: KienNT (03/03/2023)
              */
             if (this.isEmpty(this.employeeIdSelected)) {
-                axios
-                    .get(
-                        "https://apidemo.laptrinhweb.edu.vn/api/v1/Employees/NewEmployeeCode"
-                    )
-                    .then(this.$emit("hideShowLoading", true))
-                    .then((response) => {
-                        this.newEmployee.EmployeeCode = response.data;
-                        this.$emit("hideShowLoading", false);
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
+                this.getNewEmployeeCode();
             } else {
                 // lưu trữ dữ liệu gốc
                 this.oldEmployee = JSON.stringify(this.employeeInput);
@@ -740,17 +744,39 @@ export default {
             },
             deep: true,
         },
-    },
 
-    mounted() {
-        /**
-         * Gọi hàm set focus bên input
-         * Author: KienNT (04/03/2023)
-         */
-        // this.$refs["txtFullName"].setFocus();
+        errorMessage: function () {
+            console.log("sdfsdffd", this.errorMessage);
+        },
     },
 
     methods: {
+        /**
+         * Hàm lấy employee code mới
+         * Author: KienNT (01/03/2023)
+         */
+        getNewEmployeeCode() {
+            axios
+                .get(
+                    "https://apidemo.laptrinhweb.edu.vn/api/v1/Employees/NewEmployeeCode"
+                )
+                .then(this.$emit("hideShowLoading", true))
+                .then((response) => {
+                    this.newEmployee.EmployeeCode = response.data;
+                    /**
+                     * Gọi hàm set focus bên input
+                     * Author: KienNT (04/03/2023)
+                     */
+                    this.$nextTick(function () {
+                        this.$refs["txtEmployeeCode"].setFocus();
+                    });
+                    this.$emit("hideShowLoading", false);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
         /**
          * Hàm đóng popup khi click vào icon close
          * Author: KienNT (01/03/2023)
@@ -760,7 +786,7 @@ export default {
                 // kiểm tra dữ liệu đã thay đổi chưa
                 const newEmployeeData = JSON.stringify(this.newEmployee);
                 if (this.oldEmployee !== newEmployeeData) {
-                    alert("ddax thay doi");
+                    this.isDialogNotify = true;
                     return;
                 } else {
                     this.$emit("onClosePopup");
@@ -776,6 +802,8 @@ export default {
          */
         destroyPopup() {
             try {
+                this.newEmployee = {};
+                this.errorMessage = [];
                 this.$emit("onClosePopup");
             } catch (error) {
                 console.log(error);
@@ -783,13 +811,55 @@ export default {
         },
 
         /**
-         * Hàm validate thành công thì cất data và đóng form
+         * Hàm validate thành công thì cất data và đóng form, cất và thêm thì cất và data reset form
          * Author: KienNT (02/03/2023)
          */
-        btnSaveAndClose() {
+        btnSaveAndClose(isCloseForm) {
             try {
                 if (this.handleValidate()) {
-                    console.log("success");
+                    // thêm nhân viên nếu là trạng thái thêm nhân viên
+                    if (this.isEmpty(this.employeeIdSelected)) {
+                        axios
+                            .post(
+                                "https://apidemo.laptrinhweb.edu.vn/api/v1/Employees",
+                                this.newEmployee
+                            )
+                            .then(this.$emit("hideShowLoading", true))
+                            .then((res) => {
+                                console.log(res);
+                                if (isCloseForm) {
+                                    // reset và đóng form
+                                    this.destroyPopup();
+                                } else {
+                                    // reset nhưng ko đóng form
+                                    this.newEmployee = {};
+                                    // lấy 1 id mới
+                                    this.getNewEmployeeCode();
+                                    this.errorMessage = [];
+                                }
+                                console.log("post success");
+                            })
+                            .then(this.$emit("hideShowLoading", false))
+                            .catch((error) => {
+                                this.$emit("hideShowLoading", false);
+                                this.errorExistId =
+                                    error.response.data.data.EmployeeCode;
+                                if (
+                                    this.errorExistId &&
+                                    this.errorExistId.includes("khách hàng")
+                                ) {
+                                    this.errorMessage[0] =
+                                        this.errorExistId.replace(
+                                            "khách hàng",
+                                            "nhân viên"
+                                        );
+                                } else {
+                                    this.errorMessage[0] = this.errorExistId;
+                                }
+                                this.isDialogError = true;
+                            });
+                    }
+                    // đóng form
                 } else {
                     this.hideShowDialogError(true);
                 }
@@ -984,6 +1054,10 @@ export default {
          */
         checkField(fieldName, fieldValue, errorLabel) {
             if (this.isEmpty(fieldValue)) {
+                // lỗi valid form thì xóa lỗi cùng mã
+                if (this.errorExistId) {
+                    this.errorMessage.splice(0, 1);
+                }
                 this.isTooltip[fieldName] = true;
                 this.errorMessage.push(errorLabel + MISAResouce.vi.ErrorEmpty);
             } else {
@@ -1066,6 +1140,20 @@ export default {
         hideShowTooltip(isTooltip) {
             try {
                 this.isTooltip = isTooltip;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
+         * Hàm ẩn hiện dialog notify
+         * Author: KienNT (04/03/2023)
+         * @param (value): tham số là true, false để hiển thị dialog notify
+         */
+
+        onClickBtnDestroy(isDialogNotify) {
+            try {
+                this.isDialogNotify = isDialogNotify;
             } catch (error) {
                 console.log(error);
             }

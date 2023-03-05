@@ -90,13 +90,17 @@ const MISAResouce = {
 
         // button
         BtnDestroy: "Hủy",
+        BtnYes: "Có",
+        BtnNo: "Không",
         BtnSaveEndAdd: "Cất và thêm",
         BtnSave: "Cất",
         BtnClose: "Đóng",
 
         // title dialog
         DialogNotifyError: "Thông báo lỗi",
+        DialogNotify: "Thông báo",
         DialogWarning: "Cảnh báo",
+        MessageNotify: "Dữ liệu của bạn đã thay đổi bạn có muốn cất không?",
     },
     en: {
         // Employee
@@ -186,10 +190,15 @@ const MISAResouce = {
         BtnSaveEndAdd: "Save End Add",
         BtnSave: "Save",
         BtnClose: "Close",
+        BtnYes: "Yes",
+        BtnNo: "No",
 
         // title dialog
         DialogNotifyError: "Error! ",
         DialogWarning: "Warning",
+        DialogNotify: "Notification",
+
+        MessageNotify: "Your data has changed do you want to save it?",
     },
 };
 export default MISAResouce;

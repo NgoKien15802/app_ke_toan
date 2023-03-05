@@ -102,9 +102,7 @@ export default {
          */
         setFocus() {
             this.$nextTick(function () {
-                if (this.isFocus) {
-                    this.$refs["minput"].focus();
-                }
+                this.$refs["minput"].focus();
             });
         },
     },
