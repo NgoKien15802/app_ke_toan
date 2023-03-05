@@ -13,7 +13,7 @@
                 <div :class="iconClass"></div>
                 <p class="dialog__text ml-8">{{ message }}</p>
             </div>
-            <div class="dialog__footer">
+            <div v-if="kind === 'error'" class="dialog__footer">
                 <div class=""></div>
                 <div class="dialog__footer-right">
                     <div class=""></div>
@@ -21,6 +21,22 @@
                         class="btn-primary dialog-close flex-end"
                         :text="textButton"
                         :click="hideShowDialogError"
+                    >
+                    </MButton>
+                </div>
+            </div>
+            <div v-if="kind === 'notify'" class="dialog__footer">
+                <div class="btn btn-default" @click="onClickBtnDestroy">
+                    {{ btnDestroyNotify }}
+                </div>
+                <div class="dialog__footer-right">
+                    <div class="btn btn-default" @click="onClickBtnNo">
+                        {{ btnNoNotify }}
+                    </div>
+                    <MButton
+                        class="btn-primary dialog-close flex-end"
+                        :text="textButton"
+                        :click="onClickBtnYes"
                     >
                     </MButton>
                 </div>
@@ -37,6 +53,12 @@ export default {
             type: String,
             default: "",
         },
+        kind: {
+            type: String,
+        },
+        titleNotify: {
+            type: String,
+        },
         message: {
             type: String,
             default: "",
@@ -49,20 +71,55 @@ export default {
             type: String,
             default: "",
         },
+        btnNoNotify: {
+            type: String,
+        },
+        btnDestroyNotify: {
+            type: String,
+        },
     },
     data() {
         return {
             MISAResouce,
+            isDialogError: false,
         };
     },
 
     methods: {
         /**
-         * Hàm gửi emit đóng dialog
+         * Hàm gửi emit đóng dialog error
          * Author: KienNT (02/03/2023)
          */
         hideShowDialogError() {
             this.$emit("hideShowDialogError", false);
+        },
+
+        /**
+         * Hàm gửi emit đóng dialog notify, giữ lại Form chi tiết
+         * Author: KienNT (04/03/2023)
+         */
+        onClickBtnDestroy() {
+            this.$emit("onClickBtnDestroy", false);
+        },
+        /**
+         * Hàm gửi emit đóng dialog notify và popup, không Lưu lại giữ liệu và đóng Form chi tiết.
+         * Author: KienNT (04/03/2023)
+         */
+        onClickBtnNo() {
+            this.$emit("onClickBtnDestroy", false);
+            this.$emit("destroyPopup");
+        },
+
+        /**
+         * Hàm gửi emit đóng dialog notify, thêm nhân viên, đóng form
+         * Author: KienNT (04/03/2023)
+         */
+        onClickBtnYes() {
+            this.$emit("onClickBtnDestroy", false);
+
+            // thêm nhân viên
+            // check validate sau đó mới thêm nhân viên
+            this.$emit("destroyPopup");
         },
     },
 };
