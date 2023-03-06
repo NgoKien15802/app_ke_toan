@@ -42,7 +42,6 @@
     border-radius: var(--border-radius);
     padding: 8px;
     box-shadow: 0 4px 16px rgba(23, 27, 42, 0.24);
-    display: none;
 }
 
 .option__list {

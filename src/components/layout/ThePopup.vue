@@ -224,6 +224,7 @@
                                                 newEmployee.Gender ===
                                                 MISAEnum.Gender.Male
                                             "
+                                            v-model="newEmployee.Gender"
                                         ></MRadio>
                                         <MRadio
                                             id="nu"
@@ -232,6 +233,7 @@
                                                 newEmployee.Gender ===
                                                 MISAEnum.Gender.Female
                                             "
+                                            v-model="newEmployee.Gender"
                                         ></MRadio>
                                         <MRadio
                                             id="other"
@@ -243,6 +245,7 @@
                                                     MISAEnum.Gender.Female &&
                                                 !isEmpty(newEmployee.Gender)
                                             "
+                                            v-model="newEmployee.Gender"
                                         ></MRadio>
                                     </div>
                                 </div>
@@ -798,7 +801,7 @@ export default {
 
         /**
          * Hàm đóng popup khi click btn hủy
-         * Author: KienNT (01/03/2023)
+         * Author: KienNT nhân viên(01/03/2023)
          */
         destroyPopup() {
             try {

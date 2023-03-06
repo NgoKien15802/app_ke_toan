@@ -7,6 +7,7 @@
             name="GenderName"
             :id="id"
             :checked="checked"
+            v-model="value"
         />
         <span class="ms__radio">
             <span class="ms__radio-border"></span>
@@ -19,7 +20,9 @@
 <script>
 export default {
     name: "MRadio",
+
     props: {
+        modelValue: [String, Number, Boolean],
         id: {
             type: String,
             default: "nam",
@@ -32,6 +35,26 @@ export default {
             type: Boolean,
             default: false,
         },
+    },
+    watch: {
+        /**
+         * Theo dõi sự thay đổi value thì hàm sẽ được gọi bên ngoài để update value
+         * Author: KienNT (03/03/2023)
+         */
+        value: function (newValue) {
+            this.$emit("update:modelValue", newValue);
+        },
+        created() {
+            this.value = this.modelValue;
+        },
+        updated() {
+            this.value = this.modelValue;
+        },
+    },
+    data() {
+        return {
+            value: null,
+        };
     },
 };
 </script>

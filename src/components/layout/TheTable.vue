@@ -3,7 +3,11 @@
         <thead>
             <tr class="table__field">
                 <th class="text-align-center">
-                    <MCheckbox></MCheckbox>
+                    <MCheckbox
+                        v-model="selectedAll"
+                        @handleCheckbox="handleCheckboxAll"
+                        :initValue="selectedAll"
+                    ></MCheckbox>
                 </th>
                 <th class="text-align-center">
                     {{ MISAResouce.vi.EmployeeCode }}
@@ -51,7 +55,11 @@
                 @dblclick="doubleClickRow(employee)"
             >
                 <td class="text-align-center">
-                    <MCheckbox></MCheckbox>
+                    <MCheckbox
+                        v-model="employee.Selected"
+                        :initValue="employee.Selected"
+                        @handleCheckbox="handleCheckbox"
+                    ></MCheckbox>
                 </td>
                 <td class="text-align-left">{{ employee?.EmployeeCode }}</td>
                 <td class="text-align-left">{{ employee?.FullName }}</td>
@@ -96,6 +104,7 @@ export default {
             MISAResouce,
             pageSize: 20,
             pageIndex: 1,
+            selectedAll: false,
         };
     },
 
@@ -114,6 +123,10 @@ export default {
                 .then(this.$emit("hideShowLoading", true))
                 .then((response) => {
                     this.employees = response.data;
+                    this.employees = this.employees.map((x) => {
+                        x.Selected = false;
+                        return x;
+                    });
                     this.$emit("hideShowLoading", false);
                 })
                 .catch((error) => {
@@ -155,6 +168,23 @@ export default {
     },
 
     methods: {
+        /**
+         * Xử lý khi click vào select item
+         * Author: KienNT (06/03/2023)
+         */
+        handleCheckbox(event) {
+            this.selectedAll = event.target.checked;
+        },
+        /**
+         * Xử lý khi click vào select all
+         * Author: KienNT (06/03/2023)
+         */
+        handleCheckboxAll(event) {
+            this.employees = this.employees.map((x) => {
+                x.Selected = event.target.checked;
+                return x;
+            });
+        },
         /**
          * Hàm thực hiện format gender
          * Author: KienNT (02/03/2023)

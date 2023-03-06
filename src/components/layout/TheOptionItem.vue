@@ -1,5 +1,9 @@
 <template>
-    <li class="option__item" :class="isActive ? 'active' : ''">
+    <li
+        class="option__item"
+        :class="isActive ? 'active' : ''"
+        @click="this.$emit('handleClickItem', $event)"
+    >
         <a href="#" class="option__link"
             >{{ text }}
             {{ MISAResouce.vi.RecordInPage }}

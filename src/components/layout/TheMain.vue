@@ -1,18 +1,18 @@
 <template>
     <div class="wrapper">
-        <TheHeaderVue></TheHeaderVue>
-        <TheContentVue></TheContentVue>
+        <TheHeader></TheHeader>
+        <TheContent></TheContent>
     </div>
 </template>
 <script>
-import TheContentVue from "./TheContent.vue";
-import TheHeaderVue from "./TheHeader.vue";
+import TheContent from "./TheContent.vue";
+import TheHeader from "./TheHeader.vue";
 
 export default {
     name: "TheMain",
     components: {
-        TheHeaderVue,
-        TheContentVue,
+        TheHeader,
+        TheContent,
     },
 };
 </script>

@@ -5,34 +5,39 @@
             {{ MISAResouce.vi.Record }}
         </p>
         <div class="content__main-paging-right">
-            <div class="paging__record">
+            <div
+                class="paging__record"
+                @click="handleOpenDropdown"
+                ref="dropdown"
+            >
                 <div class="input__wrapper dropdown">
                     <button
                         class="input__icon dropdown-icon"
                         fdprocessedid="jeq9qa"
                     >
-                        <div class="input__icon-dropdown"></div>
+                        <div
+                            class="input__icon-dropdown"
+                            ref="iconDropdown"
+                        ></div>
                     </button>
                     <input
                         readonly="true"
                         type="text"
                         style="border: none"
                         class="input__type dropdown-input paging-input"
-                        value=""
+                        v-model="valueInput"
                         fdprocessedid="epqss"
                     />
 
-                    <div class="option__wrapper">
+                    <div v-if="isOpenDropdown" class="option__wrapper">
                         <ul class="option__list scrollbar_customize">
                             <TheOptionItem
-                                text="10"
-                                :isActive="true"
+                                v-for="(item, index) in optionItem"
+                                :key="index"
+                                :text="item.text"
+                                :isActive="item.isActive"
+                                @handleClickItem="handleClickItem"
                             ></TheOptionItem>
-
-                            <TheOptionItem text="20"></TheOptionItem>
-                            <TheOptionItem text="30"></TheOptionItem>
-                            <TheOptionItem text="40"></TheOptionItem>
-                            <TheOptionItem text="50"></TheOptionItem>
                         </ul>
                     </div>
                 </div>
@@ -61,10 +66,84 @@ export default {
     data() {
         return {
             MISAResouce,
+            isOpenDropdown: false,
+            valueInput: `10 ${MISAResouce.vi.RecordInPage}`,
+            optionItem: [
+                {
+                    text: 10,
+                    isActive: true,
+                },
+                {
+                    text: 20,
+                    isActive: false,
+                },
+                {
+                    text: 30,
+                    isActive: false,
+                },
+                {
+                    text: 40,
+                    isActive: false,
+                },
+                {
+                    text: 50,
+                    isActive: false,
+                },
+            ],
         };
     },
     components: {
         TheOptionItem,
+    },
+
+    mounted() {
+        window.addEventListener("click", this.handleOutsideClick);
+    },
+    beforeUnmount() {
+        window.removeEventListener("click", this.handleOutsideClick);
+    },
+
+    methods: {
+        /**
+         * nghe sự kiện window. Nếu click ko phải là dropdown thì ẩn dropdown option
+         * Author: KienNT (06/03/2023)
+         */
+        handleOutsideClick(event) {
+            if (
+                this.$refs["dropdown"] &&
+                !this.$refs["dropdown"].contains(event.target)
+            ) {
+                this.isOpenDropdown = false;
+            }
+        },
+        /**
+         * Hiển thị dropdown option item
+         * Author: KienNT (06/03/2023)
+         */
+        handleOpenDropdown() {
+            this.$refs["iconDropdown"].classList.toggle("rorate-180");
+            this.isOpenDropdown = !this.isOpenDropdown;
+        },
+
+        /**
+         * handle khi click option item
+         * Author: KienNT (06/03/2023)
+         */
+        handleClickItem(event) {
+            this.optionItem.forEach((option) => {
+                if (option.isActive === true) {
+                    option.isActive = false;
+                }
+            });
+            this.optionItem.forEach((option) => {
+                if (event.target.textContent.indexOf(option.text) !== -1) {
+                    option.isActive = true;
+                    this.valueInput = event.target.textContent;
+                } else {
+                    option.isActive = false;
+                }
+            });
+        },
     },
 };
 </script>
