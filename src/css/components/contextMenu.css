@@ -6,7 +6,6 @@
     z-index: 3;
     position: fixed;
     background-color: var(--white-color);
-    display: none;
 }
 
 .contextmenu__fun-item {

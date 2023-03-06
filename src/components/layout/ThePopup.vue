@@ -666,9 +666,6 @@ import axios from "axios";
 export default {
     name: "ThePopup",
     props: {
-        employeeInput: {
-            type: Object,
-        },
         employeeIdSelected: {
             type: String,
         },
@@ -724,12 +721,26 @@ export default {
             if (this.isEmpty(this.employeeIdSelected)) {
                 this.getNewEmployeeCode();
             } else {
-                // lưu trữ dữ liệu gốc
-                this.oldEmployee = JSON.stringify(this.employeeInput);
-
-                //  Chuyển dữ liệu từ props sang data. sau đó binding
-
-                this.newEmployee = this.employeeInput;
+                axios
+                    .get(
+                        `https://apidemo.laptrinhweb.edu.vn/api/v1/Employees/${this.employeeIdSelected}`
+                    )
+                    .then(this.$emit("hideShowLoading", true))
+                    .then((res) => {
+                        this.newEmployee = res.data;
+                        this.newEmployee.DateOfBirth = this.convertDate(
+                            this.newEmployee.DateOfBirth
+                        );
+                        this.newEmployee.IdentityDate = this.convertDate(
+                            this.newEmployee.IdentityDate
+                        );
+                        this.oldEmployee = JSON.stringify(this.newEmployee);
+                        this.setFocusInput("txtEmployeeCode");
+                        this.$emit("hideShowLoading", false);
+                    })
+                    .catch((res) => {
+                        console.log(res);
+                    });
             }
         } catch (error) {
             console.log(error);
@@ -770,14 +781,23 @@ export default {
                      * Gọi hàm set focus bên input
                      * Author: KienNT (04/03/2023)
                      */
-                    this.$nextTick(function () {
-                        this.$refs["txtEmployeeCode"].setFocus();
-                    });
+                    this.setFocusInput("txtEmployeeCode");
                     this.$emit("hideShowLoading", false);
                 })
                 .catch((error) => {
                     console.log(error);
                 });
+        },
+
+        /**
+         * Hàm set focus cho element xác định
+         * Author: KienNT (06/03/2023)
+         * @param (value): tham số 1: là element cần focus
+         */
+        setFocusInput(element) {
+            this.$nextTick(function () {
+                this.$refs[element].setFocus();
+            });
         },
 
         /**
@@ -816,6 +836,7 @@ export default {
         /**
          * Hàm validate thành công thì cất data và đóng form, cất và thêm thì cất và data reset form
          * Author: KienNT (02/03/2023)
+         *  @param (value): tham số 1: là true, false hiển thị popup
          */
         btnSaveAndClose(isCloseForm) {
             try {
@@ -1054,6 +1075,7 @@ export default {
         /**
          * Hàm check isEmpty
          * Author: KienNT (04/03/2023)
+         *  @param (fieldName, fieldValue, errorLabel): tham số 1: tooltip the label, tham số 2 là giá trị ô input, tham số 3: label lỗi
          */
         checkField(fieldName, fieldValue, errorLabel) {
             if (this.isEmpty(fieldValue)) {
@@ -1173,6 +1195,35 @@ export default {
             } catch (error) {
                 console.log(error);
             }
+        },
+    },
+    computed: {
+        /**
+         *  Hàm convert sang ngày, tháng, năm để hiển thị lên input date
+         *  Author:KienNT(04/03/2023)
+         */
+        convertDate() {
+            return (inputString = "") => {
+                try {
+                    if (inputString !== null) {
+                        let date = new Date(Date.parse(inputString));
+                        return date.toISOString().substring(0, 10);
+
+                        // let dateString =
+                        //     date.getDate() + 1 < 10
+                        //         ? `0${date.getDate() + 1}`
+                        //         : date.getDate() + 1;
+                        // let monthString =
+                        //     date.getMonth() + 1 < 10
+                        //         ? `0${date.getMonth() - 1}`
+                        //         : date.getMonth() - 1;
+                        // let yearString = date.getFullYear();
+                        // return `${yearString}-${monthString}-${dateString}`;
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
+            };
         },
     },
 };

@@ -82,19 +82,32 @@
                         :text="MISAResouce.vi.Fix"
                     ></MButton>
 
-                    <div class="input__icon-box ml-8">
+                    <div
+                        class="input__icon-box ml-8"
+                        @click="handleClickOptionMenu($event)"
+                        ref="iconContextMenu"
+                    >
                         <div class="icon-dropdown"></div>
                     </div>
                 </td>
             </tr>
         </tbody>
     </table>
+
+    <Mcontextmenu
+        v-if="isContextMenu"
+        :left="leftContextMenu"
+        :top="topContextMenu"
+        @hideContextMenu="hideContextMenu"
+        :refElement="this.$refs.iconContextMenu"
+    ></Mcontextmenu>
 </template>
 <script>
 import axios from "axios";
 import MISAResouce from "@/js/resource";
 import Thetooltip from "../base/Mtooltip.vue";
 import MISAEnum from "@/js/enum";
+import Mcontextmenu from "../base/Mcontextmenu.vue";
 export default {
     name: "TheTable",
 
@@ -105,11 +118,15 @@ export default {
             pageSize: 20,
             pageIndex: 1,
             selectedAll: false,
+            isContextMenu: false,
+            leftContextMenu: "",
+            topContextMenu: "",
         };
     },
 
     components: {
         Thetooltip,
+        Mcontextmenu,
     },
 
     /**
@@ -204,6 +221,24 @@ export default {
          */
         doubleClickRow(employee) {
             this.$emit("onDoubleClick", employee);
+        },
+
+        /**
+         * Hàm lấy toại độ sau đó set tọa độ cho contextmenu để hiển thị
+         * Author: KienNT (04/03/2023)
+         */
+        handleClickOptionMenu(event) {
+            this.isContextMenu = !this.isContextMenu;
+            this.leftContextMenu = event.target.getBoundingClientRect().x - 70;
+            this.topContextMenu = event.target.getBoundingClientRect().y + 25;
+        },
+
+        /**
+         * Hàm ẩn contextmenu khi click ra ngoài element
+         * Author: KienNT (04/03/2023)
+         */
+        hideContextMenu() {
+            this.isContextMenu = !this.isContextMenu;
         },
     },
 };

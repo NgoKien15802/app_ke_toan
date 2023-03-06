@@ -63,7 +63,6 @@
                     @hideShowLoading="hideShowLoading"
                     :employeeIdSelected="employeeIdSelected"
                     :textTitlePopup="textTitlePopup"
-                    :employeeInput="employeeInput"
                 ></ThePopup>
 
                 <!-- begin dialog -->
@@ -88,7 +87,6 @@ export default {
             isShowPopup: false,
             isLoading: false,
             employeeIdSelected: null,
-            employeeInput: {},
             textTitlePopup: "",
         };
     },
@@ -105,7 +103,6 @@ export default {
          */
         showPopup() {
             try {
-                this.employeeInput = {};
                 this.employeeIdSelected = "";
                 this.textTitlePopup = MISAResouce.vi.EmployeeInfo;
                 this.isShowPopup = true;
@@ -122,13 +119,7 @@ export default {
             try {
                 this.employeeIdSelected = employee.EmployeeId;
                 this.textTitlePopup = MISAResouce.vi.EditEmployeeInfo;
-                this.employeeInput = employee;
-                this.employeeInput["DateOfBirth"] = this.convertDate(
-                    employee["DateOfBirth"]
-                );
-                this.employeeInput["IdentityDate"] = this.convertDate(
-                    employee["IdentityDate"]
-                );
+
                 this.isShowPopup = true;
             } catch (error) {
                 console.log(error);
@@ -158,36 +149,6 @@ export default {
             } catch (error) {
                 console.log(error);
             }
-        },
-    },
-
-    computed: {
-        /**
-         *  Hàm convert sang ngày, tháng, năm để hiển thị lên input date
-         *  Author:KienNT(04/03/2023)
-         */
-        convertDate() {
-            return (inputString = "") => {
-                try {
-                    if (inputString !== null) {
-                        let date = new Date(Date.parse(inputString));
-                        date = new Date(date.toISOString().substring(0, 10));
-
-                        let dateString =
-                            date.getDate() + 1 < 10
-                                ? `0${date.getDate() + 1}`
-                                : date.getDate() + 1;
-                        let monthString =
-                            date.getMonth() + 1 < 10
-                                ? `0${date.getMonth() - 1}`
-                                : date.getMonth() - 1;
-                        let yearString = date.getFullYear();
-                        return `${yearString}-${monthString}-${dateString}`;
-                    }
-                } catch (error) {
-                    console.log(error);
-                }
-            };
         },
     },
 };

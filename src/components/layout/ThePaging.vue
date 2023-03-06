@@ -105,7 +105,7 @@ export default {
 
     methods: {
         /**
-         * nghe sự kiện window. Nếu click ko phải là dropdown thì ẩn dropdown option
+         * nghe sự kiện window. Nếu click ko phải là dropdown thì ẩn dropdown
          * Author: KienNT (06/03/2023)
          */
         handleOutsideClick(event) {
