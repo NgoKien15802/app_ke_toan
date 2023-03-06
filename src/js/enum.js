@@ -3,6 +3,7 @@ const MISAEnum = {
     Gender: {
         Male: 1,
         Female: 0,
+        Other: 2,
     },
 
     // tình trạng hôn nhân

@@ -11,9 +11,12 @@
         </li>
 
         <li class="contextmenu__fun-item">
-            <a href="#" class="contextmenu__fun-link">{{
-                MISAResouce.vi.Delete
-            }}</a>
+            <a
+                href="#"
+                class="contextmenu__fun-link"
+                @click="handleDeleteRow"
+                >{{ MISAResouce.vi.Delete }}</a
+            >
         </li>
         <li class="contextmenu__fun-item">
             <a href="#" class="contextmenu__fun-link">{{
@@ -72,6 +75,10 @@ export default {
             ) {
                 this.$emit("hideContextMenu");
             }
+        },
+
+        handleDeleteRow(event) {
+            console.log(event.target.parentNode.parentNode);
         },
     },
 };

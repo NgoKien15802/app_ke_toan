@@ -239,11 +239,8 @@
                                             id="other"
                                             :text="MISAResouce.vi.LabelOther"
                                             :checked="
-                                                newEmployee.Gender !==
-                                                    MISAEnum.Gender.Male &&
-                                                newEmployee.Gender !==
-                                                    MISAEnum.Gender.Female &&
-                                                !isEmpty(newEmployee.Gender)
+                                                newEmployee.Gender ===
+                                                MISAEnum.Gender.Other
                                             "
                                             v-model="newEmployee.Gender"
                                         ></MRadio>
@@ -638,7 +635,7 @@
             v-if="isDialogError"
             iconClass="dialog__icon-error"
             :title="MISAResouce.vi.DialogNotifyError"
-            :message="errorMessage[0]"
+            :message="message"
             :textButton="MISAResouce.vi.BtnClose"
             @hideShowDialogError="hideShowDialogError"
             kind="error"
@@ -693,18 +690,8 @@ export default {
                 isTooltipEmail: false,
                 isTooltipBankAccount: false,
             },
-            isFocus: {
-                isFocusEmployeeCode: false,
-                isFocusEmployeeName: false,
-                isFocusDateOfBirth: false,
-                isFocusIdentityNumber: false,
-                isFocusIdentityDate: false,
-                isFocusPhoneNumber: false,
-                isFocusLandlineNumber: false,
-                isFocusEmail: false,
-                isFocusBankAccount: false,
-            },
             errorMessage: [],
+            message: "",
         };
     },
 
@@ -759,9 +746,24 @@ export default {
             deep: true,
         },
 
-        errorMessage: function () {
-            console.log("sdfsdffd", this.errorMessage);
+        /**
+         * Theo dõi mảng errorMessage thay đổi thì check nếu có lỗi thì gán cho message
+         * Author: KienNT (06/03/2023)
+         */
+        errorMessage: {
+            handler: function (newValue) {
+                const refNames = Object.values(newValue);
+                for (let index = 0; index < refNames.length; index++) {
+                    const element = refNames[index];
+                    if (element !== "space") {
+                        this.message = element;
+                        break;
+                    }
+                }
+            },
+            deep: true,
         },
+        message: function () {},
     },
 
     methods: {
@@ -770,23 +772,27 @@ export default {
          * Author: KienNT (01/03/2023)
          */
         getNewEmployeeCode() {
-            axios
-                .get(
-                    "https://apidemo.laptrinhweb.edu.vn/api/v1/Employees/NewEmployeeCode"
-                )
-                .then(this.$emit("hideShowLoading", true))
-                .then((response) => {
-                    this.newEmployee.EmployeeCode = response.data;
-                    /**
-                     * Gọi hàm set focus bên input
-                     * Author: KienNT (04/03/2023)
-                     */
-                    this.setFocusInput("txtEmployeeCode");
-                    this.$emit("hideShowLoading", false);
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
+            try {
+                axios
+                    .get(
+                        "https://apidemo.laptrinhweb.edu.vn/api/v1/Employees/NewEmployeeCode"
+                    )
+                    .then(this.$emit("hideShowLoading", true))
+                    .then((response) => {
+                        this.newEmployee.EmployeeCode = response.data;
+                        /**
+                         * Gọi hàm set focus bên input
+                         * Author: KienNT (04/03/2023)
+                         */
+                        this.setFocusInput("txtEmployeeCode");
+                        this.$emit("hideShowLoading", false);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            } catch (error) {
+                console.log(error);
+            }
         },
 
         /**
@@ -795,9 +801,13 @@ export default {
          * @param (value): tham số 1: là element cần focus
          */
         setFocusInput(element) {
-            this.$nextTick(function () {
-                this.$refs[element].setFocus();
-            });
+            try {
+                this.$nextTick(function () {
+                    this.$refs[element].setFocus();
+                });
+            } catch (error) {
+                console.log(error);
+            }
         },
 
         /**
@@ -866,20 +876,9 @@ export default {
                             .then(this.$emit("hideShowLoading", false))
                             .catch((error) => {
                                 this.$emit("hideShowLoading", false);
-                                this.errorExistId =
-                                    error.response.data.data.EmployeeCode;
-                                if (
-                                    this.errorExistId &&
-                                    this.errorExistId.includes("khách hàng")
-                                ) {
-                                    this.errorMessage[0] =
-                                        this.errorExistId.replace(
-                                            "khách hàng",
-                                            "nhân viên"
-                                        );
-                                } else {
-                                    this.errorMessage[0] = this.errorExistId;
-                                }
+                                this.errorExistId = error.response.data.devMsg;
+                                this.errorMessage[0] = this.errorExistId;
+                                this.isTooltip.isTooltipEmployeeCode = true;
                                 this.isDialogError = true;
                             });
                     }
@@ -902,167 +901,101 @@ export default {
                 this.checkField(
                     "isTooltipEmployeeCode",
                     this.newEmployee.EmployeeCode,
-                    MISAResouce.vi.LabelEmployeeCode
+                    MISAResouce.vi.LabelEmployeeCode,
+                    "txtEmployeeCode"
                 );
 
                 // check tên
                 this.checkField(
                     "isTooltipEmployeeName",
                     this.newEmployee.FullName,
-                    MISAResouce.vi.LabelEmployeeName
+                    MISAResouce.vi.LabelEmployeeName,
+                    "txtFullName"
                 );
 
-                // nếu có value thì mới check
-                if (!this.isEmpty(this.newEmployee.DateOfBirth)) {
-                    // check input date
-                    if (this.isInValid(this.newEmployee.DateOfBirth, "date")) {
-                        this.isTooltip.isTooltipDateOfBirth = true;
-                        this.errorMessage.push(
-                            MISAResouce.vi.LabelDateOfBirth +
-                                MISAResouce.vi.ErrorDate
-                        );
-                    } else {
-                        this.isTooltip.isTooltipDateOfBirth = false;
-                        const index = this.errorMessage.indexOf(
-                            MISAResouce.vi.LabelDateOfBirth +
-                                MISAResouce.vi.ErrorDate
-                        );
+                // check invalid
+                // nếu có value thì mới check input date
+                this.checkFieldInvalid(
+                    "isTooltipDateOfBirth",
+                    this.newEmployee.DateOfBirth,
+                    MISAResouce.vi.LabelDateOfBirth,
+                    "date",
+                    MISAResouce.vi.ErrorDate,
+                    "txtDateOfBirth"
+                );
 
-                        this.errorMessage.splice(index, 1);
+                // nếu có value thì mới check input number
+                this.checkFieldInvalid(
+                    "isTooltipIdentityNumber",
+                    this.newEmployee.IdentityNumber,
+                    MISAResouce.vi.LabelIdentityNumber,
+                    "number",
+                    MISAResouce.vi.ErrorNotNumber,
+                    "txtIdentityNumber"
+                );
+
+                // nếu có value thì mới check input date
+                this.checkFieldInvalid(
+                    "isTooltipIdentityDate",
+                    this.newEmployee.IdentityDate,
+                    MISAResouce.vi.LabelIdentityDate,
+                    "date",
+                    MISAResouce.vi.ErrorDate,
+                    "txtIdentityDate"
+                );
+
+                // nếu có value thì mới check input number
+                this.checkFieldInvalid(
+                    "isTooltipPhoneNumber",
+                    this.newEmployee.PhoneNumber,
+                    MISAResouce.vi.LabelPhoneNumber,
+                    "number",
+                    MISAResouce.vi.ErrorNotNumber,
+                    "txtPhoneNumber"
+                );
+
+                // nếu có value thì mới check input number
+                this.checkFieldInvalid(
+                    "isTooltipLandlineNumber",
+                    this.newEmployee.LandlineNumber,
+                    MISAResouce.vi.LabelLandlineNumber,
+                    "number",
+                    MISAResouce.vi.ErrorNotNumber,
+                    "txtLandlineNumber"
+                );
+
+                // nếu có value thì mới check input email
+                this.checkFieldInvalid(
+                    "isTooltipEmail",
+                    this.newEmployee.Email,
+                    MISAResouce.vi.LabelEmail,
+                    "email",
+                    MISAResouce.vi.ErrorEmail,
+                    "txtEmail"
+                );
+
+                // nếu có value thì mới check input number
+                this.checkFieldInvalid(
+                    "isTooltipBankAccount",
+                    this.newEmployee.BankAccount,
+                    MISAResouce.vi.LabelBankAccount,
+                    "number",
+                    MISAResouce.vi.ErrorNotNumber,
+                    "txtBankAccount"
+                );
+
+                // nếu ko có lỗi thì ẩn popup
+                let check = true;
+
+                const refNames = Object.values(this.errorMessage);
+                for (let index = 0; index < refNames.length; index++) {
+                    const element = refNames[index];
+                    if (element !== "space") {
+                        check = false;
                     }
                 }
 
-                // nếu có value thì mới check
-                if (!this.isEmpty(this.newEmployee.IdentityNumber)) {
-                    // check input phải là số
-                    if (
-                        this.isInValid(
-                            this.newEmployee.IdentityNumber,
-                            "number"
-                        )
-                    ) {
-                        this.isTooltip.isTooltipIdentityNumber = true;
-                        this.errorMessage.push(
-                            MISAResouce.vi.LabelIdentityNumber +
-                                MISAResouce.vi.ErrorNotNumber
-                        );
-                    } else {
-                        this.isTooltip.isTooltipIdentityNumber = false;
-                        const index = this.errorMessage.indexOf(
-                            MISAResouce.vi.LabelIdentityNumber +
-                                MISAResouce.vi.ErrorNotNumber
-                        );
-
-                        this.errorMessage.splice(index, 1);
-                    }
-                }
-                // nếu có value thì mới check
-                if (!this.isEmpty(this.newEmployee.IdentityDate)) {
-                    // check input date
-                    if (this.isInValid(this.newEmployee.IdentityDate, "date")) {
-                        this.isTooltip.isTooltipIdentityDate = true;
-                        this.errorMessage.push(
-                            MISAResouce.vi.LabelIdentityDate +
-                                MISAResouce.vi.ErrorDate
-                        );
-                    } else {
-                        this.isTooltip.isTooltipIdentityDate = false;
-                        const index = this.errorMessage.indexOf(
-                            MISAResouce.vi.LabelIdentityDate +
-                                MISAResouce.vi.ErrorDate
-                        );
-
-                        this.errorMessage.splice(index, 1);
-                    }
-                }
-                // nếu có value thì mới check
-                if (!this.isEmpty(this.newEmployee.PhoneNumber)) {
-                    // check input phải là số
-                    if (
-                        this.isInValid(this.newEmployee.PhoneNumber, "number")
-                    ) {
-                        this.isTooltip.isTooltipPhoneNumber = true;
-                        this.errorMessage.push(
-                            MISAResouce.vi.LabelPhoneNumber +
-                                MISAResouce.vi.ErrorNotNumber
-                        );
-                    } else {
-                        this.isTooltip.isTooltipPhoneNumber = false;
-                        const index = this.errorMessage.indexOf(
-                            MISAResouce.vi.LabelPhoneNumber +
-                                MISAResouce.vi.ErrorNotNumber
-                        );
-
-                        this.errorMessage.splice(index, 1);
-                    }
-                }
-                // nếu có value thì mới check
-                if (!this.isEmpty(this.newEmployee.LandlineNumber)) {
-                    // check input phải là số
-                    if (
-                        this.isInValid(
-                            this.newEmployee.LandlineNumber,
-                            "number"
-                        )
-                    ) {
-                        this.isTooltip.isTooltipLandlineNumber = true;
-                        this.errorMessage.push(
-                            MISAResouce.vi.LabelLandlineNumber +
-                                MISAResouce.vi.ErrorNotNumber
-                        );
-                    } else {
-                        this.isTooltip.isTooltipLandlineNumber = false;
-                        const index = this.errorMessage.indexOf(
-                            MISAResouce.vi.LabelLandlineNumber +
-                                MISAResouce.vi.ErrorNotNumber
-                        );
-
-                        this.errorMessage.splice(index, 1);
-                    }
-                }
-
-                // nếu có value thì mới check
-                if (!this.isEmpty(this.newEmployee.Email)) {
-                    // check input phải là số
-                    if (this.isInValid(this.newEmployee.Email, "email")) {
-                        this.isTooltip.isTooltipEmail = true;
-                        this.errorMessage.push(
-                            MISAResouce.vi.LabelEmail +
-                                MISAResouce.vi.ErrorEmail
-                        );
-                    } else {
-                        this.isTooltip.isTooltipEmail = false;
-                        const index = this.errorMessage.indexOf(
-                            MISAResouce.vi.LabelEmail +
-                                MISAResouce.vi.ErrorEmail
-                        );
-
-                        this.errorMessage.splice(index, 1);
-                    }
-                }
-
-                // nếu có value thì mới check
-                if (!this.isEmpty(this.newEmployee.BankAccount)) {
-                    // check input phải là số
-                    if (
-                        this.isInValid(this.newEmployee.BankAccount, "number")
-                    ) {
-                        this.isTooltip.isTooltipBankAccount = true;
-                        this.errorMessage.push(
-                            MISAResouce.vi.LabelBankAccount +
-                                MISAResouce.vi.ErrorNotNumber
-                        );
-                    } else {
-                        this.isTooltip.isTooltipBankAccount = false;
-                        const index = this.errorMessage.indexOf(
-                            MISAResouce.vi.LabelBankAccount +
-                                MISAResouce.vi.ErrorNotNumber
-                        );
-
-                        this.errorMessage.splice(index, 1);
-                    }
-                }
-                if (this.errorMessage.length > 0) {
+                if (check === false) {
                     return false;
                 } else {
                     return true;
@@ -1075,23 +1008,129 @@ export default {
         /**
          * Hàm check isEmpty
          * Author: KienNT (04/03/2023)
-         *  @param (fieldName, fieldValue, errorLabel): tham số 1: tooltip the label, tham số 2 là giá trị ô input, tham số 3: label lỗi
+         *  @param (fieldName, fieldValue, errorLabel): tham số 1: tooltip the label, tham số 2 là giá trị ô input, tham số 3: label lỗi, tham số 4 là ref
          */
-        checkField(fieldName, fieldValue, errorLabel) {
-            if (this.isEmpty(fieldValue)) {
-                // lỗi valid form thì xóa lỗi cùng mã
-                if (this.errorExistId) {
-                    this.errorMessage.splice(0, 1);
-                }
-                this.isTooltip[fieldName] = true;
-                this.errorMessage.push(errorLabel + MISAResouce.vi.ErrorEmpty);
-            } else {
-                this.isTooltip[fieldName] = false;
-                const index = this.errorMessage.indexOf(
-                    errorLabel + MISAResouce.vi.ErrorEmpty
-                );
+        checkField(fieldName, fieldValue, errorLabel, field) {
+            try {
+                if (this.isEmpty(fieldValue)) {
+                    // lỗi valid form thì xóa lỗi cùng mã
 
-                this.errorMessage.splice(index, 1);
+                    if (this.errorMessage.includes(this.errorExistId)) {
+                        const index = this.errorMessage.indexOf(
+                            this.errorExistId
+                        );
+                        this.errorMessage.splice(index, 1);
+                    }
+                    this.isTooltip[fieldName] = true;
+                    // nếu chưa có lỗi thì thêm ptu lỗi đó vào
+                    if (
+                        !this.errorMessage.includes(
+                            errorLabel + MISAResouce.vi.ErrorEmpty
+                        )
+                    ) {
+                        this.errorMessage[this.getTabIndex(field)] =
+                            errorLabel + MISAResouce.vi.ErrorEmpty;
+                    }
+                } else {
+                    if (this.errorMessage.includes(this.errorExistId)) {
+                        const index = this.errorMessage.indexOf(
+                            this.errorExistId
+                        );
+                        this.errorMessage.splice(index, 1);
+                    }
+                    this.isTooltip[fieldName] = false;
+                    if (
+                        this.errorMessage.includes(
+                            errorLabel + MISAResouce.vi.ErrorEmpty
+                        )
+                    ) {
+                        this.errorMessage.splice(this.getTabIndex(field), 1);
+                        this.errorMessage.splice(
+                            this.getTabIndex(field),
+                            0,
+                            "space"
+                        );
+                    }
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
+         * Hàm check invalid
+         * Author: KienNT (06/03/2023)
+         *  @param (fieldName, fieldValue, errorLabel): tham số 1: true,false tooltip label, tham số 2 là giá trị ô input, tham số 3: label lỗi, tham số 4: loại (email,date,..), tham số 5 loại label lỗi
+         */
+        checkFieldInvalid(
+            fieldName,
+            fieldValue,
+            errorLabel,
+            kind,
+            errorText,
+            field
+        ) {
+            try {
+                if (!this.isEmpty(fieldValue)) {
+                    // check input phải là số
+                    if (this.isInValid(fieldValue, kind)) {
+                        this.isTooltip[fieldName] = true;
+                        // nếu chưa có lỗi thì thêm ptu lỗi đó vào
+                        if (
+                            !this.errorMessage.includes(errorLabel + errorText)
+                        ) {
+                            this.errorMessage[this.getTabIndex(field)] =
+                                errorLabel + errorText;
+                        }
+                    } else {
+                        this.isTooltip[fieldName] = false;
+                        if (
+                            this.errorMessage.includes(errorLabel + errorText)
+                        ) {
+                            this.errorMessage.splice(
+                                this.getTabIndex(field),
+                                1
+                            );
+                            this.errorMessage.splice(
+                                this.getTabIndex(field),
+                                0,
+                                "space"
+                            );
+                        }
+                    }
+                } else {
+                    this.isTooltip[fieldName] = false;
+                    if (this.errorMessage.includes(errorLabel + errorText)) {
+                        this.errorMessage.splice(this.getTabIndex(field), 1);
+                        this.errorMessage.splice(
+                            this.getTabIndex(field),
+                            0,
+                            "space"
+                        );
+                    }
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
+         * Hàm lấy tabindex của ptu đó để gán lỗi vào mảng ở STT đó để set focus vào ô đầu tiên
+         * Author: KienNT (02/03/2023)
+         * @param (fieldName): field cần lấy tabindex
+         */
+        getTabIndex(fieldName) {
+            try {
+                const refNames = Object.keys(this.$refs);
+                for (let index = 0; index < refNames.length; index++) {
+                    const elementRef = refNames[index];
+                    if (elementRef === fieldName) {
+                        const element = this.$refs[elementRef];
+                        return element.tabindex;
+                    }
+                }
+            } catch (error) {
+                console.log(error);
             }
         },
 
@@ -1179,19 +1218,43 @@ export default {
         onClickBtnDestroy(isDialogNotify) {
             try {
                 this.isDialogNotify = isDialogNotify;
+                this.firstFocus();
             } catch (error) {
                 console.log(error);
             }
         },
 
         /**
-         * Hàm ẩn hiện dialog
+         * Hàm ẩn hiện dialog và focus vào ô input lỗi đầu tiên
          * Author: KienNT (02/03/2023)
          * @param (value): tham số là true, false để hiển thị dialog
          */
         hideShowDialogError(isDialogError) {
             try {
                 this.isDialogError = isDialogError;
+                this.firstFocus();
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
+         *  focus vào ô input lỗi đầu tiên
+         * Author: KienNT (06/03/2023)
+         *
+         */
+        firstFocus() {
+            try {
+                // get all input ref sau đó duyệt nếu input nào có lỗi là isShowTooltip = true thì input đó focus và break
+                const refNames = Object.keys(this.$refs);
+                for (let index = 0; index < refNames.length; index++) {
+                    const elementRef = refNames[index];
+                    const element = this.$refs[elementRef];
+                    if (element.isShowTooltip) {
+                        element.setFocus();
+                        break;
+                    }
+                }
             } catch (error) {
                 console.log(error);
             }

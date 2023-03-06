@@ -52,7 +52,7 @@
             <tr
                 v-for="(employee, index) in employees"
                 :key="index"
-                @dblclick="doubleClickRow(employee)"
+                @dblclick="() => doubleClickRow(employee)"
             >
                 <td class="text-align-center">
                     <MCheckbox
@@ -80,6 +80,7 @@
                         kind="link"
                         className="link-btn btn-link-primary"
                         :text="MISAResouce.vi.Fix"
+                        :click="() => doubleClickRow(employee)"
                     ></MButton>
 
                     <div

@@ -46,6 +46,11 @@
     font-weight: 400;
     font-size: 1.4rem;
     color: #1f1f1f;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .dialog__footer {
