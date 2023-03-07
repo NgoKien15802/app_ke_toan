@@ -85,7 +85,7 @@
 
                     <div
                         class="input__icon-box ml-8"
-                        @click="handleClickOptionMenu($event)"
+                        @click="handleClickOptionMenu($event, employee)"
                         ref="iconContextMenu"
                     >
                         <div class="icon-dropdown"></div>
@@ -100,8 +100,25 @@
         :left="leftContextMenu"
         :top="topContextMenu"
         @hideContextMenu="hideContextMenu"
+        :employeeIdSelected="employeeIdSelected"
         :refElement="this.$refs.iconContextMenu"
+        @hideShowLoading="hideShowLoading"
+        @handleDeleteRow="handleDeleteRow"
     ></Mcontextmenu>
+
+    <MDialog
+        v-if="isDialogWarning"
+        iconClass="dialog__icon-warning"
+        :title="MISAResouce.vi.DialogWarning"
+        :message="
+            MISAResouce.vi.MessageWarning + employeeCodeSelected + ' không?'
+        "
+        :BtnWarningNo="MISAResouce.vi.BtnNo"
+        :textButton="MISAResouce.vi.BtnYes"
+        @onBtnWarningNo="onBtnWarningNo"
+        @onBtnWarningYes="onBtnWarningYes"
+        kind="warning"
+    ></MDialog>
 </template>
 <script>
 import axios from "axios";
@@ -122,6 +139,9 @@ export default {
             isContextMenu: false,
             leftContextMenu: "",
             topContextMenu: "",
+            employeeIdSelected: "",
+            employeeCodeSelected: "",
+            isDialogWarning: false,
         };
     },
 
@@ -138,17 +158,18 @@ export default {
         try {
             axios
                 .get("https://apidemo.laptrinhweb.edu.vn/api/v1/Employees")
-                .then(this.$emit("hideShowLoading", true))
+                .then(this.hideShowLoading(true))
                 .then((response) => {
                     this.employees = response.data;
                     this.employees = this.employees.map((x) => {
                         x.Selected = false;
                         return x;
                     });
-                    this.$emit("hideShowLoading", false);
+                    this.hideShowLoading(false);
                 })
                 .catch((error) => {
                     console.log(error);
+                    this.hideShowLoading(false);
                 });
         } catch (error) {
             console.log(error);
@@ -187,6 +208,13 @@ export default {
 
     methods: {
         /**
+         * Xử lý loading gửi emit lên cha
+         * Author: KienNT (07/03/2023)
+         */
+        hideShowLoading(isLoading) {
+            this.$emit("hideShowLoading", isLoading);
+        },
+        /**
          * Xử lý khi click vào select item
          * Author: KienNT (06/03/2023)
          */
@@ -203,6 +231,59 @@ export default {
                 return x;
             });
         },
+
+        /**
+         * Hàm hiển thị dialog có muốn xóa nhân viên không?
+         * Author: KienNT (07/03/2023)
+         */
+        handleDeleteRow() {
+            try {
+                if (this.employeeIdSelected) {
+                    this.isDialogWarning = true;
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
+         * Hàm xóa nhân viên khi click có xóa
+         * Author: KienNT (07/03/2023)
+         */
+        onBtnWarningYes() {
+            try {
+                axios
+                    .delete(
+                        `https://apidemo.laptrinhweb.edu.vn/api/v1/Employees/${this.employeeIdSelected}`
+                    )
+                    .then(this.hideShowLoading(true))
+                    .then((res) => {
+                        console.log(res);
+                        alert("sccuess");
+                        this.isDialogWarning = false;
+                    })
+                    .then(this.hideShowLoading(false))
+                    .catch((error) => {
+                        console.log(error);
+                        this.hideShowLoading(false);
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
+         * Hàm xóa dilog đi nếu ko muốn xóa nhân viên
+         * Author: KienNT (07/03/2023)
+         */
+        onBtnWarningNo() {
+            try {
+                this.isDialogWarning = false;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
         /**
          * Hàm thực hiện format gender
          * Author: KienNT (02/03/2023)
@@ -212,7 +293,7 @@ export default {
                 return "Nam";
             } else if (gender === MISAEnum.Gender.Female) {
                 return "Nữ";
-            } else {
+            } else if (gender === MISAEnum.Gender.Other) {
                 return "Khác";
             }
         },
@@ -228,7 +309,9 @@ export default {
          * Hàm lấy toại độ sau đó set tọa độ cho contextmenu để hiển thị
          * Author: KienNT (04/03/2023)
          */
-        handleClickOptionMenu(event) {
+        handleClickOptionMenu(event, employee) {
+            this.employeeIdSelected = employee.EmployeeId;
+            this.employeeCodeSelected = employee.EmployeeCode;
             this.isContextMenu = !this.isContextMenu;
             this.leftContextMenu = event.target.getBoundingClientRect().x - 70;
             this.topContextMenu = event.target.getBoundingClientRect().y + 25;

@@ -41,6 +41,20 @@
                     </MButton>
                 </div>
             </div>
+            <div v-if="kind === 'warning'" class="dialog__footer">
+                <div class="btn btn-default" @click="onBtnWarningNo">
+                    {{ BtnWarningNo }}
+                </div>
+                <div class="dialog__footer-right">
+                    <div class=""></div>
+                    <MButton
+                        class="btn-primary dialog-close flex-end"
+                        :text="textButton"
+                        :click="onBtnWarningYes"
+                    >
+                    </MButton>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -49,33 +63,48 @@ import MISAResouce from "@/js/resource";
 export default {
     name: "MDialog",
     props: {
+        // tiêu đề dialog
         title: {
             type: String,
             default: "",
         },
+        // loại dialog là gì
         kind: {
             type: String,
         },
-        titleNotify: {
-            type: String,
-        },
+        // //
+        // titleNotify: {
+        //     type: String,
+        // },
+        // text body
         message: {
             type: String,
             default: "",
         },
+        // icon (warning, error, notify)
         iconClass: {
             type: String,
             default: "",
         },
+        // text của btn primary
         textButton: {
             type: String,
             default: "",
         },
+        // btn default Không của notify
         btnNoNotify: {
             type: String,
         },
+
+        // btn default hủy của notify
         btnDestroyNotify: {
             type: String,
+        },
+
+        // btn default Không của warning
+        BtnWarningNo: {
+            type: String,
+            default: "",
         },
     },
     data() {
@@ -120,6 +149,21 @@ export default {
             // thêm nhân viên
             // check validate sau đó mới thêm nhân viên
             this.$emit("destroyPopup");
+        },
+        /**
+         * Hàm gửi emit đóng dialog warning, không xóa nhân viên
+         * Author: KienNT (07/03/2023)
+         */
+        onBtnWarningNo() {
+            this.$emit("onBtnWarningNo", false);
+        },
+
+        /**
+         * Xử lý khi click vào có xóa nhân viên thì gửi emit lên cho cha để xóa
+         * Author: KienNT (07/03/2023)
+         */
+        onBtnWarningYes() {
+            this.$emit("onBtnWarningYes");
         },
     },
 };

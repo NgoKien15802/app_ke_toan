@@ -43,6 +43,10 @@ export default {
         refElement: {
             type: Node,
         },
+        employeeIdSelected: {
+            type: String,
+            default: "",
+        },
     },
     data() {
         return {
@@ -77,8 +81,10 @@ export default {
             }
         },
 
-        handleDeleteRow(event) {
-            console.log(event.target.parentNode.parentNode);
+        handleDeleteRow() {
+            if (this.employeeIdSelected) {
+                this.$emit("handleDeleteRow");
+            }
         },
     },
 };

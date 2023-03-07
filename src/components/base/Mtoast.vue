@@ -28,6 +28,7 @@
 <script>
 export default {
     name: "MToast",
+    props: {},
 };
 </script>
 <style scoped>

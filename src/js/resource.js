@@ -101,6 +101,7 @@ const MISAResouce = {
         DialogNotify: "Thông báo",
         DialogWarning: "Cảnh báo",
         MessageNotify: "Dữ liệu của bạn đã thay đổi bạn có muốn cất không?",
+        MessageWarning: "Bạn có muốn xóa nhân viên ",
     },
     en: {
         // Employee
@@ -199,6 +200,7 @@ const MISAResouce = {
         DialogNotify: "Notification",
 
         MessageNotify: "Your data has changed do you want to save it?",
+        MessageWarning: "Do you want to delete an employee ",
     },
 };
 export default MISAResouce;

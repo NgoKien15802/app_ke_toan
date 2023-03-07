@@ -86,8 +86,9 @@
                                     <MTooltip
                                         v-if="isTooltip.isTooltipEmployeeCode"
                                         :subtext="
+                                            message ||
                                             MISAResouce.vi.LabelEmployeeCode +
-                                            MISAResouce.vi.ErrorEmpty
+                                                MISAResouce.vi.ErrorEmpty
                                         "
                                         kind="error"
                                     ></MTooltip>
@@ -154,13 +155,13 @@
                                     <MInput
                                         tabindex="4"
                                         id="chucdanh"
-                                        name="PositionName"
+                                        name="MartialStatusName"
                                         kind="default"
                                         ref="txtPositionName"
                                         :placeHolder="
                                             MISAResouce.vi.LabelJobTitle.toLowerCase()
                                         "
-                                        v-model="newEmployee.PositionName"
+                                        v-model="newEmployee.MartialStatusName"
                                     />
                                 </div>
                             </div>
@@ -381,13 +382,7 @@
                             </div>
                         </div>
                         <div class="m-row form__group-contact-second">
-                            <div
-                                class="form__group form__group-contact-input"
-                                :class="{
-                                    'tooltip-error':
-                                        isTooltip.isTooltipPhoneNumber,
-                                }"
-                            >
+                            <div class="form__group form__group-contact-input">
                                 <label for="sodienthoai" class="form__label">
                                     <MTooltip
                                         kind="title"
@@ -408,34 +403,9 @@
                                         MISAResouce.vi.TooltipPhoneNumber.toLowerCase()
                                     "
                                     v-model="newEmployee.PhoneNumber"
-                                    :isShowTooltip="
-                                        isTooltip.isTooltipPhoneNumber
-                                    "
-                                    @blur="
-                                        isInValid(
-                                            newEmployee.PhoneNumber,
-                                            'number'
-                                        )
-                                            ? (isTooltip.isTooltipPhoneNumber = true)
-                                            : (isTooltip.isTooltipPhoneNumber = false)
-                                    "
                                 />
-                                <MTooltip
-                                    v-if="isTooltip.isTooltipPhoneNumber"
-                                    :subtext="
-                                        MISAResouce.vi.LabelPhoneNumber +
-                                        MISAResouce.vi.ErrorNotNumber
-                                    "
-                                    kind="error"
-                                ></MTooltip>
                             </div>
-                            <div
-                                class="form__group form__group-contact-input"
-                                :class="{
-                                    'tooltip-error':
-                                        isTooltip.isTooltipLandlineNumber,
-                                }"
-                            >
+                            <div class="form__group form__group-contact-input">
                                 <label for="sodienthoaiCD" class="form__label">
                                     <MTooltip
                                         kind="title"
@@ -457,26 +427,7 @@
                                         MISAResouce.vi.TooltipFixPhoneNumber.toLowerCase()
                                     "
                                     v-model="newEmployee.LandlineNumber"
-                                    :isShowTooltip="
-                                        isTooltip.isTooltipLandlineNumber
-                                    "
-                                    @blur="
-                                        isInValid(
-                                            newEmployee.LandlineNumber,
-                                            'number'
-                                        )
-                                            ? (isTooltip.isTooltipLandlineNumber = true)
-                                            : (isTooltip.isTooltipLandlineNumber = false)
-                                    "
                                 />
-                                <MTooltip
-                                    v-if="isTooltip.isTooltipLandlineNumber"
-                                    :subtext="
-                                        MISAResouce.vi.LabelLandlineNumber +
-                                        MISAResouce.vi.ErrorNotNumber
-                                    "
-                                    kind="error"
-                                ></MTooltip>
                             </div>
                             <div
                                 class="form__group form__group-contact-input"
@@ -685,8 +636,6 @@ export default {
                 isTooltipDateOfBirth: false,
                 isTooltipIdentityNumber: false,
                 isTooltipIdentityDate: false,
-                isTooltipPhoneNumber: false,
-                isTooltipLandlineNumber: false,
                 isTooltipEmail: false,
                 isTooltipBankAccount: false,
             },
@@ -763,7 +712,9 @@ export default {
             },
             deep: true,
         },
-        message: function () {},
+        message: function (newValue) {
+            console.log(newValue);
+        },
     },
 
     methods: {
@@ -875,11 +826,23 @@ export default {
                             })
                             .then(this.$emit("hideShowLoading", false))
                             .catch((error) => {
-                                this.$emit("hideShowLoading", false);
-                                this.errorExistId = error.response.data.devMsg;
-                                this.errorMessage[0] = this.errorExistId;
-                                this.isTooltip.isTooltipEmployeeCode = true;
-                                this.isDialogError = true;
+                                let response = error.response;
+                                switch (response.status) {
+                                    case 400:
+                                    case 500:
+                                        this.$emit("hideShowLoading", false);
+                                        this.errorExistId =
+                                            response.data.userMsg;
+                                        this.errorMessage[0] =
+                                            this.errorExistId;
+                                        this.isTooltip.isTooltipEmployeeCode = true;
+
+                                        this.isDialogError = true;
+                                        break;
+
+                                    default:
+                                        break;
+                                }
                             });
                     }
                     // đóng form
@@ -942,26 +905,6 @@ export default {
                     "date",
                     MISAResouce.vi.ErrorDate,
                     "txtIdentityDate"
-                );
-
-                // nếu có value thì mới check input number
-                this.checkFieldInvalid(
-                    "isTooltipPhoneNumber",
-                    this.newEmployee.PhoneNumber,
-                    MISAResouce.vi.LabelPhoneNumber,
-                    "number",
-                    MISAResouce.vi.ErrorNotNumber,
-                    "txtPhoneNumber"
-                );
-
-                // nếu có value thì mới check input number
-                this.checkFieldInvalid(
-                    "isTooltipLandlineNumber",
-                    this.newEmployee.LandlineNumber,
-                    MISAResouce.vi.LabelLandlineNumber,
-                    "number",
-                    MISAResouce.vi.ErrorNotNumber,
-                    "txtLandlineNumber"
                 );
 
                 // nếu có value thì mới check input email
