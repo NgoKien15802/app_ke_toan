@@ -109,11 +109,26 @@ export default {
          * Author: KienNT (06/03/2023)
          */
         handleOutsideClick(event) {
-            if (
-                this.$refs["dropdown"] &&
-                !this.$refs["dropdown"].contains(event.target)
-            ) {
-                this.isOpenDropdown = false;
+            try {
+                if (
+                    this.$refs["dropdown"] &&
+                    !this.$refs["dropdown"].contains(event.target)
+                ) {
+                    this.isOpenDropdown = false;
+                    if (!this.isOpenDropdown) {
+                        if (
+                            this.$refs["iconDropdown"].classList.contains(
+                                "rorate-180"
+                            )
+                        ) {
+                            this.$refs["iconDropdown"].classList.remove(
+                                "rorate-180"
+                            );
+                        }
+                    }
+                }
+            } catch (error) {
+                console.log(error);
             }
         },
         /**

@@ -138,13 +138,41 @@
                                 </div>
                             </div>
 
-                            <div class="m-row">
+                            <div
+                                class="m-row"
+                                :class="{
+                                    'tooltip-error':
+                                        isTooltip.isTooltipDepartmentName,
+                                }"
+                            >
                                 <label for="donvi" class="form__label"
                                     >{{ MISAResouce.vi.LabelDepartmentName }}
                                     <span class="required">*</span></label
                                 >
 
-                                <Mcombobox></Mcombobox>
+                                <Mcombobox
+                                    v-model="
+                                        newEmployee.EducationalBackgroundName
+                                    "
+                                    :isShowTooltip="
+                                        isTooltip.isTooltipDepartmentName
+                                    "
+                                    @handleCheckEmpty="
+                                        isEmpty(
+                                            newEmployee.EducationalBackgroundName
+                                        )
+                                            ? (isTooltip.isTooltipDepartmentName = true)
+                                            : (isTooltip.isTooltipDepartmentName = false)
+                                    "
+                                ></Mcombobox>
+                                <MTooltip
+                                    v-if="isTooltip.isTooltipDepartmentName"
+                                    :subtext="
+                                        MISAResouce.vi.LabelDepartmentName +
+                                        MISAResouce.vi.ErrorEmpty
+                                    "
+                                    kind="error"
+                                ></MTooltip>
                             </div>
 
                             <div class="m-row">
@@ -634,6 +662,7 @@ export default {
                 isTooltipEmployeeCode: false,
                 isTooltipEmployeeName: false,
                 isTooltipDateOfBirth: false,
+                isTooltipDepartmentName: false,
                 isTooltipIdentityNumber: false,
                 isTooltipIdentityDate: false,
                 isTooltipEmail: false,
@@ -874,6 +903,14 @@ export default {
                     this.newEmployee.FullName,
                     MISAResouce.vi.LabelEmployeeName,
                     "txtFullName"
+                );
+
+                // check department
+                this.checkField(
+                    "isTooltipDepartmentName",
+                    this.newEmployee.EducationalBackgroundName,
+                    MISAResouce.vi.LabelDepartmentName,
+                    "txtEmployeeName"
                 );
 
                 // check invalid
