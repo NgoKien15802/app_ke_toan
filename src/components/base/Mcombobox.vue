@@ -14,12 +14,11 @@
             <div class="input__icon-dropdown" ref="iconCombobox"></div>
         </button>
         <input
-            tabindex="3"
+            :tabindex="tabindex"
             type="text"
             name="DepartmentName"
             id="donvi"
             style="border: none"
-            ref="txtEmployeeName"
             @keydown="handleKeyDown"
             @focus="handleFocusInput"
             @blur="handleBlurInput"
@@ -32,6 +31,7 @@
                 ' ' +
                 MISAResouce.vi.LabelDepartmentName.toLowerCase()
             "
+            ref="departmentInput"
         />
 
         <div class="option__wrapper-combobox" ref="option__wrapper-combobox">
@@ -40,7 +40,8 @@
                     v-for="(department, index) in departments"
                     :key="index"
                     class="option__item-combobox"
-                    @click="itemOnClick"
+                    @click="itemOnClick(department, index)"
+                    :class="selectedDepartment === index ? 'active' : ''"
                 >
                     <a class="option__link-combobox">{{
                         department.DepartmentName
@@ -61,6 +62,12 @@ export default {
             type: Boolean,
             default: false,
         },
+        tabindex: {
+            type: String,
+        },
+        departmentName: {
+            type: String,
+        },
     },
     data() {
         return {
@@ -69,23 +76,19 @@ export default {
             oldDepartments: [],
             department: "",
             isFocus: false,
+            selectedDepartment: "",
         };
     },
 
     watch: {
-        /**
-         * Theo dõi sự thay đổi value thì hàm sẽ được gọi bên ngoài để update value
-         * Author: KienNT (08/03/2023)
-         */
-        department: function (newValue) {
-            this.$emit("update:modelValue", newValue);
+        departmentName: function (newValue) {
+            this.department = newValue;
         },
     },
 
-    updated() {
-        this.department = this.modelValue;
+    beforeUpdate() {
         if (this.department) {
-            this.$emit("handleCheckEmpty");
+            this.$emit("handleCheckEmpty", this.department);
         }
     },
 
@@ -94,7 +97,6 @@ export default {
      * Author: KienNT (07/03/2023)
      */
     created() {
-        this.department = this.modelValue;
         try {
             axios
                 .get("https://apidemo.laptrinhweb.edu.vn/api/v1/Departments")
@@ -109,6 +111,15 @@ export default {
     },
 
     methods: {
+        /**
+         * Set focus khi được mounted và có props isFocus = true
+         * Author: KienNT (03/03/2023)
+         */
+        setFocus() {
+            this.$nextTick(function () {
+                this.$refs["departmentInput"].focus();
+            });
+        },
         /**
          * Theo dõi sự thay đổi value của input
          * Author: KienNT (07/03/2023)
@@ -140,6 +151,7 @@ export default {
         /**
          * handle khi click btn icon combobox
          * Author: KienNT (07/03/2023)
+         * @param {event}: là sự kiện của element hiện tại
          */
         handleClickIcon(event) {
             if (event.target.firstChild) {
@@ -153,6 +165,7 @@ export default {
         /**
          * handle khi nhấn phím
          * Author: KienNT (07/03/2023)
+         * @param {event}: là sự kiện của element hiện tại
          */
         handleKeyDown(e) {
             const key = e.keyCode;
@@ -173,7 +186,11 @@ export default {
                             this.$refs[
                                 "option__wrapper-combobox"
                             ].classList.remove("d-block");
-                            item.classList.remove("active");
+                            this.selectedDepartment = index;
+                            this.$emit(
+                                "selectedDepartment",
+                                this.oldDepartments[index].DepartmentId
+                            );
                             break;
                         }
                     }
@@ -280,18 +297,21 @@ export default {
         /**
          * handle khi click vào item
          * Author: KienNT (08/03/2023)
+         * @param {department, index)}: department: đối tượng department, index của department)
          */
-        itemOnClick(e) {
+        itemOnClick(department, index) {
+            this.selectedDepartment = index;
             const refIconCombobox = this.$refs["iconCombobox"];
-
-            this.department = e.target.textContent;
+            this.department = department.DepartmentName;
             this.$refs["option__wrapper-combobox"].classList.remove("d-block");
             refIconCombobox.classList.remove("rorate-180");
+            this.$emit("selectedDepartment", department.DepartmentId);
         },
 
         /**
          * nghe sự kiện window. Nếu click ko phải là combobox
          * Author: KienNT (07/03/2023)
+         *  @param {event}: là sự kiện của element hiện tại
          */
         handleClickOutCombobox(event) {
             try {

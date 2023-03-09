@@ -1,5 +1,5 @@
 <template>
-    <div class="popup">
+    <div class="popup" @keydown="handlePressTab">
         <div class="popup__form">
             <div class="popup__form-wrapper">
                 <div class="popup__form-header">
@@ -86,9 +86,11 @@
                                     <MTooltip
                                         v-if="isTooltip.isTooltipEmployeeCode"
                                         :subtext="
-                                            message ||
-                                            MISAResouce.vi.LabelEmployeeCode +
-                                                MISAResouce.vi.ErrorEmpty
+                                            !isEmpty(newEmployee.EmployeeCode)
+                                                ? message
+                                                : MISAResouce.vi
+                                                      .LabelEmployeeCode +
+                                                  MISAResouce.vi.ErrorEmpty
                                         "
                                         kind="error"
                                     ></MTooltip>
@@ -151,19 +153,15 @@
                                 >
 
                                 <Mcombobox
-                                    v-model="
-                                        newEmployee.EducationalBackgroundName
-                                    "
+                                    :departmentName="departmentName"
                                     :isShowTooltip="
                                         isTooltip.isTooltipDepartmentName
                                     "
-                                    @handleCheckEmpty="
-                                        isEmpty(
-                                            newEmployee.EducationalBackgroundName
-                                        )
-                                            ? (isTooltip.isTooltipDepartmentName = true)
-                                            : (isTooltip.isTooltipDepartmentName = false)
-                                    "
+                                    @handleCheckEmpty="handleCheckEmpty"
+                                    ref="txtDepartmentName"
+                                    tabindex="3"
+                                    @setFocus="setFocus"
+                                    @selectedDepartment="selectedDepartment"
                                 ></Mcombobox>
                                 <MTooltip
                                     v-if="isTooltip.isTooltipDepartmentName"
@@ -583,6 +581,7 @@
                         tabindex="19"
                         :text="MISAResouce.vi.BtnDestroy"
                         :click="destroyPopup"
+                        ref="btnDestroy"
                     >
                     </MButton>
                 </div>
@@ -593,6 +592,7 @@
                             tabindex="17"
                             :text="MISAResouce.vi.BtnSave"
                             :click="() => btnSaveAndClose(true)"
+                            ref="btnSave"
                         >
                         </MButton>
                     </div>
@@ -602,6 +602,7 @@
                             tabindex="18"
                             :text="MISAResouce.vi.BtnSaveEndAdd"
                             :click="() => btnSaveAndClose(false)"
+                            ref="btnSaveEndAdd"
                         >
                         </MButton>
                     </div>
@@ -638,6 +639,7 @@ import MISAResouce from "@/js/resource";
 import MISAEnum from "@/js/enum";
 import Mcombobox from "../base/Mcombobox.vue";
 import axios from "axios";
+import moment from "moment";
 
 export default {
     name: "ThePopup",
@@ -654,6 +656,8 @@ export default {
             MISAResouce,
             MISAEnum,
             newEmployee: {},
+            valueInput: "",
+            departmentName: "",
             errorExistId: "",
             isDialogError: false,
             isDialogNotify: false,
@@ -693,6 +697,8 @@ export default {
                     .then(this.$emit("hideShowLoading", true))
                     .then((res) => {
                         this.newEmployee = res.data;
+                        //có API thì sửa department ở đây
+                        this.departmentName = this.newEmployee.DepartmentId;
                         this.newEmployee.DateOfBirth = this.convertDate(
                             this.newEmployee.DateOfBirth
                         );
@@ -747,6 +753,31 @@ export default {
     },
 
     methods: {
+        /**
+         * Hàm lấy department id từ combobox
+         * Author: KienNT (09/03/2023)
+         */
+        selectedDepartment(selectedDepartmentId) {
+            try {
+                this.newEmployee.DepartmentId = selectedDepartmentId;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
+         * Hàm lấy giá trị input bên cb sau đó check isEmpty
+         * Author: KienNT (09/03/2023)
+         * @param {valueInput}: Giá trị của value được emit từ con
+         */
+        handleCheckEmpty(valueInput) {
+            this.valueInput = valueInput;
+            if (this.isEmpty(this.valueInput)) {
+                this.isTooltip.isTooltipDepartmentName = true;
+            } else {
+                this.isTooltip.isTooltipDepartmentName = false;
+            }
+        },
         /**
          * Hàm lấy employee code mới
          * Author: KienNT (01/03/2023)
@@ -816,6 +847,7 @@ export default {
         destroyPopup() {
             try {
                 this.newEmployee = {};
+                this.departmentName = "";
                 this.errorMessage = [];
                 this.$emit("onClosePopup");
             } catch (error) {
@@ -826,7 +858,7 @@ export default {
         /**
          * Hàm validate thành công thì cất data và đóng form, cất và thêm thì cất và data reset form
          * Author: KienNT (02/03/2023)
-         *  @param (value): tham số 1: là true, false hiển thị popup
+         *  @param {value}: tham số 1: là true, false hiển thị popup
          */
         btnSaveAndClose(isCloseForm) {
             try {
@@ -841,6 +873,7 @@ export default {
                             .then(this.$emit("hideShowLoading", true))
                             .then((res) => {
                                 console.log(res);
+                                console.log(this.newEmployee);
                                 if (isCloseForm) {
                                     // reset và đóng form
                                     this.destroyPopup();
@@ -850,6 +883,7 @@ export default {
                                     // lấy 1 id mới
                                     this.getNewEmployeeCode();
                                     this.errorMessage = [];
+                                    this.departmentName = "";
                                 }
                                 console.log("post success");
                             })
@@ -908,9 +942,9 @@ export default {
                 // check department
                 this.checkField(
                     "isTooltipDepartmentName",
-                    this.newEmployee.EducationalBackgroundName,
+                    this.valueInput,
                     MISAResouce.vi.LabelDepartmentName,
-                    "txtEmployeeName"
+                    "txtDepartmentName"
                 );
 
                 // check invalid
@@ -988,7 +1022,7 @@ export default {
         /**
          * Hàm check isEmpty
          * Author: KienNT (04/03/2023)
-         *  @param (fieldName, fieldValue, errorLabel): tham số 1: tooltip the label, tham số 2 là giá trị ô input, tham số 3: label lỗi, tham số 4 là ref
+         *  @param {fieldName, fieldValue, errorLabel}: tham số 1: tooltip the label, tham số 2 là giá trị ô input, tham số 3: label lỗi, tham số 4 là ref
          */
         checkField(fieldName, fieldValue, errorLabel, field) {
             try {
@@ -1097,7 +1131,7 @@ export default {
         /**
          * Hàm lấy tabindex của ptu đó để gán lỗi vào mảng ở STT đó để set focus vào ô đầu tiên
          * Author: KienNT (02/03/2023)
-         * @param (fieldName): field cần lấy tabindex
+         * @param {fieldName}: field cần lấy tabindex
          */
         getTabIndex(fieldName) {
             try {
@@ -1117,7 +1151,7 @@ export default {
         /**
          * Hàm kiểm tra input có rỗng không
          * Author: KienNT (02/03/2023)
-         * @param (value): tham số là giá trị chuỗi từ input
+         * @param {value}: tham số là giá trị chuỗi từ input
          */
         isEmpty(value) {
             try {
@@ -1134,7 +1168,7 @@ export default {
         /**
          * Hàm kiểm tra input date có đúng là trước ngày hiện tại không
          * Author: KienNT (02/03/2023)
-         * @param (value): tham số là giá trị chuỗi từ input và loại nào: date,...
+         * @param {value}: tham số là giá trị chuỗi từ input và loại nào: date,...
          */
         isInValid(value, kind) {
             try {
@@ -1179,7 +1213,7 @@ export default {
         /**
          * Hàm ẩn hiện tooltip
          * Author: KienNT (02/03/2023)
-         * @param (value): tham số là true, false để hiển thị tooltip
+         * @param {value}: tham số là true, false để hiển thị tooltip
          */
         hideShowTooltip(isTooltip) {
             try {
@@ -1192,7 +1226,7 @@ export default {
         /**
          * Hàm ẩn hiện dialog notify
          * Author: KienNT (04/03/2023)
-         * @param (value): tham số là true, false để hiển thị dialog notify
+         * @param {value}: tham số là true, false để hiển thị dialog notify
          */
 
         onClickBtnDestroy(isDialogNotify) {
@@ -1207,7 +1241,7 @@ export default {
         /**
          * Hàm ẩn hiện dialog và focus vào ô input lỗi đầu tiên
          * Author: KienNT (02/03/2023)
-         * @param (value): tham số là true, false để hiển thị dialog
+         * @param {value}: tham số là true, false để hiển thị dialog
          */
         hideShowDialogError(isDialogError) {
             try {
@@ -1230,6 +1264,7 @@ export default {
                 for (let index = 0; index < refNames.length; index++) {
                     const elementRef = refNames[index];
                     const element = this.$refs[elementRef];
+
                     if (element.isShowTooltip) {
                         element.setFocus();
                         break;
@@ -1238,6 +1273,64 @@ export default {
             } catch (error) {
                 console.log(error);
             }
+        },
+
+        /**
+         *  handle khi nhấn tab
+         * Author: KienNT (09/03/2023)
+         *
+         */
+        handlePressTab(event) {
+            const btnDestroy = this.$refs["btnDestroy"];
+
+            if (
+                event.key === "Tab" &&
+                event.target.isEqualNode(btnDestroy.$el)
+            ) {
+                // Prevent the default tab behavior
+                event.preventDefault();
+                // focus vào input đầu tiên
+                this.setFocusInput("txtEmployeeCode");
+            }
+
+            // nếu phần tử focus là button thì có border
+            const btnSaveEndAdd = this.$refs["btnSaveEndAdd"];
+            const btnSave = this.$refs["btnSave"];
+            btnSaveEndAdd.$el.addEventListener("focus", function () {
+                if (btnSaveEndAdd.$el.tagName === "BUTTON") {
+                    btnSaveEndAdd.$el.classList.add("border-focus-white");
+                }
+            });
+
+            btnSave.$el.addEventListener("focus", function () {
+                if (btnSave.$el.tagName === "BUTTON") {
+                    btnSave.$el.classList.add("border-focus");
+                }
+            });
+
+            btnDestroy.$el.addEventListener("focus", function () {
+                if (btnDestroy.$el.tagName === "BUTTON") {
+                    btnDestroy.$el.classList.add("border-focus");
+                }
+            });
+
+            btnSaveEndAdd.$el.addEventListener("blur", function () {
+                if (btnSaveEndAdd.$el.tagName === "BUTTON") {
+                    btnSaveEndAdd.$el.classList.remove("border-focus-white");
+                }
+            });
+
+            btnSave.$el.addEventListener("blur", function () {
+                if (btnSave.$el.tagName === "BUTTON") {
+                    btnSave.$el.classList.remove("border-focus");
+                }
+            });
+
+            btnDestroy.$el.addEventListener("blur", function () {
+                if (btnDestroy.$el.tagName === "BUTTON") {
+                    btnDestroy.$el.classList.remove("border-focus");
+                }
+            });
         },
     },
     computed: {
@@ -1249,19 +1342,8 @@ export default {
             return (inputString = "") => {
                 try {
                     if (inputString !== null) {
-                        let date = new Date(Date.parse(inputString));
-                        return date.toISOString().substring(0, 10);
-
-                        // let dateString =
-                        //     date.getDate() + 1 < 10
-                        //         ? `0${date.getDate() + 1}`
-                        //         : date.getDate() + 1;
-                        // let monthString =
-                        //     date.getMonth() + 1 < 10
-                        //         ? `0${date.getMonth() - 1}`
-                        //         : date.getMonth() - 1;
-                        // let yearString = date.getFullYear();
-                        // return `${yearString}-${monthString}-${dateString}`;
+                        let date = new Date(inputString);
+                        return moment(date).format("YYYY-MM-DD");
                     }
                 } catch (error) {
                     console.log(error);

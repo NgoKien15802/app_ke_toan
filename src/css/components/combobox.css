@@ -54,7 +54,7 @@
 /* option list */
 .option__wrapper-combobox {
     position: absolute;
-    bottom: 100%;
+    top: calc(100% + 2px);
     left: 0;
     right: 0;
     background-color: var(--white-color);

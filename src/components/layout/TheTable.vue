@@ -126,6 +126,7 @@ import MISAResouce from "@/js/resource";
 import Thetooltip from "../base/Mtooltip.vue";
 import MISAEnum from "@/js/enum";
 import Mcontextmenu from "../base/Mcontextmenu.vue";
+import moment from "moment";
 export default {
     name: "TheTable",
 
@@ -185,20 +186,7 @@ export default {
         formatDate() {
             return (dateTime) => {
                 try {
-                    if (dateTime) {
-                        const date = new Date(dateTime);
-                        const day =
-                            date.getDate() < 10
-                                ? `0${date.getDate()}`
-                                : date.getDate();
-                        const month =
-                            date.getMonth() + 1 < 10
-                                ? `0${date.getMonth()}`
-                                : date.getMonth();
-                        const year = date.getFullYear();
-                        return `${day}/${month}/${year}`;
-                    }
-                    return "";
+                    return moment(dateTime).format("DD/MM/YYYY");
                 } catch (error) {
                     console.log(error);
                 }

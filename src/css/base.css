@@ -157,7 +157,12 @@ button {
 
 /*  */
 .border-focus {
-    border: 1px solid #50b83c;
+    border: 1px solid #50b83c !important;
+    outline: none;
+}
+
+.border-focus-white {
+    border: 1px solid #fff !important;
     outline: none;
 }
 
