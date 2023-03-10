@@ -214,10 +214,14 @@ export default {
          * Author: KienNT (06/03/2023)
          */
         handleCheckboxAll(event) {
-            this.employees = this.employees.map((x) => {
-                x.Selected = event.target.checked;
-                return x;
-            });
+            try {
+                this.employees = this.employees.map((x) => {
+                    x.Selected = event.target.checked;
+                    return x;
+                });
+            } catch (error) {
+                console.log(error);
+            }
         },
 
         /**

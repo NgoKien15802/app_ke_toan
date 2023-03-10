@@ -34,7 +34,12 @@
             ref="departmentInput"
         />
 
-        <div class="option__wrapper-combobox" ref="option__wrapper-combobox">
+        <div
+            class="option__wrapper-combobox"
+            ref="option__wrapper-combobox"
+            @mouseover="handleMountOver"
+            @mouseout="handleMountOut"
+        >
             <ul class="option__list-combobox scrollbar_customize">
                 <li
                     v-for="(department, index) in departments"
@@ -345,6 +350,24 @@ export default {
         handleBlurInput() {
             this.isFocus = false;
             this.$emit("handleCheckEmpty");
+        },
+
+        /**
+         * ẩn tooltip khi hover vào các option item của combobox
+         * Author: KienNT (10/03/2023)
+         *
+         */
+        handleMountOver() {
+            this.$emit("handleMountOver");
+        },
+
+        /**
+         * hiển thị tooltip khi hover vào các option item của combobox
+         * Author: KienNT (10/03/2023)
+         *
+         */
+        handleMountOut() {
+            this.$emit("handleMountOut");
         },
     },
 

@@ -51,126 +51,141 @@
                     <div class="popup__form-body-info">
                         <div class="popup__form-body-left">
                             <div class="popup__form-body-row m-row">
-                                <div
-                                    class="form__group form__group-first"
-                                    :class="{
-                                        'tooltip-error':
-                                            isTooltip.isTooltipEmployeeCode,
-                                    }"
-                                >
+                                <div class="form__group form__group-first">
                                     <label for="employeeId" class="form__label"
                                         >{{ MISAResouce.vi.LabelEmployeeCode }}
                                         <span class="required">*</span></label
                                     >
-                                    <MInput
-                                        id="employeeId"
-                                        name="EmployeeCode"
-                                        tabindex="1"
-                                        autocomplete="off"
-                                        v-model="newEmployee.EmployeeCode"
-                                        kind="default"
-                                        :isShowTooltip="
-                                            isTooltip.isTooltipEmployeeCode
-                                        "
-                                        :required="true"
-                                        ref="txtEmployeeCode"
-                                        :placeHolder="
-                                            MISAResouce.vi.LabelEmployeeCode.toLowerCase()
-                                        "
-                                        @blur="
-                                            isEmpty(newEmployee.EmployeeCode)
-                                                ? (isTooltip.isTooltipEmployeeCode = true)
-                                                : (isTooltip.isTooltipEmployeeCode = false)
-                                        "
-                                    />
-                                    <MTooltip
-                                        v-if="isTooltip.isTooltipEmployeeCode"
-                                        :subtext="
-                                            !isEmpty(newEmployee.EmployeeCode)
-                                                ? message
-                                                : MISAResouce.vi
-                                                      .LabelEmployeeCode +
-                                                  MISAResouce.vi.ErrorEmpty
-                                        "
-                                        kind="error"
-                                    ></MTooltip>
+                                    <div
+                                        :class="{
+                                            'tooltip-error':
+                                                isTooltip.isTooltipEmployeeCode,
+                                        }"
+                                    >
+                                        <MInput
+                                            id="employeeId"
+                                            name="EmployeeCode"
+                                            tabindex="1"
+                                            autocomplete="off"
+                                            v-model="newEmployee.EmployeeCode"
+                                            kind="default"
+                                            :isShowTooltip="
+                                                isTooltip.isTooltipEmployeeCode
+                                            "
+                                            :required="true"
+                                            ref="txtEmployeeCode"
+                                            :placeHolder="
+                                                MISAResouce.vi.LabelEmployeeCode.toLowerCase()
+                                            "
+                                            @blur="
+                                                isEmpty(
+                                                    newEmployee.EmployeeCode
+                                                )
+                                                    ? (isTooltip.isTooltipEmployeeCode = true)
+                                                    : (isTooltip.isTooltipEmployeeCode = false)
+                                            "
+                                        />
+                                        <MTooltip
+                                            v-if="
+                                                isTooltip.isTooltipEmployeeCode
+                                            "
+                                            :subtext="
+                                                !isEmpty(
+                                                    newEmployee.EmployeeCode
+                                                )
+                                                    ? message
+                                                    : MISAResouce.vi
+                                                          .LabelEmployeeCode +
+                                                      MISAResouce.vi.ErrorEmpty
+                                            "
+                                            kind="error"
+                                        ></MTooltip>
+                                    </div>
                                 </div>
 
-                                <div
-                                    class="form__group form__group-second"
-                                    :class="{
-                                        'tooltip-error':
-                                            isTooltip.isTooltipEmployeeName,
-                                    }"
-                                >
+                                <div class="form__group form__group-second">
                                     <label for="ten" class="form__label"
                                         >{{ MISAResouce.vi.LabelEmployeeName }}
                                         <span class="required">*</span></label
                                     >
 
-                                    <MInput
-                                        tabindex="2"
-                                        name="FullName"
-                                        autocomplete="off"
-                                        id="ten"
-                                        kind="default"
-                                        v-model="newEmployee.FullName"
-                                        :isShowTooltip="
-                                            isTooltip.isTooltipEmployeeName
-                                        "
-                                        ref="txtFullName"
-                                        :required="true"
-                                        :placeHolder="
-                                            MISAResouce.vi.LabelEmployeeName.toLowerCase()
-                                        "
-                                        @blur="
-                                            isEmpty(newEmployee.FullName)
-                                                ? (isTooltip.isTooltipEmployeeName = true)
-                                                : (isTooltip.isTooltipEmployeeName = false)
-                                        "
-                                    ></MInput>
-                                    <MTooltip
-                                        v-if="isTooltip.isTooltipEmployeeName"
-                                        :subtext="
-                                            MISAResouce.vi.LabelEmployeeName +
-                                            MISAResouce.vi.ErrorEmpty
-                                        "
-                                        kind="error"
-                                    ></MTooltip>
+                                    <div
+                                        :class="{
+                                            'tooltip-error':
+                                                isTooltip.isTooltipEmployeeName,
+                                        }"
+                                    >
+                                        <MInput
+                                            tabindex="2"
+                                            name="FullName"
+                                            autocomplete="off"
+                                            id="ten"
+                                            kind="default"
+                                            v-model="newEmployee.FullName"
+                                            :isShowTooltip="
+                                                isTooltip.isTooltipEmployeeName
+                                            "
+                                            ref="txtFullName"
+                                            :required="true"
+                                            :placeHolder="
+                                                MISAResouce.vi.LabelEmployeeName.toLowerCase()
+                                            "
+                                            @blur="
+                                                isEmpty(newEmployee.FullName)
+                                                    ? (isTooltip.isTooltipEmployeeName = true)
+                                                    : (isTooltip.isTooltipEmployeeName = false)
+                                            "
+                                        ></MInput>
+                                        <MTooltip
+                                            v-if="
+                                                isTooltip.isTooltipEmployeeName
+                                            "
+                                            :subtext="
+                                                MISAResouce.vi
+                                                    .LabelEmployeeName +
+                                                MISAResouce.vi.ErrorEmpty
+                                            "
+                                            kind="error"
+                                        ></MTooltip>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div
-                                class="m-row"
-                                :class="{
-                                    'tooltip-error':
-                                        isTooltip.isTooltipDepartmentName,
-                                }"
-                            >
+                            <div class="m-row">
                                 <label for="donvi" class="form__label"
                                     >{{ MISAResouce.vi.LabelDepartmentName }}
                                     <span class="required">*</span></label
                                 >
 
-                                <Mcombobox
-                                    :departmentName="departmentName"
-                                    :isShowTooltip="
-                                        isTooltip.isTooltipDepartmentName
-                                    "
-                                    @handleCheckEmpty="handleCheckEmpty"
-                                    ref="txtDepartmentName"
-                                    tabindex="3"
-                                    @setFocus="setFocus"
-                                    @selectedDepartment="selectedDepartment"
-                                ></Mcombobox>
-                                <MTooltip
-                                    v-if="isTooltip.isTooltipDepartmentName"
-                                    :subtext="
-                                        MISAResouce.vi.LabelDepartmentName +
-                                        MISAResouce.vi.ErrorEmpty
-                                    "
-                                    kind="error"
-                                ></MTooltip>
+                                <div
+                                    :class="{
+                                        'tooltip-error':
+                                            isTooltip.isTooltipDepartmentName,
+                                    }"
+                                >
+                                    <Mcombobox
+                                        :departmentName="departmentName"
+                                        :isShowTooltip="
+                                            isTooltip.isTooltipDepartmentName
+                                        "
+                                        @handleCheckEmpty="handleCheckEmpty"
+                                        ref="txtDepartmentName"
+                                        tabindex="3"
+                                        @setFocus="setFocus"
+                                        @selectedDepartment="selectedDepartment"
+                                        @handleMountOver="handleMountOver"
+                                        @handleMountOut="handleMountOut"
+                                    ></Mcombobox>
+                                    <MTooltip
+                                        v-if="isTooltip.isTooltipDepartmentName"
+                                        :subtext="
+                                            MISAResouce.vi.LabelDepartmentName +
+                                            MISAResouce.vi.ErrorEmpty
+                                        "
+                                        kind="error"
+                                        ref="tootipCombobox"
+                                    ></MTooltip>
+                                </div>
                             </div>
 
                             <div class="m-row">
@@ -196,44 +211,48 @@
                             <div
                                 class="popup__form-body-row m-row popup__form-checkbox"
                             >
-                                <div
-                                    class="form__group form__group-first"
-                                    :class="{
-                                        'tooltip-error':
-                                            isTooltip.isTooltipDateOfBirth,
-                                    }"
-                                >
+                                <div class="form__group form__group-first">
                                     <label for="ngaysinh" class="form__label"
                                         >{{ MISAResouce.vi.LabelDateOfBirth }}
                                     </label>
-                                    <MInput
-                                        type="date"
-                                        tabindex="5"
-                                        name="DateOfBirth"
-                                        id="ngaysinh"
-                                        kind="default"
-                                        ref="txtDateOfBirth"
-                                        v-model="newEmployee.DateOfBirth"
-                                        :isShowTooltip="
-                                            isTooltip.isTooltipDateOfBirth
-                                        "
-                                        @blur="
-                                            isInValid(
-                                                newEmployee.DateOfBirth,
-                                                'date'
-                                            )
-                                                ? (isTooltip.isTooltipDateOfBirth = true)
-                                                : (isTooltip.isTooltipDateOfBirth = false)
-                                        "
-                                    />
-                                    <MTooltip
-                                        v-if="isTooltip.isTooltipDateOfBirth"
-                                        :subtext="
-                                            MISAResouce.vi.LabelDateOfBirth +
-                                            MISAResouce.vi.ErrorDate
-                                        "
-                                        kind="error"
-                                    ></MTooltip>
+                                    <div
+                                        :class="{
+                                            'tooltip-error':
+                                                isTooltip.isTooltipDateOfBirth,
+                                        }"
+                                    >
+                                        <MInput
+                                            type="date"
+                                            tabindex="5"
+                                            name="DateOfBirth"
+                                            id="ngaysinh"
+                                            kind="default"
+                                            ref="txtDateOfBirth"
+                                            v-model="newEmployee.DateOfBirth"
+                                            :isShowTooltip="
+                                                isTooltip.isTooltipDateOfBirth
+                                            "
+                                            @blur="
+                                                isInValid(
+                                                    newEmployee.DateOfBirth,
+                                                    'date'
+                                                )
+                                                    ? (isTooltip.isTooltipDateOfBirth = true)
+                                                    : (isTooltip.isTooltipDateOfBirth = false)
+                                            "
+                                        />
+                                        <MTooltip
+                                            v-if="
+                                                isTooltip.isTooltipDateOfBirth
+                                            "
+                                            :subtext="
+                                                MISAResouce.vi
+                                                    .LabelDateOfBirth +
+                                                MISAResouce.vi.ErrorDate
+                                            "
+                                            kind="error"
+                                        ></MTooltip>
+                                    </div>
                                 </div>
 
                                 <div
@@ -275,13 +294,7 @@
                                 </div>
                             </div>
                             <div class="popup__form-body-row m-row">
-                                <div
-                                    class="form__group form__group-second"
-                                    :class="{
-                                        'tooltip-error':
-                                            isTooltip.isTooltipIdentityNumber,
-                                    }"
-                                >
+                                <div class="form__group form__group-second">
                                     <label for="cmnd" class="form__label">
                                         <MTooltip
                                             :text="
@@ -294,77 +307,91 @@
                                             kind="title"
                                         ></MTooltip>
                                     </label>
-                                    <MInput
-                                        id="cmnd"
-                                        name="IdentityNumber"
-                                        tabindex="7"
-                                        kind="default"
-                                        ref="txtIdentityNumber"
-                                        class="check-number"
-                                        v-model="newEmployee.IdentityNumber"
-                                        :placeHolder="
-                                            MISAResouce.vi.TooltipIdentityNumber.toLowerCase()
-                                        "
-                                        :isShowTooltip="
-                                            isTooltip.isTooltipIdentityNumber
-                                        "
-                                        @blur="
-                                            isInValid(
-                                                newEmployee.IdentityNumber,
-                                                'number'
-                                            )
-                                                ? (isTooltip.isTooltipIdentityNumber = true)
-                                                : (isTooltip.isTooltipIdentityNumber = false)
-                                        "
-                                    />
-                                    <MTooltip
-                                        v-if="isTooltip.isTooltipIdentityNumber"
-                                        :subtext="
-                                            MISAResouce.vi.LabelIdentityNumber +
-                                            MISAResouce.vi.ErrorNotNumber
-                                        "
-                                        kind="error"
-                                    ></MTooltip>
+                                    <div
+                                        :class="{
+                                            'tooltip-error':
+                                                isTooltip.isTooltipIdentityNumber,
+                                        }"
+                                    >
+                                        <MInput
+                                            id="cmnd"
+                                            name="IdentityNumber"
+                                            tabindex="7"
+                                            kind="default"
+                                            ref="txtIdentityNumber"
+                                            class="check-number"
+                                            v-model="newEmployee.IdentityNumber"
+                                            :placeHolder="
+                                                MISAResouce.vi.TooltipIdentityNumber.toLowerCase()
+                                            "
+                                            :isShowTooltip="
+                                                isTooltip.isTooltipIdentityNumber
+                                            "
+                                            @blur="
+                                                isInValid(
+                                                    newEmployee.IdentityNumber,
+                                                    'number'
+                                                )
+                                                    ? (isTooltip.isTooltipIdentityNumber = true)
+                                                    : (isTooltip.isTooltipIdentityNumber = false)
+                                            "
+                                        />
+                                        <MTooltip
+                                            v-if="
+                                                isTooltip.isTooltipIdentityNumber
+                                            "
+                                            :subtext="
+                                                MISAResouce.vi
+                                                    .LabelIdentityNumber +
+                                                MISAResouce.vi.ErrorNotNumber
+                                            "
+                                            kind="error"
+                                        ></MTooltip>
+                                    </div>
                                 </div>
 
-                                <div
-                                    class="form__group form__group-first"
-                                    :class="{
-                                        'tooltip-error':
-                                            isTooltip.isTooltipIdentityDate,
-                                    }"
-                                >
+                                <div class="form__group form__group-first">
                                     <label for="ngaycap" class="form__label"
                                         >{{ MISAResouce.vi.LabelIdentityDate }}
                                     </label>
-                                    <MInput
-                                        type="date"
-                                        name="IdentityDate"
-                                        id="ngaycap"
-                                        ref="txtIdentityDate"
-                                        tabindex="8"
-                                        kind="default"
-                                        v-model="newEmployee.IdentityDate"
-                                        :isShowTooltip="
-                                            isTooltip.isTooltipIdentityDate
-                                        "
-                                        @blur="
-                                            isInValid(
-                                                newEmployee.IdentityDate,
-                                                'date'
-                                            )
-                                                ? (isTooltip.isTooltipIdentityDate = true)
-                                                : (isTooltip.isTooltipIdentityDate = false)
-                                        "
-                                    />
-                                    <MTooltip
-                                        v-if="isTooltip.isTooltipIdentityDate"
-                                        :subtext="
-                                            MISAResouce.vi.LabelIdentityDate +
-                                            MISAResouce.vi.ErrorDate
-                                        "
-                                        kind="error"
-                                    ></MTooltip>
+                                    <div
+                                        :class="{
+                                            'tooltip-error':
+                                                isTooltip.isTooltipIdentityDate,
+                                        }"
+                                    >
+                                        <MInput
+                                            type="date"
+                                            name="IdentityDate"
+                                            id="ngaycap"
+                                            ref="txtIdentityDate"
+                                            tabindex="8"
+                                            kind="default"
+                                            v-model="newEmployee.IdentityDate"
+                                            :isShowTooltip="
+                                                isTooltip.isTooltipIdentityDate
+                                            "
+                                            @blur="
+                                                isInValid(
+                                                    newEmployee.IdentityDate,
+                                                    'date'
+                                                )
+                                                    ? (isTooltip.isTooltipIdentityDate = true)
+                                                    : (isTooltip.isTooltipIdentityDate = false)
+                                            "
+                                        />
+                                        <MTooltip
+                                            v-if="
+                                                isTooltip.isTooltipIdentityDate
+                                            "
+                                            :subtext="
+                                                MISAResouce.vi
+                                                    .LabelIdentityDate +
+                                                MISAResouce.vi.ErrorDate
+                                            "
+                                            kind="error"
+                                        ></MTooltip>
+                                    </div>
                                 </div>
                             </div>
                             <div class="m-row">
@@ -455,85 +482,93 @@
                                     v-model="newEmployee.LandlineNumber"
                                 />
                             </div>
-                            <div
-                                class="form__group form__group-contact-input"
-                                :class="{
-                                    'tooltip-error': isTooltip.isTooltipEmail,
-                                }"
-                            >
+                            <div class="form__group form__group-contact-input">
                                 <label for="email" class="form__label">{{
                                     MISAResouce.vi.LabelEmail
                                 }}</label>
-                                <MInput
-                                    type="email"
-                                    id="email"
-                                    tabindex="13"
-                                    name="Email"
-                                    ref="txtEmail"
-                                    kind="default"
-                                    :placeHolder="
-                                        MISAResouce.vi.LabelEmail.toLowerCase()
-                                    "
-                                    v-model="newEmployee.Email"
-                                    :isShowTooltip="isTooltip.isTooltipEmail"
-                                    @blur="
-                                        isInValid(newEmployee.Email, 'email')
-                                            ? (isTooltip.isTooltipEmail = true)
-                                            : (isTooltip.isTooltipEmail = false)
-                                    "
-                                />
-                                <MTooltip
-                                    v-if="isTooltip.isTooltipEmail"
-                                    :subtext="
-                                        MISAResouce.vi.LabelEmail +
-                                        MISAResouce.vi.ErrorEmail
-                                    "
-                                    kind="error"
-                                ></MTooltip>
+                                <div
+                                    :class="{
+                                        'tooltip-error':
+                                            isTooltip.isTooltipEmail,
+                                    }"
+                                >
+                                    <MInput
+                                        type="email"
+                                        id="email"
+                                        tabindex="13"
+                                        name="Email"
+                                        ref="txtEmail"
+                                        kind="default"
+                                        :placeHolder="
+                                            MISAResouce.vi.LabelEmail.toLowerCase()
+                                        "
+                                        v-model="newEmployee.Email"
+                                        :isShowTooltip="
+                                            isTooltip.isTooltipEmail
+                                        "
+                                        @blur="
+                                            isInValid(
+                                                newEmployee.Email,
+                                                'email'
+                                            )
+                                                ? (isTooltip.isTooltipEmail = true)
+                                                : (isTooltip.isTooltipEmail = false)
+                                        "
+                                    />
+                                    <MTooltip
+                                        v-if="isTooltip.isTooltipEmail"
+                                        :subtext="
+                                            MISAResouce.vi.LabelEmail +
+                                            MISAResouce.vi.ErrorEmail
+                                        "
+                                        kind="error"
+                                    ></MTooltip>
+                                </div>
                             </div>
                         </div>
                         <div class="m-row form__group-contact-second">
-                            <div
-                                class="form__group form__group-contact-input"
-                                :class="{
-                                    'tooltip-error':
-                                        isTooltip.isTooltipBankAccount,
-                                }"
-                            >
+                            <div class="form__group form__group-contact-input">
                                 <label for="taikhoan" class="form__label">{{
                                     MISAResouce.vi.LabelBankAccount
                                 }}</label>
-                                <MInput
-                                    name="BankAccount"
-                                    id="taikhoan"
-                                    tabindex="14"
-                                    class="check-number"
-                                    kind="default"
-                                    ref="txtBankAccount"
-                                    :placeHolder="
-                                        MISAResouce.vi.LabelBankAccount.toLowerCase()
-                                    "
-                                    v-model="newEmployee.BankAccount"
-                                    :isShowTooltip="
-                                        isTooltip.isTooltipBankAccount
-                                    "
-                                    @blur="
-                                        isInValid(
-                                            newEmployee.BankAccount,
-                                            'number'
-                                        )
-                                            ? (isTooltip.isTooltipBankAccount = true)
-                                            : (isTooltip.isTooltipBankAccount = false)
-                                    "
-                                />
-                                <MTooltip
-                                    v-if="isTooltip.isTooltipBankAccount"
-                                    :subtext="
-                                        MISAResouce.vi.LabelBankAccount +
-                                        MISAResouce.vi.ErrorNotNumber
-                                    "
-                                    kind="error"
-                                ></MTooltip>
+                                <div
+                                    :class="{
+                                        'tooltip-error':
+                                            isTooltip.isTooltipBankAccount,
+                                    }"
+                                >
+                                    <MInput
+                                        name="BankAccount"
+                                        id="taikhoan"
+                                        tabindex="14"
+                                        class="check-number"
+                                        kind="default"
+                                        ref="txtBankAccount"
+                                        :placeHolder="
+                                            MISAResouce.vi.LabelBankAccount.toLowerCase()
+                                        "
+                                        v-model="newEmployee.BankAccount"
+                                        :isShowTooltip="
+                                            isTooltip.isTooltipBankAccount
+                                        "
+                                        @blur="
+                                            isInValid(
+                                                newEmployee.BankAccount,
+                                                'number'
+                                            )
+                                                ? (isTooltip.isTooltipBankAccount = true)
+                                                : (isTooltip.isTooltipBankAccount = false)
+                                        "
+                                    />
+                                    <MTooltip
+                                        v-if="isTooltip.isTooltipBankAccount"
+                                        :subtext="
+                                            MISAResouce.vi.LabelBankAccount +
+                                            MISAResouce.vi.ErrorNotNumber
+                                        "
+                                        kind="error"
+                                    ></MTooltip>
+                                </div>
                             </div>
                             <div class="form__group form__group-contact-input">
                                 <label for="tennganhang" class="form__label">{{
@@ -630,8 +665,11 @@
             :btnDestroyNotify="MISAResouce.vi.BtnDestroy"
             @onClickBtnDestroy="onClickBtnDestroy"
             @destroyPopup="destroyPopup"
+            @onClickBtnYes="onClickBtnYes"
             kind="notify"
         ></MDialog>
+
+        <!-- Toast -->
     </div>
 </template>
 <script>
@@ -672,6 +710,7 @@ export default {
                 isTooltipEmail: false,
                 isTooltipBankAccount: false,
             },
+            dataEmployeeIdSelected: "",
             errorMessage: [],
             message: "",
         };
@@ -682,17 +721,20 @@ export default {
     },
 
     created() {
+        if (this.employeeIdSelected) {
+            this.dataEmployeeIdSelected = this.employeeIdSelected;
+        }
         try {
             /**
              * Call API lấy ra id bất kỳ khi click btn thêm nhân viên mới
              * Author: KienNT (03/03/2023)
              */
-            if (this.isEmpty(this.employeeIdSelected)) {
+            if (this.isEmpty(this.dataEmployeeIdSelected)) {
                 this.getNewEmployeeCode();
             } else {
                 axios
                     .get(
-                        `https://apidemo.laptrinhweb.edu.vn/api/v1/Employees/${this.employeeIdSelected}`
+                        `https://apidemo.laptrinhweb.edu.vn/api/v1/Employees/${this.dataEmployeeIdSelected}`
                     )
                     .then(this.$emit("hideShowLoading", true))
                     .then((res) => {
@@ -725,7 +767,11 @@ export default {
          */
         newEmployee: {
             handler: function (newValue) {
-                this.newEmployee.EmployeeCode = newValue.EmployeeCode;
+                try {
+                    this.newEmployee.EmployeeCode = newValue.EmployeeCode;
+                } catch (error) {
+                    console.log(error);
+                }
             },
             deep: true,
         },
@@ -736,23 +782,37 @@ export default {
          */
         errorMessage: {
             handler: function (newValue) {
-                const refNames = Object.values(newValue);
-                for (let index = 0; index < refNames.length; index++) {
-                    const element = refNames[index];
-                    if (element !== "space") {
-                        this.message = element;
-                        break;
+                try {
+                    const refNames = Object.values(newValue);
+                    for (let index = 0; index < refNames.length; index++) {
+                        const element = refNames[index];
+                        if (element !== "space") {
+                            this.message = element;
+                            break;
+                        }
                     }
+                } catch (error) {
+                    console.log(error);
                 }
             },
             deep: true,
         },
-        message: function (newValue) {
-            console.log(newValue);
-        },
+        message: function () {},
     },
 
     methods: {
+        /**
+         * Hàm click vào btn có trong dialog
+         * Author: KienNT (10/03/2023)
+         */
+        onClickBtnYes() {
+            try {
+                this.btnSaveAndClose(true);
+                this.isDialogNotify = false;
+            } catch (error) {
+                console.log(error);
+            }
+        },
         /**
          * Hàm lấy department id từ combobox
          * Author: KienNT (09/03/2023)
@@ -771,11 +831,15 @@ export default {
          * @param {valueInput}: Giá trị của value được emit từ con
          */
         handleCheckEmpty(valueInput) {
-            this.valueInput = valueInput;
-            if (this.isEmpty(this.valueInput)) {
-                this.isTooltip.isTooltipDepartmentName = true;
-            } else {
-                this.isTooltip.isTooltipDepartmentName = false;
+            try {
+                this.valueInput = valueInput;
+                if (this.isEmpty(this.valueInput)) {
+                    this.isTooltip.isTooltipDepartmentName = true;
+                } else {
+                    this.isTooltip.isTooltipDepartmentName = false;
+                }
+            } catch (error) {
+                console.log(error);
             }
         },
         /**
@@ -863,8 +927,8 @@ export default {
         btnSaveAndClose(isCloseForm) {
             try {
                 if (this.handleValidate()) {
-                    // thêm nhân viên nếu là trạng thái thêm nhân viên
-                    if (this.isEmpty(this.employeeIdSelected)) {
+                    // thêm nhân viên nếu có employeeIdSelected
+                    if (this.isEmpty(this.dataEmployeeIdSelected)) {
                         axios
                             .post(
                                 "https://apidemo.laptrinhweb.edu.vn/api/v1/Employees",
@@ -885,9 +949,9 @@ export default {
                                     this.errorMessage = [];
                                     this.departmentName = "";
                                 }
-                                console.log("post success");
+                                this.$emit("hideShowLoading", false);
+                                console.log("Thêm mới thành công");
                             })
-                            .then(this.$emit("hideShowLoading", false))
                             .catch((error) => {
                                 let response = error.response;
                                 switch (response.status) {
@@ -895,11 +959,61 @@ export default {
                                     case 500:
                                         this.$emit("hideShowLoading", false);
                                         this.errorExistId =
-                                            response.data.userMsg;
+                                            response.data.userMsg ||
+                                            "Lỗi không đúng định dạng";
                                         this.errorMessage[0] =
                                             this.errorExistId;
-                                        this.isTooltip.isTooltipEmployeeCode = true;
+                                        if (response.data.userMsg) {
+                                            this.isTooltip.isTooltipEmployeeCode = true;
+                                        }
+                                        this.isDialogError = true;
+                                        break;
 
+                                    default:
+                                        break;
+                                }
+                            });
+                    } else {
+                        // Sửa nhân viên theo id
+                        axios
+                            .put(
+                                `https://apidemo.laptrinhweb.edu.vn/api/v1/Employees/${this.dataEmployeeIdSelected}`,
+                                this.newEmployee
+                            )
+
+                            .then(this.$emit("hideShowLoading", true))
+                            .then((res) => {
+                                console.log(res);
+                                if (isCloseForm) {
+                                    // reset và đóng form
+                                    this.destroyPopup();
+                                } else {
+                                    // reset nhưng ko đóng form
+                                    this.newEmployee = {};
+                                    // lấy 1 id mới
+                                    this.getNewEmployeeCode();
+                                    this.errorMessage = [];
+                                    this.departmentName = "";
+                                    this.dataEmployeeIdSelected = null;
+                                }
+                                this.$emit("hideShowLoading", false);
+                                console.log("Sửa thành công");
+                            })
+                            .catch((error) => {
+                                // bắt lỗi nếu sửa trùng mã của bản ghi khác
+                                let response = error.response;
+                                switch (response.status) {
+                                    case 400:
+                                    case 500:
+                                        this.$emit("hideShowLoading", false);
+                                        this.errorExistId =
+                                            response.data.devMsg ||
+                                            "Lỗi không đúng định dạng";
+                                        this.errorMessage[0] =
+                                            this.errorExistId;
+                                        if (response.data.devMsg) {
+                                            this.isTooltip.isTooltipEmployeeCode = true;
+                                        }
                                         this.isDialogError = true;
                                         break;
 
@@ -1253,6 +1367,34 @@ export default {
         },
 
         /**
+         * ẩn tooltip khi hover vào các option item của combobox
+         * Author: KienNT (10/03/2023)
+         *
+         */
+        handleMountOver() {
+            try {
+                this.$refs["tootipCombobox"] &&
+                    this.$refs["tootipCombobox"].$el.classList.add("d-none");
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
+         * hiển thị tooltip khi hover vào các option item của combobox
+         * Author: KienNT (10/03/2023)
+         *
+         */
+        handleMountOut() {
+            try {
+                this.$refs["tootipCombobox"] &&
+                    this.$refs["tootipCombobox"].$el.classList.remove("d-none");
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
          *  focus vào ô input lỗi đầu tiên
          * Author: KienNT (06/03/2023)
          *
@@ -1261,13 +1403,14 @@ export default {
             try {
                 // get all input ref sau đó duyệt nếu input nào có lỗi là isShowTooltip = true thì input đó focus và break
                 const refNames = Object.keys(this.$refs);
-                for (let index = 0; index < refNames.length; index++) {
-                    const elementRef = refNames[index];
-                    const element = this.$refs[elementRef];
-
-                    if (element.isShowTooltip) {
-                        element.setFocus();
-                        break;
+                if (refNames) {
+                    for (let index = 0; index < refNames.length; index++) {
+                        const elementRef = refNames[index];
+                        const element = this.$refs[elementRef];
+                        if (element && element.isShowTooltip) {
+                            element.setFocus();
+                            break;
+                        }
                     }
                 }
             } catch (error) {
@@ -1281,56 +1424,62 @@ export default {
          *
          */
         handlePressTab(event) {
-            const btnDestroy = this.$refs["btnDestroy"];
+            try {
+                const btnDestroy = this.$refs["btnDestroy"];
 
-            if (
-                event.key === "Tab" &&
-                event.target.isEqualNode(btnDestroy.$el)
-            ) {
-                // Prevent the default tab behavior
-                event.preventDefault();
-                // focus vào input đầu tiên
-                this.setFocusInput("txtEmployeeCode");
+                if (
+                    event.key === "Tab" &&
+                    event.target.isEqualNode(btnDestroy.$el)
+                ) {
+                    // Prevent the default tab behavior
+                    event.preventDefault();
+                    // focus vào input đầu tiên
+                    this.setFocusInput("txtEmployeeCode");
+                }
+
+                // nếu phần tử focus là button thì có border
+                const btnSaveEndAdd = this.$refs["btnSaveEndAdd"];
+                const btnSave = this.$refs["btnSave"];
+                btnSaveEndAdd.$el.addEventListener("focus", function () {
+                    if (btnSaveEndAdd.$el.tagName === "BUTTON") {
+                        btnSaveEndAdd.$el.classList.add("border-focus-white");
+                    }
+                });
+
+                btnSave.$el.addEventListener("focus", function () {
+                    if (btnSave.$el.tagName === "BUTTON") {
+                        btnSave.$el.classList.add("border-focus");
+                    }
+                });
+
+                btnDestroy.$el.addEventListener("focus", function () {
+                    if (btnDestroy.$el.tagName === "BUTTON") {
+                        btnDestroy.$el.classList.add("border-focus");
+                    }
+                });
+
+                btnSaveEndAdd.$el.addEventListener("blur", function () {
+                    if (btnSaveEndAdd.$el.tagName === "BUTTON") {
+                        btnSaveEndAdd.$el.classList.remove(
+                            "border-focus-white"
+                        );
+                    }
+                });
+
+                btnSave.$el.addEventListener("blur", function () {
+                    if (btnSave.$el.tagName === "BUTTON") {
+                        btnSave.$el.classList.remove("border-focus");
+                    }
+                });
+
+                btnDestroy.$el.addEventListener("blur", function () {
+                    if (btnDestroy.$el.tagName === "BUTTON") {
+                        btnDestroy.$el.classList.remove("border-focus");
+                    }
+                });
+            } catch (error) {
+                console.log(error);
             }
-
-            // nếu phần tử focus là button thì có border
-            const btnSaveEndAdd = this.$refs["btnSaveEndAdd"];
-            const btnSave = this.$refs["btnSave"];
-            btnSaveEndAdd.$el.addEventListener("focus", function () {
-                if (btnSaveEndAdd.$el.tagName === "BUTTON") {
-                    btnSaveEndAdd.$el.classList.add("border-focus-white");
-                }
-            });
-
-            btnSave.$el.addEventListener("focus", function () {
-                if (btnSave.$el.tagName === "BUTTON") {
-                    btnSave.$el.classList.add("border-focus");
-                }
-            });
-
-            btnDestroy.$el.addEventListener("focus", function () {
-                if (btnDestroy.$el.tagName === "BUTTON") {
-                    btnDestroy.$el.classList.add("border-focus");
-                }
-            });
-
-            btnSaveEndAdd.$el.addEventListener("blur", function () {
-                if (btnSaveEndAdd.$el.tagName === "BUTTON") {
-                    btnSaveEndAdd.$el.classList.remove("border-focus-white");
-                }
-            });
-
-            btnSave.$el.addEventListener("blur", function () {
-                if (btnSave.$el.tagName === "BUTTON") {
-                    btnSave.$el.classList.remove("border-focus");
-                }
-            });
-
-            btnDestroy.$el.addEventListener("blur", function () {
-                if (btnDestroy.$el.tagName === "BUTTON") {
-                    btnDestroy.$el.classList.remove("border-focus");
-                }
-            });
         },
     },
     computed: {

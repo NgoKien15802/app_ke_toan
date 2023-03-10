@@ -18,6 +18,8 @@
     </label>
 </template>
 <script>
+import MISAEnum from "@/js/enum";
+import MISAResouce from "@/js/resource";
 export default {
     name: "MRadio",
 
@@ -42,7 +44,14 @@ export default {
          * Author: KienNT (03/03/2023)
          */
         value: function (newValue) {
-            this.$emit("update:modelValue", newValue);
+            this.$emit(
+                "update:modelValue",
+                newValue === MISAResouce.vi.LabelMale
+                    ? MISAEnum.Gender.Male
+                    : newValue === MISAResouce.vi.LabelFemale
+                    ? MISAEnum.Gender.Female
+                    : MISAEnum.Gender.Other
+            );
         },
         created() {
             this.value = this.modelValue;

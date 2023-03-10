@@ -144,12 +144,9 @@ export default {
          * Author: KienNT (04/03/2023)
          */
         onClickBtnYes() {
-            this.$emit("onClickBtnDestroy", false);
-
-            // thêm nhân viên
-            // check validate sau đó mới thêm nhân viên
-            this.$emit("destroyPopup");
+            this.$emit("onClickBtnYes", false);
         },
+
         /**
          * Hàm gửi emit đóng dialog warning, không xóa nhân viên
          * Author: KienNT (07/03/2023)
