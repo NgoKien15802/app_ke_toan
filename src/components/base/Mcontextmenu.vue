@@ -30,19 +30,23 @@ import MISAResouce from "@/js/resource";
 export default {
     name: "MContextmenu",
     props: {
+        //vị trí tọa độ y so với trình duyệt
         top: {
             type: String,
             default: "",
             required: true,
         },
+        //vị trí tọa độ x so với trình duyệt
         left: {
             type: String,
             default: "",
             required: true,
         },
+        // tham chiếu đến 1 element
         refElement: {
             type: Node,
         },
+        // id của emploee đã chọn
         employeeIdSelected: {
             type: String,
             default: "",

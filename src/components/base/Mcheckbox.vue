@@ -20,11 +20,14 @@
 export default {
     name: "MCheckbox",
     props: {
+        // giá trị cần binding ra ngoài khi sử dụng component
         modelValue: [String, Number, Boolean],
+        // id của checkbox
         id: {
             type: String,
             default: "",
         },
+        // giá trị ban đầu
         initValue: {
             type: Boolean,
             default: false,

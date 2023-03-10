@@ -281,12 +281,16 @@ export default {
          * Author: KienNT (02/03/2023)
          */
         formatGender(gender) {
-            if (gender === MISAEnum.Gender.Male) {
-                return "Nam";
-            } else if (gender === MISAEnum.Gender.Female) {
-                return "Nữ";
-            } else if (gender === MISAEnum.Gender.Other) {
-                return "Khác";
+            try {
+                if (gender === MISAEnum.Gender.Male) {
+                    return "Nam";
+                } else if (gender === MISAEnum.Gender.Female) {
+                    return "Nữ";
+                } else if (gender === MISAEnum.Gender.Other) {
+                    return "Khác";
+                }
+            } catch (error) {
+                console.log(error);
             }
         },
         /**
@@ -302,11 +306,17 @@ export default {
          * Author: KienNT (04/03/2023)
          */
         handleClickOptionMenu(event, employee) {
-            this.employeeIdSelected = employee.EmployeeId;
-            this.employeeCodeSelected = employee.EmployeeCode;
-            this.isContextMenu = !this.isContextMenu;
-            this.leftContextMenu = event.target.getBoundingClientRect().x - 70;
-            this.topContextMenu = event.target.getBoundingClientRect().y + 25;
+            try {
+                this.employeeIdSelected = employee.EmployeeId;
+                this.employeeCodeSelected = employee.EmployeeCode;
+                this.isContextMenu = !this.isContextMenu;
+                this.leftContextMenu =
+                    event.target.getBoundingClientRect().x - 70;
+                this.topContextMenu =
+                    event.target.getBoundingClientRect().y + 25;
+            } catch (error) {
+                console.log(error);
+            }
         },
 
         /**

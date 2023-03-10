@@ -5,6 +5,7 @@
 export default {
     name: "MHeading",
     props: {
+        // text của heading
         text: {
             type: String,
             default: "",

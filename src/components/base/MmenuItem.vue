@@ -13,11 +13,13 @@
 export default {
     name: "MmenuItem",
     props: {
+        // text của menu
         text: {
             type: String,
             default: "",
             required: true,
         },
+        // class của menu
         className: {
             type: String,
             default: "",

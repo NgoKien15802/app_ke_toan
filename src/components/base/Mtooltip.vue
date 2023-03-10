@@ -14,16 +14,19 @@
 export default {
     name: "MTooltip",
     props: {
+        // text ngoài của 1 subtext
         text: {
             type: String,
             default: "",
         },
+        // giá trị bên trong tooltip
         subtext: {
             type: String,
             default: "",
             required: true,
         },
 
+        // loại tooltip
         kind: {
             type: String,
             default: "title",

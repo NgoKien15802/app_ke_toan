@@ -62,14 +62,18 @@ import axios from "axios";
 export default {
     name: "MCombobox",
     props: {
+        // giá trị cần binding ra ngoài khi sử dụng component
         modelValue: [String, Number, Boolean],
+        // có show tooltip ko?
         isShowTooltip: {
             type: Boolean,
             default: false,
         },
+        // tabindex của input
         tabindex: {
             type: String,
         },
+        // tên phòng ban khi truyền từ popup
         departmentName: {
             type: String,
         },

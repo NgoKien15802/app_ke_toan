@@ -24,15 +24,19 @@ export default {
     name: "MRadio",
 
     props: {
+        // giá trị cần binding khi sử dụng component
         modelValue: [String, Number, Boolean],
+        // id của radio
         id: {
             type: String,
             default: "nam",
         },
+        // text label của radio
         text: {
             type: String,
             default: "Nam",
         },
+        // checked hay không checked
         checked: {
             type: Boolean,
             default: false,

@@ -136,8 +136,12 @@ export default {
          * Author: KienNT (06/03/2023)
          */
         handleOpenDropdown() {
-            this.$refs["iconDropdown"].classList.toggle("rorate-180");
-            this.isOpenDropdown = !this.isOpenDropdown;
+            try {
+                this.$refs["iconDropdown"].classList.toggle("rorate-180");
+                this.isOpenDropdown = !this.isOpenDropdown;
+            } catch (error) {
+                console.log(error);
+            }
         },
 
         /**
@@ -145,19 +149,23 @@ export default {
          * Author: KienNT (06/03/2023)
          */
         handleClickItem(event) {
-            this.optionItem.forEach((option) => {
-                if (option.isActive === true) {
-                    option.isActive = false;
-                }
-            });
-            this.optionItem.forEach((option) => {
-                if (event.target.textContent.indexOf(option.text) !== -1) {
-                    option.isActive = true;
-                    this.valueInput = event.target.textContent;
-                } else {
-                    option.isActive = false;
-                }
-            });
+            try {
+                this.optionItem.forEach((option) => {
+                    if (option.isActive === true) {
+                        option.isActive = false;
+                    }
+                });
+                this.optionItem.forEach((option) => {
+                    if (event.target.textContent.indexOf(option.text) !== -1) {
+                        option.isActive = true;
+                        this.valueInput = event.target.textContent;
+                    } else {
+                        option.isActive = false;
+                    }
+                });
+            } catch (error) {
+                console.log(error);
+            }
         },
     },
 };

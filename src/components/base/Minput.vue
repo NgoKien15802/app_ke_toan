@@ -25,54 +25,70 @@ import MISAResouce from "@/js/resource";
 export default {
     name: "MInput",
     props: {
+        // giá trị cần binding khi sử dụng component input
         modelValue: [String, Number, Boolean],
+        // loại input: date, text,...
         type: {
             type: String,
             default: "text",
         },
+        // style css cho input
         style: {
             type: String,
         },
+        // id cho input
         id: {
             type: String,
             default: "",
         },
-        text: {
-            type: String,
-            default: "",
-        },
+        // //
+        // text: {
+        //     type: String,
+        //     default: "",
+        // },
+
+        // name của input
         name: {
             type: String,
             default: "",
         },
+        // tabindex của input
         tabindex: {
             type: String,
             default: "",
         },
+        // class của input
         className: {
             type: String,
             default: "",
         },
+        // placholder của input
         placeHolder: {
             type: String,
             default: "",
         },
+
+        // loại input
         kind: {
             type: String,
             default: "default",
             required: true,
         },
+        // có bắt buộc không?
         required: {
             type: Boolean,
             default: false,
         },
+        // tự động hoàn thành
         autocomplete: {
             type: String,
             default: "off",
         },
+        // có show tooltip không?
         isShowTooltip: {
             type: Boolean,
         },
+        // có được focus không?
         isFocus: {
             type: Boolean,
             required: false,
