@@ -113,8 +113,8 @@
         :message="
             MISAResouce.vi.MessageWarning + employeeCodeSelected + ' không?'
         "
-        :BtnWarningNo="MISAResouce.vi.BtnNo"
-        :textButton="MISAResouce.vi.BtnYes"
+        :BtnWarningNo="MISAResouce.vi.BtnDestroyDialog"
+        :textButton="MISAResouce.vi.BtnDeleteDialog"
         @onBtnWarningNo="onBtnWarningNo"
         @onBtnWarningYes="onBtnWarningYes"
         kind="warning"
@@ -186,7 +186,9 @@ export default {
         formatDate() {
             return (dateTime) => {
                 try {
-                    return moment(dateTime).format("DD/MM/YYYY");
+                    return dateTime
+                        ? moment(dateTime).format("DD/MM/YYYY")
+                        : null;
                 } catch (error) {
                     console.log(error);
                 }
@@ -207,7 +209,9 @@ export default {
          * Author: KienNT (06/03/2023)
          */
         handleCheckbox(event) {
-            this.selectedAll = event.target.checked;
+            if (!event.target.checked) {
+                this.selectedAll = event.target.checked;
+            }
         },
         /**
          * Xử lý khi click vào select all
@@ -251,10 +255,10 @@ export default {
                     .then(this.hideShowLoading(true))
                     .then((res) => {
                         console.log(res);
-                        alert("sccuess");
                         this.isDialogWarning = false;
+                        this.hideShowLoading(false);
+                        this.$emit("hideShowToast", "delete");
                     })
-                    .then(this.hideShowLoading(false))
                     .catch((error) => {
                         console.log(error);
                         this.hideShowLoading(false);

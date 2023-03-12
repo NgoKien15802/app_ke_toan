@@ -44,6 +44,7 @@
                     <TheTable
                         @hideShowLoading="hideShowLoading"
                         @onDoubleClick="onDoubleClick"
+                        @hideShowToast="hideShowToast"
                     ></TheTable>
                     <!-- end table -->
 
@@ -63,12 +64,28 @@
                     @hideShowLoading="hideShowLoading"
                     :employeeIdSelected="employeeIdSelected"
                     :textTitlePopup="textTitlePopup"
+                    @hideShowToast="hideShowToast"
                 ></ThePopup>
 
                 <!-- begin dialog -->
 
                 <!-- loading -->
                 <Mloading v-if="isLoading"></Mloading>
+
+                <!-- Toast -->
+                <MToast
+                    v-if="
+                        isShowToastAdd || isShowToastEdit || isShowToastDelete
+                    "
+                    classIcon="toast__icon-success"
+                    :kind="MISAResouce.vi.ToastTitleSuccess"
+                    :text="
+                        (isShowToastAdd && MISAResouce.vi.ToastAddSuccess) ||
+                        (isShowToastEdit && MISAResouce.vi.ToastEditSuccess) ||
+                        (isShowToastDelete && MISAResouce.vi.ToastDeleteSuccess)
+                    "
+                    classTitle="toast__title-success"
+                ></MToast>
             </div>
         </div>
     </div>
@@ -86,6 +103,9 @@ export default {
             MISAResouce,
             isShowPopup: false,
             isLoading: false,
+            isShowToastAdd: false,
+            isShowToastEdit: false,
+            isShowToastDelete: false,
             employeeIdSelected: null,
             textTitlePopup: "",
         };
@@ -146,6 +166,37 @@ export default {
         hideShowLoading(isLoading) {
             try {
                 this.isLoading = isLoading;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
+         * Hàm hiện thị toast khi thực hiện thêm, sửa, xóa thành công
+         * Author: KienNT (11/03/2023)
+         * @param (isToast): tham số là true, false ẩn hiển
+         */
+        hideShowToast(kind) {
+            try {
+                switch (kind) {
+                    case "add":
+                        this.isShowToastAdd = true;
+                        setTimeout(() => (this.isShowToastAdd = false), 3000);
+                        break;
+                    case "edit":
+                        this.isShowToastEdit = true;
+                        setTimeout(() => (this.isShowToastEdit = false), 3000);
+                        break;
+                    case "delete":
+                        this.isShowToastDelete = true;
+                        setTimeout(
+                            () => (this.isShowToastDelete = false),
+                            3000
+                        );
+                        break;
+                    default:
+                        break;
+                }
             } catch (error) {
                 console.log(error);
             }

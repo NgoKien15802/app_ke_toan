@@ -7,6 +7,7 @@ import MDialog from "./components/base/Mdialog.vue";
 import MHeading from "./components/base/Mheading.vue";
 import MRadio from "./components/base/Mradio.vue";
 import MTooltip from "./components/base/Mtooltip.vue";
+import MToast from "./components/base/Mtoast.vue";
 
 const app = createApp(App);
 /**
@@ -21,4 +22,5 @@ app.component("MDialog", MDialog);
 app.component("MHeading", MHeading);
 app.component("MRadio", MRadio);
 app.component("MTooltip", MTooltip);
+app.component("MToast", MToast);
 app.mount("#app");

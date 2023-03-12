@@ -668,8 +668,6 @@
             @onClickBtnYes="onClickBtnYes"
             kind="notify"
         ></MDialog>
-
-        <!-- Toast -->
     </div>
 </template>
 <script>
@@ -699,6 +697,7 @@ export default {
             errorExistId: "",
             isDialogError: false,
             isDialogNotify: false,
+
             oldEmployee: {},
             isTooltip: {
                 isTooltipEmployeeCode: false,
@@ -730,6 +729,7 @@ export default {
              * Author: KienNT (03/03/2023)
              */
             if (this.isEmpty(this.dataEmployeeIdSelected)) {
+                this.departmentName = null;
                 this.getNewEmployeeCode();
             } else {
                 axios
@@ -950,7 +950,7 @@ export default {
                                     this.departmentName = "";
                                 }
                                 this.$emit("hideShowLoading", false);
-                                console.log("Thêm mới thành công");
+                                this.$emit("hideShowToast", "add");
                             })
                             .catch((error) => {
                                 let response = error.response;
@@ -997,7 +997,7 @@ export default {
                                     this.dataEmployeeIdSelected = null;
                                 }
                                 this.$emit("hideShowLoading", false);
-                                console.log("Sửa thành công");
+                                this.$emit("hideShowToast", "edit");
                             })
                             .catch((error) => {
                                 // bắt lỗi nếu sửa trùng mã của bản ghi khác

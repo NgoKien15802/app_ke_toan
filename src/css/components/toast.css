@@ -1,7 +1,9 @@
 .toast__list {
     position: fixed;
-    right: 24px;
-    bottom: 24px;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 6;
 }
 
 .toast {

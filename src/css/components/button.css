@@ -29,6 +29,13 @@
     color: #fff;
 }
 
+/* delete */
+.btn-delete {
+    background-color: #de3617;
+    padding: 0 16px;
+    color: #fff;
+}
+
 /* default */
 
 .btn-default {
@@ -45,6 +52,10 @@
 
 .btn-default:hover {
     background-color: var(--boder-primary);
+}
+
+.btn-delete:hover {
+    background-color: #c2270b;
 }
 
 /* icon button */
@@ -137,6 +148,10 @@
 }
 .btn-plus:active .btn-plus-svg {
     color: var(--white-color);
+}
+
+.btn-delete:active {
+    background-color: #911a05;
 }
 
 .btn-default:active {

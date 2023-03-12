@@ -265,6 +265,13 @@
     object-fit: cover;
 }
 
+/* .toast__icon-success {
+    background-image: url("../../assets/img/success.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+} */
+
 /* dialog icon error */
 .dialog__icon-error {
     background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -752px -462px;

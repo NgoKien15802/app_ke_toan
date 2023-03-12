@@ -91,6 +91,8 @@ const MISAResouce = {
         // button
         BtnDestroy: "Hủy",
         BtnYes: "Có",
+        BtnDestroyDialog: "Hủy bỏ",
+        BtnDeleteDialog: "Xóa",
         BtnNo: "Không",
         BtnSaveEndAdd: "Cất và thêm",
         BtnSave: "Cất",
@@ -102,6 +104,12 @@ const MISAResouce = {
         DialogWarning: "Cảnh báo",
         MessageNotify: "Dữ liệu của bạn đã thay đổi bạn có muốn cất không?",
         MessageWarning: "Bạn có muốn xóa nhân viên ",
+
+        // toast
+        ToastAddSuccess: "Nhân viên đã được thêm",
+        ToastDeleteSuccess: "Nhân viên đã bị xóa",
+        ToastEditSuccess: "Nhân viên đã được sửa",
+        ToastTitleSuccess: "Thành công",
     },
     en: {
         // Employee
@@ -189,6 +197,8 @@ const MISAResouce = {
         // button
         BtnDestroy: "Destroy",
         BtnSaveEndAdd: "Save End Add",
+        BtnDestroyDialog: "Destroy",
+        BtnDeleteDialog: "Delete",
         BtnSave: "Save",
         BtnClose: "Close",
         BtnYes: "Yes",
@@ -201,6 +211,12 @@ const MISAResouce = {
 
         MessageNotify: "Your data has changed do you want to save it?",
         MessageWarning: "Do you want to delete an employee ",
+
+        // toast
+        ToastAddSuccess: "Staff has been added",
+        ToastDeleteSuccess: "Employee has been deleted",
+        ToastEditSuccess: "Staff has been edited",
+        ToastTitleSuccess: "Success",
     },
 };
 export default MISAResouce;

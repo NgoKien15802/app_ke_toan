@@ -42,13 +42,13 @@
                 </div>
             </div>
             <div v-if="kind === 'warning'" class="dialog__footer">
-                <div class="btn btn-default" @click="onBtnWarningNo">
-                    {{ BtnWarningNo }}
-                </div>
+                <div class=""></div>
                 <div class="dialog__footer-right">
-                    <div class=""></div>
+                    <div class="btn btn-default" @click="onBtnWarningNo">
+                        {{ BtnWarningNo }}
+                    </div>
                     <MButton
-                        class="btn-primary dialog-close flex-end"
+                        class="btn-delete dialog-close flex-end"
                         :text="textButton"
                         :click="onBtnWarningYes"
                     >
