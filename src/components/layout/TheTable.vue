@@ -71,10 +71,10 @@
                 </td>
                 <td class="text-align-left">{{ employee?.IdentityNumber }}</td>
                 <td class="text-align-left">{{ employee?.PositionName }}</td>
-                <td class="text-align-left">{{ employee?.DepartmentName }}</td>
-                <td class="text-align-left"></td>
-                <td class="text-align-left"></td>
-                <td class="text-align-left"></td>
+                <td class="text-align-left">{{ employee?.DepartmentId }}</td>
+                <td class="text-align-left">{{ employee?.BankAccount }}</td>
+                <td class="text-align-left">{{ employee?.BankName }}</td>
+                <td class="text-align-left">{{ employee?.BankBranch }}</td>
                 <td class="dropdown-fun text-align-center">
                     <MButton
                         kind="link"
@@ -111,7 +111,11 @@
         iconClass="dialog__icon-warning"
         :title="MISAResouce.vi.DialogWarning"
         :message="
-            MISAResouce.vi.MessageWarning + employeeCodeSelected + ' không?'
+            MISAResouce.vi.MessageWarning +
+            employeeCodeSelected +
+            ' ' +
+            MISAResouce.vi.BtnNo +
+            '?'
         "
         :BtnWarningNo="MISAResouce.vi.BtnDestroyDialog"
         :textButton="MISAResouce.vi.BtnDeleteDialog"
@@ -158,7 +162,7 @@ export default {
     created() {
         try {
             axios
-                .get("https://apidemo.laptrinhweb.edu.vn/api/v1/Employees")
+                .get("https://localhost:7153/api/v1/Employees")
                 .then(this.hideShowLoading(true))
                 .then((response) => {
                     this.employees = response.data;
@@ -250,7 +254,7 @@ export default {
             try {
                 axios
                     .delete(
-                        `https://apidemo.laptrinhweb.edu.vn/api/v1/Employees/${this.employeeIdSelected}`
+                        `https://localhost:7153/api/v1/Employees/${this.employeeIdSelected}`
                     )
                     .then(this.hideShowLoading(true))
                     .then((res) => {

@@ -202,7 +202,7 @@
                                         :placeHolder="
                                             MISAResouce.vi.LabelJobTitle.toLowerCase()
                                         "
-                                        v-model="newEmployee.MartialStatusName"
+                                        v-model="newEmployee.PositionName"
                                     />
                                 </div>
                             </div>
@@ -732,19 +732,23 @@ export default {
                 this.departmentName = null;
                 this.getNewEmployeeCode();
             } else {
+                /**
+                 * Call API lấy ra id bất kỳ khi có id để sửa
+                 * Author: KienNT (03/03/2023)
+                 */
                 axios
                     .get(
-                        `https://apidemo.laptrinhweb.edu.vn/api/v1/Employees/${this.dataEmployeeIdSelected}`
+                        `https://localhost:7153/api/v1/Employees/${this.dataEmployeeIdSelected}`
                     )
                     .then(this.$emit("hideShowLoading", true))
                     .then((res) => {
                         this.newEmployee = res.data;
                         //có API thì sửa department ở đây
                         this.departmentName = this.newEmployee.DepartmentId;
-                        this.newEmployee.DateOfBirth = this.convertDate(
+                        this.newEmployee.DateOfBirth = this.formatDate(
                             this.newEmployee.DateOfBirth
                         );
-                        this.newEmployee.IdentityDate = this.convertDate(
+                        this.newEmployee.IdentityDate = this.formatDate(
                             this.newEmployee.IdentityDate
                         );
                         this.oldEmployee = JSON.stringify(this.newEmployee);
@@ -850,7 +854,7 @@ export default {
             try {
                 axios
                     .get(
-                        "https://apidemo.laptrinhweb.edu.vn/api/v1/Employees/NewEmployeeCode"
+                        "https://localhost:7153/api/v1/Employees/NewEmployeeCode"
                     )
                     .then(this.$emit("hideShowLoading", true))
                     .then((response) => {
@@ -927,11 +931,12 @@ export default {
         btnSaveAndClose(isCloseForm) {
             try {
                 if (this.handleValidate()) {
-                    // thêm nhân viên nếu có employeeIdSelected
+                    console.log(this.newEmployee);
+                    // thêm nhân viên nếu ko có employeeIdSelected
                     if (this.isEmpty(this.dataEmployeeIdSelected)) {
                         axios
                             .post(
-                                "https://apidemo.laptrinhweb.edu.vn/api/v1/Employees",
+                                "https://localhost:7153/api/v1/Employees",
                                 this.newEmployee
                             )
                             .then(this.$emit("hideShowLoading", true))
@@ -977,7 +982,7 @@ export default {
                         // Sửa nhân viên theo id
                         axios
                             .put(
-                                `https://apidemo.laptrinhweb.edu.vn/api/v1/Employees/${this.dataEmployeeIdSelected}`,
+                                `https://localhost:7153/api/v1/Employees/${this.dataEmployeeIdSelected}`,
                                 this.newEmployee
                             )
 
@@ -1487,7 +1492,7 @@ export default {
          *  Hàm convert sang ngày, tháng, năm để hiển thị lên input date
          *  Author:KienNT(04/03/2023)
          */
-        convertDate() {
+        formatDate() {
             return (inputString = "") => {
                 try {
                     if (inputString !== null) {

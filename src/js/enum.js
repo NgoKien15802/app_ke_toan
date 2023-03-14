@@ -1,8 +1,8 @@
 const MISAEnum = {
     // giới tính
     Gender: {
-        Male: 1,
-        Female: 0,
+        Male: 0,
+        Female: 1,
         Other: 2,
     },
 };

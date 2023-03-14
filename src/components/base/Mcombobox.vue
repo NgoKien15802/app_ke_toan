@@ -108,7 +108,7 @@ export default {
     created() {
         try {
             axios
-                .get("https://apidemo.laptrinhweb.edu.vn/api/v1/Departments")
+                .get("https://localhost:7153/api/v1/Departments")
                 .then((res) => {
                     this.departments = res.data;
                     this.oldDepartments = this.departments;
