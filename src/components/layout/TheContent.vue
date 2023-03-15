@@ -16,8 +16,14 @@
 
         <div class="content__main">
             <!-- header main -->
-            <div class="content__main-header">
-                <div class="content__main-left">
+            <div
+                class="content__main-header"
+                :style="selectedCheckbox.length < 1 && 'justify-content: end'"
+            >
+                <div
+                    v-if="selectedCheckbox.length >= 1"
+                    class="content__main-left"
+                >
                     <p>
                         {{ MISAResouce.vi.SelectedCheckbox }}
                         <strong>{{ selectedCheckbox.length }}</strong>
@@ -27,6 +33,13 @@
                         className="link-btn btn-link-delete"
                         :click="handleUndoSeleted"
                         :text="MISAResouce.vi.UndoSelected"
+                    ></MButton>
+
+                    <MButton
+                        v-if="isCheckedAll"
+                        kind="link"
+                        className="link-btn btn-link-selectAll"
+                        :text="MISAResouce.vi.SelectAllPage"
                     ></MButton>
 
                     <MButton
@@ -129,6 +142,7 @@ export default {
             employeeIdSelected: null,
             textTitlePopup: "",
             selectedCheckbox: [],
+            isCheckedAll: false,
         };
     },
     components: {
@@ -139,11 +153,13 @@ export default {
     },
     methods: {
         /**
-         * Hàm gán giá trị mảng các checkbox được check
+         * Hàm gán giá trị mảng các checkbox được check, isChecked all là true thì hiển thị chọn tất cả các trang
          * Author: KienNT (15/03/2023)
+         *  @param (selectedCheckbox,isCheckedAll): tham số 1 là mảng checkbox được chọn, tham số 2 là true nếu được check hết
          */
-        handleSelectChechbox(selectedCheckbox) {
+        handleSelectChechbox(selectedCheckbox, isCheckedAll) {
             this.selectedCheckbox = selectedCheckbox;
+            this.isCheckedAll = isCheckedAll;
         },
 
         /**
@@ -179,6 +195,7 @@ export default {
         /**
          * Hàm handle khi double click và lấy id employee
          * Author: KienNT (04/03/2023)
+         *  @param (employee): tham số 1 là danh object chứa các thông tin nhân viên
          */
         onDoubleClick(employee) {
             try {

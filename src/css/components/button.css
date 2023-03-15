@@ -104,6 +104,14 @@
     color: var(--color-red-active);
 }
 
+.btn-link-selectAll {
+    color: var(--color-blue);
+}
+
+.btn-link-selectAll:active {
+    color: var(--color-blue-active);
+}
+
 /* button plus */
 .btn-plus {
     height: 36px;

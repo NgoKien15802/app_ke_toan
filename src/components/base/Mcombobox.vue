@@ -26,11 +26,6 @@
             v-model="department"
             class="input__type combobox-input input--required reset-input"
             autocomplete="off"
-            :placeHolder="
-                MISAResouce.vi.Enter +
-                ' ' +
-                MISAResouce.vi.LabelDepartmentName.toLowerCase()
-            "
             ref="departmentInput"
         />
 

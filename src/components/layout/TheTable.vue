@@ -225,6 +225,7 @@ export default {
         /**
          * Theo dõi sự thay đổi employees sau đó lọc các checkbox checked
          * Author: KienNT (15/03/2023)
+         * @param (newValue): employees mới
          */
         employees: {
             handler: function (newValue) {
@@ -232,7 +233,11 @@ export default {
                     this.isCheckedArr = newValue.filter((el) => {
                         return el.Selected === true;
                     });
-                    this.$emit("handleSelectChechbox", this.isCheckedArr);
+                    this.$emit(
+                        "handleSelectChechbox",
+                        this.isCheckedArr,
+                        this.isCheckedArr.length === newValue.length
+                    );
                 } catch (error) {
                     console.log(error);
                 }
@@ -245,6 +250,7 @@ export default {
         /**
          * Xử lý loading gửi emit lên cha
          * Author: KienNT (07/03/2023)
+         * @param (isLoading): tham số là giá trị boolean loading có hay không
          */
         hideShowLoading(isLoading) {
             this.$emit("hideShowLoading", isLoading);
@@ -252,6 +258,7 @@ export default {
         /**
          * Xử lý khi click vào select item
          * Author: KienNT (06/03/2023)
+         *   @param (event): là event
          */
         handleCheckbox(event) {
             if (!event.target.checked) {
@@ -261,6 +268,7 @@ export default {
         /**
          * Xử lý khi click vào select all
          * Author: KienNT (06/03/2023)
+         *  @param (event): là event
          */
         handleCheckboxAll(event) {
             try {
@@ -328,6 +336,7 @@ export default {
         /**
          * Hàm thực hiện format gender
          * Author: KienNT (02/03/2023)
+         *  @param (gender): là số cần truyền convert sang text
          */
         formatGender(gender) {
             try {
@@ -345,6 +354,7 @@ export default {
         /**
          * Hàm gửi emit lên cha để lấy id employee
          * Author: KienNT (04/03/2023)
+         *  @param (employee): Tham số là object chứa thông tin nhân viên
          */
         doubleClickRow(employee) {
             this.$emit("onDoubleClick", employee);
@@ -353,6 +363,7 @@ export default {
         /**
          * Hàm lấy toại độ sau đó set tọa độ cho contextmenu để hiển thị
          * Author: KienNT (04/03/2023)
+         *  @param (event,employee): tham số 1 là event, tham số 2 là thông tin của 1 nhân viên
          */
         handleClickOptionMenu(event, employee) {
             try {

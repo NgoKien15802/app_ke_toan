@@ -30,19 +30,21 @@
     height: 36px;
 }
 
-.navbar {
+.paging__record-footer {
     display: flex;
     align-items: center;
     column-gap: 16px;
+    width: 70%;
 }
 
-.navbar__item {
-    text-decoration: none;
-    color: #212121;
+.paging__record-footer-iconRight {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -84px -361px;
+    width: 8px;
+    height: 14px;
 }
 
-.navbar__item.active {
-    border: 1px solid var(--boder-primary);
-    font-weight: 700;
-    padding: 0 7px;
+.paging__record-footer-iconLeft {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -36px -361px;
+    width: 8px;
+    height: 14px;
 }

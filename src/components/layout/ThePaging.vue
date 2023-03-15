@@ -2,7 +2,6 @@
     <div class="content__main-paging">
         <p class="content__main-paging-left">
             {{ MISAResouce.vi.Total }}: <strong>1035</strong>
-            {{ MISAResouce.vi.Record }}
         </p>
         <div class="content__main-paging-right">
             <div
@@ -42,18 +41,14 @@
                     </div>
                 </div>
             </div>
-            <div class="navbar">
-                <a href="#" class="navbar__item">
-                    {{ MISAResouce.vi.Previous }}
-                </a>
-                <a href="#" class="navbar__item active">1</a>
-                <a href="#" class="navbar__item">2</a>
-                <a href="#" class="navbar__item">3</a>
-                <a href="#" class="navbar__item">...</a>
-                <a href="#" class="navbar__item">52</a>
-                <a href="#" class="navbar__item">
-                    {{ MISAResouce.vi.Next }}
-                </a>
+            <div class="paging__record-footer">
+                <div>1 - 4 {{ MISAResouce.vi.Record }}</div>
+                <div class="wrap-icon">
+                    <div class="paging__record-footer-iconLeft"></div>
+                </div>
+                <div class="wrap-icon">
+                    <div class="paging__record-footer-iconRight"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -107,6 +102,7 @@ export default {
         /**
          * nghe sự kiện window. Nếu click ko phải là dropdown thì ẩn dropdown
          * Author: KienNT (06/03/2023)
+         *   @param (event): là event
          */
         handleOutsideClick(event) {
             try {
@@ -147,6 +143,7 @@ export default {
         /**
          * handle khi click option item
          * Author: KienNT (06/03/2023)
+         *   @param (event): là event
          */
         handleClickItem(event) {
             try {

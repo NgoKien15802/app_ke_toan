@@ -15,7 +15,6 @@
             required ? ' input--required ' : '',
             isShowTooltip ? 'input-required' : '',
         ]"
-        :placeholder="MISAResouce.vi.Enter + ' ' + placeHolder"
         v-model="value"
     />
     <!-- @input="$emit('update:modelValue', $event.target.value)" -->

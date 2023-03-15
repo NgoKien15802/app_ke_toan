@@ -74,9 +74,6 @@
                                             "
                                             :required="true"
                                             ref="txtEmployeeCode"
-                                            :placeHolder="
-                                                MISAResouce.vi.LabelEmployeeCode.toLowerCase()
-                                            "
                                             @blur="
                                                 isEmpty(
                                                     newEmployee.EmployeeCode
@@ -127,9 +124,6 @@
                                             "
                                             ref="txtFullName"
                                             :required="true"
-                                            :placeHolder="
-                                                MISAResouce.vi.LabelEmployeeName.toLowerCase()
-                                            "
                                             @blur="
                                                 isEmpty(newEmployee.FullName)
                                                     ? (isTooltip.isTooltipEmployeeName = true)
@@ -199,9 +193,6 @@
                                         name="MartialStatusName"
                                         kind="default"
                                         ref="txtPositionName"
-                                        :placeHolder="
-                                            MISAResouce.vi.LabelJobTitle.toLowerCase()
-                                        "
                                         v-model="newEmployee.PositionName"
                                     />
                                 </div>
@@ -321,9 +312,6 @@
                                             ref="txtIdentityNumber"
                                             class="check-number"
                                             v-model="newEmployee.IdentityNumber"
-                                            :placeHolder="
-                                                MISAResouce.vi.TooltipIdentityNumber.toLowerCase()
-                                            "
                                             :isShowTooltip="
                                                 isTooltip.isTooltipIdentityNumber
                                             "
@@ -367,6 +355,9 @@
                                             ref="txtIdentityDate"
                                             tabindex="8"
                                             kind="default"
+                                            style="
+                                                font-family: Arial, sans-serif;
+                                            "
                                             v-model="newEmployee.IdentityDate"
                                             :isShowTooltip="
                                                 isTooltip.isTooltipIdentityDate
@@ -405,9 +396,6 @@
                                         name="IdentityPlace"
                                         kind="default"
                                         ref="txtIdentityPlace"
-                                        :placeHolder="
-                                            MISAResouce.vi.LabelIdentityPlace.toLowerCase()
-                                        "
                                         v-model="newEmployee.IdentityPlace"
                                     />
                                 </div>
@@ -427,9 +415,6 @@
                                     name="Address"
                                     kind="default"
                                     ref="txtAddress"
-                                    :placeHolder="
-                                        MISAResouce.vi.LabelAddress.toLowerCase()
-                                    "
                                     v-model="newEmployee.Address"
                                 />
                             </div>
@@ -452,9 +437,6 @@
                                     class="check-number"
                                     kind="default"
                                     ref="txtPhoneNumber"
-                                    :placeHolder="
-                                        MISAResouce.vi.TooltipPhoneNumber.toLowerCase()
-                                    "
                                     v-model="newEmployee.PhoneNumber"
                                 />
                             </div>
@@ -476,9 +458,6 @@
                                     name="LandlineNumber"
                                     kind="default"
                                     ref="txtLandlineNumber"
-                                    :placeHolder="
-                                        MISAResouce.vi.TooltipFixPhoneNumber.toLowerCase()
-                                    "
                                     v-model="newEmployee.LandlineNumber"
                                 />
                             </div>
@@ -499,9 +478,6 @@
                                         name="Email"
                                         ref="txtEmail"
                                         kind="default"
-                                        :placeHolder="
-                                            MISAResouce.vi.LabelEmail.toLowerCase()
-                                        "
                                         v-model="newEmployee.Email"
                                         :isShowTooltip="
                                             isTooltip.isTooltipEmail
@@ -544,9 +520,6 @@
                                         class="check-number"
                                         kind="default"
                                         ref="txtBankAccount"
-                                        :placeHolder="
-                                            MISAResouce.vi.LabelBankAccount.toLowerCase()
-                                        "
                                         v-model="newEmployee.BankAccount"
                                         :isShowTooltip="
                                             isTooltip.isTooltipBankAccount
@@ -581,9 +554,6 @@
                                     ref="txtBankName"
                                     class="check-string"
                                     kind="default"
-                                    :placeHolder="
-                                        MISAResouce.vi.LabelBankName.toLowerCase()
-                                    "
                                     v-model="newEmployee.BankName"
                                 />
                             </div>
@@ -597,9 +567,6 @@
                                     name="BankBranch"
                                     ref="txtBankBranch"
                                     kind="default"
-                                    :placeHolder="
-                                        MISAResouce.vi.LabelBankBranch.toLowerCase()
-                                    "
                                     v-model="newEmployee.BankBranch"
                                 />
                             </div>
@@ -772,6 +739,7 @@ export default {
         /**
          * Theo dõi đối tượng employee có thay đổi hay không. Nếu thay đổi thì binding bên input luôn
          * Author: KienNT (01/03/2023)
+         *   @param (newValue): là employee mới
          */
         newEmployee: {
             handler: function (newValue) {
@@ -831,6 +799,7 @@ export default {
         /**
          * Hàm lấy department id từ combobox
          * Author: KienNT (09/03/2023)
+         * @param (selectedDepartmentId): tham số là 1 departmentId muốn lấy
          */
         selectedDepartment(selectedDepartmentId) {
             try {
@@ -843,7 +812,7 @@ export default {
         /**
          * Hàm lấy giá trị input bên cb sau đó check isEmpty
          * Author: KienNT (09/03/2023)
-         * @param {valueInput}: Giá trị của value được emit từ con
+         * @param (valueInput): Giá trị của value được emit từ con
          */
         handleCheckEmpty(valueInput) {
             try {
@@ -937,7 +906,7 @@ export default {
         /**
          * Hàm validate thành công thì cất data và đóng form, cất và thêm thì cất và data reset form
          * Author: KienNT (02/03/2023)
-         *  @param {value}: tham số 1: là true, false hiển thị popup
+         *  @param (value): tham số 1: là true, false hiển thị popup
          */
         btnSaveAndClose(isCloseForm) {
             try {
@@ -1152,7 +1121,7 @@ export default {
         /**
          * Hàm check isEmpty
          * Author: KienNT (04/03/2023)
-         *  @param {fieldName, fieldValue, errorLabel}: tham số 1: tooltip the label, tham số 2 là giá trị ô input, tham số 3: label lỗi, tham số 4 là ref
+         *  @param (fieldName,fieldValue,errorLabel): tham số 1: tooltip the label, tham số 2 là giá trị ô input, tham số 3: label lỗi, tham số 4 là ref
          */
         checkField(fieldName, fieldValue, errorLabel, field) {
             try {
@@ -1204,7 +1173,7 @@ export default {
         /**
          * Hàm check invalid
          * Author: KienNT (06/03/2023)
-         *  @param (fieldName, fieldValue, errorLabel): tham số 1: true,false tooltip label, tham số 2 là giá trị ô input, tham số 3: label lỗi, tham số 4: loại (email,date,..), tham số 5 loại label lỗi
+         *  @param (fieldName,fieldValue,errorLabel): tham số 1: true,false tooltip label, tham số 2 là giá trị ô input, tham số 3: label lỗi, tham số 4: loại (email,date,..), tham số 5 loại label lỗi
          */
         checkFieldInvalid(
             fieldName,
@@ -1261,7 +1230,7 @@ export default {
         /**
          * Hàm lấy tabindex của ptu đó để gán lỗi vào mảng ở STT đó để set focus vào ô đầu tiên
          * Author: KienNT (02/03/2023)
-         * @param {fieldName}: field cần lấy tabindex
+         * @param (fieldName): field cần lấy tabindex
          */
         getTabIndex(fieldName) {
             try {
@@ -1281,7 +1250,7 @@ export default {
         /**
          * Hàm kiểm tra input có rỗng không
          * Author: KienNT (02/03/2023)
-         * @param {value}: tham số là giá trị chuỗi từ input
+         * @param (value): tham số là giá trị chuỗi từ input
          */
         isEmpty(value) {
             try {
@@ -1298,7 +1267,7 @@ export default {
         /**
          * Hàm kiểm tra input date có đúng là trước ngày hiện tại không
          * Author: KienNT (02/03/2023)
-         * @param {value}: tham số là giá trị chuỗi từ input và loại nào: date,...
+         * @param (value,kind): tham số 1 là giá trị chuỗi từ input và tham số 2 là loại: date,...
          */
         isInValid(value, kind) {
             try {
@@ -1343,7 +1312,7 @@ export default {
         /**
          * Hàm ẩn hiện tooltip
          * Author: KienNT (02/03/2023)
-         * @param {value}: tham số là true, false để hiển thị tooltip
+         * @param (isTooltip): tham số là true, false để hiển thị tooltip
          */
         hideShowTooltip(isTooltip) {
             try {
@@ -1356,7 +1325,7 @@ export default {
         /**
          * Hàm ẩn hiện dialog notify
          * Author: KienNT (04/03/2023)
-         * @param {value}: tham số là true, false để hiển thị dialog notify
+         * @param (isDialogNotify): tham số là true, false để hiển thị dialog notify
          */
 
         onClickBtnDestroy(isDialogNotify) {
@@ -1374,7 +1343,7 @@ export default {
         /**
          * Hàm ẩn hiện dialog và focus vào ô input lỗi đầu tiên
          * Author: KienNT (02/03/2023)
-         * @param {value}: tham số là true, false để hiển thị dialog
+         * @param (isDialogError): tham số là true, false để hiển thị dialog
          */
         hideShowDialogError(isDialogError) {
             try {
@@ -1440,7 +1409,7 @@ export default {
         /**
          *  handle khi nhấn phím tắt
          * Author: KienNT (15/03/2023)
-         *
+         * @param (event): là event
          */
         handlePressKeyShort(event) {
             // khi nhấn phím esc thì đóng form
@@ -1462,7 +1431,7 @@ export default {
         /**
          *  handle khi nhấn phím ctrl + s
          * Author: KienNT (09/03/2023)
-         *
+         * @param (event): là event
          */
         handlePress(event) {
             try {

@@ -22,8 +22,8 @@ const MISAResouce = {
         Delete: "Xoá",
 
         // Record
-        Total: "Tổng số",
-        Record: "Bản ghi",
+        Total: "Tổng",
+        Record: "bản ghi",
 
         // Error message
         ErrorEmpty: " không được để trống",
@@ -116,6 +116,7 @@ const MISAResouce = {
         // checkbox
         SelectedCheckbox: "Đã chọn: ",
         UndoSelected: "Bỏ chọn",
+        SelectAllPage: "Chọn tất cả các trang",
     },
     en: {
         // Employee
@@ -229,6 +230,7 @@ const MISAResouce = {
         // checkbox
         SelectedCheckbox: "selected: ",
         UndoSelected: "Undo Selected",
+        SelectAllPage: "Selete all page",
     },
 };
 export default MISAResouce;

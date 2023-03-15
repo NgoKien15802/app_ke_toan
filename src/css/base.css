@@ -7,6 +7,9 @@
     --color-red: #e61d1d;
     --color-red-active: #911a05;
 
+    --color-blue: #1565c0;
+    --color-blue-active: #08458a;
+
     /* border color primary */
     --boder-primary: #e0e0e0;
 
@@ -179,4 +182,9 @@ button {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+input[type="text"],
+input[type="date"] {
+    font-family: "Roboto", sans-serif;
 }
