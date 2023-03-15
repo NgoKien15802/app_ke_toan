@@ -96,6 +96,14 @@
     color: var(--btn-color-primary-press);
 }
 
+.btn-link-delete {
+    color: var(--color-red);
+}
+
+.btn-link-delete:active {
+    color: var(--color-red-active);
+}
+
 /* button plus */
 .btn-plus {
     height: 36px;
@@ -151,7 +159,7 @@
 }
 
 .btn-delete:active {
-    background-color: #911a05;
+    background-color: var(--color-red-active);
 }
 
 .btn-default:active {

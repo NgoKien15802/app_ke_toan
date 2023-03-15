@@ -1,5 +1,5 @@
 <template>
-    <div class="popup" @keydown="handlePressTab">
+    <div class="popup" @keydown="handlePress">
         <div class="popup__form">
             <div class="popup__form-wrapper">
                 <div class="popup__form-header">
@@ -23,8 +23,8 @@
                         </div>
                     </div>
                     <div class="form__header-right">
-                        <div class="form__header-question wrap-icon">
-                            <div class="form__header-icon-question tooltip">
+                        <div class="form__header-question wrap-icon tooltip">
+                            <div class="form__header-icon-question">
                                 <MTooltip
                                     kind="help"
                                     :subtext="MISAResouce.vi.TooltipHelp"
@@ -623,12 +623,16 @@
                 <div class="popup__form-footer-right">
                     <div>
                         <MButton
-                            class="btn btn-default close__add-employee"
+                            class="btn btn-default close__add-employee tooltip"
                             tabindex="17"
                             :text="MISAResouce.vi.BtnSave"
                             :click="() => btnSaveAndClose(true)"
                             ref="btnSave"
                         >
+                            <MTooltip
+                                kind="save"
+                                :subtext="MISAResouce.vi.TooltipSave"
+                            ></MTooltip>
                         </MButton>
                     </div>
                     <div>
@@ -804,6 +808,13 @@ export default {
         message: function () {},
     },
 
+    mounted() {
+        window.addEventListener("keydown", this.handlePressKeyShort);
+    },
+    beforeUnmount() {
+        window.removeEventListener("keydown", this.handlePressKeyShort);
+    },
+
     methods: {
         /**
          * Hàm click vào btn có trong dialog
@@ -882,7 +893,7 @@ export default {
         setFocusInput(element) {
             try {
                 this.$nextTick(function () {
-                    this.$refs[element].setFocus();
+                    this.$refs[element] && this.$refs[element].setFocus();
                 });
             } catch (error) {
                 console.log(error);
@@ -1351,7 +1362,10 @@ export default {
         onClickBtnDestroy(isDialogNotify) {
             try {
                 this.isDialogNotify = isDialogNotify;
-                this.firstFocus();
+                const isFocus = this.firstFocus();
+                if (!isFocus) {
+                    this.setFocusInput("txtEmployeeCode");
+                }
             } catch (error) {
                 console.log(error);
             }
@@ -1414,7 +1428,7 @@ export default {
                         const element = this.$refs[elementRef];
                         if (element && element.isShowTooltip) {
                             element.setFocus();
-                            break;
+                            return true;
                         }
                     }
                 }
@@ -1424,11 +1438,33 @@ export default {
         },
 
         /**
-         *  handle khi nhấn tab
+         *  handle khi nhấn phím tắt
+         * Author: KienNT (15/03/2023)
+         *
+         */
+        handlePressKeyShort(event) {
+            // khi nhấn phím esc thì đóng form
+            if (event.key === "Escape" || event.keyCode === 27) {
+                this.closePopup();
+            }
+
+            if (event.ctrlKey && event.key === "s") {
+                // Ngăn chặn trình duyệt thực hiện hành động mặc định của phím "Ctrl + S" là lưu trang web
+                event.preventDefault();
+                this.btnSaveAndClose(true);
+            }
+
+            if (event.ctrlKey && event.shiftKey && event.key === "s") {
+                this.btnSaveAndClose(false);
+            }
+        },
+
+        /**
+         *  handle khi nhấn phím ctrl + s
          * Author: KienNT (09/03/2023)
          *
          */
-        handlePressTab(event) {
+        handlePress(event) {
             try {
                 const btnDestroy = this.$refs["btnDestroy"];
 

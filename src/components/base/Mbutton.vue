@@ -4,8 +4,10 @@
         :class="kind !== 'link' ? `btn ${className}` : className"
         :id="id"
         @click="click"
+        :disabled="disabled"
     >
         {{ text }}
+        <slot></slot>
     </button>
 </template>
 <script>
@@ -40,6 +42,11 @@ export default {
         // handle khi click button
         click: {
             type: Function,
+        },
+        // cho btn disabled hay không
+        disabled: {
+            type: Boolean,
+            default: false,
         },
     },
 };

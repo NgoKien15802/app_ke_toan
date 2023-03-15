@@ -60,7 +60,8 @@ const MISAResouce = {
         TooltipPhoneNumber: "Điện thoại di động",
         TooltipFixPhoneNumber: "Điện thoại cố định",
         TooltipHelp: "Giúp",
-        TooltipClose: "Đóng",
+        TooltipClose: "Đóng (ESC)",
+        TooltipSave: "Lưu (ctrl + s)",
 
         // popup
         Enter: "Nhập",
@@ -97,6 +98,7 @@ const MISAResouce = {
         BtnSaveEndAdd: "Cất và thêm",
         BtnSave: "Cất",
         BtnClose: "Đóng",
+        BtnDeleteAll: "Xóa tất cả",
 
         // title dialog
         DialogNotifyError: "Thông báo lỗi",
@@ -110,6 +112,10 @@ const MISAResouce = {
         ToastDeleteSuccess: "Nhân viên đã bị xóa",
         ToastEditSuccess: "Nhân viên đã được sửa",
         ToastTitleSuccess: "Thành công",
+
+        // checkbox
+        SelectedCheckbox: "Đã chọn: ",
+        UndoSelected: "Bỏ chọn",
     },
     en: {
         // Employee
@@ -193,6 +199,7 @@ const MISAResouce = {
         LabelBankBranch: "Bank branch",
         TooltipHelp: "Help",
         TooltipClose: "Close",
+        TooltipSave: "Save (ctrl + s)",
 
         // button
         BtnDestroy: "Destroy",
@@ -203,6 +210,7 @@ const MISAResouce = {
         BtnClose: "Close",
         BtnYes: "Yes",
         BtnNo: "No",
+        BtnDeleteAll: "Delete all",
 
         // title dialog
         DialogNotifyError: "Error! ",
@@ -217,6 +225,10 @@ const MISAResouce = {
         ToastDeleteSuccess: "Employee has been deleted",
         ToastEditSuccess: "Staff has been edited",
         ToastTitleSuccess: "Success",
+
+        // checkbox
+        SelectedCheckbox: "selected: ",
+        UndoSelected: "Undo Selected",
     },
 };
 export default MISAResouce;

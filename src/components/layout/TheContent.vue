@@ -16,48 +16,70 @@
 
         <div class="content__main">
             <!-- header main -->
-            <div class="content__main-right">
-                <div class="content__main-filter">
-                    <div class="input__wrapper">
-                        <button class="input__icon" fdprocessedid="sd2h6">
-                            <div class="input__icon-search"></div>
-                        </button>
-                        <input
-                            type="text"
-                            class="input__type input__search"
-                            placeholder="Tìm theo mã, tên nhân viên"
-                            fdprocessedid="q9kjmf"
-                        />
-                    </div>
-                </div>
+            <div class="content__main-header">
+                <div class="content__main-left">
+                    <p>
+                        {{ MISAResouce.vi.SelectedCheckbox }}
+                        <strong>{{ selectedCheckbox.length }}</strong>
+                    </p>
+                    <MButton
+                        kind="link"
+                        className="link-btn btn-link-delete"
+                        :click="handleUndoSeleted"
+                        :text="MISAResouce.vi.UndoSelected"
+                    ></MButton>
 
-                <div class="content__main-refresh wrap-icon">
-                    <div
-                        class="content__main-refresh-icon icon-normal-light icon-normal-light-hover"
-                    ></div>
+                    <MButton
+                        :class="
+                            selectedCheckbox.length > 1
+                                ? 'btn btn-delete'
+                                : 'btn btn-default'
+                        "
+                        :text="MISAResouce.vi.BtnDeleteAll"
+                        :disabled="selectedCheckbox.length <= 1"
+                        :click="handleDeleteAll"
+                    >
+                    </MButton>
+                </div>
+                <div class="content__main-right">
+                    <div class="content__main-filter">
+                        <div class="input__wrapper">
+                            <button class="input__icon" fdprocessedid="sd2h6">
+                                <div class="input__icon-search"></div>
+                            </button>
+                            <input
+                                type="text"
+                                class="input__type input__search"
+                                placeholder="Tìm theo mã, tên nhân viên"
+                                fdprocessedid="q9kjmf"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="content__main-refresh wrap-icon">
+                        <div
+                            class="content__main-refresh-icon icon-normal-light icon-normal-light-hover"
+                        ></div>
+                    </div>
                 </div>
             </div>
 
             <div class="content__main-body scrollbar_customize">
                 <div class="content__main-table">
-                    <!-- begin table -->
+                    <!--  table -->
                     <TheTable
                         @hideShowLoading="hideShowLoading"
                         @onDoubleClick="onDoubleClick"
                         @hideShowToast="hideShowToast"
+                        @handleSelectChechbox="handleSelectChechbox"
+                        :selectedCheckbox="selectedCheckbox"
                     ></TheTable>
-                    <!-- end table -->
-
-                    <!-- begin dialog -->
-
-                    <!-- end dialog -->
                 </div>
 
-                <!-- begin paging -->
+                <!--  paging -->
                 <ThePaging></ThePaging>
-                <!-- end paging -->
 
-                <!-- begin popup -->
+                <!--  popup -->
                 <ThePopup
                     v-if="isShowPopup"
                     @onClosePopup="closePopup"
@@ -66,8 +88,6 @@
                     :textTitlePopup="textTitlePopup"
                     @hideShowToast="hideShowToast"
                 ></ThePopup>
-
-                <!-- begin dialog -->
 
                 <!-- loading -->
                 <Mloading v-if="isLoading"></Mloading>
@@ -108,6 +128,7 @@ export default {
             isShowToastDelete: false,
             employeeIdSelected: null,
             textTitlePopup: "",
+            selectedCheckbox: [],
         };
     },
     components: {
@@ -117,6 +138,30 @@ export default {
         Mloading,
     },
     methods: {
+        /**
+         * Hàm gán giá trị mảng các checkbox được check
+         * Author: KienNT (15/03/2023)
+         */
+        handleSelectChechbox(selectedCheckbox) {
+            this.selectedCheckbox = selectedCheckbox;
+        },
+
+        /**
+         * Hàm thực hiện cho các checkbox bỏ chọn
+         * Author: KienNT (15/03/2023)
+         */
+        handleUndoSeleted() {
+            this.selectedCheckbox = [];
+        },
+
+        /**
+         * Hàm thực hiện xóa tất cả những checkbox được check
+         * Author: KienNT (15/03/2023)
+         */
+        handleDeleteAll() {
+            console.log(this.selectedCheckbox);
+        },
+
         /**
          * Hàm hiển thị popup khi click vào thêm mới nhân viên và lấy mã từ Call API
          * Author: KienNT (01/03/2023)

@@ -155,7 +155,13 @@ export default {
                 this.departments.push(element);
             }
 
-            this.$refs["option__wrapper-combobox"].classList.add("d-block");
+            this.departments.length > 0
+                ? this.$refs["option__wrapper-combobox"].classList.add(
+                      "d-block"
+                  )
+                : this.$refs["option__wrapper-combobox"].classList.remove(
+                      "d-block"
+                  );
         },
         /**
          * handle khi click btn icon combobox

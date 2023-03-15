@@ -134,6 +134,12 @@ import moment from "moment";
 export default {
     name: "TheTable",
 
+    props: {
+        selectedCheckbox: {
+            type: Array,
+        },
+    },
+
     data() {
         return {
             employees: [],
@@ -147,6 +153,7 @@ export default {
             employeeIdSelected: "",
             employeeCodeSelected: "",
             isDialogWarning: false,
+            isCheckedArr: [],
         };
     },
 
@@ -197,6 +204,40 @@ export default {
                     console.log(error);
                 }
             };
+        },
+    },
+
+    watch: {
+        /**
+         * Theo dõi sự thay đổi selectedCheckbox. nếu mảng rỗng thì cho các checkbox = false,...
+         * Author: KienNT (15/03/2023)
+         */
+        selectedCheckbox: function () {
+            if (this.selectedCheckbox <= 0) {
+                this.employees = this.employees.map((x) => {
+                    x.Selected = false;
+                    return x;
+                });
+                this.isCheckedArr = [];
+                this.selectedAll = false;
+            }
+        },
+        /**
+         * Theo dõi sự thay đổi employees sau đó lọc các checkbox checked
+         * Author: KienNT (15/03/2023)
+         */
+        employees: {
+            handler: function (newValue) {
+                try {
+                    this.isCheckedArr = newValue.filter((el) => {
+                        return el.Selected === true;
+                    });
+                    this.$emit("handleSelectChechbox", this.isCheckedArr);
+                } catch (error) {
+                    console.log(error);
+                }
+            },
+            deep: true,
         },
     },
 

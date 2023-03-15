@@ -3,6 +3,10 @@
     --color-primary: #50b83c;
     --white-color: #ffffff;
 
+    /* color required */
+    --color-red: #e61d1d;
+    --color-red-active: #911a05;
+
     /* border color primary */
     --boder-primary: #e0e0e0;
 
@@ -110,11 +114,11 @@ button {
 /* required */
 .error-info,
 .required {
-    color: #e61d1d;
+    color: var(--color-red);
 }
 
 .input-required {
-    border-color: #e61d1d !important;
+    border-color: var(--color-red) !important;
 }
 
 /* .m-row */
