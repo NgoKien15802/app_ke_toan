@@ -715,7 +715,7 @@ export default {
                     .then((res) => {
                         this.newEmployee = res.data;
                         //có API thì sửa department ở đây
-                        this.departmentName = this.newEmployee.DepartmentId;
+                        this.departmentName = this.newEmployee.DepartmentName;
                         this.newEmployee.DateOfBirth = this.formatDate(
                             this.newEmployee.DateOfBirth
                         );
@@ -944,11 +944,10 @@ export default {
                                     case 500:
                                         this.$emit("hideShowLoading", false);
                                         this.errorExistId =
-                                            response.data.userMsg ||
-                                            "Lỗi không đúng định dạng";
+                                            response.data.UserMsg;
                                         this.errorMessage[0] =
                                             this.errorExistId;
-                                        if (response.data.userMsg) {
+                                        if (response.data.UserMsg) {
                                             this.isTooltip.isTooltipEmployeeCode = true;
                                         }
                                         this.isDialogError = true;

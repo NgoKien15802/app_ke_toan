@@ -71,7 +71,7 @@
                 </td>
                 <td class="text-align-left">{{ employee?.IdentityNumber }}</td>
                 <td class="text-align-left">{{ employee?.PositionName }}</td>
-                <td class="text-align-left">{{ employee?.DepartmentId }}</td>
+                <td class="text-align-left">{{ employee?.DepartmentName }}</td>
                 <td class="text-align-left">{{ employee?.BankAccount }}</td>
                 <td class="text-align-left">{{ employee?.BankName }}</td>
                 <td class="text-align-left">{{ employee?.BankBranch }}</td>
@@ -138,6 +138,15 @@ export default {
         selectedCheckbox: {
             type: Array,
         },
+        pageSizeNumber: {
+            type: String,
+        },
+        pageCurrent: {
+            type: String,
+        },
+        keyWordSearch: {
+            type: String,
+        },
     },
 
     data() {
@@ -145,7 +154,7 @@ export default {
             employees: [],
             MISAResouce,
             pageSize: 20,
-            pageIndex: 1,
+            pageNumber: 1,
             selectedAll: false,
             isContextMenu: false,
             leftContextMenu: "",
@@ -154,6 +163,8 @@ export default {
             employeeCodeSelected: "",
             isDialogWarning: false,
             isCheckedArr: [],
+            totalRecord: 0,
+            keyWord: "",
         };
     },
 
@@ -168,21 +179,7 @@ export default {
      */
     created() {
         try {
-            axios
-                .get("https://localhost:7153/api/v1/Employees")
-                .then(this.hideShowLoading(true))
-                .then((response) => {
-                    this.employees = response.data;
-                    this.employees = this.employees.map((x) => {
-                        x.Selected = false;
-                        return x;
-                    });
-                    this.hideShowLoading(false);
-                })
-                .catch((error) => {
-                    console.log(error);
-                    this.hideShowLoading(false);
-                });
+            this.loadData();
         } catch (error) {
             console.log(error);
         }
@@ -208,6 +205,37 @@ export default {
     },
 
     watch: {
+        /**
+         * Theo dõi sự thay đổi keyWordSearch. tìm kiếm thay đổi
+         * Author: KienNT (17/03/2023)
+         */
+        keyWordSearch: function () {
+            this.keyWord = this.keyWordSearch;
+            this.pageNumber = 1;
+            this.loadData();
+        },
+        /**
+         * Theo dõi sự thay đổi pageSizeNumber. nếu pagesize thay đổi
+         * Author: KienNT (17/03/2023)
+         */
+        pageSizeNumber: function () {
+            this.pageSize = this.pageSizeNumber;
+            this.pageNumber = 1;
+
+            this.loadData();
+        },
+
+        /**
+         * Theo dõi sự thay đổi pageCurrent. khi click vào btn next
+         * Author: KienNT (17/03/2023)
+         */
+
+        pageCurrent: function () {
+            this.pageNumber = this.pageCurrent;
+
+            this.loadData();
+        },
+
         /**
          * Theo dõi sự thay đổi selectedCheckbox. nếu mảng rỗng thì cho các checkbox = false,...
          * Author: KienNT (15/03/2023)
@@ -248,6 +276,37 @@ export default {
 
     methods: {
         /**
+         * Call API get data
+         * Author: KienNT (17/03/2023)
+         */
+        loadData() {
+            try {
+                axios
+                    .get(
+                        `https://localhost:7153/api/v1/Employees/Filter?keyword=${this.keyWord}&pageSize=${this.pageSize}&pageNumber=${this.pageNumber}`
+                    )
+                    .then(this.hideShowLoading(true))
+                    .then((response) => {
+                        this.employees = response?.data?.Data;
+                        this.totalRecord = response?.data?.TotalRecord;
+                        this.$emit("getTotalRecord", this.totalRecord);
+                        this.employees = this.employees.map((x) => {
+                            x.Selected = false;
+                            return x;
+                        });
+                        this.hideShowLoading(false);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        this.hideShowLoading(false);
+                    });
+            } catch (error) {
+                console.log(error);
+                this.hideShowLoading(false);
+            }
+        },
+
+        /**
          * Xử lý loading gửi emit lên cha
          * Author: KienNT (07/03/2023)
          * @param (isLoading): tham số là giá trị boolean loading có hay không
@@ -255,6 +314,7 @@ export default {
         hideShowLoading(isLoading) {
             this.$emit("hideShowLoading", isLoading);
         },
+
         /**
          * Xử lý khi click vào select item
          * Author: KienNT (06/03/2023)

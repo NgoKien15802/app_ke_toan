@@ -65,6 +65,7 @@
                                 class="input__type input__search"
                                 placeholder="Tìm theo mã, tên nhân viên"
                                 fdprocessedid="q9kjmf"
+                                v-model.lazy="keyWordSearch"
                             />
                         </div>
                     </div>
@@ -86,11 +87,22 @@
                         @hideShowToast="hideShowToast"
                         @handleSelectChechbox="handleSelectChechbox"
                         :selectedCheckbox="selectedCheckbox"
+                        @getTotalRecord="getTotalRecord"
+                        :pageSizeNumber="pageSize"
+                        :pageCurrent="pageNumber"
+                        :keyWordSearch="keyWordSearch"
+                        @backFirstPage="backFirstPage"
                     ></TheTable>
                 </div>
 
                 <!--  paging -->
-                <ThePaging></ThePaging>
+                <ThePaging
+                    :totalRecord="totalRecord"
+                    @handleClickOptionItem="handleClickOptionItem"
+                    @handleClickPrev="handleClickPrev"
+                    @handleClickNext="handleClickNext"
+                    :pageCurrent="pageNumber"
+                ></ThePaging>
 
                 <!--  popup -->
                 <ThePopup
@@ -143,6 +155,10 @@ export default {
             textTitlePopup: "",
             selectedCheckbox: [],
             isCheckedAll: false,
+            totalRecord: 0,
+            pageSize: 0,
+            pageNumber: 1,
+            keyWordSearch: "",
         };
     },
     components: {
@@ -151,6 +167,19 @@ export default {
         ThePopup,
         Mloading,
     },
+
+    watch: {
+        /**
+         * Hàm khi thay đổi keyword thì quay lại trang đầu nếu là rỗng
+         * Author: KienNT (17/03/2023)
+         */
+        keyWordSearch: function (newValue) {
+            if (newValue === "") {
+                this.pageNumber = 1;
+            }
+        },
+    },
+
     methods: {
         /**
          * Hàm gán giá trị mảng các checkbox được check, isChecked all là true thì hiển thị chọn tất cả các trang
@@ -160,6 +189,41 @@ export default {
         handleSelectChechbox(selectedCheckbox, isCheckedAll) {
             this.selectedCheckbox = selectedCheckbox;
             this.isCheckedAll = isCheckedAll;
+        },
+
+        /**
+         * Hàm click icon Next trang
+         * Author: KienNT (17/03/2023)
+         */
+        handleClickNext() {
+            this.pageNumber += 1;
+        },
+
+        /**
+         * Hàm click icon previous trang
+         * Author: KienNT (17/03/2023)
+         */
+        handleClickPrev() {
+            this.pageNumber -= 1;
+        },
+
+        /**
+         * Hàm click option, lấy pageSize
+         * Author: KienNT (17/03/2023)
+         *  @param (pageSize): tham số 1 là số bản ghi trên 1 trang
+         */
+        handleClickOptionItem(pageSize) {
+            this.pageSize = pageSize;
+            this.pageNumber = 1;
+        },
+
+        /**
+         * Hàm gán số bản ghi từ con emit lên
+         * Author: KienNT (17/03/2023)
+         *  @param (totalRecord): tham số 1 là số bản ghi
+         */
+        getTotalRecord(totalRecord) {
+            this.totalRecord = totalRecord;
         },
 
         /**

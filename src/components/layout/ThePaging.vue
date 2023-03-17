@@ -1,7 +1,7 @@
 <template>
     <div class="content__main-paging">
         <p class="content__main-paging-left">
-            {{ MISAResouce.vi.Total }}: <strong>1035</strong>
+            {{ MISAResouce.vi.Total }}: <strong>{{ totalRecord }}</strong>
         </p>
         <div class="content__main-paging-right">
             <div
@@ -42,11 +42,14 @@
                 </div>
             </div>
             <div class="paging__record-footer">
-                <div>1 - 4 {{ MISAResouce.vi.Record }}</div>
-                <div class="wrap-icon">
+                <div>
+                    {{ offset + 1 }} - {{ offset + pageIndex }}
+                    {{ MISAResouce.vi.Record }}
+                </div>
+                <div class="wrap-icon btn-icon" @click="handleClickPrev">
                     <div class="paging__record-footer-iconLeft"></div>
                 </div>
-                <div class="wrap-icon">
+                <div class="wrap-icon btn-icon" @click="handleClickNext">
                     <div class="paging__record-footer-iconRight"></div>
                 </div>
             </div>
@@ -58,19 +61,28 @@ import MISAResouce from "../../js/resource";
 import TheOptionItem from "./TheOptionItem.vue";
 export default {
     name: "ThePaging",
+
+    props: {
+        totalRecord: {
+            type: String,
+        },
+        pageCurrent: {
+            type: String,
+        },
+    },
     data() {
         return {
             MISAResouce,
             isOpenDropdown: false,
-            valueInput: `10 ${MISAResouce.vi.RecordInPage}`,
+            valueInput: `20 ${MISAResouce.vi.RecordInPage}`,
             optionItem: [
                 {
                     text: 10,
-                    isActive: true,
+                    isActive: false,
                 },
                 {
                     text: 20,
-                    isActive: false,
+                    isActive: true,
                 },
                 {
                     text: 30,
@@ -85,10 +97,20 @@ export default {
                     isActive: false,
                 },
             ],
+            pageIndex: 20,
+            pageNumber: 1,
+            offset: 0,
         };
     },
     components: {
         TheOptionItem,
+    },
+    watch: {
+        pageCurrent: function () {
+            this.pageNumber = this.pageCurrent;
+
+            this.offset = (this.pageNumber - 1) * this.pageIndex;
+        },
     },
 
     mounted() {
@@ -127,6 +149,7 @@ export default {
                 console.log(error);
             }
         },
+
         /**
          * Hiển thị dropdown option item
          * Author: KienNT (06/03/2023)
@@ -160,9 +183,31 @@ export default {
                         option.isActive = false;
                     }
                 });
+                this.optionItem.forEach((el) => {
+                    if (this.valueInput.includes(el.text)) {
+                        this.pageIndex = el.text;
+                        this.$emit("handleClickOptionItem", this.pageIndex);
+                    }
+                });
             } catch (error) {
                 console.log(error);
             }
+        },
+
+        /**
+         * handle khi click vào icon previous
+         * Author: KienNT (17/03/2023)
+         */
+        handleClickPrev() {
+            this.$emit("handleClickPrev");
+        },
+
+        /**
+         * handle khi click vào icon next
+         * Author: KienNT (17/03/2023)
+         */
+        handleClickNext() {
+            this.$emit("handleClickNext");
         },
     },
 };
