@@ -147,6 +147,9 @@ export default {
         keyWordSearch: {
             type: String,
         },
+        isReload: {
+            type: String,
+        },
     },
 
     data() {
@@ -220,9 +223,9 @@ export default {
          */
         pageSizeNumber: function () {
             this.pageSize = this.pageSizeNumber;
-            this.pageNumber = 1;
-
-            this.loadData();
+            if (this.pageNumber == 1) {
+                this.loadData();
+            }
         },
 
         /**
@@ -232,8 +235,19 @@ export default {
 
         pageCurrent: function () {
             this.pageNumber = this.pageCurrent;
-
             this.loadData();
+        },
+
+        /**
+         * Theo dõi sự thay đổi isReload: nếu thay đổi là true thì reload lại trang
+         * Author: KienNT (17/03/2023)
+         */
+        isReload: function (newValue) {
+            if (newValue) {
+                this.pageNumber = 1;
+                this.$emit("setIsReLoad");
+                this.loadData();
+            }
         },
 
         /**
@@ -250,6 +264,7 @@ export default {
                 this.selectedAll = false;
             }
         },
+
         /**
          * Theo dõi sự thay đổi employees sau đó lọc các checkbox checked
          * Author: KienNT (15/03/2023)
@@ -371,6 +386,7 @@ export default {
                         this.isDialogWarning = false;
                         this.hideShowLoading(false);
                         this.$emit("hideShowToast", "delete");
+                        this.$emit("handleReLoadData");
                     })
                     .catch((error) => {
                         console.log(error);

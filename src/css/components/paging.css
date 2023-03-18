@@ -50,5 +50,5 @@
 }
 
 .btn-icon:hover {
-    background-color: wheat;
+    background-color: var(--color-primary);
 }

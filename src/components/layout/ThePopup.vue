@@ -74,6 +74,7 @@
                                             "
                                             :required="true"
                                             ref="txtEmployeeCode"
+                                            :isDisabled="isDisabledEmployeeCode"
                                             @blur="
                                                 isEmpty(
                                                     newEmployee.EmployeeCode
@@ -668,7 +669,6 @@ export default {
             errorExistId: "",
             isDialogError: false,
             isDialogNotify: false,
-
             oldEmployee: {},
             isTooltip: {
                 isTooltipEmployeeCode: false,
@@ -683,6 +683,7 @@ export default {
             dataEmployeeIdSelected: "",
             errorMessage: [],
             message: "",
+            isDisabledEmployeeCode: false,
         };
     },
 
@@ -725,6 +726,7 @@ export default {
                         this.oldEmployee = JSON.stringify(this.newEmployee);
                         this.setFocusInput("txtEmployeeCode");
                         this.$emit("hideShowLoading", false);
+                        this.isDisabledEmployeeCode = true;
                     })
                     .catch((res) => {
                         console.log(res);
@@ -845,6 +847,7 @@ export default {
                          */
                         this.setFocusInput("txtEmployeeCode");
                         this.$emit("hideShowLoading", false);
+                        this.isDisabledEmployeeCode = false;
                     })
                     .catch((error) => {
                         console.log(error);
@@ -936,6 +939,7 @@ export default {
                                 }
                                 this.$emit("hideShowLoading", false);
                                 this.$emit("hideShowToast", "add");
+                                this.$emit("handleReLoadData");
                             })
                             .catch((error) => {
                                 let response = error.response;
@@ -982,6 +986,7 @@ export default {
                                 }
                                 this.$emit("hideShowLoading", false);
                                 this.$emit("hideShowToast", "edit");
+                                this.$emit("handleReLoadData");
                             })
                             .catch((error) => {
                                 // bắt lỗi nếu sửa trùng mã của bản ghi khác

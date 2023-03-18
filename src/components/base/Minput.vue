@@ -4,6 +4,7 @@
         :id="id"
         :name="name"
         ref="minput"
+        :disabled="isDisabled"
         :tabindex="tabindex"
         :autocomplete="autocomplete"
         class="input__type reset-input"
@@ -40,11 +41,12 @@ export default {
             type: String,
             default: "",
         },
-        // //
-        // text: {
-        //     type: String,
-        //     default: "",
-        // },
+
+        //set disanled cho input
+        isDisabled: {
+            type: Boolean,
+            default: false,
+        },
 
         // name của input
         name: {

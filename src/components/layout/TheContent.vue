@@ -70,7 +70,10 @@
                         </div>
                     </div>
 
-                    <div class="content__main-refresh wrap-icon">
+                    <div
+                        class="content__main-refresh wrap-icon"
+                        @click="handleReLoadData"
+                    >
                         <div
                             class="content__main-refresh-icon icon-normal-light icon-normal-light-hover"
                         ></div>
@@ -91,7 +94,9 @@
                         :pageSizeNumber="pageSize"
                         :pageCurrent="pageNumber"
                         :keyWordSearch="keyWordSearch"
-                        @backFirstPage="backFirstPage"
+                        :isReload="isReload"
+                        @setIsReLoad="setIsReLoad"
+                        @handleReLoadData="handleReLoadData"
                     ></TheTable>
                 </div>
 
@@ -112,6 +117,7 @@
                     :employeeIdSelected="employeeIdSelected"
                     :textTitlePopup="textTitlePopup"
                     @hideShowToast="hideShowToast"
+                    @handleReLoadData="handleReLoadData"
                 ></ThePopup>
 
                 <!-- loading -->
@@ -159,6 +165,7 @@ export default {
             pageSize: 0,
             pageNumber: 1,
             keyWordSearch: "",
+            isReload: false,
         };
     },
     components: {
@@ -173,14 +180,20 @@ export default {
          * Hàm khi thay đổi keyword thì quay lại trang đầu nếu là rỗng
          * Author: KienNT (17/03/2023)
          */
-        keyWordSearch: function (newValue) {
-            if (newValue === "") {
-                this.pageNumber = 1;
-            }
+        keyWordSearch: function () {
+            this.pageNumber = 1;
         },
     },
 
     methods: {
+        /**
+         * Hàm thực hiện reload lại trang
+         * Author: KienNT (18/03/2023)
+         */
+        handleReLoadData() {
+            this.isReload = true;
+            this.pageNumber = 1;
+        },
         /**
          * Hàm gán giá trị mảng các checkbox được check, isChecked all là true thì hiển thị chọn tất cả các trang
          * Author: KienNT (15/03/2023)
@@ -215,6 +228,14 @@ export default {
         handleClickOptionItem(pageSize) {
             this.pageSize = pageSize;
             this.pageNumber = 1;
+        },
+
+        /**
+         * Hàm emit từ con để set lại reload lần sau
+         * Author: KienNT (18/03/2023)
+         */
+        setIsReLoad() {
+            this.isReload = false;
         },
 
         /**
