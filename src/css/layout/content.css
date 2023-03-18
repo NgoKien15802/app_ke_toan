@@ -53,6 +53,10 @@
     height: 21px;
 }
 
+.content__main-refresh:hover {
+    background-color: rgb(216, 216, 190);
+}
+
 /* content body */
 .content__main-body {
     display: flex;

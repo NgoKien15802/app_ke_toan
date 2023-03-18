@@ -36,13 +36,6 @@
                     ></MButton>
 
                     <MButton
-                        v-if="isCheckedAll"
-                        kind="link"
-                        className="link-btn btn-link-selectAll"
-                        :text="MISAResouce.vi.SelectAllPage"
-                    ></MButton>
-
-                    <MButton
                         :class="
                             selectedCheckbox.length > 1
                                 ? 'btn btn-delete'
@@ -160,7 +153,6 @@ export default {
             employeeIdSelected: null,
             textTitlePopup: "",
             selectedCheckbox: [],
-            isCheckedAll: false,
             totalRecord: 0,
             pageSize: 0,
             pageNumber: 1,
@@ -195,13 +187,12 @@ export default {
             this.pageNumber = 1;
         },
         /**
-         * Hàm gán giá trị mảng các checkbox được check, isChecked all là true thì hiển thị chọn tất cả các trang
+         * Hàm gán giá trị mảng các checkbox được check
          * Author: KienNT (15/03/2023)
-         *  @param (selectedCheckbox,isCheckedAll): tham số 1 là mảng checkbox được chọn, tham số 2 là true nếu được check hết
+         *  @param (selectedCheckbox): tham số 1 là mảng checkbox được chọn
          */
-        handleSelectChechbox(selectedCheckbox, isCheckedAll) {
+        handleSelectChechbox(selectedCheckbox) {
             this.selectedCheckbox = selectedCheckbox;
-            this.isCheckedAll = isCheckedAll;
         },
 
         /**

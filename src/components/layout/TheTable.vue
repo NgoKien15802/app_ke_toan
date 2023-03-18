@@ -276,11 +276,7 @@ export default {
                     this.isCheckedArr = newValue.filter((el) => {
                         return el.Selected === true;
                     });
-                    this.$emit(
-                        "handleSelectChechbox",
-                        this.isCheckedArr,
-                        this.isCheckedArr.length === newValue.length
-                    );
+                    this.$emit("handleSelectChechbox", this.isCheckedArr);
                 } catch (error) {
                     console.log(error);
                 }
