@@ -418,8 +418,26 @@ export default {
                             this.hideShowLoading(false);
                         });
                 } else {
-                    // TH xóa nhiều nhân viên
-                    alert(this.selectedEmployeeIds);
+                    // Xóa nhiều nhân viên
+                    axios
+                        .delete(
+                            "https://localhost:7153/api/v1/Employees/DeleteMultiple",
+                            {
+                                data: this.selectedEmployeeIds,
+                            }
+                        )
+                        .then(this.hideShowLoading(true))
+                        .then((res) => {
+                            console.log(res);
+                            this.isDialogDeleteMul = false;
+                            this.hideShowLoading(false);
+                            this.$emit("hideShowToast", "delete");
+                            this.$emit("handleReLoadData");
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                            this.hideShowLoading(false);
+                        });
                 }
             } catch (error) {
                 console.log(error);
