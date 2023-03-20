@@ -90,6 +90,10 @@
                         :isReload="isReload"
                         @setIsReLoad="setIsReLoad"
                         @handleReLoadData="handleReLoadData"
+                        :isDialogDeleteMultiple="isDialogDeleteMultiple"
+                        :deleteMulEmployeeCode="deleteMulEmployeeCode"
+                        :selectedEmployeeIds="selectedEmployeeIds"
+                        @setIsDialogDeleteMul="setIsDialogDeleteMul"
                     ></TheTable>
                 </div>
 
@@ -100,6 +104,8 @@
                     @handleClickPrev="handleClickPrev"
                     @handleClickNext="handleClickNext"
                     :pageCurrent="pageNumber"
+                    :isDisabledClickPrev="isDisabledClickPrev"
+                    @setIsDisabledClickPrev="setIsDisabledClickPrev"
                 ></ThePaging>
 
                 <!--  popup -->
@@ -153,11 +159,15 @@ export default {
             employeeIdSelected: null,
             textTitlePopup: "",
             selectedCheckbox: [],
+            deleteMulEmployeeCode: [],
             totalRecord: 0,
             pageSize: 0,
             pageNumber: 1,
             keyWordSearch: "",
             isReload: false,
+            isDialogDeleteMultiple: false,
+            selectedEmployeeIds: [],
+            isDisabledClickPrev: true,
         };
     },
     components: {
@@ -174,6 +184,7 @@ export default {
          */
         keyWordSearch: function () {
             this.pageNumber = 1;
+            this.isDisabledClickPrev = true;
         },
     },
 
@@ -185,6 +196,7 @@ export default {
         handleReLoadData() {
             this.isReload = true;
             this.pageNumber = 1;
+            this.isDisabledClickPrev = true;
         },
         /**
          * Hàm gán giá trị mảng các checkbox được check
@@ -201,6 +213,9 @@ export default {
          */
         handleClickNext() {
             this.pageNumber += 1;
+            if (this.pageNumber > 1) {
+                this.isDisabledClickPrev = false;
+            }
         },
 
         /**
@@ -208,7 +223,13 @@ export default {
          * Author: KienNT (17/03/2023)
          */
         handleClickPrev() {
-            this.pageNumber -= 1;
+            if (this.pageNumber > 1) {
+                this.pageNumber -= 1;
+                this.isDisabledClickPrev = false;
+            }
+            if (this.pageNumber == 1) {
+                this.isDisabledClickPrev = true;
+            }
         },
 
         /**
@@ -219,6 +240,14 @@ export default {
         handleClickOptionItem(pageSize) {
             this.pageSize = pageSize;
             this.pageNumber = 1;
+        },
+
+        /**
+         * Hàm thực hiện disabled div prev khi click vào chọn bản ghi trên 1 trang từ con emit lên
+         * Author: KienNT (20/03/2023)
+         */
+        setIsDisabledClickPrev() {
+            this.isDisabledClickPrev = true;
         },
 
         /**
@@ -247,11 +276,26 @@ export default {
         },
 
         /**
-         * Hàm thực hiện xóa tất cả những checkbox được check
-         * Author: KienNT (15/03/2023)
+         * Hàm thực hiện xóa tất cả những checkbox được check, xóa bên table khi có dialog delete multiple
+         * Author: KienNT (20/03/2023)
          */
         handleDeleteAll() {
-            console.log(this.selectedCheckbox);
+            const selectDeleteMultiple = [...this.selectedCheckbox];
+            this.selectedEmployeeIds = selectDeleteMultiple.map(
+                (x) => x.EmployeeId
+            );
+            this.deleteMulEmployeeCode = this.selectedCheckbox.map(
+                (x) => x.EmployeeCode
+            );
+            this.isDialogDeleteMultiple = true;
+        },
+
+        /**
+         * Hàm ẩn dialog đi khi xóa nhiều bản ghi emit từ con
+         * Author: KienNT (20/03/2023)
+         */
+        setIsDialogDeleteMul() {
+            this.isDialogDeleteMultiple = false;
         },
 
         /**

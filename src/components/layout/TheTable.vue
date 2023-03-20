@@ -107,20 +107,30 @@
     ></Mcontextmenu>
 
     <MDialog
-        v-if="isDialogWarning"
+        v-if="isDialogWarning || isDialogDeleteMul"
         iconClass="dialog__icon-warning"
         :title="MISAResouce.vi.DialogWarning"
         :message="
-            MISAResouce.vi.MessageWarning +
-            employeeCodeSelected +
-            ' ' +
-            MISAResouce.vi.BtnNo +
-            '?'
+            isDialogWarning
+                ? MISAResouce.vi.MessageWarning +
+                  employeeCodeSelected +
+                  ' ' +
+                  MISAResouce.vi.BtnNo +
+                  '?'
+                : MISAResouce.vi.MessageWarning +
+                  [...deleteMulEmployeeCode] +
+                  ' ' +
+                  MISAResouce.vi.BtnNo +
+                  '?'
         "
         :BtnWarningNo="MISAResouce.vi.BtnDestroyDialog"
         :textButton="MISAResouce.vi.BtnDeleteDialog"
         @onBtnWarningNo="onBtnWarningNo"
-        @onBtnWarningYes="onBtnWarningYes"
+        @onBtnWarningYes="
+            onBtnWarningYes(
+                isDialogWarning ? 'isDialogWarning' : 'isDialogDeleteMul'
+            )
+        "
         kind="warning"
     ></MDialog>
 </template>
@@ -150,6 +160,15 @@ export default {
         isReload: {
             type: String,
         },
+        isDialogDeleteMultiple: {
+            type: Boolean,
+        },
+        deleteMulEmployeeCode: {
+            type: Array,
+        },
+        selectedEmployeeIds: {
+            type: Array,
+        },
     },
 
     data() {
@@ -168,6 +187,7 @@ export default {
             isCheckedArr: [],
             totalRecord: 0,
             keyWord: "",
+            isDialogDeleteMul: false,
         };
     },
 
@@ -208,6 +228,13 @@ export default {
     },
 
     watch: {
+        /**
+         * Theo dõi sự thay đổi isDialogDeleteMultiple. khi click vào xóa nhiều
+         * Author: KienNT (20/03/2023)
+         */
+        isDialogDeleteMultiple: function () {
+            this.isDialogDeleteMul = this.isDialogDeleteMultiple;
+        },
         /**
          * Theo dõi sự thay đổi keyWordSearch. tìm kiếm thay đổi
          * Author: KienNT (17/03/2023)
@@ -370,24 +397,30 @@ export default {
          * Hàm xóa nhân viên khi click có xóa
          * Author: KienNT (07/03/2023)
          */
-        onBtnWarningYes() {
+        onBtnWarningYes(isDialogValue) {
             try {
-                axios
-                    .delete(
-                        `https://localhost:7153/api/v1/Employees/${this.employeeIdSelected}`
-                    )
-                    .then(this.hideShowLoading(true))
-                    .then((res) => {
-                        console.log(res);
-                        this.isDialogWarning = false;
-                        this.hideShowLoading(false);
-                        this.$emit("hideShowToast", "delete");
-                        this.$emit("handleReLoadData");
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                        this.hideShowLoading(false);
-                    });
+                // TH xoá 1 nhân viên
+                if (isDialogValue === "isDialogWarning") {
+                    axios
+                        .delete(
+                            `https://localhost:7153/api/v1/Employees/${this.employeeIdSelected}`
+                        )
+                        .then(this.hideShowLoading(true))
+                        .then((res) => {
+                            console.log(res);
+                            this.isDialogWarning = false;
+                            this.hideShowLoading(false);
+                            this.$emit("hideShowToast", "delete");
+                            this.$emit("handleReLoadData");
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                            this.hideShowLoading(false);
+                        });
+                } else {
+                    // TH xóa nhiều nhân viên
+                    alert(this.selectedEmployeeIds);
+                }
             } catch (error) {
                 console.log(error);
             }
@@ -399,7 +432,9 @@ export default {
          */
         onBtnWarningNo() {
             try {
-                this.isDialogWarning = false;
+                this.isDialogWarning
+                    ? (this.isDialogWarning = false)
+                    : this.$emit("setIsDialogDeleteMul");
             } catch (error) {
                 console.log(error);
             }

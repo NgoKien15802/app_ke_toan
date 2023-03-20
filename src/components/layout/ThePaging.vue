@@ -46,7 +46,11 @@
                     {{ offset + 1 }} - {{ offset + pageIndex }}
                     {{ MISAResouce.vi.Record }}
                 </div>
-                <div class="wrap-icon btn-icon" @click="handleClickPrev">
+                <div
+                    class="wrap-icon btn-icon"
+                    @click="handleClickPrev"
+                    :class="isDisabledClickPrev ? 'disabled' : ''"
+                >
                     <div class="paging__record-footer-iconLeft"></div>
                 </div>
                 <div class="wrap-icon btn-icon" @click="handleClickNext">
@@ -68,6 +72,9 @@ export default {
         },
         pageCurrent: {
             type: String,
+        },
+        isDisabledClickPrev: {
+            type: Boolean,
         },
     },
     data() {
@@ -187,6 +194,7 @@ export default {
                     if (this.valueInput.includes(el.text)) {
                         this.pageIndex = el.text;
                         this.$emit("handleClickOptionItem", this.pageIndex);
+                        this.$emit("setIsDisabledClickPrev");
                     }
                 });
             } catch (error) {

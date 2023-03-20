@@ -508,41 +508,16 @@
                                 <label for="taikhoan" class="form__label">{{
                                     MISAResouce.vi.LabelBankAccount
                                 }}</label>
-                                <div
-                                    :class="{
-                                        'tooltip-error':
-                                            isTooltip.isTooltipBankAccount,
-                                    }"
-                                >
-                                    <MInput
-                                        name="BankAccount"
-                                        id="taikhoan"
-                                        tabindex="14"
-                                        class="check-number"
-                                        kind="default"
-                                        ref="txtBankAccount"
-                                        v-model="newEmployee.BankAccount"
-                                        :isShowTooltip="
-                                            isTooltip.isTooltipBankAccount
-                                        "
-                                        @blur="
-                                            isInValid(
-                                                newEmployee.BankAccount,
-                                                'number'
-                                            )
-                                                ? (isTooltip.isTooltipBankAccount = true)
-                                                : (isTooltip.isTooltipBankAccount = false)
-                                        "
-                                    />
-                                    <MTooltip
-                                        v-if="isTooltip.isTooltipBankAccount"
-                                        :subtext="
-                                            MISAResouce.vi.LabelBankAccount +
-                                            MISAResouce.vi.ErrorNotNumber
-                                        "
-                                        kind="error"
-                                    ></MTooltip>
-                                </div>
+
+                                <MInput
+                                    name="BankAccount"
+                                    id="taikhoan"
+                                    tabindex="14"
+                                    class="check-number"
+                                    kind="default"
+                                    ref="txtBankAccount"
+                                    v-model="newEmployee.BankAccount"
+                                />
                             </div>
                             <div class="form__group form__group-contact-input">
                                 <label for="tennganhang" class="form__label">{{
@@ -618,6 +593,7 @@
         </div>
 
         <!-- begin dialog -->
+        <!-- dialog hiển thị lỗi -->
         <MDialog
             v-if="isDialogError"
             iconClass="dialog__icon-error"
@@ -627,6 +603,7 @@
             @hideShowDialogError="hideShowDialogError"
             kind="error"
         ></MDialog>
+        <!-- dialog thông báo nếu dữ liệu thay đổi -->
         <MDialog
             v-if="isDialogNotify"
             iconClass="dialog__icon-notify"
@@ -678,7 +655,6 @@ export default {
                 isTooltipIdentityNumber: false,
                 isTooltipIdentityDate: false,
                 isTooltipEmail: false,
-                isTooltipBankAccount: false,
             },
             dataEmployeeIdSelected: "",
             errorMessage: [],
@@ -1092,14 +1068,14 @@ export default {
                 );
 
                 // nếu có value thì mới check input number
-                this.checkFieldInvalid(
-                    "isTooltipBankAccount",
-                    this.newEmployee.BankAccount,
-                    MISAResouce.vi.LabelBankAccount,
-                    "number",
-                    MISAResouce.vi.ErrorNotNumber,
-                    "txtBankAccount"
-                );
+                // this.checkFieldInvalid(
+                //     "isTooltipBankAccount",
+                //     this.newEmployee.BankAccount,
+                //     MISAResouce.vi.LabelBankAccount,
+                //     "number",
+                //     MISAResouce.vi.ErrorNotNumber,
+                //     "txtBankAccount"
+                // );
 
                 // nếu ko có lỗi thì ẩn popup
                 let check = true;
