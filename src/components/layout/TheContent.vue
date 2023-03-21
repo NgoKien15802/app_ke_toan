@@ -94,6 +94,9 @@
                         :deleteMulEmployeeCode="deleteMulEmployeeCode"
                         :selectedEmployeeIds="selectedEmployeeIds"
                         @setIsDialogDeleteMul="setIsDialogDeleteMul"
+                        @setIsDialogDeleteMuliple="
+                            () => (isDialogDeleteMultiple = false)
+                        "
                     ></TheTable>
                 </div>
 

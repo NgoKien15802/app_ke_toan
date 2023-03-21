@@ -430,6 +430,7 @@ export default {
                         .then((res) => {
                             console.log(res);
                             this.isDialogDeleteMul = false;
+                            this.$emit("setIsDialogDeleteMuliple");
                             this.hideShowLoading(false);
                             this.$emit("hideShowToast", "delete");
                             this.$emit("handleReLoadData");
