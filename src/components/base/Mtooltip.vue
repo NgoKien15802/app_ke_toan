@@ -8,7 +8,7 @@
         subtext
     }}</span>
 
-    <span v-else class="tooltiptext">{{ subtext }}</span>
+    <span v-else class="tooltiptext" :style="style">{{ subtext }}</span>
 </template>
 <script>
 export default {
@@ -31,6 +31,11 @@ export default {
             type: String,
             default: "title",
             required: true,
+        },
+
+        // Style css
+        style: {
+            type: String,
         },
     },
 };

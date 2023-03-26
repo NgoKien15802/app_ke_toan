@@ -57,6 +57,12 @@
     background-color: rgb(216, 216, 190);
 }
 
+.content__main-exprort-icon {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -705px -258px;
+    width: 23px;
+    height: 20px;
+}
+
 /* content body */
 .content__main-body {
     display: flex;

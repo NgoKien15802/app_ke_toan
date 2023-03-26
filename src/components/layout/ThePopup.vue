@@ -28,6 +28,7 @@
                                 <MTooltip
                                     kind="help"
                                     :subtext="MISAResouce.vi.TooltipHelp"
+                                    style="top: 163%"
                                 ></MTooltip>
                             </div>
                         </div>
@@ -40,6 +41,7 @@
                                 <MTooltip
                                     kind="close"
                                     :subtext="MISAResouce.vi.TooltipClose"
+                                    style="top: 163%"
                                 ></MTooltip>
                             </div>
                         </div>
@@ -290,7 +292,8 @@
                                     <label for="cmnd" class="form__label">
                                         <MTooltip
                                             :text="
-                                                MISAResouce.vi.IdentityNumber
+                                                MISAResouce.vi
+                                                    .LabelIdentityNumber
                                             "
                                             :subtext="
                                                 MISAResouce.vi
@@ -690,7 +693,7 @@ export default {
                     )
                     .then(this.$emit("hideShowLoading", true))
                     .then((res) => {
-                        this.newEmployee = res.data;
+                        this.newEmployee = res?.data?.Data;
                         //có API thì sửa department ở đây
                         this.departmentName = this.newEmployee.DepartmentName;
                         this.newEmployee.DateOfBirth = this.formatDate(
@@ -816,7 +819,7 @@ export default {
                     )
                     .then(this.$emit("hideShowLoading", true))
                     .then((response) => {
-                        this.newEmployee.EmployeeCode = response.data;
+                        this.newEmployee.EmployeeCode = response.data?.Data;
                         /**
                          * Gọi hàm set focus bên input
                          * Author: KienNT (04/03/2023)
@@ -924,10 +927,14 @@ export default {
                                     case 500:
                                         this.$emit("hideShowLoading", false);
                                         this.errorExistId =
-                                            response.data.UserMsg;
+                                            response?.data?.Data?.UserMsg ||
+                                            response?.data?.UserMsg;
                                         this.errorMessage[0] =
                                             this.errorExistId;
-                                        if (response.data.UserMsg) {
+                                        if (
+                                            response?.data?.Data?.UserMsg ||
+                                            response?.data?.UserMsg
+                                        ) {
                                             this.isTooltip.isTooltipEmployeeCode = true;
                                         }
                                         this.isDialogError = true;
@@ -972,11 +979,10 @@ export default {
                                     case 500:
                                         this.$emit("hideShowLoading", false);
                                         this.errorExistId =
-                                            response.data.devMsg ||
-                                            "Lỗi không đúng định dạng";
+                                            response?.data?.Data?.devMsg;
                                         this.errorMessage[0] =
                                             this.errorExistId;
-                                        if (response.data.devMsg) {
+                                        if (response?.data?.Data?.devMsg) {
                                             this.isTooltip.isTooltipEmployeeCode = true;
                                         }
                                         this.isDialogError = true;

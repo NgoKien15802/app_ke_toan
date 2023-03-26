@@ -62,6 +62,8 @@ const MISAResouce = {
         TooltipHelp: "Giúp",
         TooltipClose: "Đóng (ESC)",
         TooltipSave: "Lưu (ctrl + s)",
+        TooltipReload: "Lấy lại dữ liệu",
+        TooltipExport: "Xuất ra Excel",
 
         // popup
         Enter: "Nhập",
@@ -106,6 +108,7 @@ const MISAResouce = {
         DialogWarning: "Cảnh báo",
         MessageNotify: "Dữ liệu của bạn đã thay đổi bạn có muốn cất không?",
         MessageWarning: "Bạn có muốn xóa nhân viên ",
+        TxtNo: "không",
 
         // toast
         ToastAddSuccess: "Nhân viên đã được thêm",
@@ -201,6 +204,8 @@ const MISAResouce = {
         TooltipHelp: "Help",
         TooltipClose: "Close",
         TooltipSave: "Save (ctrl + s)",
+        TooltipReload: "Data recovery",
+        TooltipExport: "Export Excel",
 
         // button
         BtnDestroy: "Destroy",
@@ -220,6 +225,7 @@ const MISAResouce = {
 
         MessageNotify: "Your data has changed do you want to save it?",
         MessageWarning: "Do you want to delete an employee ",
+        TxtNo: "no",
 
         // toast
         ToastAddSuccess: "Staff has been added",

@@ -53,7 +53,11 @@
                 >
                     <div class="paging__record-footer-iconLeft"></div>
                 </div>
-                <div class="wrap-icon btn-icon" @click="handleClickNext">
+                <div
+                    class="wrap-icon btn-icon"
+                    @click="handleClickNext"
+                    :class="offset + pageIndex > totalRecord ? 'disabled' : ''"
+                >
                     <div class="paging__record-footer-iconRight"></div>
                 </div>
             </div>

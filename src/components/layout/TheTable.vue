@@ -22,11 +22,11 @@
                     {{ MISAResouce.vi.DateOfBirth }}
                 </th>
                 <th class="text-align-center">
-                    <Thetooltip
+                    <MTooltip
                         kind="title"
                         :text="MISAResouce.vi.IdentityNumber"
                         :subtext="MISAResouce.vi.TooltipIdentityNumber"
-                    ></Thetooltip>
+                    ></MTooltip>
                 </th>
                 <th class="text-align-center">
                     {{ MISAResouce.vi.JobTitle }}
@@ -120,7 +120,7 @@
                 : MISAResouce.vi.MessageWarning +
                   [...deleteMulEmployeeCode] +
                   ' ' +
-                  MISAResouce.vi.BtnNo +
+                  MISAResouce.vi.TxtNo +
                   '?'
         "
         :BtnWarningNo="MISAResouce.vi.BtnDestroyDialog"
@@ -137,7 +137,6 @@
 <script>
 import axios from "axios";
 import MISAResouce from "@/js/resource";
-import Thetooltip from "../base/Mtooltip.vue";
 import MISAEnum from "@/js/enum";
 import Mcontextmenu from "../base/Mcontextmenu.vue";
 import moment from "moment";
@@ -192,7 +191,6 @@ export default {
     },
 
     components: {
-        Thetooltip,
         Mcontextmenu,
     },
 
@@ -325,8 +323,8 @@ export default {
                     )
                     .then(this.hideShowLoading(true))
                     .then((response) => {
-                        this.employees = response?.data?.Data;
-                        this.totalRecord = response?.data?.TotalRecord;
+                        this.employees = response?.data?.Data?.Data;
+                        this.totalRecord = response?.data?.Data?.TotalRecord;
                         this.$emit("getTotalRecord", this.totalRecord);
                         this.employees = this.employees.map((x) => {
                             x.Selected = false;

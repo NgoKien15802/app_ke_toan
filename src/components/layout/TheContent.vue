@@ -68,8 +68,27 @@
                         @click="handleReLoadData"
                     >
                         <div
-                            class="content__main-refresh-icon icon-normal-light icon-normal-light-hover"
-                        ></div>
+                            class="content__main-refresh-icon icon-normal-light icon-normal-light-hover tooltip"
+                        >
+                            <MTooltip
+                                kind="reload"
+                                style="top: 163%"
+                                :subtext="MISAResouce.vi.TooltipReload"
+                            ></MTooltip>
+                        </div>
+                    </div>
+
+                    <div
+                        class="content__main-refresh wrap-icon"
+                        @click="handleExport"
+                    >
+                        <div class="content__main-exprort-icon tooltip">
+                            <MTooltip
+                                style="top: 163%"
+                                kind="export"
+                                :subtext="MISAResouce.vi.TooltipExport"
+                            ></MTooltip>
+                        </div>
                     </div>
                 </div>
             </div>

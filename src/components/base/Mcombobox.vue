@@ -105,7 +105,7 @@ export default {
             axios
                 .get("https://localhost:7153/api/v1/Departments")
                 .then((res) => {
-                    this.departments = res.data;
+                    this.departments = res.data?.Data;
                     this.oldDepartments = this.departments;
                 })
                 .catch((error) => console.log(error));
