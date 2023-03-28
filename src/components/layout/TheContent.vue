@@ -116,6 +116,7 @@
                         @setIsDialogDeleteMuliple="
                             () => (isDialogDeleteMultiple = false)
                         "
+                        @showPopupDuplicate="showPopupDuplicate"
                     ></TheTable>
                 </div>
 
@@ -139,6 +140,8 @@
                     :textTitlePopup="textTitlePopup"
                     @hideShowToast="hideShowToast"
                     @handleReLoadData="handleReLoadData"
+                    :formMode="formMode"
+                    @handleSetModeForm="() => (formMode = null)"
                 ></ThePopup>
 
                 <!-- loading -->
@@ -147,14 +150,20 @@
                 <!-- Toast -->
                 <MToast
                     v-if="
-                        isShowToastAdd || isShowToastEdit || isShowToastDelete
+                        isShowToastAdd ||
+                        isShowToastEdit ||
+                        isShowToastDelete ||
+                        isShowToastDuplicate
                     "
                     classIcon="toast__icon-success"
                     :kind="MISAResouce.vi.ToastTitleSuccess"
                     :text="
                         (isShowToastAdd && MISAResouce.vi.ToastAddSuccess) ||
                         (isShowToastEdit && MISAResouce.vi.ToastEditSuccess) ||
-                        (isShowToastDelete && MISAResouce.vi.ToastDeleteSuccess)
+                        (isShowToastDelete &&
+                            MISAResouce.vi.ToastDeleteSuccess) ||
+                        (isShowToastDuplicate &&
+                            MISAResouce.vi.ToastDuplicateSuccess)
                     "
                     classTitle="toast__title-success"
                 ></MToast>
@@ -178,7 +187,9 @@ export default {
             isShowToastAdd: false,
             isShowToastEdit: false,
             isShowToastDelete: false,
+            isShowToastDuplicate: false,
             employeeIdSelected: null,
+            formMode: "",
             textTitlePopup: "",
             selectedCheckbox: [],
             deleteMulEmployeeCode: [],
@@ -238,6 +249,17 @@ export default {
             if (this.pageNumber > 1) {
                 this.isDisabledClickPrev = false;
             }
+        },
+
+        /**
+         * Hàm hiển thị popup và truyền formMode cho Popup, EmployeeId được chọn
+         * Author: KienNT (28/03/2023)
+         */
+        showPopupDuplicate(formMode, employeeIdSelected) {
+            this.isShowPopup = true;
+            this.formMode = formMode;
+            this.textTitlePopup = MISAResouce.vi.DuplicateEmployeeInfo;
+            this.employeeIdSelected = employeeIdSelected;
         },
 
         /**
@@ -343,7 +365,6 @@ export default {
             try {
                 this.employeeIdSelected = employee.EmployeeId;
                 this.textTitlePopup = MISAResouce.vi.EditEmployeeInfo;
-
                 this.isShowPopup = true;
             } catch (error) {
                 console.log(error);
@@ -395,6 +416,14 @@ export default {
                         this.isShowToastDelete = true;
                         setTimeout(
                             () => (this.isShowToastDelete = false),
+                            3000
+                        );
+                        break;
+
+                    case "duplicate":
+                        this.isShowToastDuplicate = true;
+                        setTimeout(
+                            () => (this.isShowToastDuplicate = false),
                             3000
                         );
                         break;

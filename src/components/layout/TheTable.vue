@@ -104,6 +104,7 @@
         :refElement="this.$refs.iconContextMenu"
         @hideShowLoading="hideShowLoading"
         @handleDeleteRow="handleDeleteRow"
+        @handleDuplicateEmployee="handleDuplicateEmployee"
     ></Mcontextmenu>
 
     <MDialog
@@ -385,6 +386,24 @@ export default {
             try {
                 if (this.employeeIdSelected) {
                     this.isDialogWarning = true;
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
+         * Hàm lấy được id của employee chọn
+         * Author: KienNT (28/03/2023)
+         */
+        handleDuplicateEmployee() {
+            try {
+                if (this.employeeIdSelected) {
+                    this.$emit(
+                        "showPopupDuplicate",
+                        MISAEnum.formMode.Duplicate,
+                        this.employeeIdSelected
+                    );
                 }
             } catch (error) {
                 console.log(error);

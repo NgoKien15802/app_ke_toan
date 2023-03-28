@@ -5,9 +5,12 @@
         ref="contextmenu"
     >
         <li class="contextmenu__fun-item">
-            <a href="#" class="contextmenu__fun-link">{{
-                MISAResouce.vi.Duplicate
-            }}</a>
+            <a
+                href="#"
+                class="contextmenu__fun-link"
+                @click="handleDuplicateEmployee"
+                >{{ MISAResouce.vi.Duplicate }}</a
+            >
         </li>
 
         <li class="contextmenu__fun-item">
@@ -85,9 +88,23 @@ export default {
             }
         },
 
+        /**
+         * handle click vào text xóa
+         * Author: KienNT (06/03/2023)
+         */
         handleDeleteRow() {
             if (this.employeeIdSelected) {
                 this.$emit("handleDeleteRow");
+            }
+        },
+
+        /**
+         * handle click vào text Nhân bản
+         * Author: KienNT (28/03/2023)
+         */
+        handleDuplicateEmployee() {
+            if (this.employeeIdSelected) {
+                this.$emit("handleDuplicateEmployee");
             }
         },
     },

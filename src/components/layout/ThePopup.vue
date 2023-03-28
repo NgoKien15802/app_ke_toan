@@ -638,6 +638,9 @@ export default {
         textTitlePopup: {
             type: String,
         },
+        formMode: {
+            type: String,
+        },
     },
     data() {
         return {
@@ -649,6 +652,7 @@ export default {
             errorExistId: "",
             isDialogError: false,
             isDialogNotify: false,
+            formModePopup: "",
             oldEmployee: {},
             isTooltip: {
                 isTooltipEmployeeCode: false,
@@ -671,6 +675,7 @@ export default {
     },
 
     created() {
+        this.formModePopup = this.formMode;
         if (this.employeeIdSelected) {
             this.dataEmployeeIdSelected = this.employeeIdSelected;
         }
@@ -682,38 +687,29 @@ export default {
             if (this.isEmpty(this.dataEmployeeIdSelected)) {
                 this.departmentName = null;
                 this.getNewEmployeeCode();
+            } else if (
+                /**
+                 * TH nhân bản
+                 * Author: KienNT (28/03/2023)
+                 */
+                !this.isEmpty(this.dataEmployeeIdSelected) &&
+                this.formModePopup == MISAEnum.formMode.Duplicate
+            ) {
+                this.getDataByEmplyeeId(MISAEnum.formMode.Duplicate);
             } else {
                 /**
                  * Call API lấy ra id bất kỳ khi có id để sửa
                  * Author: KienNT (03/03/2023)
                  */
-                axios
-                    .get(
-                        `https://localhost:7153/api/v1/Employees/${this.dataEmployeeIdSelected}`
-                    )
-                    .then(this.$emit("hideShowLoading", true))
-                    .then((res) => {
-                        this.newEmployee = res?.data?.Data;
-                        //có API thì sửa department ở đây
-                        this.departmentName = this.newEmployee.DepartmentName;
-                        this.newEmployee.DateOfBirth = this.formatDate(
-                            this.newEmployee.DateOfBirth
-                        );
-                        this.newEmployee.IdentityDate = this.formatDate(
-                            this.newEmployee.IdentityDate
-                        );
-                        this.oldEmployee = JSON.stringify(this.newEmployee);
-                        this.setFocusInput("txtEmployeeCode");
-                        this.$emit("hideShowLoading", false);
-                        this.isDisabledEmployeeCode = true;
-                    })
-                    .catch((res) => {
-                        console.log(res);
-                    });
+                this.getDataByEmplyeeId();
             }
         } catch (error) {
             console.log(error);
         }
+    },
+
+    unmounted() {
+        this.$emit("handleSetModeForm");
     },
 
     watch: {
@@ -765,6 +761,40 @@ export default {
     },
 
     methods: {
+        /**
+         * Hàm thực hiện CALL api lấy employee by ID
+         * Author: KienNT (28/03/2023)
+         * @param(formMode): Là chế độ của form: Sửa hay Nhân bản
+         */
+        getDataByEmplyeeId(formMode = "") {
+            axios
+                .get(
+                    `https://localhost:7153/api/v1/Employees/${this.dataEmployeeIdSelected}`
+                )
+                .then(this.$emit("hideShowLoading", true))
+                .then((res) => {
+                    this.newEmployee = res?.data?.Data;
+                    if (formMode === MISAEnum.formMode.Duplicate) {
+                        this.getNewEmployeeCode();
+                    } else {
+                        this.isDisabledEmployeeCode = true;
+                    }
+                    //có API thì sửa department ở đây
+                    this.departmentName = this.newEmployee.DepartmentName;
+                    this.newEmployee.DateOfBirth = this.formatDate(
+                        this.newEmployee.DateOfBirth
+                    );
+                    this.newEmployee.IdentityDate = this.formatDate(
+                        this.newEmployee.IdentityDate
+                    );
+                    this.oldEmployee = JSON.stringify(this.newEmployee);
+                    this.setFocusInput("txtEmployeeCode");
+                    this.$emit("hideShowLoading", false);
+                })
+                .catch((res) => {
+                    console.log(res);
+                });
+        },
         /**
          * Hàm click vào btn có trong dialog
          * Author: KienNT (10/03/2023)
@@ -896,54 +926,12 @@ export default {
                     console.log(this.newEmployee);
                     // thêm nhân viên nếu ko có employeeIdSelected
                     if (this.isEmpty(this.dataEmployeeIdSelected)) {
-                        axios
-                            .post(
-                                "https://localhost:7153/api/v1/Employees",
-                                this.newEmployee
-                            )
-                            .then(this.$emit("hideShowLoading", true))
-                            .then((res) => {
-                                console.log(res);
-                                console.log(this.newEmployee);
-                                if (isCloseForm) {
-                                    // reset và đóng form
-                                    this.destroyPopup();
-                                } else {
-                                    // reset nhưng ko đóng form
-                                    this.newEmployee = {};
-                                    // lấy 1 id mới
-                                    this.getNewEmployeeCode();
-                                    this.errorMessage = [];
-                                    this.departmentName = "";
-                                }
-                                this.$emit("hideShowLoading", false);
-                                this.$emit("hideShowToast", "add");
-                                this.$emit("handleReLoadData");
-                            })
-                            .catch((error) => {
-                                let response = error.response;
-                                switch (response.status) {
-                                    case 400:
-                                    case 500:
-                                        this.$emit("hideShowLoading", false);
-                                        this.errorExistId =
-                                            response?.data?.Data?.UserMsg ||
-                                            response?.data?.UserMsg;
-                                        this.errorMessage[0] =
-                                            this.errorExistId;
-                                        if (
-                                            response?.data?.Data?.UserMsg ||
-                                            response?.data?.UserMsg
-                                        ) {
-                                            this.isTooltip.isTooltipEmployeeCode = true;
-                                        }
-                                        this.isDialogError = true;
-                                        break;
-
-                                    default:
-                                        break;
-                                }
-                            });
+                        this.postData(MISAEnum.formMode.Add, isCloseForm);
+                    } else if (
+                        !this.isEmpty(this.dataEmployeeIdSelected) &&
+                        this.formModePopup === MISAEnum.formMode.Duplicate
+                    ) {
+                        this.postData(MISAEnum.formMode.Duplicate, isCloseForm);
                     } else {
                         // Sửa nhân viên theo id
                         axios
@@ -955,7 +943,7 @@ export default {
                             .then(this.$emit("hideShowLoading", true))
                             .then((res) => {
                                 console.log(res);
-                                if (isCloseForm) {
+                                if (isCloseForm === true) {
                                     // reset và đóng form
                                     this.destroyPopup();
                                 } else {
@@ -976,16 +964,19 @@ export default {
                                 let response = error.response;
                                 switch (response.status) {
                                     case 400:
+                                    case 409:
                                     case 500:
                                         this.$emit("hideShowLoading", false);
                                         this.errorExistId =
-                                            response?.data?.Data?.devMsg;
+                                            response?.data?.Data?.devMsg ||
+                                            response?.data?.UserMsg;
                                         this.errorMessage[0] =
                                             this.errorExistId;
                                         if (response?.data?.Data?.devMsg) {
                                             this.isTooltip.isTooltipEmployeeCode = true;
                                         }
                                         this.isDialogError = true;
+                                        this.throwErrorInCatch();
                                         break;
 
                                     default:
@@ -1000,6 +991,65 @@ export default {
             } catch (error) {
                 console.log(error);
             }
+        },
+
+        /**
+         * Hàm post Employee với từng modeForm: Thêm và nhân bản
+         * Author: KienNT (28/03/2023)
+         */
+        postData(formMode, isCloseForm) {
+            axios
+                .post(
+                    "https://localhost:7153/api/v1/Employees",
+                    this.newEmployee
+                )
+                .then(this.$emit("hideShowLoading", true))
+                .then((res) => {
+                    console.log(res);
+                    console.log(this.newEmployee);
+                    if (isCloseForm === true) {
+                        // reset và đóng form
+                        this.destroyPopup();
+                    } else {
+                        // reset nhưng ko đóng form
+                        this.newEmployee = {};
+                        // lấy 1 id mới
+                        this.getNewEmployeeCode();
+                        this.errorMessage = [];
+                        this.departmentName = "";
+                    }
+                    this.$emit("hideShowLoading", false);
+
+                    if (formMode === MISAEnum.formMode.Duplicate) {
+                        this.dataEmployeeIdSelected = null;
+                        this.formModePopup = null;
+                        this.$emit("hideShowToast", "duplicate");
+                    } else {
+                        this.$emit("hideShowToast", "add");
+                    }
+                    this.$emit("handleReLoadData");
+                })
+                .catch((error) => {
+                    let response = error.response;
+                    switch (response.status) {
+                        case 400:
+                        case 409:
+                        case 500:
+                            this.$emit("hideShowLoading", false);
+                            this.errorExistId =
+                                response?.data?.Data?.UserMsg ||
+                                response?.data?.UserMsg;
+                            this.errorMessage[0] = this.errorExistId;
+                            if (response?.data?.Data?.UserMsg) {
+                                this.isTooltip.isTooltipEmployeeCode = true;
+                            }
+                            this.isDialogError = true;
+                            break;
+
+                        default:
+                            break;
+                    }
+                });
         },
 
         /**

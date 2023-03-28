@@ -67,8 +67,9 @@ const MISAResouce = {
 
         // popup
         Enter: "Nhập",
-        EmployeeInfo: "Thông tin nhân viên",
+        EmployeeInfo: "Thêm mới nhân viên",
         EditEmployeeInfo: "Sửa nhân viên",
+        DuplicateEmployeeInfo: "Nhân bản nhân viên",
         Customer: "Là khách hàng",
         supplier: "Là nhà cung cấp",
         LabelEmployeeCode: "Mã",
@@ -114,6 +115,7 @@ const MISAResouce = {
         ToastAddSuccess: "Nhân viên đã được thêm",
         ToastDeleteSuccess: "Nhân viên đã bị xóa",
         ToastEditSuccess: "Nhân viên đã được sửa",
+        ToastDuplicateSuccess: "Nhân viên đã được nhân bản",
         ToastTitleSuccess: "Thành công",
 
         // checkbox
@@ -178,8 +180,9 @@ const MISAResouce = {
         FinancialAnalysis: "Financial analysis",
 
         // popup
-        EmployeeInfo: "Employee infomation",
-        EditEmployeeInfo: "edit employee infomation",
+        EmployeeInfo: "Add new employee",
+        EditEmployeeInfo: "Edit employee infomation",
+        DuplicateEmployeeInfo: "Employee duplicate",
         Customer: "Is a customer",
         supplier: "Is a supplier",
         LabelEmployeeCode: "ID",
@@ -231,6 +234,7 @@ const MISAResouce = {
         ToastAddSuccess: "Staff has been added",
         ToastDeleteSuccess: "Employee has been deleted",
         ToastEditSuccess: "Staff has been edited",
+        ToastDuplicateSuccess: "Staff has been duplicated",
         ToastTitleSuccess: "Success",
 
         // checkbox
