@@ -359,9 +359,6 @@
                                             ref="txtIdentityDate"
                                             tabindex="8"
                                             kind="default"
-                                            style="
-                                                font-family: Arial, sans-serif;
-                                            "
                                             v-model="newEmployee.IdentityDate"
                                             :isShowTooltip="
                                                 isTooltip.isTooltipIdentityDate
@@ -583,12 +580,16 @@
                     </div>
                     <div>
                         <MButton
-                            class="btn btn-primary close__add-employee"
+                            class="btn btn-primary close__add-employee tooltip"
                             tabindex="18"
                             :text="MISAResouce.vi.BtnSaveEndAdd"
                             :click="() => btnSaveAndClose(false)"
                             ref="btnSaveEndAdd"
                         >
+                            <MTooltip
+                                kind="saveAndAdd"
+                                :subtext="MISAResouce.vi.TooltipSaveAndAdd"
+                            ></MTooltip>
                         </MButton>
                     </div>
                 </div>
@@ -647,7 +648,6 @@ export default {
             MISAResouce,
             MISAEnum,
             newEmployee: {},
-            valueInput: "",
             departmentName: "",
             errorExistId: "",
             isDialogError: false,
@@ -827,8 +827,8 @@ export default {
          */
         handleCheckEmpty(valueInput) {
             try {
-                this.valueInput = valueInput;
-                if (this.isEmpty(this.valueInput)) {
+                this.departmentName = valueInput;
+                if (this.isEmpty(this.departmentName)) {
                     this.isTooltip.isTooltipDepartmentName = true;
                 } else {
                     this.isTooltip.isTooltipDepartmentName = false;
@@ -1077,7 +1077,7 @@ export default {
                 // check department
                 this.checkField(
                     "isTooltipDepartmentName",
-                    this.valueInput,
+                    this.departmentName,
                     MISAResouce.vi.LabelDepartmentName,
                     "txtDepartmentName"
                 );
@@ -1459,7 +1459,8 @@ export default {
                 this.btnSaveAndClose(true);
             }
 
-            if (event.ctrlKey && event.shiftKey && event.key === "s") {
+            if (event.ctrlKey && event.shiftKey && event.key === "S") {
+                event.preventDefault();
                 this.btnSaveAndClose(false);
             }
         },

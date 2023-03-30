@@ -118,8 +118,7 @@
                   ' ' +
                   MISAResouce.vi.BtnNo +
                   '?'
-                : MISAResouce.vi.MessageWarning +
-                  [...deleteMulEmployeeCode] +
+                : MISAResouce.vi.MessageWarningMul +
                   ' ' +
                   MISAResouce.vi.TxtNo +
                   '?'

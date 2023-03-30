@@ -61,7 +61,8 @@ const MISAResouce = {
         TooltipFixPhoneNumber: "Điện thoại cố định",
         TooltipHelp: "Giúp",
         TooltipClose: "Đóng (ESC)",
-        TooltipSave: "Lưu (ctrl + s)",
+        TooltipSave: "Cất (ctrl + s)",
+        TooltipSaveAndAdd: "Cất và thêm (ctrl + shift + s)",
         TooltipReload: "Lấy lại dữ liệu",
         TooltipExport: "Xuất ra Excel",
 
@@ -109,6 +110,7 @@ const MISAResouce = {
         DialogWarning: "Cảnh báo",
         MessageNotify: "Dữ liệu của bạn đã thay đổi bạn có muốn cất không?",
         MessageWarning: "Bạn có muốn xóa nhân viên ",
+        MessageWarningMul: "Bạn có muốn xóa tất cả nhân viên được chọn",
         TxtNo: "không",
 
         // toast
@@ -207,12 +209,13 @@ const MISAResouce = {
         TooltipHelp: "Help",
         TooltipClose: "Close",
         TooltipSave: "Save (ctrl + s)",
+        TooltipSaveAndAdd: "Save and add (ctrl + shift + s)",
         TooltipReload: "Data recovery",
         TooltipExport: "Export Excel",
 
         // button
         BtnDestroy: "Destroy",
-        BtnSaveEndAdd: "Save End Add",
+        BtnSaveEndAdd: "Save and add",
         BtnDestroyDialog: "Destroy",
         BtnDeleteDialog: "Delete",
         BtnSave: "Save",

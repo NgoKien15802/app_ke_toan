@@ -177,6 +177,7 @@ import TheTable from "./TheTable.vue";
 import ThePaging from "./ThePaging.vue";
 import ThePopup from "./ThePopup.vue";
 import Mloading from "../base/Mloading.vue";
+import axios from "axios";
 export default {
     name: "TheContent",
     data() {
@@ -292,6 +293,46 @@ export default {
          */
         setIsDisabledClickPrev() {
             this.isDisabledClickPrev = true;
+        },
+
+        /**
+         * Hàm thực hiện CALL API Export
+         * Author: KienNT (30/03/2023)
+         */
+        handleExport() {
+            try {
+                //Loại dữ liệu trả về từ API, ở đây là blob (binary large object) để tải xuống tệp Excel.
+                axios({
+                    url: `https://localhost:7153/api/v1/Employees/ExportToExcel?keyword=${this.keyWordSearch}`,
+                    method: "GET",
+                    responseType: "blob",
+                })
+                    .then((this.isLoading = true))
+                    .then((response) => {
+                        // Tạo một URL tạm thời để tải xuống tệp Excel.
+                        const url = window.URL.createObjectURL(
+                            new Blob([response.data])
+                        );
+                        // Tạo một thẻ <a> ẩn và cấu hình các thuộc tính để tải xuống tệp Excel, bao gồm tên tệp và đường dẫn đến tệp trên URL tạm thời.
+                        const link = document.createElement("a");
+                        link.href = url;
+                        //  Thuộc tính download được thiết lập để chỉ định tên tệp tin sẽ được tải xuống.
+                        link.setAttribute(
+                            "download",
+                            `Danh_sach_nhan_vien_${Date.now()}.xlsx`
+                        );
+                        // chèn thẻ a vào body của trang và kích hoạt sự kiện click của thẻ a để bắt đầu tải xuống tệp tin.
+                        document.body.appendChild(link);
+                        link.click();
+                        this.isLoading = false;
+                    })
+                    .catch((res) => {
+                        console.log(res);
+                        this.isLoading = false;
+                    });
+            } catch (error) {
+                console.log(error);
+            }
         },
 
         /**

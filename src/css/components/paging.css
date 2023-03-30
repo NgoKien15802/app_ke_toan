@@ -34,7 +34,7 @@
     display: flex;
     align-items: center;
     column-gap: 16px;
-    width: 70%;
+    width: 80%;
 }
 
 .paging__record-footer-iconRight {
