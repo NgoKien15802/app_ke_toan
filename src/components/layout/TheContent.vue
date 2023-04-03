@@ -81,6 +81,7 @@
                     <div
                         class="content__main-refresh wrap-icon"
                         @click="handleExport"
+                        :class="totalRecord == 0 ? 'disabled' : ''"
                     >
                         <div class="content__main-exprort-icon tooltip">
                             <MTooltip

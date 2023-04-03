@@ -164,6 +164,7 @@ export default {
          * @param {event}: là sự kiện của element hiện tại
          */
         handleClickIcon(event) {
+            this.$emit("handleCheckEmpty");
             if (event.target.firstChild) {
                 event.target.firstChild.classList.toggle("rorate-180");
             } else {
