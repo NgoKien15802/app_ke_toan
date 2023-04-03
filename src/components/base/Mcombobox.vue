@@ -164,7 +164,6 @@ export default {
          * @param {event}: là sự kiện của element hiện tại
          */
         handleClickIcon(event) {
-            this.$emit("handleCheckEmpty");
             if (event.target.firstChild) {
                 event.target.firstChild.classList.toggle("rorate-180");
             } else {
@@ -355,7 +354,7 @@ export default {
          */
         handleBlurInput() {
             this.isFocus = false;
-            this.$emit("handleCheckEmpty");
+            this.$emit("handleCheckEmpty", this.department);
         },
 
         /**
