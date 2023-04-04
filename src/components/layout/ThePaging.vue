@@ -119,7 +119,6 @@ export default {
     watch: {
         pageCurrent: function () {
             this.pageNumber = this.pageCurrent;
-
             this.offset = (this.pageNumber - 1) * this.pageIndex;
         },
     },

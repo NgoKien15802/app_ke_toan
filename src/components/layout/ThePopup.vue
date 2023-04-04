@@ -776,8 +776,10 @@ export default {
                     this.newEmployee = res?.data?.Data;
                     if (formMode === MISAEnum.formMode.Duplicate) {
                         this.getNewEmployeeCode();
+                        this.setFocusInput("txtEmployeeCode");
                     } else {
                         this.isDisabledEmployeeCode = true;
+                        this.setFocusInput("txtFullName");
                     }
                     //có API thì sửa department ở đây
                     this.departmentName = this.newEmployee.DepartmentName;
@@ -788,7 +790,6 @@ export default {
                         this.newEmployee.IdentityDate
                     );
                     this.oldEmployee = JSON.stringify(this.newEmployee);
-                    this.setFocusInput("txtEmployeeCode");
                     this.$emit("hideShowLoading", false);
                 })
                 .catch((res) => {
