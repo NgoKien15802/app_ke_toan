@@ -9,38 +9,38 @@
                         :initValue="selectedAll"
                     ></MCheckbox>
                 </th>
-                <th class="text-align-center">
+                <th class="text-align-left">
                     {{ MISAResouce.vi.EmployeeCode }}
                 </th>
-                <th class="text-align-center">
+                <th class="text-align-left">
                     {{ MISAResouce.vi.EmployeeName }}
                 </th>
-                <th class="text-align-center" style="min-width: 200px">
+                <th class="text-align-left" style="min-width: 200px">
                     {{ MISAResouce.vi.Gender }}
                 </th>
                 <th class="text-align-center">
                     {{ MISAResouce.vi.DateOfBirth }}
                 </th>
-                <th class="text-align-center">
+                <th class="text-align-left">
                     <MTooltip
                         kind="title"
                         :text="MISAResouce.vi.IdentityNumber"
                         :subtext="MISAResouce.vi.TooltipIdentityNumber"
                     ></MTooltip>
                 </th>
-                <th class="text-align-center">
+                <th class="text-align-left">
                     {{ MISAResouce.vi.JobTitle }}
                 </th>
-                <th class="text-align-center">
+                <th class="text-align-left">
                     {{ MISAResouce.vi.DepartmentName }}
                 </th>
-                <th class="text-align-center">
+                <th class="text-align-left">
                     {{ MISAResouce.vi.AccountNumber }}
                 </th>
-                <th class="text-align-center">
+                <th class="text-align-left">
                     {{ MISAResouce.vi.BankName }}
                 </th>
-                <th class="text-align-center">
+                <th class="text-align-left">
                     {{ MISAResouce.vi.BankAddress }}
                 </th>
                 <th class="text-align-center">
