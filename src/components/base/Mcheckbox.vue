@@ -33,6 +33,7 @@ export default {
             default: false,
         },
     },
+
     watch: {
         /**
          * Theo dõi sự thay đổi value thì hàm sẽ được gọi bên ngoài để update value

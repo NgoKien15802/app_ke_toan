@@ -17,7 +17,7 @@
                 </p>
             </div>
             <div class="toast__right m-flex">
-                <a class="toast__action" href="">Hoàn tác</a>
+                <a class="toast__action" href=""></a>
                 <div class="wrap-icon ml-16">
                     <div class="icon-close"></div>
                 </div>

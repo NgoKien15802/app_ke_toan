@@ -8,6 +8,18 @@
                         {{ title }}
                     </h2>
                 </div>
+                <div
+                    class="dialog__header-right wrap-icon"
+                    @click="closeDialog"
+                >
+                    <div class="icon-close tooltip">
+                        <MTooltip
+                            kind="close"
+                            :subtext="MISAResouce.vi.TooltipClose"
+                            style="top: 163%"
+                        ></MTooltip>
+                    </div>
+                </div>
             </div>
             <div class="dialog__body">
                 <div :class="iconClass"></div>
@@ -114,6 +126,13 @@ export default {
         };
     },
 
+    mounted() {
+        window.addEventListener("keydown", this.handlePressKeyShort);
+    },
+    beforeUnmount() {
+        window.removeEventListener("keydown", this.handlePressKeyShort);
+    },
+
     methods: {
         /**
          * Hàm gửi emit đóng dialog error
@@ -161,6 +180,30 @@ export default {
          */
         onBtnWarningYes() {
             this.$emit("onBtnWarningYes");
+        },
+
+        /**
+         * Xử lý khi click vào icon close thì đóng dialog
+         * Author: KienNT (07/03/2023)
+         */
+        closeDialog() {
+            this.kind === "error"
+                ? this.hideShowDialogError()
+                : this.kind === "notify"
+                ? this.onClickBtnDestroy()
+                : this.onBtnWarningNo();
+        },
+
+        /**
+         *  handle khi nhấn phím tắt
+         * Author: KienNT (15/03/2023)
+         * @param (event): là event
+         */
+        handlePressKeyShort(event) {
+            // khi nhấn phím esc thì đóng form
+            if (event.key === "Escape" || event.keyCode === 27) {
+                this.closeDialog();
+            }
         },
     },
 };

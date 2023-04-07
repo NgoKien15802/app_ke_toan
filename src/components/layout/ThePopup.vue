@@ -264,6 +264,7 @@
                                                 newEmployee.Gender ===
                                                 MISAEnum.Gender.Male
                                             "
+                                            tabindex="6"
                                             v-model="newEmployee.Gender"
                                         ></MRadio>
                                         <MRadio
@@ -280,7 +281,11 @@
                                             :text="MISAResouce.vi.LabelOther"
                                             :checked="
                                                 newEmployee.Gender ===
-                                                MISAEnum.Gender.Other
+                                                    MISAEnum.Gender.Other ||
+                                                (isEmpty(
+                                                    dataEmployeeIdSelected
+                                                ) === true &&
+                                                    true)
                                             "
                                             v-model="newEmployee.Gender"
                                         ></MRadio>
@@ -613,9 +618,9 @@
             iconClass="dialog__icon-notify"
             :title="MISAResouce.vi.DialogNotify"
             :message="MISAResouce.vi.MessageNotify"
-            :btnNoNotify="MISAResouce.vi.BtnNo"
-            :textButton="MISAResouce.vi.BtnYes"
-            :btnDestroyNotify="MISAResouce.vi.BtnDestroy"
+            :btnNoNotify="MISAResouce.vi.BtnNoSave"
+            :textButton="MISAResouce.vi.BtnSaveData"
+            :btnDestroyNotify="MISAResouce.vi.BtnClose"
             @onClickBtnDestroy="onClickBtnDestroy"
             @destroyPopup="destroyPopup"
             @onClickBtnYes="onClickBtnYes"
@@ -888,13 +893,15 @@ export default {
          */
         closePopup() {
             try {
-                // kiểm tra dữ liệu đã thay đổi chưa
-                const newEmployeeData = JSON.stringify(this.newEmployee);
-                if (this.oldEmployee !== newEmployeeData) {
-                    this.isDialogNotify = true;
-                    return;
-                } else {
-                    this.$emit("onClosePopup");
+                if (this.isDialogError === false) {
+                    // kiểm tra dữ liệu đã thay đổi chưa
+                    const newEmployeeData = JSON.stringify(this.newEmployee);
+                    if (this.oldEmployee !== newEmployeeData) {
+                        this.isDialogNotify = true;
+                        return;
+                    } else {
+                        this.$emit("onClosePopup");
+                    }
                 }
             } catch (error) {
                 console.log(error);
@@ -927,6 +934,9 @@ export default {
                     console.log(this.newEmployee);
                     // thêm nhân viên nếu ko có employeeIdSelected
                     if (this.isEmpty(this.dataEmployeeIdSelected)) {
+                        if (this.isEmpty(this.newEmployee.Gender)) {
+                            this.newEmployee.Gender = MISAEnum.Gender.Other;
+                        }
                         this.postData(MISAEnum.formMode.Add, isCloseForm);
                     } else if (
                         !this.isEmpty(this.dataEmployeeIdSelected) &&

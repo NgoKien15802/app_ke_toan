@@ -12,7 +12,7 @@
         <span class="ms__radio">
             <span class="ms__radio-border"></span>
 
-            <span class="ms__radio-circle" tabindex="6"></span>
+            <span class="ms__radio-circle" :tabindex="tabindex"></span>
         </span>
         <label :for="id" class="ms__radio-label">{{ text }} </label>
     </label>
@@ -40,6 +40,9 @@ export default {
         checked: {
             type: Boolean,
             default: false,
+        },
+        tabindex: {
+            type: String,
         },
     },
     watch: {

@@ -103,12 +103,14 @@ const MISAResouce = {
         BtnSave: "Cất",
         BtnClose: "Đóng",
         BtnDeleteAll: "Xóa tất cả",
+        BtnSaveData: "Lưu",
+        BtnNoSave: "Không lưu",
 
         // title dialog
         DialogNotifyError: "Thông báo lỗi",
         DialogNotify: "Thông báo",
         DialogWarning: "Cảnh báo",
-        MessageNotify: "Dữ liệu của bạn đã thay đổi bạn có muốn cất không?",
+        MessageNotify: "Dữ liệu của bạn đã thay đổi bạn có muốn lưu không?",
         MessageWarning: "Bạn có muốn xóa nhân viên ",
         MessageWarningMul: "Bạn có muốn xóa tất cả nhân viên được chọn",
         TxtNo: "không",
@@ -223,6 +225,8 @@ const MISAResouce = {
         BtnYes: "Yes",
         BtnNo: "No",
         BtnDeleteAll: "Delete all",
+        BtnSaveData: "Save",
+        BtnNoSave: "Don't save",
 
         // title dialog
         DialogNotifyError: "Error! ",

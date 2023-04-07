@@ -52,13 +52,16 @@
             <tr
                 v-for="(employee, index) in employees"
                 :key="index"
-                @dblclick="() => doubleClickRow(employee)"
+                @dblclick="($event) => doubleClickRow($event, employee)"
             >
                 <td class="text-align-center">
                     <MCheckbox
                         v-model="employee.Selected"
                         :initValue="employee.Selected"
-                        @handleCheckbox="handleCheckbox"
+                        @handleCheckbox="
+                            handleCheckbox($event, employee.EmployeeId)
+                        "
+                        ref="checkbox"
                     ></MCheckbox>
                 </td>
                 <td class="text-align-left">{{ employee?.EmployeeCode }}</td>
@@ -80,7 +83,7 @@
                         kind="link"
                         className="link-btn btn-link-primary"
                         :text="MISAResouce.vi.Fix"
-                        :click="() => doubleClickRow(employee)"
+                        :click="() => doubleClickEditText(employee)"
                     ></MButton>
 
                     <div
@@ -88,7 +91,7 @@
                         @click="handleClickOptionMenu($event, employee)"
                         ref="iconContextMenu"
                     >
-                        <div class="icon-dropdown"></div>
+                        <div class="icon-dropdown" ref="ContextMenu"></div>
                     </div>
                 </td>
             </tr>
@@ -116,7 +119,7 @@
                 ? MISAResouce.vi.MessageWarning +
                   employeeCodeSelected +
                   ' ' +
-                  MISAResouce.vi.BtnNo +
+                  MISAResouce.vi.TxtNo +
                   '?'
                 : MISAResouce.vi.MessageWarningMul +
                   ' ' +
@@ -184,6 +187,7 @@ export default {
             employeeCodeSelected: "",
             isDialogWarning: false,
             isCheckedArr: [],
+            oldCheckedArr: [],
             totalRecord: 0,
             keyWord: "",
             isDialogDeleteMul: false,
@@ -260,6 +264,7 @@ export default {
 
         pageCurrent: function () {
             this.pageNumber = this.pageCurrent;
+
             this.loadData();
         },
 
@@ -269,7 +274,6 @@ export default {
          */
         isReload: function (newValue) {
             if (newValue) {
-                this.pageNumber = 1;
                 this.$emit("setIsReLoad");
                 this.loadData();
             }
@@ -326,10 +330,26 @@ export default {
                         this.employees = response?.data?.Data?.Data;
                         this.totalRecord = response?.data?.Data?.TotalRecord;
                         this.$emit("getTotalRecord", this.totalRecord);
-                        this.employees = this.employees.map((x) => {
-                            x.Selected = false;
-                            return x;
-                        });
+
+                        if (this.oldCheckedArr.length > 0) {
+                            for (
+                                let index = 0;
+                                index < this.oldCheckedArr.length;
+                                index++
+                            ) {
+                                const oldElement = this.oldCheckedArr[index];
+                                this.employees = this.employees.map((x) => {
+                                    if (x.EmployeeId === oldElement) {
+                                        x.Selected = true;
+                                        return x;
+                                    } else {
+                                        x.Selected = false;
+                                        return x;
+                                    }
+                                });
+                            }
+                        }
+
                         this.hideShowLoading(false);
                     })
                     .catch((error) => {
@@ -356,9 +376,17 @@ export default {
          * Author: KienNT (06/03/2023)
          *   @param (event): là event
          */
-        handleCheckbox(event) {
+        handleCheckbox(event, EmployeeId) {
+            const index = this.oldCheckedArr.indexOf(EmployeeId);
             if (!event.target.checked) {
                 this.selectedAll = event.target.checked;
+                if (index !== -1) {
+                    this.oldCheckedArr.splice(index, 1);
+                }
+            } else {
+                if (index === -1) {
+                    this.oldCheckedArr.push(EmployeeId);
+                }
             }
         },
         /**
@@ -368,6 +396,16 @@ export default {
          */
         handleCheckboxAll(event) {
             try {
+                if (event.target.checked) {
+                    this.employees.forEach((el) => {
+                        const index = this.oldCheckedArr.indexOf(el.EmployeeId);
+                        if (index === -1) {
+                            this.oldCheckedArr.push(el.EmployeeId);
+                        }
+                    });
+                } else {
+                    this.oldCheckedArr = [];
+                }
                 this.employees = this.employees.map((x) => {
                     x.Selected = event.target.checked;
                     return x;
@@ -483,22 +521,42 @@ export default {
         formatGender(gender) {
             try {
                 if (gender === MISAEnum.Gender.Male) {
-                    return "Nam";
+                    return MISAResouce.vi.LabelMale;
                 } else if (gender === MISAEnum.Gender.Female) {
-                    return "Nữ";
+                    return MISAResouce.vi.LabelFemale;
                 } else if (gender === MISAEnum.Gender.Other) {
-                    return "Khác";
+                    return MISAResouce.vi.LabelOther;
                 }
             } catch (error) {
                 console.log(error);
             }
         },
         /**
-         * Hàm gửi emit lên cha để lấy id employee
+         * Hàm gửi emit lên cha để lấy id employee, TH double click
          * Author: KienNT (04/03/2023)
          *  @param (employee): Tham số là object chứa thông tin nhân viên
          */
-        doubleClickRow(employee) {
+        doubleClickRow(event, employee) {
+            // Bỏ handleClickRow với icon ContextMenu và checkbox khi db click
+            const arrIconContextMenu = this.$refs["iconContextMenu"];
+            const iconContextMenu = this.$refs["ContextMenu"];
+            const checkboxs = this.$refs["checkbox"];
+            for (let index = 0; index < arrIconContextMenu.length; index++) {
+                if (
+                    !event.target.isEqualNode(arrIconContextMenu[index]) &&
+                    !event.target.isEqualNode(iconContextMenu[index]) &&
+                    !event.target.isEqualNode(checkboxs[index].$el.firstChild)
+                ) {
+                    this.$emit("onDoubleClick", employee);
+                }
+            }
+        },
+
+        /**
+         * Hàm gửi emit lên cha để lấy id employee, TH click btn sửa
+         * Author: KienNT (04/03/2023)
+         */
+        doubleClickEditText(employee) {
             this.$emit("onDoubleClick", employee);
         },
 

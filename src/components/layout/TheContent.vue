@@ -230,8 +230,7 @@ export default {
          */
         handleReLoadData() {
             this.isReload = true;
-            this.pageNumber = 1;
-            this.isDisabledClickPrev = true;
+            // this.isDisabledClickPrev = true;
         },
         /**
          * Hàm gán giá trị mảng các checkbox được check

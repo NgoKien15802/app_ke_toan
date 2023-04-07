@@ -16,9 +16,10 @@
     border-radius: var(--border-radius);
     font-weight: 500;
     font-size: 1.4rem;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    line-height: 36px;
     outline: none;
 }
 
@@ -43,6 +44,7 @@
     color: #1f1f1f;
     border: 1px solid var(--boder-primary);
     cursor: pointer;
+    padding: 0 16px;
 }
 
 .btn-primary:hover {
