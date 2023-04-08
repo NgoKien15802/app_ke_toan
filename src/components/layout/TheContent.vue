@@ -111,7 +111,6 @@
                         @setIsReLoad="setIsReLoad"
                         @handleReLoadData="handleReLoadData"
                         :isDialogDeleteMultiple="isDialogDeleteMultiple"
-                        :deleteMulEmployeeCode="deleteMulEmployeeCode"
                         :selectedEmployeeIds="selectedEmployeeIds"
                         @setIsDialogDeleteMul="setIsDialogDeleteMul"
                         @setIsDialogDeleteMuliple="
@@ -194,7 +193,6 @@ export default {
             formMode: "",
             textTitlePopup: "",
             selectedCheckbox: [],
-            deleteMulEmployeeCode: [],
             totalRecord: 0,
             pageSize: 0,
             pageNumber: 1,
@@ -366,12 +364,7 @@ export default {
          */
         handleDeleteAll() {
             const selectDeleteMultiple = [...this.selectedCheckbox];
-            this.selectedEmployeeIds = selectDeleteMultiple.map(
-                (x) => x.EmployeeId
-            );
-            this.deleteMulEmployeeCode = this.selectedCheckbox.map(
-                (x) => x.EmployeeCode
-            );
+            this.selectedEmployeeIds = selectDeleteMultiple;
             this.isDialogDeleteMultiple = true;
         },
 

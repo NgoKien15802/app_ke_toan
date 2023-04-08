@@ -165,9 +165,7 @@ export default {
         isDialogDeleteMultiple: {
             type: Boolean,
         },
-        deleteMulEmployeeCode: {
-            type: Array,
-        },
+
         selectedEmployeeIds: {
             type: Array,
         },
@@ -186,7 +184,6 @@ export default {
             employeeIdSelected: "",
             employeeCodeSelected: "",
             isDialogWarning: false,
-            isCheckedArr: [],
             oldCheckedArr: [],
             totalRecord: 0,
             keyWord: "",
@@ -289,28 +286,9 @@ export default {
                     x.Selected = false;
                     return x;
                 });
-                this.isCheckedArr = [];
+                this.oldCheckedArr = [];
                 this.selectedAll = false;
             }
-        },
-
-        /**
-         * Theo dõi sự thay đổi employees sau đó lọc các checkbox checked
-         * Author: KienNT (15/03/2023)
-         * @param (newValue): employees mới
-         */
-        employees: {
-            handler: function (newValue) {
-                try {
-                    this.isCheckedArr = newValue.filter((el) => {
-                        return el.Selected === true;
-                    });
-                    this.$emit("handleSelectChechbox", this.isCheckedArr);
-                } catch (error) {
-                    console.log(error);
-                }
-            },
-            deep: true,
         },
     },
 
@@ -331,25 +309,34 @@ export default {
                         this.totalRecord = response?.data?.Data?.TotalRecord;
                         this.$emit("getTotalRecord", this.totalRecord);
 
+                        this.employees = this.employees.map((x) => {
+                            x.Selected = false;
+                            return x;
+                        });
                         if (this.oldCheckedArr.length > 0) {
-                            for (
-                                let index = 0;
-                                index < this.oldCheckedArr.length;
-                                index++
-                            ) {
-                                const oldElement = this.oldCheckedArr[index];
-                                this.employees = this.employees.map((x) => {
-                                    if (x.EmployeeId === oldElement) {
-                                        x.Selected = true;
-                                        return x;
-                                    } else {
-                                        x.Selected = false;
-                                        return x;
+                            this.employees.forEach((el) => {
+                                for (
+                                    let index = 0;
+                                    index < this.oldCheckedArr.length;
+                                    index++
+                                ) {
+                                    const oldElement =
+                                        this.oldCheckedArr[index];
+                                    if (el.EmployeeId === oldElement) {
+                                        el.Selected = true;
+                                        break;
                                     }
-                                });
-                            }
+                                }
+                            });
                         }
 
+                        if (
+                            this.employees.every((el) => el.Selected === true)
+                        ) {
+                            this.selectedAll = true;
+                        } else {
+                            this.selectedAll = false;
+                        }
                         this.hideShowLoading(false);
                     })
                     .catch((error) => {
@@ -386,7 +373,13 @@ export default {
             } else {
                 if (index === -1) {
                     this.oldCheckedArr.push(EmployeeId);
+                    this.$emit("handleSelectChechbox", this.oldCheckedArr);
                 }
+            }
+            if (this.oldCheckedArr.length >= this.pageSize) {
+                this.selectedAll = true;
+            } else {
+                this.selectedAll = false;
             }
         },
         /**
@@ -406,6 +399,7 @@ export default {
                 } else {
                     this.oldCheckedArr = [];
                 }
+                this.$emit("handleSelectChechbox", this.oldCheckedArr);
                 this.employees = this.employees.map((x) => {
                     x.Selected = event.target.checked;
                     return x;
@@ -463,6 +457,16 @@ export default {
                         .then((res) => {
                             console.log(res);
                             this.isDialogWarning = false;
+                            const index = this.oldCheckedArr.indexOf(
+                                this.employeeIdSelected
+                            );
+                            if (index !== -1) {
+                                this.oldCheckedArr.splice(index, 1);
+                            }
+                            this.$emit(
+                                "handleSelectChechbox",
+                                this.oldCheckedArr
+                            );
                             this.hideShowLoading(false);
                             this.$emit("hideShowToast", "delete");
                             this.$emit("handleReLoadData");
@@ -484,6 +488,11 @@ export default {
                         .then((res) => {
                             console.log(res);
                             this.isDialogDeleteMul = false;
+                            this.oldCheckedArr = [];
+                            this.$emit(
+                                "handleSelectChechbox",
+                                this.oldCheckedArr
+                            );
                             this.$emit("setIsDialogDeleteMuliple");
                             this.hideShowLoading(false);
                             this.$emit("hideShowToast", "delete");
