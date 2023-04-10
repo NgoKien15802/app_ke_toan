@@ -172,6 +172,9 @@
                                         @selectedDepartment="selectedDepartment"
                                         @handleMountOver="handleMountOver"
                                         @handleMountOut="handleMountOut"
+                                        @handleChangeDepartmentId="
+                                            handleChangeDepartmentId
+                                        "
                                     ></Mcombobox>
                                     <MTooltip
                                         v-if="isTooltip.isTooltipDepartmentName"
@@ -634,6 +637,7 @@ import MISAEnum from "@/js/enum";
 import Mcombobox from "../base/Mcombobox.vue";
 import axios from "axios";
 import moment from "moment";
+import { emptyGuid } from "@/js/constants";
 
 export default {
     name: "ThePopup",
@@ -976,6 +980,7 @@ export default {
                                 let response = error.response;
                                 let errorData = response?.data?.Data?.Data;
                                 this.$emit("hideShowLoading", false);
+                                this.checkValidateBE = true;
                                 this.handleCaseCatch(response, errorData);
                             });
                     }
@@ -1068,6 +1073,16 @@ export default {
                                         errorData,
                                         errorData[key],
                                         "txtFullName"
+                                    );
+
+                                    break;
+
+                                case "DepartmentId":
+                                    this.isTooltip.isTooltipDepartmentName = true;
+                                    this.handleValidateBE(
+                                        errorData,
+                                        errorData[key],
+                                        "txtDepartmentName"
                                     );
 
                                     break;
@@ -1231,16 +1246,18 @@ export default {
                 errorData["EmployeeCode"],
                 "txtEmployeeCode"
             );
-            this.checkIsExistsInError(
-                errorData["EmployeeCode"],
-                "txtEmployeeCode"
-            );
-            this.checkIsExistsInError(
-                errorData["InvalidEmployeeCode"],
-                "txtEmployeeCode"
-            );
+            if (errorData["InvalidEmployeeCode"]) {
+                this.checkIsExistsInError(
+                    errorData["InvalidEmployeeCode"],
+                    "txtEmployeeCode"
+                );
+            }
 
             this.checkIsExistsInError(errorData["FullName"], "txtFullName");
+            this.checkIsExistsInError(
+                errorData["DepartmentId"],
+                "txtDepartmentName"
+            );
             this.checkIsExistsInError(
                 errorData["DateOfBirth"],
                 "txtDateOfBirth"
@@ -1268,6 +1285,14 @@ export default {
                     "space"
                 );
             }
+        },
+
+        /**
+         * Hàm thay đổi department nếu giá trị ko có thì thành guid rỗng
+         * Author: KienNT (10/04/2023)
+         */
+        handleChangeDepartmentId() {
+            this.newEmployee.DepartmentId = emptyGuid;
         },
 
         /**
