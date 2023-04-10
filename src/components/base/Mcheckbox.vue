@@ -32,19 +32,26 @@ export default {
             type: Boolean,
             default: false,
         },
+        isChange: {
+            type: Boolean,
+        },
     },
 
     watch: {
         /**
-         * Theo dõi sự thay đổi value thì hàm sẽ được gọi bên ngoài để update value
+         * Theo dõi sự thay đổi valueCheckbox thì hàm sẽ được gọi bên ngoài để update value
          * Author: KienNT (03/03/2023)
          */
-        initValue: function (newValue) {
-            this.valueCheckbox = newValue;
-        },
         valueCheckbox: function (newValue) {
             this.$emit("update:modelValue", newValue);
         },
+    },
+
+    created() {
+        this.valueCheckbox = this.initValue;
+    },
+    updated() {
+        this.valueCheckbox = this.initValue;
     },
 
     data() {

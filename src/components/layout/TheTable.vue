@@ -261,7 +261,6 @@ export default {
 
         pageCurrent: function () {
             this.pageNumber = this.pageCurrent;
-
             this.loadData();
         },
 
@@ -308,7 +307,6 @@ export default {
                         this.employees = response?.data?.Data?.Data;
                         this.totalRecord = response?.data?.Data?.TotalRecord;
                         this.$emit("getTotalRecord", this.totalRecord);
-
                         this.employees = this.employees.map((x) => {
                             x.Selected = false;
                             return x;
@@ -322,7 +320,10 @@ export default {
                                 ) {
                                     const oldElement =
                                         this.oldCheckedArr[index];
-                                    if (el.EmployeeId === oldElement) {
+                                    if (
+                                        el.EmployeeId === oldElement &&
+                                        el.Selected === false
+                                    ) {
                                         el.Selected = true;
                                         break;
                                     }
@@ -373,10 +374,13 @@ export default {
             } else {
                 if (index === -1) {
                     this.oldCheckedArr.push(EmployeeId);
-                    this.$emit("handleSelectChechbox", this.oldCheckedArr);
                 }
             }
-            if (this.oldCheckedArr.length >= this.pageSize) {
+            this.$emit("handleSelectChechbox", this.oldCheckedArr);
+            const filterSelected = this.employees.filter((item) =>
+                this.oldCheckedArr.includes(item.EmployeeId)
+            );
+            if (filterSelected.length >= this.employees.length) {
                 this.selectedAll = true;
             } else {
                 this.selectedAll = false;
@@ -397,7 +401,15 @@ export default {
                         }
                     });
                 } else {
-                    this.oldCheckedArr = [];
+                    const filterSelected = this.employees.filter(
+                        (el) => el.Selected === true
+                    );
+                    const cloneFilterSelected = filterSelected.map(
+                        (el) => el.EmployeeId
+                    );
+                    this.oldCheckedArr = this.oldCheckedArr.filter(
+                        (item) => !cloneFilterSelected.includes(item)
+                    );
                 }
                 this.$emit("handleSelectChechbox", this.oldCheckedArr);
                 this.employees = this.employees.map((x) => {

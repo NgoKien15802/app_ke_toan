@@ -262,7 +262,11 @@
                                             :text="MISAResouce.vi.LabelMale"
                                             :checked="
                                                 newEmployee.Gender ===
-                                                MISAEnum.Gender.Male
+                                                    MISAEnum.Gender.Male ||
+                                                (isEmpty(
+                                                    dataEmployeeIdSelected
+                                                ) === true &&
+                                                    true)
                                             "
                                             tabindex="6"
                                             v-model="newEmployee.Gender"
@@ -281,11 +285,7 @@
                                             :text="MISAResouce.vi.LabelOther"
                                             :checked="
                                                 newEmployee.Gender ===
-                                                    MISAEnum.Gender.Other ||
-                                                (isEmpty(
-                                                    dataEmployeeIdSelected
-                                                ) === true &&
-                                                    true)
+                                                MISAEnum.Gender.Other
                                             "
                                             v-model="newEmployee.Gender"
                                         ></MRadio>
@@ -930,75 +930,74 @@ export default {
          */
         btnSaveAndClose(isCloseForm) {
             try {
-                if (this.handleValidate()) {
-                    console.log(this.newEmployee);
-                    // thêm nhân viên nếu ko có employeeIdSelected
-                    if (this.isEmpty(this.dataEmployeeIdSelected)) {
-                        if (this.isEmpty(this.newEmployee.Gender)) {
-                            this.newEmployee.Gender = MISAEnum.Gender.Other;
-                        }
-                        this.postData(MISAEnum.formMode.Add, isCloseForm);
-                    } else if (
-                        !this.isEmpty(this.dataEmployeeIdSelected) &&
-                        this.formModePopup === MISAEnum.formMode.Duplicate
-                    ) {
-                        this.postData(MISAEnum.formMode.Duplicate, isCloseForm);
-                    } else {
-                        // Sửa nhân viên theo id
-                        axios
-                            .put(
-                                `https://localhost:7153/api/v1/Employees/${this.dataEmployeeIdSelected}`,
-                                this.newEmployee
-                            )
-
-                            .then(this.$emit("hideShowLoading", true))
-                            .then((res) => {
-                                console.log(res);
-                                if (isCloseForm === true) {
-                                    // reset và đóng form
-                                    this.destroyPopup();
-                                } else {
-                                    // reset nhưng ko đóng form
-                                    this.newEmployee = {};
-                                    // lấy 1 id mới
-                                    this.getNewEmployeeCode();
-                                    this.errorMessage = [];
-                                    this.departmentName = "";
-                                    this.dataEmployeeIdSelected = null;
-                                }
-                                this.$emit("hideShowLoading", false);
-                                this.$emit("hideShowToast", "edit");
-                                this.$emit("handleReLoadData");
-                            })
-                            .catch((error) => {
-                                // bắt lỗi nếu sửa trùng mã của bản ghi khác
-                                let response = error.response;
-                                switch (response.status) {
-                                    case 400:
-                                    case 409:
-                                    case 500:
-                                        this.$emit("hideShowLoading", false);
-                                        this.errorExistId =
-                                            response?.data?.Data?.devMsg ||
-                                            response?.data?.UserMsg;
-                                        this.errorMessage[0] =
-                                            this.errorExistId;
-                                        if (response?.data?.Data?.devMsg) {
-                                            this.isTooltip.isTooltipEmployeeCode = true;
-                                        }
-                                        this.isDialogError = true;
-                                        this.throwErrorInCatch();
-                                        break;
-
-                                    default:
-                                        break;
-                                }
-                            });
+                // if (this.handleValidate()) {
+                console.log(this.newEmployee);
+                // thêm nhân viên nếu ko có employeeIdSelected
+                if (this.isEmpty(this.dataEmployeeIdSelected)) {
+                    if (this.isEmpty(this.newEmployee.Gender)) {
+                        this.newEmployee.Gender = MISAEnum.Gender.Male;
                     }
-                    // đóng form
+                    this.postData(MISAEnum.formMode.Add, isCloseForm);
+                } else if (
+                    !this.isEmpty(this.dataEmployeeIdSelected) &&
+                    this.formModePopup === MISAEnum.formMode.Duplicate
+                ) {
+                    this.postData(MISAEnum.formMode.Duplicate, isCloseForm);
                 } else {
-                    this.hideShowDialogError(true);
+                    // Sửa nhân viên theo id
+                    axios
+                        .put(
+                            `https://localhost:7153/api/v1/Employees/${this.dataEmployeeIdSelected}`,
+                            this.newEmployee
+                        )
+
+                        .then(this.$emit("hideShowLoading", true))
+                        .then((res) => {
+                            console.log(res);
+                            if (isCloseForm === true) {
+                                // reset và đóng form
+                                this.destroyPopup();
+                            } else {
+                                // reset nhưng ko đóng form
+                                this.newEmployee = {};
+                                // lấy 1 id mới
+                                this.getNewEmployeeCode();
+                                this.errorMessage = [];
+                                this.departmentName = "";
+                                this.dataEmployeeIdSelected = null;
+                            }
+                            this.$emit("hideShowLoading", false);
+                            this.$emit("hideShowToast", "edit");
+                            this.$emit("handleReLoadData");
+                        })
+                        .catch((error) => {
+                            // bắt lỗi nếu sửa trùng mã của bản ghi khác
+                            let response = error.response;
+                            switch (response.status) {
+                                case 400:
+                                case 409:
+                                case 500:
+                                    this.$emit("hideShowLoading", false);
+                                    this.errorExistId =
+                                        response?.data?.Data?.devMsg ||
+                                        response?.data?.UserMsg;
+                                    this.errorMessage[0] = this.errorExistId;
+                                    if (response?.data?.Data?.devMsg) {
+                                        this.isTooltip.isTooltipEmployeeCode = true;
+                                    }
+                                    this.isDialogError = true;
+                                    this.throwErrorInCatch();
+                                    break;
+
+                                default:
+                                    break;
+                            }
+                        });
                 }
+                // đóng form
+                // } else {
+                //     this.hideShowDialogError(true);
+                // }
             } catch (error) {
                 console.log(error);
             }
