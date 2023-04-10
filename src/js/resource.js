@@ -28,8 +28,8 @@ const MISAResouce = {
         // Error message
         ErrorEmpty: " không được để trống",
         ErrorInvalid: " không đúng định dạng",
-        ErrorDate: " không hợp lệ vì ngày lớn hơn hiện tại!",
-        ErrorEmail: " không đúng định dạng, vui lòng nhập lại!",
+        ErrorDate: " không được lớn hơn hiện tại!",
+        ErrorEmail: " không đúng định dạng",
         ErrorNotNumber: " không phải là số, vui lòng nhập lại là số",
         ErrorNotText: " không phải là chữ, vui lòng nhập lại là chữ",
 
@@ -156,10 +156,10 @@ const MISAResouce = {
         // Error message
         ErrorEmpty: "cannot be left blank, please re-enter",
         ErrorInvalid: "cannot format, please re-enter",
-        ErrorDate: "invalid because date is greater than current!",
+        ErrorDate: "isn't greater than current!",
         ErrorNotNumber: "not a number, please re-enter",
         ErrorNotText: "not the word, please re-enter",
-        ErrorEmail: " Incorrect format, please re-enter!",
+        ErrorEmail: " Incorrect format",
 
         // Paging
         Previous: "Previous",
