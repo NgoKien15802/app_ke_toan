@@ -5,6 +5,7 @@ const MISAEnum = {
         Female: 1,
         Other: 2,
     },
+    // trạng thái form: thêm, sửa, nhân bản
     formMode: {
         Add: 0,
         Edit: 1,

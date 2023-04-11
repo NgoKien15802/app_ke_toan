@@ -126,6 +126,10 @@ const MISAResouce = {
         SelectedCheckbox: "Đã chọn: ",
         UndoSelected: "Bỏ chọn",
         SelectAllPage: "Chọn tất cả các trang",
+
+        //other
+        Username: "Ngô Trung Kiên",
+        MyCompany: "công ty tnhh sản xuất - thương mại - dịch vị qui phúc",
     },
     en: {
         // Employee

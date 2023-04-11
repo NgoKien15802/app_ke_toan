@@ -8,7 +8,7 @@
             </div>
             <div class="header__left-dropdown">
                 <div class="header__left-dropdown-text">
-                    công ty tnhh sản xuất - thương mại - dịch vị qui phúc
+                    {{ MISAResouce.vi.MyCompany }}
                 </div>
                 <div class="header__left-dropdown-icon wrap-icon">
                     <div
@@ -28,7 +28,9 @@
             <div class="header__right-info">
                 <div class="header__right-info-avt"></div>
                 <div class="header__right-info-dropdown">
-                    <div class="header__right-info-name">Ngô Trung Kiên</div>
+                    <div class="header__right-info-name">
+                        {{ MISAResouce.vi.Username }}
+                    </div>
                     <div class="header__right-info-icon wrap-icon">
                         <div
                             class="header__right-info-arrow icon-arrow icon-normal-light icon-normal-light-hover"
@@ -40,8 +42,15 @@
     </div>
 </template>
 <script>
+import MISAResouce from "@/js/resource";
+
 export default {
     name: "TheHeader",
+    data() {
+        return {
+            MISAResouce,
+        };
+    },
 };
 </script>
 <style scoped>

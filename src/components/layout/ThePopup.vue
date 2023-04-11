@@ -637,7 +637,7 @@ import MISAEnum from "@/js/enum";
 import Mcombobox from "../base/Mcombobox.vue";
 import axios from "axios";
 import moment from "moment";
-import { emptyGuid } from "@/js/constants";
+import { EMPTY_GUID } from "@/js/constants";
 
 export default {
     name: "ThePopup",
@@ -847,7 +847,7 @@ export default {
                         ).length <= 0
                     ) {
                         this.isTooltip.isTooltipDepartmentName = true;
-                        this.newEmployee.DepartmentId = emptyGuid;
+                        this.newEmployee.DepartmentId = EMPTY_GUID;
                     } else {
                         departments.forEach((el) => {
                             if (el.DepartmentName === this.departmentName) {
@@ -860,7 +860,7 @@ export default {
                 }
                 if (this.isEmpty(this.departmentName)) {
                     this.isTooltip.isTooltipDepartmentName = true;
-                } else if (this.newEmployee.DepartmentId !== emptyGuid) {
+                } else if (this.newEmployee.DepartmentId !== EMPTY_GUID) {
                     this.isTooltip.isTooltipDepartmentName = false;
                 }
             } catch (error) {
@@ -1310,7 +1310,7 @@ export default {
          * Author: KienNT (10/04/2023)
          */
         handleChangeDepartmentId() {
-            this.newEmployee.DepartmentId = emptyGuid;
+            this.newEmployee.DepartmentId = EMPTY_GUID;
         },
 
         /**
