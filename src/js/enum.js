@@ -11,6 +11,11 @@ const MISAEnum = {
         Edit: 1,
         Duplicate: 2,
     },
+    // cộng thêm cho tọa đô x,y khi hiển thị contextmenu
+    getbounding: {
+        x: 70,
+        y: 25,
+    },
 };
 
 export default MISAEnum;

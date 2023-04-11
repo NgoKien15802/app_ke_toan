@@ -593,9 +593,11 @@ export default {
                 this.employeeCodeSelected = employee.EmployeeCode;
                 this.isContextMenu = !this.isContextMenu;
                 this.leftContextMenu =
-                    event.target.getBoundingClientRect().x - 70;
+                    event.target.getBoundingClientRect().x -
+                    MISAEnum.getbounding.x;
                 this.topContextMenu =
-                    event.target.getBoundingClientRect().y + 25;
+                    event.target.getBoundingClientRect().y +
+                    MISAEnum.getbounding.y;
             } catch (error) {
                 console.log(error);
             }
