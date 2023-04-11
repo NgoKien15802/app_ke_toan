@@ -332,6 +332,7 @@ export default {
                         }
 
                         if (
+                            this.employees.length > 0 &&
                             this.employees.every((el) => el.Selected === true)
                         ) {
                             this.selectedAll = true;

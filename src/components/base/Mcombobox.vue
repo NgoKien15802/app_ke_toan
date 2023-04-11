@@ -92,7 +92,7 @@ export default {
 
     beforeUpdate() {
         if (this.department) {
-            this.$emit("handleCheckEmpty", this.department);
+            this.$emit("handleCheckEmpty", this.department, this.departments);
         } else {
             this.$emit("handleChangeDepartmentId");
         }

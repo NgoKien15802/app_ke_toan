@@ -837,12 +837,30 @@ export default {
          * Author: KienNT (09/03/2023)
          * @param (valueInput): Giá trị của value được emit từ con
          */
-        handleCheckEmpty(valueInput) {
+        handleCheckEmpty(valueInput, departments) {
             try {
                 this.departmentName = valueInput;
+                if (departments && departments.length > 0) {
+                    if (
+                        departments.filter(
+                            (el) => el.DepartmentName === this.departmentName
+                        ).length <= 0
+                    ) {
+                        this.isTooltip.isTooltipDepartmentName = true;
+                        this.newEmployee.DepartmentId = emptyGuid;
+                    } else {
+                        departments.forEach((el) => {
+                            if (el.DepartmentName === this.departmentName) {
+                                this.newEmployee.DepartmentId = el.DepartmentId;
+                            }
+                        });
+                        this.isTooltip.isTooltipDepartmentName = false;
+                        this.checkValidateBE = true;
+                    }
+                }
                 if (this.isEmpty(this.departmentName)) {
                     this.isTooltip.isTooltipDepartmentName = true;
-                } else {
+                } else if (this.newEmployee.DepartmentId !== emptyGuid) {
                     this.isTooltip.isTooltipDepartmentName = false;
                 }
             } catch (error) {
