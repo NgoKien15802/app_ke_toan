@@ -37,12 +37,12 @@
 
                     <MButton
                         :class="
-                            selectedCheckbox.length > 1
+                            selectedCheckbox.length >= 1
                                 ? 'btn btn-delete'
                                 : 'btn btn-default'
                         "
                         :text="MISAResouce.vi.BtnDeleteAll"
-                        :disabled="selectedCheckbox.length <= 1"
+                        :disabled="selectedCheckbox.length < 1"
                         :click="handleDeleteAll"
                     >
                     </MButton>
@@ -56,7 +56,7 @@
                             <input
                                 type="text"
                                 class="input__type input__search"
-                                placeholder="Tìm theo mã, tên nhân viên"
+                                :placeholder="MISAResouce.vi.TxtSearch"
                                 fdprocessedid="q9kjmf"
                                 v-model.lazy="keyWordSearch"
                             />
@@ -117,6 +117,8 @@
                             () => (isDialogDeleteMultiple = false)
                         "
                         @showPopupDuplicate="showPopupDuplicate"
+                        :isDeleteOne="isDeleteOne"
+                        @setIsDeleteOne="setIsDeleteOne"
                     ></TheTable>
                 </div>
 
@@ -201,6 +203,7 @@ export default {
             isDialogDeleteMultiple: false,
             selectedEmployeeIds: [],
             isDisabledClickPrev: true,
+            isDeleteOne: false,
         };
     },
     components: {
@@ -218,6 +221,17 @@ export default {
         keyWordSearch: function () {
             this.pageNumber = 1;
             this.isDisabledClickPrev = true;
+            if (this.keyWordSearch.includes("/")) {
+                const arrKeyword = this.keyWordSearch.split("/");
+                var search = "";
+                if (arrKeyword.length >= 2) {
+                    for (let index = 0; index < arrKeyword.length; index++) {
+                        const element = arrKeyword[index];
+                        search += element;
+                    }
+                }
+                this.keyWordSearch = search;
+            }
         },
     },
 
@@ -294,6 +308,14 @@ export default {
         },
 
         /**
+         * Hàm set lại isDeleteOne của component con gửi lên
+         * Author: KienNT (12/04/2023)
+         */
+        setIsDeleteOne() {
+            this.isDeleteOne = false;
+        },
+
+        /**
          * Hàm thực hiện CALL API Export
          * Author: KienNT (30/03/2023)
          */
@@ -363,9 +385,16 @@ export default {
          * Author: KienNT (20/03/2023)
          */
         handleDeleteAll() {
-            const selectDeleteMultiple = [...this.selectedCheckbox];
-            this.selectedEmployeeIds = selectDeleteMultiple;
-            this.isDialogDeleteMultiple = true;
+            if (this.selectedCheckbox.length > 1) {
+                this.isDeleteOne = false;
+                const selectDeleteMultiple = [...this.selectedCheckbox];
+                this.selectedEmployeeIds = selectDeleteMultiple;
+                this.isDialogDeleteMultiple = true;
+            } else {
+                this.isDeleteOne = true;
+                const selectDeleteMultiple = [...this.selectedCheckbox];
+                this.selectedEmployeeIds = selectDeleteMultiple;
+            }
         },
 
         /**

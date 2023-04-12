@@ -59,7 +59,11 @@
                         v-model="employee.Selected"
                         :initValue="employee.Selected"
                         @handleCheckbox="
-                            handleCheckbox($event, employee.EmployeeId)
+                            handleCheckbox(
+                                $event,
+                                employee.EmployeeId,
+                                employee.EmployeeCode
+                            )
                         "
                         ref="checkbox"
                     ></MCheckbox>
@@ -168,6 +172,9 @@ export default {
 
         selectedEmployeeIds: {
             type: Array,
+        },
+        isDeleteOne: {
+            type: Boolean,
         },
     },
 
@@ -289,6 +296,13 @@ export default {
                 this.selectedAll = false;
             }
         },
+
+        isDeleteOne: function () {
+            if (this.isDeleteOne === true) {
+                this.employeeIdSelected = this.selectedCheckbox[0];
+                this.handleDeleteRow();
+            }
+        },
     },
 
     methods: {
@@ -365,7 +379,8 @@ export default {
          * Author: KienNT (06/03/2023)
          *   @param (event): là event
          */
-        handleCheckbox(event, EmployeeId) {
+        handleCheckbox(event, EmployeeId, EmployeeCode = "") {
+            this.employeeCodeSelected = EmployeeCode;
             const index = this.oldCheckedArr.indexOf(EmployeeId);
             if (!event.target.checked) {
                 this.selectedAll = event.target.checked;
@@ -430,6 +445,7 @@ export default {
             try {
                 if (this.employeeIdSelected) {
                     this.isDialogWarning = true;
+                    this.$emit("setIsDeleteOne");
                 }
             } catch (error) {
                 console.log(error);

@@ -38,6 +38,9 @@ const MISAResouce = {
         Next: "Sau",
         RecordInPage: "bản ghi trên 1 trang",
 
+        //placehoder
+        TxtSearch: "Theo mã, tên, sđt, ngày sinh",
+
         //Sidebar
         Overview: "Tổng quan",
         Cash: "Tiền mặt",
