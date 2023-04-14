@@ -39,7 +39,7 @@ const MISAResouce = {
         RecordInPage: "bản ghi trên 1 trang",
 
         //placehoder
-        TxtSearch: "Theo mã, tên, sđt, ngày sinh",
+        TxtSearch: "Theo mã, tên, SĐT, ngày sinh",
 
         //Sidebar
         Overview: "Tổng quan",

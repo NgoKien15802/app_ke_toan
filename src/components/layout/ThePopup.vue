@@ -90,13 +90,15 @@
                                                 isTooltip.isTooltipEmployeeCode
                                             "
                                             :subtext="
-                                                !isEmpty(
+                                                isEmpty(
                                                     newEmployee.EmployeeCode
                                                 )
-                                                    ? message
-                                                    : MISAResouce.vi
+                                                    ? MISAResouce.vi
                                                           .LabelEmployeeCode +
                                                       MISAResouce.vi.ErrorEmpty
+                                                    : errorExistId
+                                                    ? errorExistId
+                                                    : invalidEmployeeCode
                                             "
                                             kind="error"
                                         ></MTooltip>
@@ -734,8 +736,9 @@ export default {
             errorMessage: [],
             message: "",
             isDisabledEmployeeCode: false,
-            checkValidateBE: false,
             isCloseForm: false,
+            invalidEmployeeCode: "",
+            isEmptyDepartment: "",
         };
     },
 
@@ -756,6 +759,7 @@ export default {
             if (this.isEmpty(this.dataEmployeeIdSelected)) {
                 this.departmentName = null;
                 this.getNewEmployeeCode();
+                console.log(this.newEmployee);
             } else if (
                 /**
                  * TH nhân bản
@@ -914,7 +918,6 @@ export default {
                             }
                         });
                         this.isTooltip.isTooltipDepartmentName = false;
-                        this.checkValidateBE = true;
                     }
                 }
                 if (this.isEmpty(this.departmentName)) {
@@ -939,6 +942,7 @@ export default {
                     .then(this.$emit("hideShowLoading", true))
                     .then((response) => {
                         this.newEmployee.EmployeeCode = response.data?.Data;
+                        this.newEmployee.Gender = MISAEnum.Gender.Male;
                         if (this.isEmpty(this.departmentName)) {
                             this.newEmployee.DepartmentId = EMPTY_GUID;
                         }
@@ -1025,7 +1029,7 @@ export default {
          */
         btnSaveAndClose(isCloseForm) {
             try {
-                if (this.handleValidate() || this.checkValidateBE === true) {
+                if (this.handleValidate()) {
                     console.log(this.newEmployee);
                     // thêm nhân viên nếu ko có employeeIdSelected
                     if (this.isEmpty(this.dataEmployeeIdSelected)) {
@@ -1069,7 +1073,6 @@ export default {
                                 let response = error.response;
                                 let errorData = response?.data?.Data?.Data;
                                 this.$emit("hideShowLoading", false);
-                                this.checkValidateBE = true;
                                 this.handleCaseCatch(response, errorData);
                             });
                     }
@@ -1123,7 +1126,6 @@ export default {
                         let response = error.response;
                         let errorData = response?.data?.Data?.Data;
                         this.$emit("hideShowLoading", false);
-                        this.checkValidateBE = true;
                         this.handleCaseCatch(response, errorData);
                     });
             } catch (error) {
@@ -1150,11 +1152,13 @@ export default {
                                 case "EmployeeCode":
                                 case "InvalidEmployeeCode":
                                     this.isTooltip.isTooltipEmployeeCode = true;
+                                    this.invalidEmployeeCode = errorData[key];
                                     this.handleValidateBE(
                                         errorData,
                                         errorData[key],
                                         "txtEmployeeCode"
                                     );
+
                                     break;
                                 case "FullName":
                                     this.isTooltip.isTooltipEmployeeName = true;
@@ -1168,6 +1172,7 @@ export default {
 
                                 case "DepartmentId":
                                     this.isTooltip.isTooltipDepartmentName = true;
+                                    this.isEmptyDepartment = errorData[key];
                                     this.handleValidateBE(
                                         errorData,
                                         errorData[key],
@@ -1286,14 +1291,14 @@ export default {
                 );
 
                 // nếu có value thì mới check input number
-                // this.checkFieldInvalid(
-                //     "isTooltipLandlineNumber",
-                //     this.newEmployee.LandlineNumber,
-                //     MISAResouce.vi.LabelLandlineNumber,
-                //     "number",
-                //     MISAResouce.vi.ErrorNotNumber,
-                //     "txtLandlineNumber"
-                // );
+                this.checkFieldInvalid(
+                    "isTooltipLandlineNumber",
+                    this.newEmployee.LandlineNumber,
+                    MISAResouce.vi.LabelLandlineNumber,
+                    "number",
+                    MISAResouce.vi.ErrorNotNumber,
+                    "txtLandlineNumber"
+                );
 
                 // nếu có value thì mới check input number
                 this.checkFieldInvalid(
@@ -1331,7 +1336,11 @@ export default {
                 const refNames = Object.values(this.errorMessage);
                 for (let index = 0; index < refNames.length; index++) {
                     const element = refNames[index];
-                    if (element !== "space") {
+                    if (
+                        element !== "space" &&
+                        element !== this.invalidEmployeeCode &&
+                        element !== this.isEmptyDepartment
+                    ) {
                         check = false;
                     }
                 }
@@ -1397,6 +1406,22 @@ export default {
         },
 
         /**
+         * Hàm check xem có lỗi với TH để rỗng và có valid ko?
+         * Author: KienNT (10/04/2023)
+         */
+        checkError() {
+            const refNames = Object.values(this.errorMessage);
+            for (let index = 0; index < refNames.length; index++) {
+                const element = refNames[index];
+                if (element !== "space") {
+                    return true;
+                }
+            }
+
+            return false;
+        },
+
+        /**
          * Hàm thay đổi department nếu giá trị ko có thì thành guid rỗng
          * Author: KienNT (10/04/2023)
          */
@@ -1413,11 +1438,25 @@ export default {
             try {
                 if (this.isEmpty(fieldValue)) {
                     // lỗi valid form thì xóa lỗi cùng mã
-
                     if (this.errorMessage.includes(this.errorExistId)) {
                         const index = this.errorMessage.indexOf(
                             this.errorExistId
                         );
+                        this.errorMessage.splice(index, 1);
+                        this.isTooltipEmployeeCode = false;
+                    }
+                    if (this.errorMessage.includes(this.invalidEmployeeCode)) {
+                        const index = this.errorMessage.indexOf(
+                            this.invalidEmployeeCode
+                        );
+                        this.errorMessage.splice(index, 1);
+                        this.isTooltipEmployeeCode = false;
+                    }
+                    if (this.errorMessage.includes(this.isEmptyDepartment)) {
+                        const index = this.errorMessage.indexOf(
+                            this.isEmptyDepartment
+                        );
+                        this.isTooltipDepartmentName = false;
                         this.errorMessage.splice(index, 1);
                     }
                     this.isTooltip[fieldName] = true;
@@ -1430,7 +1469,6 @@ export default {
                         this.errorMessage[this.getTabIndex(field)] =
                             errorLabel + MISAResouce.vi.ErrorEmpty;
                     }
-                    this.checkValidateBE = false;
                 } else {
                     if (this.errorMessage.includes(this.errorExistId)) {
                         const index = this.errorMessage.indexOf(
@@ -1474,6 +1512,24 @@ export default {
                 if (!this.isEmpty(fieldValue)) {
                     // check input phải là số
                     if (this.isInValid(fieldValue, kind)) {
+                        if (
+                            this.errorMessage.includes(this.invalidEmployeeCode)
+                        ) {
+                            const index = this.errorMessage.indexOf(
+                                this.invalidEmployeeCode
+                            );
+                            this.errorMessage.splice(index, 1);
+                            this.isTooltipEmployeeCode = false;
+                        }
+                        if (
+                            this.errorMessage.includes(this.isEmptyDepartment)
+                        ) {
+                            const index = this.errorMessage.indexOf(
+                                this.isEmptyDepartment
+                            );
+                            this.errorMessage.splice(index, 1);
+                            this.isTooltipDepartmentName = false;
+                        }
                         this.isTooltip[fieldName] = true;
                         // nếu chưa có lỗi thì thêm ptu lỗi đó vào
                         if (
@@ -1482,7 +1538,6 @@ export default {
                             this.errorMessage[this.getTabIndex(field)] =
                                 errorLabel + errorText;
                         }
-                        this.checkValidateBE = false;
                     } else {
                         this.isTooltip[fieldName] = false;
                         if (
