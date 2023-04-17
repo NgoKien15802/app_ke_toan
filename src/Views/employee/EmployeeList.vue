@@ -2,11 +2,11 @@
     <div class="content">
         <div class="content__header">
             <div class="content__header-title">
-                <MHeading :text="MISAResouce.vi.Employee"></MHeading>
+                <MHeading :text="$t('Employee')"></MHeading>
             </div>
 
             <MButton
-                :text="MISAResouce.vi.AddNewEmployee"
+                :text="$t('AddNewEmployee')"
                 id="addEmployee"
                 kind="primary"
                 className="btn-primary"
@@ -25,14 +25,14 @@
                     class="content__main-left"
                 >
                     <p>
-                        {{ MISAResouce.vi.SelectedCheckbox }}
+                        {{ $t("SelectedCheckbox") }}
                         <strong>{{ selectedCheckbox.length }}</strong>
                     </p>
                     <MButton
                         kind="link"
                         className="link-btn btn-link-delete"
                         :click="handleUndoSeleted"
-                        :text="MISAResouce.vi.UndoSelected"
+                        :text="$t('UndoSelected')"
                     ></MButton>
 
                     <MButton
@@ -41,7 +41,11 @@
                                 ? 'btn btn-delete'
                                 : 'btn btn-default'
                         "
-                        :text="MISAResouce.vi.BtnDeleteAll"
+                        :text="
+                            selectedCheckbox.length == 1
+                                ? $t('BtnDeleteDialog')
+                                : $t('BtnDeleteAll')
+                        "
                         :disabled="selectedCheckbox.length < 1"
                         :click="handleDeleteAll"
                     >
@@ -56,7 +60,7 @@
                             <input
                                 type="text"
                                 class="input__type input__search"
-                                :placeholder="MISAResouce.vi.TxtSearch"
+                                :placeholder="$t('TxtSearch')"
                                 fdprocessedid="q9kjmf"
                                 v-model.lazy="keyWordSearch"
                             />
@@ -73,7 +77,7 @@
                             <MTooltip
                                 kind="reload"
                                 style="top: 163%"
-                                :subtext="MISAResouce.vi.TooltipReload"
+                                :subtext="$t('TooltipReload')"
                             ></MTooltip>
                         </div>
                     </div>
@@ -87,7 +91,7 @@
                             <MTooltip
                                 style="top: 163%"
                                 kind="export"
-                                :subtext="MISAResouce.vi.TooltipExport"
+                                :subtext="$t('TooltipExport')"
                             ></MTooltip>
                         </div>
                     </div>
@@ -158,14 +162,12 @@
                         isShowToastDuplicate
                     "
                     classIcon="toast__icon-success"
-                    :kind="MISAResouce.vi.ToastTitleSuccess"
+                    :kind="$t('ToastTitleSuccess')"
                     :text="
-                        (isShowToastAdd && MISAResouce.vi.ToastAddSuccess) ||
-                        (isShowToastEdit && MISAResouce.vi.ToastEditSuccess) ||
-                        (isShowToastDelete &&
-                            MISAResouce.vi.ToastDeleteSuccess) ||
-                        (isShowToastDuplicate &&
-                            MISAResouce.vi.ToastDuplicateSuccess)
+                        (isShowToastAdd && $t('ToastAddSuccess')) ||
+                        (isShowToastEdit && $t('ToastEditSuccess')) ||
+                        (isShowToastDelete && $t('ToastDeleteSuccess')) ||
+                        (isShowToastDuplicate && $t('ToastDuplicateSuccess'))
                     "
                     classTitle="toast__title-success"
                 ></MToast>
@@ -175,13 +177,13 @@
 </template>
 <script>
 import MISAResouce from "@/js/resource";
-import TheTable from "./TheTable.vue";
-import ThePaging from "./ThePaging.vue";
-import ThePopup from "./ThePopup.vue";
-import Mloading from "../base/Mloading.vue";
 import axios from "axios";
+import TheTable from "@/components/layout/TheTable.vue";
+import ThePaging from "@/components/layout/ThePaging.vue";
+import Mloading from "@/components/base/Mloading.vue";
+import ThePopup from "@/components/layout/ThePopup.vue";
 export default {
-    name: "TheContent",
+    name: "EmployeeList",
     data() {
         return {
             MISAResouce,
@@ -271,7 +273,7 @@ export default {
         showPopupDuplicate(formMode, employeeIdSelected) {
             this.isShowPopup = true;
             this.formMode = formMode;
-            this.textTitlePopup = MISAResouce.vi.DuplicateEmployeeInfo;
+            this.textTitlePopup = this.$t("DuplicateEmployeeInfo");
             this.employeeIdSelected = employeeIdSelected;
         },
 
@@ -412,7 +414,7 @@ export default {
         showPopup() {
             try {
                 this.employeeIdSelected = "";
-                this.textTitlePopup = MISAResouce.vi.EmployeeInfo;
+                this.textTitlePopup = this.$t("EmployeeInfo");
                 this.isShowPopup = true;
             } catch (error) {
                 console.log(error);
@@ -427,7 +429,7 @@ export default {
         onDoubleClick(employee) {
             try {
                 this.employeeIdSelected = employee.EmployeeId;
-                this.textTitlePopup = MISAResouce.vi.EditEmployeeInfo;
+                this.textTitlePopup = this.$t("EditEmployeeInfo");
                 this.isShowPopup = true;
             } catch (error) {
                 console.log(error);

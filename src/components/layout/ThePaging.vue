@@ -1,7 +1,7 @@
 <template>
     <div class="content__main-paging">
         <p class="content__main-paging-left">
-            {{ MISAResouce.vi.Total }}: <strong>{{ totalRecord }}</strong>
+            {{ $t("Total") }}: <strong>{{ totalRecord }}</strong>
         </p>
         <div class="content__main-paging-right">
             <div
@@ -44,7 +44,7 @@
             <div class="paging__record-footer">
                 <div>
                     {{ offset + 1 }} - {{ offset + pageIndex }}
-                    {{ MISAResouce.vi.Record }}
+                    {{ $t("Record") }}
                 </div>
                 <div
                     class="wrap-icon btn-icon"
@@ -85,7 +85,7 @@ export default {
         return {
             MISAResouce,
             isOpenDropdown: false,
-            valueInput: `20 ${MISAResouce.vi.RecordInPage}`,
+            valueInput: `20 ${this.$t("RecordInPage")}`,
             optionItem: [
                 {
                     text: 10,

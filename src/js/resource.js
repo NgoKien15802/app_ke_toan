@@ -130,6 +130,19 @@ const MISAResouce = {
         UndoSelected: "Bỏ chọn",
         SelectAllPage: "Chọn tất cả các trang",
 
+        //navbar cash
+        Process: "Quy trình",
+        CollectAndSpend: "Thu, chi tiền",
+        Stocktaking: "Kiểm kê",
+        CashFlowForecast: "Dự báo dòng tiền",
+        Export: "Báo cáo",
+
+        // cash
+        CashBusiness: "Nghiệp vụ tiền mặt",
+        CustomerCash: "Khách hàng",
+        Provider: "Nhà cung cấp",
+        Option: "Tùy chọn",
+
         //other
         Username: "Ngô Trung Kiên",
         MyCompany: "công ty tnhh sản xuất - thương mại - dịch vị qui phúc",
@@ -151,7 +164,7 @@ const MISAResouce = {
 
         // Freature
         Freature: "Freature",
-        Fix: "Fix",
+        Fix: "Edit",
         Duplicate: "Duplicate",
         StopUse: "Stop use",
         Delete: "Delete",
@@ -161,17 +174,20 @@ const MISAResouce = {
         Record: "Records",
 
         // Error message
-        ErrorEmpty: "cannot be left blank, please re-enter",
-        ErrorInvalid: "cannot format, please re-enter",
-        ErrorDate: "isn't greater than current!",
-        ErrorNotNumber: "not a number, please re-enter",
-        ErrorNotText: "not the word, please re-enter",
+        ErrorEmpty: " cannot be left blank, please re-enter",
+        ErrorInvalid: " cannot format, please re-enter",
+        ErrorDate: " isn't greater than current!",
+        ErrorNotNumber: " not a number, please re-enter",
+        ErrorNotText: " not the word, please re-enter",
         ErrorEmail: " Incorrect format",
 
         // Paging
         Previous: "Previous",
         Next: "Next",
         RecordInPage: "Records in a page",
+
+        //placehoder
+        TxtSearch: "By code, name, phone number, date of birth",
 
         //Sidebar
         Overview: "Overview",
@@ -210,17 +226,21 @@ const MISAResouce = {
         LabelIdentityPlace: "Identity place",
         LabelAddress: "Address",
         LabelPhoneNumber: "Phone number",
-        LabelLandlineNumber: "Fix Number",
+        LabelLandlineNumber: "Landline Number",
         LabelEmail: "Email",
         LabelBankAccount: "Bank account",
         LabelBankName: "Bank name",
         LabelBankBranch: "Bank branch",
+
+        TooltipIdentityNumber: "Identity number",
+        TooltipPhoneNumber: "Phone number",
+        TooltipFixPhoneNumber: "Landline number",
         TooltipHelp: "Help",
-        TooltipClose: "Close",
+        TooltipClose: "Close (ESC)",
         TooltipSave: "Save (ctrl + s)",
         TooltipSaveAndAdd: "Save and add (ctrl + shift + s)",
         TooltipReload: "Data recovery",
-        TooltipExport: "Export Excel",
+        TooltipExport: "Export excel",
 
         // button
         BtnDestroy: "Destroy",
@@ -242,6 +262,7 @@ const MISAResouce = {
 
         MessageNotify: "Your data has changed do you want to save it?",
         MessageWarning: "Do you want to delete an employee ",
+        MessageWarningMul: "Do you want to delete all selected employees ",
         TxtNo: "no",
 
         // toast
@@ -251,10 +272,27 @@ const MISAResouce = {
         ToastDuplicateSuccess: "Staff has been duplicated",
         ToastTitleSuccess: "Success",
 
+        //navbar cash
+        Process: "Progress",
+        CollectAndSpend: "collect and spend money",
+        Stocktaking: "StockTaking",
+        CashFlowForecast: "Cash flow forecast",
+        Export: "Export",
+
+        // cash
+        CashBusiness: "Cash Business",
+        CustomerCash: "Customer",
+        Provider: "Provider",
+        Option: "Options",
+
         // checkbox
         SelectedCheckbox: "selected: ",
         UndoSelected: "Undo Selected",
         SelectAllPage: "Selete all page",
+
+        //other
+        Username: "Kien Ngo Trung",
+        MyCompany: "Quy Phuc Production - Trading - Service",
     },
 };
 export default MISAResouce;

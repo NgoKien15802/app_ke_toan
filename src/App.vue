@@ -1,17 +1,15 @@
 <template>
-  <TheContainer></TheContainer>
+    <TheContainer></TheContainer>
 </template>
 
 <script>
-import TheContainer from './components/layout/TheContainer.vue';
+import TheContainer from "./components/layout/TheContainer.vue";
 export default {
-  name: 'App',
-  components: {
-    TheContainer
-  }
-}
+    name: "App",
+    components: {
+        TheContainer,
+    },
+};
 </script>
 
-<style  scoped>
-
-</style>
+<style scoped></style>

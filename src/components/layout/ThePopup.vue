@@ -10,7 +10,7 @@
                             <label
                                 for="infoKH"
                                 class="form__header-check-text"
-                                >{{ MISAResouce.vi.Customer }}</label
+                                >{{ $t("Customer") }}</label
                             >
                         </div>
                         <div class="form__header-left-check">
@@ -18,7 +18,7 @@
                             <label
                                 for="infoNCC"
                                 class="form__header-check-text"
-                                >{{ MISAResouce.vi.supplier }}</label
+                                >{{ $t("supplier") }}</label
                             >
                         </div>
                     </div>
@@ -27,7 +27,7 @@
                             <div class="form__header-icon-question">
                                 <MTooltip
                                     kind="help"
-                                    :subtext="MISAResouce.vi.TooltipHelp"
+                                    :subtext="$t('TooltipHelp')"
                                     style="top: 163%"
                                 ></MTooltip>
                             </div>
@@ -40,7 +40,7 @@
                             <div class="icon-close tooltip">
                                 <MTooltip
                                     kind="close"
-                                    :subtext="MISAResouce.vi.TooltipClose"
+                                    :subtext="$t('TooltipClose')"
                                     style="top: 163%"
                                 ></MTooltip>
                             </div>
@@ -55,7 +55,7 @@
                             <div class="popup__form-body-row m-row">
                                 <div class="form__group form__group-first">
                                     <label for="employeeId" class="form__label"
-                                        >{{ MISAResouce.vi.LabelEmployeeCode }}
+                                        >{{ $t("LabelEmployeeCode") }}
                                         <span class="required">*</span></label
                                     >
                                     <div
@@ -95,7 +95,7 @@
                                                 )
                                                     ? MISAResouce.vi
                                                           .LabelEmployeeCode +
-                                                      MISAResouce.vi.ErrorEmpty
+                                                      $t('ErrorEmpty')
                                                     : errorExistId
                                                     ? errorExistId
                                                     : invalidEmployeeCode
@@ -107,7 +107,7 @@
 
                                 <div class="form__group form__group-second">
                                     <label for="ten" class="form__label"
-                                        >{{ MISAResouce.vi.LabelEmployeeName }}
+                                        >{{ $t("LabelEmployeeName") }}
                                         <span class="required">*</span></label
                                     >
 
@@ -140,9 +140,8 @@
                                                 isTooltip.isTooltipEmployeeName
                                             "
                                             :subtext="
-                                                MISAResouce.vi
-                                                    .LabelEmployeeName +
-                                                MISAResouce.vi.ErrorEmpty
+                                                $t('LabelEmployeeName') +
+                                                $t('ErrorEmpty')
                                             "
                                             kind="error"
                                         ></MTooltip>
@@ -152,7 +151,7 @@
 
                             <div class="m-row">
                                 <label for="donvi" class="form__label"
-                                    >{{ MISAResouce.vi.LabelDepartmentName }}
+                                    >{{ $t("LabelDepartmentName") }}
                                     <span class="required">*</span></label
                                 >
 
@@ -181,8 +180,8 @@
                                     <MTooltip
                                         v-if="isTooltip.isTooltipDepartmentName"
                                         :subtext="
-                                            MISAResouce.vi.LabelDepartmentName +
-                                            MISAResouce.vi.ErrorEmpty
+                                            $t('LabelDepartmentName') +
+                                            $t('ErrorEmpty')
                                         "
                                         kind="error"
                                         ref="tootipCombobox"
@@ -193,7 +192,7 @@
                             <div class="m-row">
                                 <div class="form__group">
                                     <label for="chucdanh" class="form__label">{{
-                                        MISAResouce.vi.LabelJobTitle
+                                        $t("LabelJobTitle")
                                     }}</label>
                                     <MInput
                                         tabindex="4"
@@ -212,7 +211,7 @@
                             >
                                 <div class="form__group form__group-first">
                                     <label for="ngaysinh" class="form__label"
-                                        >{{ MISAResouce.vi.LabelDateOfBirth }}
+                                        >{{ $t("LabelDateOfBirth") }}
                                     </label>
                                     <div
                                         :class="{
@@ -247,7 +246,7 @@
                                             :subtext="
                                                 MISAResouce.vi
                                                     .LabelDateOfBirth +
-                                                MISAResouce.vi.ErrorDate
+                                                $t('ErrorDate')
                                             "
                                             kind="error"
                                         ></MTooltip>
@@ -258,13 +257,13 @@
                                     class="form__group form__group-second ml-16"
                                 >
                                     <label class="form__label"
-                                        >{{ MISAResouce.vi.LabelGender }}
+                                        >{{ $t("LabelGender") }}
                                     </label>
 
                                     <div class="input__radio-wrapper">
                                         <MRadio
                                             id="nam"
-                                            :text="MISAResouce.vi.LabelMale"
+                                            :text="$t('LabelMale')"
                                             :checked="
                                                 newEmployee.Gender ===
                                                     MISAEnum.Gender.Male ||
@@ -278,7 +277,7 @@
                                         ></MRadio>
                                         <MRadio
                                             id="nu"
-                                            :text="MISAResouce.vi.LabelFemale"
+                                            :text="$t('LabelFemale')"
                                             :checked="
                                                 newEmployee.Gender ===
                                                 MISAEnum.Gender.Female
@@ -287,7 +286,7 @@
                                         ></MRadio>
                                         <MRadio
                                             id="other"
-                                            :text="MISAResouce.vi.LabelOther"
+                                            :text="$t('LabelOther')"
                                             :checked="
                                                 newEmployee.Gender ===
                                                 MISAEnum.Gender.Other
@@ -301,13 +300,9 @@
                                 <div class="form__group form__group-second">
                                     <label for="cmnd" class="form__label">
                                         <MTooltip
-                                            :text="
-                                                MISAResouce.vi
-                                                    .LabelIdentityNumber
-                                            "
+                                            :text="$t('LabelIdentityNumber')"
                                             :subtext="
-                                                MISAResouce.vi
-                                                    .TooltipIdentityNumber
+                                                $t('TooltipIdentityNumber')
                                             "
                                             kind="title"
                                         ></MTooltip>
@@ -343,9 +338,8 @@
                                                 isTooltip.isTooltipIdentityNumber
                                             "
                                             :subtext="
-                                                MISAResouce.vi
-                                                    .LabelIdentityNumber +
-                                                MISAResouce.vi.ErrorNotNumber
+                                                $t('LabelIdentityNumber') +
+                                                $t('ErrorNotNumber')
                                             "
                                             kind="error"
                                         ></MTooltip>
@@ -354,7 +348,7 @@
 
                                 <div class="form__group form__group-first">
                                     <label for="ngaycap" class="form__label"
-                                        >{{ MISAResouce.vi.LabelIdentityDate }}
+                                        >{{ $t("LabelIdentityDate") }}
                                     </label>
                                     <div
                                         :class="{
@@ -389,7 +383,7 @@
                                             :subtext="
                                                 MISAResouce.vi
                                                     .LabelIdentityDate +
-                                                MISAResouce.vi.ErrorDate
+                                                $t('ErrorDate')
                                             "
                                             kind="error"
                                         ></MTooltip>
@@ -399,7 +393,7 @@
                             <div class="m-row">
                                 <div class="form__group">
                                     <label for="noicap" class="form__label">{{
-                                        MISAResouce.vi.LabelIdentityPlace
+                                        $t("LabelIdentityPlace")
                                     }}</label>
                                     <MInput
                                         id="noicap"
@@ -418,7 +412,7 @@
                         <div class="m-row">
                             <div class="form__group">
                                 <label for="diachi" class="form__label">{{
-                                    MISAResouce.vi.LabelAddress
+                                    $t("LabelAddress")
                                 }}</label>
                                 <MInput
                                     id="diachi"
@@ -441,10 +435,8 @@
                                 <label for="sodienthoai" class="form__label">
                                     <MTooltip
                                         kind="title"
-                                        :text="MISAResouce.vi.LabelPhoneNumber"
-                                        :subtext="
-                                            MISAResouce.vi.TooltipPhoneNumber
-                                        "
+                                        :text="$t('LabelPhoneNumber')"
+                                        :subtext="$t('TooltipPhoneNumber')"
                                     ></MTooltip>
                                 </label>
                                 <MInput
@@ -455,7 +447,7 @@
                                     kind="default"
                                     ref="txtPhoneNumber"
                                     :placeHolder="
-                                        MISAResouce.vi.TooltipPhoneNumber.toLowerCase()
+                                        $t('TooltipPhoneNumber').toLowerCase()
                                     "
                                     v-model="newEmployee.PhoneNumber"
                                     :isShowTooltip="
@@ -473,8 +465,8 @@
                                 <MTooltip
                                     v-if="isTooltip.isTooltipPhoneNumber"
                                     :subtext="
-                                        MISAResouce.vi.LabelPhoneNumber +
-                                        MISAResouce.vi.ErrorNotNumber
+                                        $t('LabelPhoneNumber') +
+                                        $t('ErrorNotNumber')
                                     "
                                     kind="error"
                                 ></MTooltip>
@@ -489,12 +481,8 @@
                                 <label for="sodienthoaiCD" class="form__label">
                                     <MTooltip
                                         kind="title"
-                                        :text="
-                                            MISAResouce.vi.LabelLandlineNumber
-                                        "
-                                        :subtext="
-                                            MISAResouce.vi.TooltipFixPhoneNumber
-                                        "
+                                        :text="$t('LabelLandlineNumber')"
+                                        :subtext="$t('TooltipFixPhoneNumber')"
                                     ></MTooltip>
                                 </label>
                                 <MInput
@@ -504,7 +492,9 @@
                                     kind="default"
                                     ref="txtLandlineNumber"
                                     :placeHolder="
-                                        MISAResouce.vi.TooltipFixPhoneNumber.toLowerCase()
+                                        $t(
+                                            'TooltipFixPhoneNumber'
+                                        ).toLowerCase()
                                     "
                                     v-model="newEmployee.LandlineNumber"
                                     :isShowTooltip="
@@ -522,15 +512,15 @@
                                 <MTooltip
                                     v-if="isTooltip.isTooltipLandlineNumber"
                                     :subtext="
-                                        MISAResouce.vi.LabelLandlineNumber +
-                                        MISAResouce.vi.ErrorNotNumber
+                                        $t('LabelLandlineNumber') +
+                                        $t('ErrorNotNumber')
                                     "
                                     kind="error"
                                 ></MTooltip>
                             </div>
                             <div class="form__group form__group-contact-input">
                                 <label for="email" class="form__label">{{
-                                    MISAResouce.vi.LabelEmail
+                                    $t("LabelEmail")
                                 }}</label>
                                 <div
                                     :class="{
@@ -561,8 +551,7 @@
                                     <MTooltip
                                         v-if="isTooltip.isTooltipEmail"
                                         :subtext="
-                                            MISAResouce.vi.LabelEmail +
-                                            MISAResouce.vi.ErrorEmail
+                                            $t('LabelEmail') + $t('ErrorEmail')
                                         "
                                         kind="error"
                                     ></MTooltip>
@@ -572,7 +561,7 @@
                         <div class="m-row form__group-contact-second">
                             <div class="form__group form__group-contact-input">
                                 <label for="taikhoan" class="form__label">{{
-                                    MISAResouce.vi.LabelBankAccount
+                                    $t("LabelBankAccount")
                                 }}</label>
 
                                 <MInput
@@ -587,7 +576,7 @@
                             </div>
                             <div class="form__group form__group-contact-input">
                                 <label for="tennganhang" class="form__label">{{
-                                    MISAResouce.vi.LabelBankName
+                                    $t("LabelBankName")
                                 }}</label>
                                 <MInput
                                     id="tennganhang"
@@ -601,7 +590,7 @@
                             </div>
                             <div class="form__group form__group-contact-input">
                                 <label for="chinhanh" class="form__label">{{
-                                    MISAResouce.vi.LabelBankBranch
+                                    $t("LabelBankBranch")
                                 }}</label>
                                 <MInput
                                     tabindex="16"
@@ -623,7 +612,7 @@
                     <MButton
                         class="btn btn-default close__add-employee"
                         tabindex="19"
-                        :text="MISAResouce.vi.BtnDestroy"
+                        :text="$t('BtnDestroy')"
                         :click="destroyPopup"
                         ref="btnDestroy"
                     >
@@ -634,13 +623,13 @@
                         <MButton
                             class="btn btn-default close__add-employee tooltip"
                             tabindex="17"
-                            :text="MISAResouce.vi.BtnSave"
+                            :text="$t('BtnSave')"
                             :click="() => btnSaveAndClose(true)"
                             ref="btnSave"
                         >
                             <MTooltip
                                 kind="save"
-                                :subtext="MISAResouce.vi.TooltipSave"
+                                :subtext="$t('TooltipSave')"
                             ></MTooltip>
                         </MButton>
                     </div>
@@ -648,13 +637,13 @@
                         <MButton
                             class="btn btn-primary close__add-employee tooltip"
                             tabindex="18"
-                            :text="MISAResouce.vi.BtnSaveEndAdd"
+                            :text="$t('BtnSaveEndAdd')"
                             :click="() => btnSaveAndClose(false)"
                             ref="btnSaveEndAdd"
                         >
                             <MTooltip
                                 kind="saveAndAdd"
-                                :subtext="MISAResouce.vi.TooltipSaveAndAdd"
+                                :subtext="$t('TooltipSaveAndAdd')"
                             ></MTooltip>
                         </MButton>
                     </div>
@@ -667,9 +656,9 @@
         <MDialog
             v-if="isDialogError"
             iconClass="dialog__icon-error"
-            :title="MISAResouce.vi.DialogNotifyError"
+            :title="$t('DialogNotifyError')"
             :message="message"
-            :textButton="MISAResouce.vi.BtnClose"
+            :textButton="$t('BtnClose')"
             @hideShowDialogError="hideShowDialogError"
             kind="error"
         ></MDialog>
@@ -677,11 +666,11 @@
         <MDialog
             v-if="isDialogNotify"
             iconClass="dialog__icon-notify"
-            :title="MISAResouce.vi.DialogNotify"
-            :message="MISAResouce.vi.MessageNotify"
-            :btnNoNotify="MISAResouce.vi.BtnNoSave"
-            :textButton="MISAResouce.vi.BtnSaveData"
-            :btnDestroyNotify="MISAResouce.vi.BtnClose"
+            :title="$t('DialogNotify')"
+            :message="$t('MessageNotify')"
+            :btnNoNotify="$t('BtnNoSave')"
+            :textButton="$t('BtnSaveData')"
+            :btnDestroyNotify="$t('BtnClose')"
             @onClickBtnDestroy="onClickBtnDestroy"
             @destroyPopup="destroyPopup"
             @onClickBtnYes="onClickBtnYes"
@@ -1249,7 +1238,7 @@ export default {
                 this.checkField(
                     "isTooltipEmployeeCode",
                     this.newEmployee.EmployeeCode,
-                    MISAResouce.vi.LabelEmployeeCode,
+                    this.$t("LabelEmployeeCode"),
                     "txtEmployeeCode"
                 );
 
@@ -1257,7 +1246,7 @@ export default {
                 this.checkField(
                     "isTooltipEmployeeName",
                     this.newEmployee.FullName,
-                    MISAResouce.vi.LabelEmployeeName,
+                    this.$t("LabelEmployeeName"),
                     "txtFullName"
                 );
 
@@ -1265,7 +1254,7 @@ export default {
                 this.checkField(
                     "isTooltipDepartmentName",
                     this.departmentName,
-                    MISAResouce.vi.LabelDepartmentName,
+                    this.$t("LabelDepartmentName"),
                     "txtDepartmentName"
                 );
 
@@ -1274,9 +1263,9 @@ export default {
                 this.checkFieldInvalid(
                     "isTooltipDateOfBirth",
                     this.newEmployee.DateOfBirth,
-                    MISAResouce.vi.LabelDateOfBirth,
+                    this.$t("LabelDateOfBirth"),
                     "date",
-                    MISAResouce.vi.ErrorDate,
+                    this.$t("ErrorDate"),
                     "txtDateOfBirth"
                 );
 
@@ -1284,9 +1273,9 @@ export default {
                 this.checkFieldInvalid(
                     "isTooltipPhoneNumber",
                     this.newEmployee.PhoneNumber,
-                    MISAResouce.vi.LabelPhoneNumber,
+                    this.$t("LabelPhoneNumber"),
                     "number",
-                    MISAResouce.vi.ErrorNotNumber,
+                    this.$t("ErrorNotNumber"),
                     "txtPhoneNumber"
                 );
 
@@ -1294,9 +1283,9 @@ export default {
                 this.checkFieldInvalid(
                     "isTooltipLandlineNumber",
                     this.newEmployee.LandlineNumber,
-                    MISAResouce.vi.LabelLandlineNumber,
+                    this.$t("LabelLandlineNumber"),
                     "number",
-                    MISAResouce.vi.ErrorNotNumber,
+                    this.$t("ErrorNotNumber"),
                     "txtLandlineNumber"
                 );
 
@@ -1304,9 +1293,9 @@ export default {
                 this.checkFieldInvalid(
                     "isTooltipIdentityNumber",
                     this.newEmployee.IdentityNumber,
-                    MISAResouce.vi.LabelIdentityNumber,
+                    this.$t("LabelIdentityNumber"),
                     "number",
-                    MISAResouce.vi.ErrorNotNumber,
+                    this.$t("ErrorNotNumber"),
                     "txtIdentityNumber"
                 );
 
@@ -1314,9 +1303,9 @@ export default {
                 this.checkFieldInvalid(
                     "isTooltipIdentityDate",
                     this.newEmployee.IdentityDate,
-                    MISAResouce.vi.LabelIdentityDate,
+                    this.$t("LabelIdentityDate"),
                     "date",
-                    MISAResouce.vi.ErrorDate,
+                    this.$t("ErrorDate"),
                     "txtIdentityDate"
                 );
 
@@ -1324,9 +1313,9 @@ export default {
                 this.checkFieldInvalid(
                     "isTooltipEmail",
                     this.newEmployee.Email,
-                    MISAResouce.vi.LabelEmail,
+                    this.$t("LabelEmail"),
                     "email",
-                    MISAResouce.vi.ErrorEmail,
+                    this.$t("ErrorEmail"),
                     "txtEmail"
                 );
 
@@ -1463,11 +1452,11 @@ export default {
                     // nếu chưa có lỗi thì thêm ptu lỗi đó vào
                     if (
                         !this.errorMessage.includes(
-                            errorLabel + MISAResouce.vi.ErrorEmpty
+                            errorLabel + this.$t("ErrorEmpty")
                         )
                     ) {
                         this.errorMessage[this.getTabIndex(field)] =
-                            errorLabel + MISAResouce.vi.ErrorEmpty;
+                            errorLabel + this.$t("ErrorEmpty");
                     }
                 } else {
                     if (this.errorMessage.includes(this.errorExistId)) {
@@ -1479,7 +1468,7 @@ export default {
                     this.isTooltip[fieldName] = false;
                     if (
                         this.errorMessage.includes(
-                            errorLabel + MISAResouce.vi.ErrorEmpty
+                            errorLabel + this.$t("ErrorEmpty")
                         )
                     ) {
                         this.errorMessage.splice(this.getTabIndex(field), 1);

@@ -15,7 +15,7 @@
                     <div class="icon-close tooltip">
                         <MTooltip
                             kind="close"
-                            :subtext="MISAResouce.vi.TooltipClose"
+                            :subtext="$t('TooltipClose')"
                             style="top: 163%"
                         ></MTooltip>
                     </div>

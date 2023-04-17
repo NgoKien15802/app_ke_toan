@@ -30,9 +30,15 @@
     column-gap: 24px;
 }
 
+.header__right-noti-icon {
+    display: flex;
+    align-items: center;
+    column-gap: 24px;
+}
+
 .header__right-noti-img {
     background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -788px -30px;
-    width: 22px;
+    width: 25px;
     height: 25px;
 }
 

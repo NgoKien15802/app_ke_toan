@@ -19,7 +19,6 @@
 </template>
 <script>
 import MISAEnum from "@/js/enum";
-import MISAResouce from "@/js/resource";
 export default {
     name: "MRadio",
 
@@ -53,9 +52,9 @@ export default {
         value: function (newValue) {
             this.$emit(
                 "update:modelValue",
-                newValue === MISAResouce.vi.LabelMale
+                newValue === this.$t("LabelMale")
                     ? MISAEnum.Gender.Male
-                    : newValue === MISAResouce.vi.LabelFemale
+                    : newValue === this.$t("LabelFemale")
                     ? MISAEnum.Gender.Female
                     : MISAEnum.Gender.Other
             );

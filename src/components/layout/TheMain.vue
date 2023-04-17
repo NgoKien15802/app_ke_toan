@@ -1,18 +1,15 @@
 <template>
     <div class="wrapper">
         <TheHeader></TheHeader>
-        <TheContent></TheContent>
+        <router-view />
     </div>
 </template>
 <script>
-import TheContent from "./TheContent.vue";
 import TheHeader from "./TheHeader.vue";
-
 export default {
     name: "TheMain",
     components: {
         TheHeader,
-        TheContent,
     },
 };
 </script>

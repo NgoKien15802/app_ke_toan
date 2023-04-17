@@ -4,9 +4,11 @@
         :class="isActive ? 'active' : ''"
         @click="this.$emit('handleClickItem', $event)"
     >
-        <a href="#" class="option__link"
+        <a v-if="isDropdownLang" href="#" class="option__link">{{ text }} </a>
+
+        <a v-else href="#" class="option__link"
             >{{ text }}
-            {{ MISAResouce.vi.RecordInPage }}
+            {{ $t("RecordInPage") }}
         </a>
     </li>
 </template>
@@ -22,6 +24,10 @@ export default {
             required: true,
         },
         isActive: {
+            type: Boolean,
+            default: false,
+        },
+        isDropdownLang: {
             type: Boolean,
             default: false,
         },

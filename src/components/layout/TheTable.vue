@@ -10,41 +10,41 @@
                     ></MCheckbox>
                 </th>
                 <th class="text-align-left">
-                    {{ MISAResouce.vi.EmployeeCode }}
+                    {{ $t("EmployeeCode") }}
                 </th>
                 <th class="text-align-left">
-                    {{ MISAResouce.vi.EmployeeName }}
+                    {{ $t("EmployeeName") }}
                 </th>
                 <th class="text-align-left" style="min-width: 200px">
-                    {{ MISAResouce.vi.Gender }}
+                    {{ $t("Gender") }}
                 </th>
                 <th class="text-align-center">
-                    {{ MISAResouce.vi.DateOfBirth }}
+                    {{ $t("DateOfBirth") }}
                 </th>
                 <th class="text-align-left">
                     <MTooltip
                         kind="title"
-                        :text="MISAResouce.vi.IdentityNumber"
-                        :subtext="MISAResouce.vi.TooltipIdentityNumber"
+                        :text="$t('IdentityNumber')"
+                        :subtext="$t('TooltipIdentityNumber')"
                     ></MTooltip>
                 </th>
                 <th class="text-align-left">
-                    {{ MISAResouce.vi.JobTitle }}
+                    {{ $t("JobTitle") }}
                 </th>
                 <th class="text-align-left">
-                    {{ MISAResouce.vi.DepartmentName }}
+                    {{ $t("DepartmentName") }}
                 </th>
                 <th class="text-align-left">
-                    {{ MISAResouce.vi.AccountNumber }}
+                    {{ $t("AccountNumber") }}
                 </th>
                 <th class="text-align-left">
-                    {{ MISAResouce.vi.BankName }}
+                    {{ $t("BankName") }}
                 </th>
                 <th class="text-align-left">
-                    {{ MISAResouce.vi.BankAddress }}
+                    {{ $t("BankAddress") }}
                 </th>
                 <th class="text-align-center">
-                    {{ MISAResouce.vi.Freature }}
+                    {{ $t("Freature") }}
                 </th>
             </tr>
         </thead>
@@ -86,7 +86,7 @@
                     <MButton
                         kind="link"
                         className="link-btn btn-link-primary"
-                        :text="MISAResouce.vi.Fix"
+                        :text="$t('Fix')"
                         :click="() => doubleClickEditText(employee)"
                     ></MButton>
 
@@ -117,21 +117,18 @@
     <MDialog
         v-if="isDialogWarning || isDialogDeleteMul"
         iconClass="dialog__icon-warning"
-        :title="MISAResouce.vi.DialogWarning"
+        :title="$t('DialogWarning')"
         :message="
             isDialogWarning
-                ? MISAResouce.vi.MessageWarning +
+                ? $t('MessageWarning') +
                   employeeCodeSelected +
                   ' ' +
-                  MISAResouce.vi.TxtNo +
+                  $t('TxtNo') +
                   '?'
-                : MISAResouce.vi.MessageWarningMul +
-                  ' ' +
-                  MISAResouce.vi.TxtNo +
-                  '?'
+                : $t('MessageWarningMul') + ' ' + $t('TxtNo') + '?'
         "
-        :BtnWarningNo="MISAResouce.vi.BtnDestroyDialog"
-        :textButton="MISAResouce.vi.BtnDeleteDialog"
+        :BtnWarningNo="$t('BtnDestroyDialog')"
+        :textButton="$t('BtnDeleteDialog')"
         @onBtnWarningNo="onBtnWarningNo"
         @onBtnWarningYes="
             onBtnWarningYes(
@@ -559,11 +556,11 @@ export default {
         formatGender(gender) {
             try {
                 if (gender === MISAEnum.Gender.Male) {
-                    return MISAResouce.vi.LabelMale;
+                    return this.$t("LabelMale");
                 } else if (gender === MISAEnum.Gender.Female) {
-                    return MISAResouce.vi.LabelFemale;
+                    return this.$t("LabelFemale");
                 } else if (gender === MISAEnum.Gender.Other) {
-                    return MISAResouce.vi.LabelOther;
+                    return this.$t("LabelOther");
                 }
             } catch (error) {
                 console.log(error);

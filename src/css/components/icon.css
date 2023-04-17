@@ -295,3 +295,28 @@
     height: 37px;
     padding: 0 19px;
 }
+
+/* Cash */
+.customerCash {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -876px -202px;
+    width: 16px;
+    height: 20px;
+}
+
+.providerCash {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -930px -202px;
+    width: 20px;
+    height: 20px;
+}
+
+.employeeCash {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -986px -202px;
+    width: 20px;
+    height: 20px;
+}
+
+.optionCash {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -650px -201px;
+    width: 20px;
+    height: 22px;
+}

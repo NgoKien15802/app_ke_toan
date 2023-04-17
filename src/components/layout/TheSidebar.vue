@@ -4,11 +4,13 @@
             <div class="sidebar__header-menu icon-normal-dark wrap-icon">
                 <div class="sidebar__header-menu-img"></div>
             </div>
-            <img
-                src="../../assets/img/Logo_Module_TiengViet_White.66947422.svg"
-                alt=""
-                class="sidebar__header-logo"
-            />
+            <router-link to="/">
+                <img
+                    src="../../assets/img/Logo_Module_TiengViet_White.66947422.svg"
+                    alt=""
+                    class="sidebar__header-logo"
+                />
+            </router-link>
         </div>
 
         <div class="sidebar__list scrollbar_customize">
@@ -17,6 +19,7 @@
                 :key="index"
                 :className="menuItem.icon"
                 :text="menuItem.text"
+                :to="menuItem.to"
             ></MmenuItem>
         </div>
     </div>
@@ -36,65 +39,80 @@ export default {
             menuItems: [
                 {
                     icon: "icon-overview-default",
-                    text: MISAresource.vi.Overview,
+                    text: this.$t("Overview"),
+                    to: "/overview",
                 },
 
                 {
                     icon: "icon-cash-default",
-                    text: MISAresource.vi.Cash,
+                    text: this.$t("Cash"),
+                    to: "/cash",
                 },
                 {
                     icon: "icon-cashBank-default",
-                    text: MISAresource.vi.Banking,
+                    text: this.$t("Banking"),
+                    to: "/banking",
                 },
                 {
                     icon: "icon-buy-default",
-                    text: MISAresource.vi.Buy,
+                    text: this.$t("Buy"),
+                    to: "/buy",
                 },
                 {
                     icon: "icon-sell-default",
-                    text: MISAresource.vi.Sales,
+                    text: this.$t("Sales"),
+                    to: "/sales",
                 },
                 {
                     icon: "icon-invoice-managemnet-default",
-                    text: MISAresource.vi.InvoiceManaging,
+                    text: this.$t("InvoiceManaging"),
+                    to: "/invoiceManaging",
                 },
                 {
                     icon: "icon-store-default",
-                    text: MISAresource.vi.Store,
+                    text: this.$t("Store"),
+                    to: "/store",
                 },
                 {
                     icon: " icon-tool-default",
-                    text: MISAresource.vi.Equipments,
+                    text: this.$t("Equipments"),
+                    to: "/equipments",
                 },
                 {
                     icon: " icon-assets-default",
-                    text: MISAresource.vi.FixedAssets,
+                    text: this.$t("FixedAssets"),
+                    to: "/fixedAssets",
                 },
                 {
                     icon: "icon-tax-default",
-                    text: MISAresource.vi.Tax,
+                    text: this.$t("Tax"),
+                    to: "/tax",
                 },
                 {
                     icon: " icon-cost-default",
-                    text: MISAresource.vi.CostOfProduction,
+                    text: this.$t("CostOfProduction"),
+                    to: "/costOfProduction",
                 },
 
                 {
                     icon: " icon-general-default",
-                    text: MISAresource.vi.General,
+                    text: this.$t("General"),
+                    to: "/general",
                 },
                 {
                     icon: "icon-budget-default",
-                    text: MISAresource.vi.Budget,
+                    text: this.$t("Budget"),
+                    to: "/budget",
                 },
                 {
                     icon: "icon-report-default",
-                    text: MISAresource.vi.Report,
+                    text: this.$t("Report"),
+                    to: "/Report",
                 },
                 {
                     icon: " icon-financial-default",
-                    text: MISAresource.vi.FinancialAnalysis,
+                    text: this.$t("FinancialAnalysis"),
+                    to: "/financialAnalysis",
                 },
             ],
         };

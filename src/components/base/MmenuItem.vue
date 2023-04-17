@@ -1,5 +1,5 @@
 <template>
-    <div class="sidebar__item">
+    <router-link :to="to" class="sidebar__item">
         <div class="sidebar__item-icon wrap-icon">
             <div
                 class="sidebar__item-icon-img icon-normal-dark"
@@ -7,7 +7,7 @@
             ></div>
         </div>
         <span class="sidebar__item-text">{{ text }}</span>
-    </div>
+    </router-link>
 </template>
 <script>
 export default {
@@ -21,6 +21,10 @@ export default {
         },
         // class của menu
         className: {
+            type: String,
+            default: "",
+        },
+        to: {
             type: String,
             default: "",
         },

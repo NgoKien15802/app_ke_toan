@@ -9,7 +9,7 @@
                 href="#"
                 class="contextmenu__fun-link"
                 @click="handleDuplicateEmployee"
-                >{{ MISAResouce.vi.Duplicate }}</a
+                >{{ $t("Duplicate") }}</a
             >
         </li>
 
@@ -18,13 +18,11 @@
                 href="#"
                 class="contextmenu__fun-link"
                 @click="handleDeleteRow"
-                >{{ MISAResouce.vi.Delete }}</a
+                >{{ $t("Delete") }}</a
             >
         </li>
         <li class="contextmenu__fun-item">
-            <a href="#" class="contextmenu__fun-link">{{
-                MISAResouce.vi.StopUse
-            }}</a>
+            <a href="#" class="contextmenu__fun-link">{{ $t("StopUse") }}</a>
         </li>
     </ul>
 </template>
