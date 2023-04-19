@@ -23,6 +23,18 @@
 
                         <div class="cash__process-main">
                             <MProcessCash></MProcessCash>
+                            <div class="icon__cash receive">
+                                <div class="icon__title-cash">Thu tiền</div>
+                            </div>
+                            <router-link
+                                to="/cash/cashDetail"
+                                class="icon__cash payment"
+                            >
+                                <div class="icon__title-cash">Chi tiền</div>
+                            </router-link>
+                            <div class="icon__cash audit">
+                                <div class="icon__title-cash">Kiểm kê quỹ</div>
+                            </div>
                         </div>
                     </div>
                     <div class="cash__process-bottom">
@@ -65,7 +77,7 @@ export default {
                     isActive: true,
                 },
                 {
-                    text: this.$t("CollectAndSpend"),
+                    text: this.$t("SpendMoney"),
                     isActive: false,
                 },
                 {
@@ -83,24 +95,9 @@ export default {
             ],
             processCashs: [
                 {
-                    text: this.$t("CustomerCash"),
-                    icon: "customerCash",
-                    to: "/cash/customer",
-                },
-                {
-                    text: this.$t("Provider"),
-                    icon: "providerCash",
-                    to: "/cash/provider",
-                },
-                {
-                    text: this.$t("Employee"),
-                    icon: "employeeCash",
-                    to: "/cash/employee",
-                },
-                {
-                    text: this.$t("Option"),
-                    icon: "optionCash",
-                    to: "/cash/options",
+                    text: this.$t("AccountSystem"),
+                    icon: "accountSystem",
+                    to: "/cash/accountSysterm",
                 },
             ],
         };

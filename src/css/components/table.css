@@ -232,3 +232,29 @@ th {
 .input__icon-box:active {
     border: 1px solid #ccc;
 }
+
+.table__accountSysterm thead tr th:nth-child(6),
+.table__accountSysterm tbody tr td:nth-child(6),
+.table__accountSysterm thead tr th:nth-child(3),
+.table__accountSysterm tbody tr td:nth-child(3),
+.table__accountSysterm thead tr th:nth-child(1),
+.table__accountSysterm tbody tr td:nth-child(1) {
+    min-width: 150px;
+}
+
+.table__accountSysterm thead tr th:nth-child(4),
+.table__accountSysterm tbody tr td:nth-child(4),
+.table__accountSysterm thead tr th:nth-child(2),
+.table__accountSysterm tbody tr td:nth-child(2) {
+    min-width: 250px;
+}
+
+.table__accountSysterm thead tr th:nth-child(5),
+.table__accountSysterm tbody tr td:nth-child(5) {
+    min-width: 350px;
+}
+
+.table__accountSysterm thead tr th:nth-child(7),
+.table__accountSysterm tbody tr td:nth-child(7) {
+    min-width: 100px;
+}

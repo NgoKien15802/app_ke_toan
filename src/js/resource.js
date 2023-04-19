@@ -40,6 +40,7 @@ const MISAResouce = {
 
         //placehoder
         TxtSearch: "Theo mã, tên, SĐT, ngày sinh",
+        TxtSearchAccount: "Tìm kiếm theo số, tên tài khoản",
 
         //Sidebar
         Overview: "Tổng quan",
@@ -113,7 +114,7 @@ const MISAResouce = {
         DialogNotifyError: "Thông báo lỗi",
         DialogNotify: "Thông báo",
         DialogWarning: "Cảnh báo",
-        MessageNotify: "Dữ liệu của bạn đã thay đổi bạn có muốn lưu không?",
+        MessageNotify: "Dữ liệu của bạn đã thay đổi bạn có muốn cất không?",
         MessageWarning: "Bạn có muốn xóa nhân viên ",
         MessageWarningMul: "Bạn có muốn xóa tất cả nhân viên được chọn",
         TxtNo: "không",
@@ -132,16 +133,26 @@ const MISAResouce = {
 
         //navbar cash
         Process: "Quy trình",
-        CollectAndSpend: "Thu, chi tiền",
+        SpendMoney: "Chi tiền",
         Stocktaking: "Kiểm kê",
         CashFlowForecast: "Dự báo dòng tiền",
         Export: "Báo cáo",
 
         // cash
         CashBusiness: "Nghiệp vụ tiền mặt",
+        AccountSystem: "Hệ thống tài khoản",
         CustomerCash: "Khách hàng",
         Provider: "Nhà cung cấp",
         Option: "Tùy chọn",
+
+        // accountSysterm
+        AddNewAccount: "Thêm mới tài khoản",
+        Extend: "Mở rộng",
+        AccountName: "Tên tài khoản",
+        Property: "Tính chất",
+        EnglishName: "Tên tiếng anh",
+        Interpret: "Diễn giải",
+        Status: "Trạng thái",
 
         //other
         Username: "Ngô Trung Kiên",
@@ -188,6 +199,7 @@ const MISAResouce = {
 
         //placehoder
         TxtSearch: "By code, name, phone number, date of birth",
+        TxtSearchAccount: "Search by number, account name",
 
         //Sidebar
         Overview: "Overview",
@@ -274,16 +286,24 @@ const MISAResouce = {
 
         //navbar cash
         Process: "Progress",
-        CollectAndSpend: "collect and spend money",
+        SpendMoney: "Spend money",
         Stocktaking: "StockTaking",
         CashFlowForecast: "Cash flow forecast",
         Export: "Export",
 
         // cash
         CashBusiness: "Cash Business",
+        AccountSystem: "Account systerm",
         CustomerCash: "Customer",
         Provider: "Provider",
         Option: "Options",
+        Extend: "Extend",
+        AddNewAccount: "Add new account",
+        AccountName: "Account name",
+        Property: "Property",
+        EnglishName: "English name",
+        Interpret: "Interpret",
+        Status: "Status",
 
         // checkbox
         SelectedCheckbox: "selected: ",

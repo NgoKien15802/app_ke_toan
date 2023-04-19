@@ -1,5 +1,5 @@
 <template>
-    <table id="tbEmployeeList" class="employee">
+    <table id="tbEmployeeList" class="employee" ref="gridTable">
         <thead>
             <tr class="table__field">
                 <th class="text-align-center">
@@ -15,7 +15,7 @@
                 <th class="text-align-left">
                     {{ $t("EmployeeName") }}
                 </th>
-                <th class="text-align-left" style="min-width: 200px">
+                <th class="text-align-left resizable">
                     {{ $t("Gender") }}
                 </th>
                 <th class="text-align-center">
@@ -85,7 +85,7 @@
                 <td class="dropdown-fun text-align-center">
                     <MButton
                         kind="link"
-                        className="link-btn btn-link-primary"
+                        className="link-btn btn-link"
                         :text="$t('Fix')"
                         :click="() => doubleClickEditText(employee)"
                     ></MButton>
@@ -102,7 +102,7 @@
         </tbody>
     </table>
 
-    <Mcontextmenu
+    <MContextmenu
         v-if="isContextMenu"
         :left="leftContextMenu"
         :top="topContextMenu"
@@ -112,7 +112,7 @@
         @hideShowLoading="hideShowLoading"
         @handleDeleteRow="handleDeleteRow"
         @handleDuplicateEmployee="handleDuplicateEmployee"
-    ></Mcontextmenu>
+    ></MContextmenu>
 
     <MDialog
         v-if="isDialogWarning || isDialogDeleteMul"
@@ -142,8 +142,8 @@
 import axios from "axios";
 import MISAResouce from "@/js/resource";
 import MISAEnum from "@/js/enum";
-import Mcontextmenu from "../base/Mcontextmenu.vue";
 import moment from "moment";
+
 export default {
     name: "TheTable",
 
@@ -193,10 +193,6 @@ export default {
             keyWord: "",
             isDialogDeleteMul: false,
         };
-    },
-
-    components: {
-        Mcontextmenu,
     },
 
     /**
@@ -628,4 +624,19 @@ export default {
 </script>
 <style scoped>
 @import url(../../css/components/table.css);
+
+th.resizable {
+    position: relative;
+}
+
+th.resizable::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: -5px;
+    width: 10px;
+    height: 100%;
+    cursor: col-resize;
+    z-index: 999;
+}
 </style>

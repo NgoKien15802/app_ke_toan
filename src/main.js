@@ -11,6 +11,8 @@ import MHeading from "./components/base/Mheading.vue";
 import MRadio from "./components/base/Mradio.vue";
 import MTooltip from "./components/base/Mtooltip.vue";
 import MToast from "./components/base/Mtoast.vue";
+import MContextmenu from "./components/base/Mcontextmenu.vue";
+import MDataGrid from "./components/base/MDataGrid.vue";
 
 const i18n = createI18n({
     locale: localStorage.getItem("lang") || "vi",
@@ -38,6 +40,8 @@ app.component("MHeading", MHeading);
 app.component("MRadio", MRadio);
 app.component("MTooltip", MTooltip);
 app.component("MToast", MToast);
+app.component("MContextmenu", MContextmenu);
+app.component("MDataGrid", MDataGrid);
 
 app.use(i18n);
 

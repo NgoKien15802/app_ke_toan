@@ -2,56 +2,14 @@
     <div class="content">
         <div class="content__header">
             <div class="content__header-title">
-                <MHeading :text="$t('Employee')"></MHeading>
+                <MHeading :text="$t('AccountSystem')"></MHeading>
             </div>
-
-            <MButton
-                :text="$t('AddNewEmployee')"
-                id="addEmployee"
-                kind="primary"
-                className="btn-primary"
-                :click="showPopup"
-            ></MButton>
         </div>
 
         <div class="content__main">
             <!-- header main -->
-            <div
-                class="content__main-header"
-                :style="selectedCheckbox.length < 1 && 'justify-content: end'"
-            >
-                <div
-                    v-if="selectedCheckbox.length >= 1"
-                    class="content__main-left"
-                >
-                    <p>
-                        {{ $t("SelectedCheckbox") }}
-                        <strong>{{ selectedCheckbox.length }}</strong>
-                    </p>
-                    <MButton
-                        kind="link"
-                        className="link-btn btn-link-delete"
-                        :click="handleUndoSeleted"
-                        :text="$t('UndoSelected')"
-                    ></MButton>
-
-                    <MButton
-                        :class="
-                            selectedCheckbox.length >= 1
-                                ? 'btn btn-delete'
-                                : 'btn btn-default'
-                        "
-                        :text="
-                            selectedCheckbox.length == 1
-                                ? $t('BtnDeleteDialog')
-                                : $t('BtnDeleteAll')
-                        "
-                        :disabled="selectedCheckbox.length < 1"
-                        :click="handleDeleteAll"
-                    >
-                    </MButton>
-                </div>
-                <div class="content__main-right">
+            <div class="content__main-header">
+                <div class="content__main-left">
                     <div class="content__main-filter">
                         <div class="input__wrapper">
                             <button class="input__icon" fdprocessedid="sd2h6">
@@ -60,13 +18,19 @@
                             <input
                                 type="text"
                                 class="input__type input__search"
-                                :placeholder="$t('TxtSearch')"
+                                :placeholder="$t('TxtSearchAccount')"
                                 fdprocessedid="q9kjmf"
                                 v-model.lazy="keyWordSearch"
                             />
                         </div>
                     </div>
-
+                </div>
+                <div class="content__main-right">
+                    <MButton
+                        kind="link"
+                        className="link-btn btn-link"
+                        :text="$t('Extend')"
+                    ></MButton>
                     <div
                         class="content__main-refresh wrap-icon"
                         @click="handleReLoadData"
@@ -82,48 +46,19 @@
                         </div>
                     </div>
 
-                    <div
-                        class="content__main-refresh wrap-icon"
-                        @click="handleExport"
-                        :class="totalRecord == 0 ? 'disabled' : ''"
-                    >
-                        <div class="content__main-exprort-icon tooltip">
-                            <MTooltip
-                                style="top: 163%"
-                                kind="export"
-                                :subtext="$t('TooltipExport')"
-                            ></MTooltip>
-                        </div>
-                    </div>
+                    <MButton
+                        :text="$t('AddNewAccount')"
+                        kind="primary"
+                        className="btn-primary"
+                        :click="showPopup"
+                    ></MButton>
                 </div>
             </div>
 
             <div class="content__main-body scrollbar_customize">
                 <div class="content__main-table">
                     <!--  table -->
-                    <TheTable
-                        @hideShowLoading="hideShowLoading"
-                        @onDoubleClick="onDoubleClick"
-                        @hideShowToast="hideShowToast"
-                        @handleSelectChechbox="handleSelectChechbox"
-                        :selectedCheckbox="selectedCheckbox"
-                        @getTotalRecord="getTotalRecord"
-                        :pageSizeNumber="pageSize"
-                        :pageCurrent="pageNumber"
-                        :keyWordSearch="keyWordSearch"
-                        :isReload="isReload"
-                        @setIsReLoad="setIsReLoad"
-                        @handleReLoadData="handleReLoadData"
-                        :isDialogDeleteMultiple="isDialogDeleteMultiple"
-                        :selectedEmployeeIds="selectedEmployeeIds"
-                        @setIsDialogDeleteMul="setIsDialogDeleteMul"
-                        @setIsDialogDeleteMuliple="
-                            () => (isDialogDeleteMultiple = false)
-                        "
-                        @showPopupDuplicate="showPopupDuplicate"
-                        :isDeleteOne="isDeleteOne"
-                        @setIsDeleteOne="setIsDeleteOne"
-                    ></TheTable>
+                    <TheTableAccount></TheTableAccount>
                 </div>
 
                 <!--  paging -->
@@ -178,12 +113,12 @@
 <script>
 import MISAResouce from "@/js/resource";
 import axios from "axios";
-import TheTable from "@/components/layout/TheTable.vue";
+import TheTableAccount from "@/components/layout/TheTableAccount.vue";
 import ThePaging from "@/components/layout/ThePaging.vue";
 import Mloading from "@/components/base/Mloading.vue";
 import ThePopup from "@/components/layout/ThePopup.vue";
 export default {
-    name: "EmployeeList",
+    name: "AccountSysterm",
     data() {
         return {
             MISAResouce,
@@ -209,7 +144,7 @@ export default {
         };
     },
     components: {
-        TheTable,
+        TheTableAccount,
         ThePaging,
         ThePopup,
         Mloading,
@@ -318,64 +253,43 @@ export default {
         },
 
         /**
-         * Hàm thực hiện CALL API Export cho 2 TH. TH1: Có selected và TH2: Không có selected
+         * Hàm thực hiện CALL API Export
          * Author: KienNT (30/03/2023)
          */
         handleExport() {
             try {
-                if (this.selectedCheckbox.length >= 1) {
-                    const queryParameters = this.selectedCheckbox.map(
-                        (recordId) => `listRecordId=${recordId}`
-                    );
-                    this.apiExport(
-                        `https://localhost:7153/api/v1/Employees/ExportToExcelSelected?${queryParameters.join(
-                            "&"
-                        )}`
-                    );
-                } else {
-                    this.apiExport(
-                        `https://localhost:7153/api/v1/Employees/ExportToExcel?keyword=${this.keyWordSearch}`
-                    );
-                }
+                //Loại dữ liệu trả về từ API, ở đây là blob (binary large object) để tải xuống tệp Excel.
+                axios({
+                    url: `https://localhost:7153/api/v1/Employees/ExportToExcel?keyword=${this.keyWordSearch}`,
+                    method: "GET",
+                    responseType: "blob",
+                })
+                    .then((this.isLoading = true))
+                    .then((response) => {
+                        // Tạo một URL tạm thời để tải xuống tệp Excel.
+                        const url = window.URL.createObjectURL(
+                            new Blob([response.data])
+                        );
+                        // Tạo một thẻ <a> ẩn và cấu hình các thuộc tính để tải xuống tệp Excel, bao gồm tên tệp và đường dẫn đến tệp trên URL tạm thời.
+                        const link = document.createElement("a");
+                        link.href = url;
+                        //  Thuộc tính download được thiết lập để chỉ định tên tệp tin sẽ được tải xuống.
+                        link.setAttribute(
+                            "download",
+                            `Danh_sach_nhan_vien_${Date.now()}.xlsx`
+                        );
+                        // chèn thẻ a vào body của trang và kích hoạt sự kiện click của thẻ a để bắt đầu tải xuống tệp tin.
+                        document.body.appendChild(link);
+                        link.click();
+                        this.isLoading = false;
+                    })
+                    .catch((res) => {
+                        console.log(res);
+                        this.isLoading = false;
+                    });
             } catch (error) {
                 console.log(error);
             }
-        },
-
-        /**
-         * Hàm thực hiện CALL API Export
-         * Author: KienNT (30/03/2023)
-         */
-        apiExport(url) {
-            //Loại dữ liệu trả về từ API, ở đây là blob (binary large object) để tải xuống tệp Excel.
-            axios({
-                url: url,
-                method: "GET",
-                responseType: "blob",
-            })
-                .then((this.isLoading = true))
-                .then((response) => {
-                    // Tạo một URL tạm thời để tải xuống tệp Excel.
-                    const url = window.URL.createObjectURL(
-                        new Blob([response.data])
-                    );
-                    // Tạo một thẻ <a> ẩn và cấu hình các thuộc tính để tải xuống tệp Excel, bao gồm tên tệp và đường dẫn đến tệp trên URL tạm thời.
-                    const link = document.createElement("a");
-                    link.href = url;
-                    //  Thuộc tính download được thiết lập để chỉ định tên tệp tin sẽ được tải xuống.
-                    link.setAttribute(
-                        "download",
-                        `Danh_sach_nhan_vien_${Date.now()}.xlsx`
-                    );
-                    // chèn thẻ a vào body của trang và kích hoạt sự kiện click của thẻ a để bắt đầu tải xuống tệp tin.
-                    document.body.appendChild(link);
-                    link.click();
-                    this.isLoading = false;
-                })
-                .catch((res) => {
-                    console.log(res);
-                    this.isLoading = false;
-                });
         },
 
         /**
