@@ -33,7 +33,6 @@ app.use(router);
  */
 app.component("MInput", MInput);
 app.component("MButton", MButton);
-app.component("MButton", MButton);
 app.component("MCheckbox", MCheckbox);
 app.component("MDialog", MDialog);
 app.component("MHeading", MHeading);

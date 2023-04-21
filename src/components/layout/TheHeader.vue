@@ -20,21 +20,12 @@
 
         <div class="header__right">
             <div class="header__right-noti-icon">
-                <!-- <select
-                    name=""
-                    id=""
-                    @change="handleSelectLanguage($event)"
-                    v-model="lang"
-                >
-                    <option value="en">English</option>
-                    <option value="vi">Vietnamese</option>
-                </select> -->
                 <div
-                    class="paging__record"
+                    class="paging__record block__lang"
                     @click="handleOpenDropdown"
                     ref="dropdown"
                 >
-                    <div class="input__wrapper dropdown">
+                    <div class="input__wrapper input__wrapprt-lang dropdown">
                         <button
                             class="input__icon dropdown-icon"
                             fdprocessedid="jeq9qa"
@@ -48,7 +39,7 @@
                             readonly="true"
                             type="text"
                             style="border: none"
-                            class="input__type dropdown-input paging-input"
+                            class="input__type dropdown-input paging-input input__lang"
                             v-model="valueInput"
                             fdprocessedid="epqss"
                         />

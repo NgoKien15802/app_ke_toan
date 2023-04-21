@@ -160,7 +160,7 @@ th {
 .employee tbody tr td:nth-child(5),
 .employee thead tr th:nth-child(2),
 .employee tbody tr td:nth-child(2) {
-    min-width: 150px;
+    min-width: 160px;
 }
 
 .employee thead tr th:nth-child(11),
