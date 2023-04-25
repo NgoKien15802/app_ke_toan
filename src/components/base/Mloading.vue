@@ -1,19 +1,7 @@
 <template>
-    <div class="loader">
-        <div class="lds-spinner">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
+    <div id="loading-bg">
+        <div class="loading-modal"></div>
+        <div class="loading"><div class="effect-1 effects"></div></div>
     </div>
 </template>
 <script>

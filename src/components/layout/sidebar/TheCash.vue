@@ -24,16 +24,22 @@
                         <div class="cash__process-main">
                             <MProcessCash></MProcessCash>
                             <div class="icon__cash receive">
-                                <div class="icon__title-cash">Thu tiền</div>
+                                <div class="icon__title-cash">
+                                    {{ $t("ReceiveMoney") }}
+                                </div>
                             </div>
                             <router-link
                                 to="/cash/cashDetail"
                                 class="icon__cash payment"
                             >
-                                <div class="icon__title-cash">Chi tiền</div>
+                                <div class="icon__title-cash">
+                                    {{ $t("SpendMoney") }}
+                                </div>
                             </router-link>
                             <div class="icon__cash audit">
-                                <div class="icon__title-cash">Kiểm kê quỹ</div>
+                                <div class="icon__title-cash">
+                                    {{ $t("Stocktaking") }}
+                                </div>
                             </div>
                         </div>
                     </div>

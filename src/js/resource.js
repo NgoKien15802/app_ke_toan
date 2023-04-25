@@ -18,7 +18,8 @@ const MISAResouce = {
         Feature: "CHỨC NĂNG",
         Fix: "Sửa",
         Duplicate: "Nhân bản",
-        StopUse: "Ngừng sử dụng",
+        StopUsing: "Ngừng sử dụng",
+        Using: "Đang sử dụng",
         Delete: "Xoá",
 
         // Record
@@ -134,6 +135,7 @@ const MISAResouce = {
         //navbar cash
         Process: "Quy trình",
         SpendMoney: "Chi tiền",
+        ReceiveMoney: "Thu tiền",
         Stocktaking: "Kiểm kê",
         CashFlowForecast: "Dự báo dòng tiền",
         Export: "Báo cáo",
@@ -154,6 +156,10 @@ const MISAResouce = {
         EnglishName: "Tên tiếng anh",
         Interpret: "Diễn giải",
         Status: "Trạng thái",
+        Debt: "Dư nợ",
+        ExcessYes: "Dư có",
+        Hermaphrodite: "Lưỡng tính",
+        Nobalance: "Không có số dư",
 
         //other
         Username: "Ngô Trung Kiên",
@@ -178,7 +184,8 @@ const MISAResouce = {
         Feature: "Feature",
         Fix: "Edit",
         Duplicate: "Duplicate",
-        StopUse: "Stop use",
+        StopUsing: "Stop using",
+        Using: "Using",
         Delete: "Delete",
 
         // Record
@@ -288,6 +295,7 @@ const MISAResouce = {
         //navbar cash
         Process: "Progress",
         SpendMoney: "Spend money",
+        ReceiveMoney: "Receive money",
         Stocktaking: "StockTaking",
         CashFlowForecast: "Cash flow forecast",
         Export: "Export",
@@ -306,6 +314,10 @@ const MISAResouce = {
         EnglishName: "English name",
         Interpret: "Interpret",
         Status: "Status",
+        Debt: "Debt",
+        ExcessYes: "Excess yes",
+        Hermaphrodite: "Hermaphrodite",
+        Nobalance: "No balance",
 
         // checkbox
         SelectedCheckbox: "selected: ",

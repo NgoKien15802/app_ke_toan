@@ -58,7 +58,13 @@
             <div class="content__main-body scrollbar_customize">
                 <div class="content__main-table">
                     <!--  table -->
-                    <TheTableAccount></TheTableAccount>
+                    <TheTableAccount
+                        @getTotalRecord="getTotalRecord"
+                        @hideShowLoading="hideShowLoading"
+                        :keyWordSearch="keyWordSearch"
+                        :pageSizeNumber="pageSize"
+                        :pageCurrent="pageNumber"
+                    ></TheTableAccount>
                 </div>
 
                 <!--  paging -->
@@ -158,17 +164,6 @@ export default {
         keyWordSearch: function () {
             this.pageNumber = 1;
             this.isDisabledClickPrev = true;
-            if (this.keyWordSearch.includes("/")) {
-                const arrKeyword = this.keyWordSearch.split("/");
-                var search = "";
-                if (arrKeyword.length >= 2) {
-                    for (let index = 0; index < arrKeyword.length; index++) {
-                        const element = arrKeyword[index];
-                        search += element;
-                    }
-                }
-                this.keyWordSearch = search;
-            }
         },
     },
 

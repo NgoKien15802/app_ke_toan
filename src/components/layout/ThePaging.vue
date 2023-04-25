@@ -56,7 +56,7 @@
                 <div
                     class="wrap-icon btn-icon"
                     @click="handleClickNext"
-                    :class="offset + pageIndex > totalRecord ? 'disabled' : ''"
+                    :class="offset + pageIndex >= totalRecord ? 'disabled' : ''"
                 >
                     <div class="paging__record-footer-iconRight"></div>
                 </div>

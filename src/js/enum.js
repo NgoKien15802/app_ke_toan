@@ -16,6 +16,20 @@ const MISAEnum = {
         x: 70,
         y: 25,
     },
+
+    // Trạng thái: ngừng sử dụng, đang sử dụng
+    Status: {
+        StopUsing: 0,
+        Using: 1,
+    },
+
+    // Tính chất
+    Property: {
+        Debt: 0,
+        ExcessYes: 1,
+        Hermaphrodite: 2,
+        Nobalance: 3,
+    },
 };
 
 export default MISAEnum;

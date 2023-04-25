@@ -1,78 +1,242 @@
 <template>
     <div>
-        <MDataGrid :employees="employees"></MDataGrid>
+        <DxTreeList
+            id="accounts"
+            :data-source="accounts"
+            :allow-column-resizing="true"
+            column-resizing-mode="nextColumn"
+            :column-min-width="50"
+            :column-auto-width="true"
+            :show-row-lines="true"
+            :show-borders="true"
+            key-expr="ID"
+            parent-id-expr="ParentAccountID"
+            :cellHintEnabled="true"
+            :errorRowEnabled="false"
+        >
+            <DxPaging :enabled="true" />
+            <DxEditing
+                :allow-updating="true"
+                :allow-deleting="true"
+                :allow-adding="true"
+                mode="row"
+            />
+            <DxColumn
+                data-field="AccountNumber"
+                :caption="$t('AccountNumber')"
+                :width="180"
+            />
+            <DxColumn
+                data-field="AccountName"
+                :caption="$t('AccountName')"
+                :min-width="50"
+                :width="200"
+            />
+            <DxColumn
+                data-field="Property"
+                :caption="$t('Property')"
+                :width="150"
+            />
+            <DxColumn
+                data-field="EnglishName"
+                :caption="$t('EnglishName')"
+                :width="180"
+            />
+            <DxColumn
+                data-field="Interpret"
+                :caption="$t('Interpret')"
+                width="calc(100% - 660px)"
+            />
+            <DxColumn
+                data-field="Status"
+                :caption="$t('Status')"
+                :width="150"
+            />
+            <DxColumnFixing :enabled="true" />
+            <!-- <DxColumn :min-width="50">
+            <dxo-cell-template v-slot="data">
+                <div class="dropdown-fun text-align-center">
+                    <MButton
+                        kind="link"
+                        className="link-btn btn-link"
+                        :text="$t('Fix')"
+                        :click="() => doubleClickEditText(data)"
+                    ></MButton>
+                    <div
+                        class="input__icon-box ml-8"
+                        @click="handleClickOptionMenu($event, data)"
+                        ref="iconContextMenu"
+                    >
+                        <div class="icon-dropdown" ref="ContextMenu"></div>
+                    </div>
+                </div>
+            </dxo-cell-template>
+        </DxColumn> -->
+        </DxTreeList>
     </div>
 </template>
 
 <script>
+import { DxTreeList, DxColumn } from "devextreme-vue/tree-list";
+import MISAEnum from "@/js/enum";
+import axios from "axios";
+import MISAResouce from "@/js/resource";
 export default {
     name: "TheTableAccount",
+    components: {
+        DxTreeList,
+        DxColumn,
+    },
+
+    props: {
+        pageSizeNumber: {
+            type: String,
+        },
+        keyWordSearch: {
+            type: String,
+        },
+        pageCurrent: {
+            type: String,
+        },
+    },
+
     data() {
         return {
-            employees: [
-                {
-                    ID: "8b79ba21-3a2a-4c19-8ee1-068821a564f1",
-                    Parent_ID: null,
-                    AccountNumber: "234",
-                    AccountName: "Danh sách tài khoản",
-                    Property: "",
-                    EnglishName: "",
-                    Interpret: "",
-                    Status: "",
-                },
-                {
-                    ID: "6f31783b-5c5b-4d81-9a7e-6f8e6cfac9c1",
-                    Parent_ID: "8b79ba21-3a2a-4c19-8ee1-068821a564f1",
-                    AccountNumber: "112",
-                    AccountName: "Tiền mặt",
-                    Property: "Dư nợ",
-                    EnglishName: "Cash in hand",
-                    Interpret: "",
-                    Status: "Ngừng sử dụng",
-                },
-                {
-                    ID: "bb81c9a2-85df-437c-a87e-02d5083717ca",
-                    Parent_ID: "8b79ba21-3a2a-4c19-8ee1-068821a564f1",
-                    AccountNumber: "111",
-                    AccountName: "Tiền gửi Ngân hàng",
-                    Property: "Dư nợ",
-                    EnglishName: "Cash in hand",
-                    Interpret: "",
-                    Status: "Ngừng sử dụng",
-                },
-                {
-                    ID: "c4468890-db2c-4c12-937f-1859d93c9f10",
-                    Parent_ID: null,
-                    AccountNumber: "333",
-                    AccountName: "Tiền gửi Ngân  kien",
-                    Property: "Dư nợ",
-                    EnglishName: "Cash in hand",
-                    Interpret: "",
-                    Status: "Ngừng sử dụng",
-                },
-                {
-                    ID: "f9338d0a-c939-4f2e-8e03-0fd654c96a95",
-                    Parent_ID: "c4468890-db2c-4c12-937f-1859d93c9f10",
-                    AccountNumber: "444",
-                    AccountName: "Tiền gửi Ngân con kien",
-                    Property: "Dư nợ",
-                    EnglishName: "Cash in hand",
-                    Interpret: "",
-                    Status: "Ngừng sử dụng",
-                },
-
-                {
-                    ID: "c8d492b4-9007-49ad-84bb-81bd1822b0ea",
-                    Parent_ID: "f9338d0a-c939-4f2e-8e03-0fd654c96a95",
-                    AccountNumber: "354",
-                    AccountName: "Tiền gửi Ngân chau kien",
-                    Property: "Dư nợ",
-                    EnglishName: "Cash in hand",
-                    Interpret: "",
-                    Status: "Ngừng sử dụng",
-                },
-            ],
+            MISAResouce,
+            accounts: [],
+            pageSize: 20,
+            pageNumber: 1,
+            totalRecord: 0,
+            keyWord: "",
         };
+    },
+
+    created() {
+        try {
+            this.loadData();
+        } catch (error) {
+            console.log(error);
+        }
+    },
+
+    watch: {
+        /**
+         * Theo dõi sự thay đổi pageSizeNumber. nếu pagesize thay đổi
+         * Author: KienNT (25/04/2023)
+         */
+        pageSizeNumber: function () {
+            this.pageSize = this.pageSizeNumber;
+            if (this.pageNumber == 1) {
+                this.loadData();
+            }
+        },
+        /**
+         * Theo dõi sự thay đổi keyWordSearch. tìm kiếm thay đổi
+         * Author: KienNT (25/04/2023)
+         */
+        keyWordSearch: function () {
+            this.keyWord = this.keyWordSearch;
+            this.pageNumber = 1;
+            this.loadData();
+        },
+
+        /**
+         * Theo dõi sự thay đổi pageCurrent. khi click vào btn next
+         * Author: KienNT (25/04/2023)
+         */
+
+        pageCurrent: function () {
+            this.pageNumber = this.pageCurrent;
+            this.loadData();
+        },
+    },
+
+    methods: {
+        /**
+         * Call API get data account
+         * Author: KienNT (25/04/2023)
+         */
+        loadData() {
+            try {
+                axios
+                    .get(
+                        `https://localhost:7153/api/v1/Accounts/Filter?keyword=${this.keyWord}&pageSize=${this.pageSize}&pageNumber=${this.pageNumber}`
+                    )
+                    .then(this.hideShowLoading(true))
+                    .then((response) => {
+                        this.accounts = response?.data?.Data?.Data;
+                        this.accounts = this.accounts.map((account) => ({
+                            ID: account.AccountId,
+                            ...account,
+                            Property: this.formatProperty(account.Property),
+                            Status: this.formatStatus(account.Status),
+                        }));
+
+                        console.log(this.accounts);
+                        this.totalRecord = response?.data?.Data?.TotalRecord;
+                        this.$emit("getTotalRecord", this.totalRecord);
+                        this.hideShowLoading(false);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        this.hideShowLoading(false);
+                    });
+            } catch (error) {
+                console.log(error);
+                this.hideShowLoading(false);
+            }
+        },
+        /**
+         * Xử lý loading gửi emit lên cha
+         * Author: KienNT (25/04/2023)
+         * @param (isLoading): tham số là giá trị boolean loading có hay không
+         */
+        hideShowLoading(isLoading) {
+            this.$emit("hideShowLoading", isLoading);
+        },
+
+        /**
+         * Hàm thực hiện format property
+         * Author: KienNT (25/04/2023)
+         *  @param (property): là số cần truyền convert sang text
+         */
+        formatProperty(property) {
+            try {
+                switch (property) {
+                    case MISAEnum.Property.Debt:
+                        return this.$t("Debt");
+                    case MISAEnum.Property.ExcessYes:
+                        return this.$t("ExcessYes");
+                    case MISAEnum.Property.Hermaphrodite:
+                        return this.$t("Hermaphrodite");
+                    case MISAEnum.Property.Nobalance:
+                        return this.$t("Nobalance");
+                    default:
+                        console.log("Unknown property value:", property);
+                        return property;
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
+         * Hàm thực hiện format status
+         * Author: KienNT (25/04/2023)
+         *  @param (status): là số cần truyền convert sang text
+         */
+        formatStatus(status) {
+            try {
+                switch (status) {
+                    case MISAEnum.Status.StopUsing:
+                        return this.$t("StopUsing");
+                    case MISAEnum.Status.Using:
+                        return this.$t("Using");
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
     },
 };
 </script>
@@ -80,11 +244,17 @@ export default {
 .dx-treelist {
     line-height: inherit;
     font-family: "Roboto", sans-serif;
+    position: relative;
+    width: 100%;
 }
 .dx-treelist .dx-row > td {
     padding: 0 16px;
     max-height: var(--size-row);
     line-height: var(--size-row);
+}
+
+.dx-treelist-text-content {
+    text-align: left;
 }
 
 .dx-treelist-headers {
@@ -94,6 +264,9 @@ export default {
     color: #000000;
     cursor: all-scroll;
     text-transform: uppercase;
+    position: sticky;
+    top: 0;
+    z-index: 2;
 }
 
 tr.dx-row.dx-data-row.dx-row-lines.dx-column-lines:hover {
@@ -110,7 +283,7 @@ tr.dx-row.dx-data-row.dx-row-lines.dx-column-lines:hover {
     align-items: center;
     justify-content: center;
     top: 120%;
-    left: 0px;
+    left: 6px;
     border: 1px solid #959595;
     color: #959595;
     border-radius: 3px;
@@ -120,7 +293,7 @@ tr.dx-row.dx-data-row.dx-row-lines.dx-column-lines:hover {
 
 .dx-treelist-rowsview tr:not(.dx-row-focused) .dx-treelist-empty-space {
     color: #959595;
-    margin-right: 8px;
+    margin-right: 10px;
 }
 
 .dx-treelist-rowsview .dx-treelist-expanded span::before {
@@ -133,11 +306,43 @@ tr.dx-row.dx-data-row.dx-row-lines.dx-column-lines:hover {
     align-items: center;
     justify-content: center;
     top: 120%;
-    left: 0px;
+    left: 6px;
     border: 1px solid #959595;
     color: #959595;
     border-radius: 3px;
     font-family: "Font Awesome 5 Free";
     padding: 5px;
+}
+.dx-treelist-text-content.dx-text-content-alignment-right {
+    float: left;
+}
+
+tr.dx-row.dx-data-row.dx-row-lines.dx-column-lines:has(.dx-treelist-collapsed) {
+    font-weight: 600;
+}
+
+tr.dx-row.dx-data-row.dx-row-lines.dx-column-lines:has(.dx-treelist-expanded) {
+    font-weight: 600;
+}
+
+.dx-state-hover {
+    height: 100px;
+}
+
+.dx-scrollable-scroll.dx-state-invisible {
+    display: block !important;
+    background-color: rgba(0, 0, 0, 0);
+    opacity: 1;
+    -webkit-transition: opacity 0.5s linear 1s;
+    transition: opacity 0.5s linear 1s;
+}
+
+.dx-treelist-rowsview .dx-row.dx-row-lines:first-child {
+    border-top: none;
+}
+.dx-treelist-rowsview .dx-treelist-table .dx-row.dx-virtual-row {
+    border-top: 0;
+    border-bottom: 0;
+    display: none;
 }
 </style>

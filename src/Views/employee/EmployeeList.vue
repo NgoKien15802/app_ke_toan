@@ -112,7 +112,7 @@
                         :pageCurrent="pageNumber"
                         :keyWordSearch="keyWordSearch"
                         :isReload="isReload"
-                        @setIsReLoad="setIsReLoad"
+                        @handleClickNextsetIsReLoad="setIsReLoad"
                         @handleReLoadData="handleReLoadData"
                         :isDialogDeleteMultiple="isDialogDeleteMultiple"
                         :selectedEmployeeIds="selectedEmployeeIds"

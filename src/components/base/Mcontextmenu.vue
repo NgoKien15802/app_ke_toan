@@ -22,7 +22,7 @@
             >
         </li>
         <li class="contextmenu__fun-item">
-            <a href="#" class="contextmenu__fun-link">{{ $t("StopUse") }}</a>
+            <a href="#" class="contextmenu__fun-link">{{ $t("StopUsing") }}</a>
         </li>
     </ul>
 </template>
