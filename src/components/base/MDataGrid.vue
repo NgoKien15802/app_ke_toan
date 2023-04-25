@@ -1,61 +1,56 @@
 <template>
-    <div>
-        <DxDataGrid
-            :data-source="orders"
-            key-expr="ID"
-            :allow-column-resizing="true"
-            :show-borders="true"
-            column-resizing-mode="nextColumn"
-            :column-min-width="50"
-            :column-auto-width="true"
-        >
-            <DxSelection
-                select-all-mode="page"
-                mode="multiple"
-                show-check-boxes-mode="always"
-            />  
-            <DxColumn
-                data-field="AccountNumber"
-                :caption="this.$t('AccountNumber')"
-            />
-            <DxColumn
-                data-field="AccountName"
-                :caption="this.$t('AccountName')"
-            />
-            <DxColumn data-field="Property" :caption="this.$t('Property')" />
-            <DxColumn
-                data-field="EnglishName"
-                :caption="this.$t('EnglishName')"
-            />
-            <DxColumn data-field="Interpret" :caption="this.$t('Interpret')" />
-            <DxColumn data-field="Status" :caption="this.$t('Status')" />
-        </DxDataGrid>
-    </div>
+    <DxTreeList
+        id="employees"
+        :data-source="employees"
+        :allow-column-resizing="true"
+        column-resizing-mode="nextColumn"
+        :column-min-width="50"
+        :column-auto-width="true"
+        :show-row-lines="true"
+        :show-borders="true"
+        key-expr="ID"
+        parent-id-expr="Parent_ID"
+    >
+        <DxColumn data-field="AccountNumber" :caption="$t('AccountNumber')" />
+        <DxColumn data-field="AccountName" :caption="$t('AccountName')" />
+        <DxColumn data-field="Property" :caption="$t('Property')" />
+        <DxColumn data-field="EnglishName" :caption="$t('EnglishName')" />
+        <DxColumn data-field="Interpret" :caption="$t('Interpret')" />
+        <DxColumn data-field="Status" :caption="$t('Status')" />
+        <!-- <DxColumn :min-width="50">
+            <dxo-cell-template v-slot="data">
+                <div class="dropdown-fun text-align-center">
+                    <MButton
+                        kind="link"
+                        className="link-btn btn-link"
+                        :text="$t('Fix')"
+                        :click="() => doubleClickEditText(data)"
+                    ></MButton>
+                    <div
+                        class="input__icon-box ml-8"
+                        @click="handleClickOptionMenu($event, data)"
+                        ref="iconContextMenu"
+                    >
+                        <div class="icon-dropdown" ref="ContextMenu"></div>
+                    </div>
+                </div>
+            </dxo-cell-template>
+        </DxColumn> -->
+    </DxTreeList>
 </template>
-
 <script>
-import { DxDataGrid, DxColumn } from "devextreme-vue/data-grid";
+import { DxTreeList, DxColumn } from "devextreme-vue/tree-list";
 
 export default {
-    name: "MDataGrid",
     components: {
-        DxDataGrid,
+        DxTreeList,
         DxColumn,
     },
     props: {
-        orders: {
+        employees: {
             type: Array,
-            default: () => [],
         },
     },
 };
 </script>
-
-<style>
-.dx-datagrid-text-content.dx-text-content-alignment-left {
-    font-weight: 600;
-    color: #000;
-    font-family: "Roboto", sans-serif;
-    text-transform: uppercase;
-}
-</style>
+<style scoped></style>

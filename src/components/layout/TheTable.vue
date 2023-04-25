@@ -1,52 +1,50 @@
 <template>
     <table id="tbEmployeeList" class="employee" ref="gridTable">
         <thead>
-            <tr class="table__field">
-                <th class="text-align-center">
-                    <MCheckbox
-                        v-model="selectedAll"
-                        @handleCheckbox="handleCheckboxAll"
-                        :initValue="selectedAll"
-                    ></MCheckbox>
+            <draggable tag="tr" v-model="headers" class="table__field">
+                <th
+                    v-for="header in headers"
+                    :key="header"
+                    :scope="header === 'Selected' ? 'col' : null"
+                    :class="
+                        header === 'DateOfBirth'
+                            ? 'text-align-center'
+                            : 'text-align-left'
+                    "
+                >
+                    <template v-if="header === 'Selected'">
+                        <MCheckbox
+                            v-model="selectedAll"
+                            @handleCheckbox="handleCheckboxAll"
+                            :initValue="selectedAll"
+                        ></MCheckbox>
+                    </template>
+
+                    <template v-else-if="header === 'DateOfBirth'">
+                        <span class="text-align-center">{{
+                            $t("DateOfBirth")
+                        }}</span>
+                    </template>
+
+                    <template v-else-if="header === 'IdentityNumber'">
+                        <span class="text-align-left">
+                            <MTooltip
+                                kind="title"
+                                :text="$t('IdentityNumber')"
+                                :subtext="$t('TooltipIdentityNumber')"
+                            ></MTooltip>
+                        </span>
+                    </template>
+                    <template v-else-if="header === 'Feature'">
+                        <span class="text-align-center">{{
+                            $t("Feature")
+                        }}</span>
+                    </template>
+                    <template v-else>
+                        <span>{{ $t(header) }}</span>
+                    </template>
                 </th>
-                <th class="text-align-left">
-                    {{ $t("EmployeeCode") }}
-                </th>
-                <th class="text-align-left">
-                    {{ $t("EmployeeName") }}
-                </th>
-                <th class="text-align-left resizable">
-                    {{ $t("Gender") }}
-                </th>
-                <th class="text-align-center">
-                    {{ $t("DateOfBirth") }}
-                </th>
-                <th class="text-align-left">
-                    <MTooltip
-                        kind="title"
-                        :text="$t('IdentityNumber')"
-                        :subtext="$t('TooltipIdentityNumber')"
-                    ></MTooltip>
-                </th>
-                <th class="text-align-left">
-                    {{ $t("JobTitle") }}
-                </th>
-                <th class="text-align-left">
-                    {{ $t("DepartmentName") }}
-                </th>
-                <th class="text-align-left">
-                    {{ $t("AccountNumber") }}
-                </th>
-                <th class="text-align-left">
-                    {{ $t("BankName") }}
-                </th>
-                <th class="text-align-left">
-                    {{ $t("BankAddress") }}
-                </th>
-                <th class="text-align-center">
-                    {{ $t("Freature") }}
-                </th>
-            </tr>
+            </draggable>
         </thead>
         <tbody>
             <tr
@@ -54,50 +52,57 @@
                 :key="index"
                 @dblclick="($event) => doubleClickRow($event, employee)"
             >
-                <td class="text-align-center">
-                    <MCheckbox
-                        v-model="employee.Selected"
-                        :initValue="employee.Selected"
-                        @handleCheckbox="
-                            handleCheckbox(
-                                $event,
-                                employee.EmployeeId,
-                                employee.EmployeeCode
-                            )
-                        "
-                        ref="checkbox"
-                    ></MCheckbox>
-                </td>
-                <td class="text-align-left">{{ employee?.EmployeeCode }}</td>
-                <td class="text-align-left">{{ employee?.FullName }}</td>
-                <td class="text-align-left" style="min-width: 200px">
-                    {{ formatGender(employee?.Gender) }}
-                </td>
-                <td class="text-align-center">
-                    {{ formatDate(employee?.DateOfBirth) }}
-                </td>
-                <td class="text-align-left">{{ employee?.IdentityNumber }}</td>
-                <td class="text-align-left">{{ employee?.PositionName }}</td>
-                <td class="text-align-left">{{ employee?.DepartmentName }}</td>
-                <td class="text-align-left">{{ employee?.BankAccount }}</td>
-                <td class="text-align-left">{{ employee?.BankName }}</td>
-                <td class="text-align-left">{{ employee?.BankBranch }}</td>
-                <td class="dropdown-fun text-align-center">
-                    <MButton
-                        kind="link"
-                        className="link-btn btn-link"
-                        :text="$t('Fix')"
-                        :click="() => doubleClickEditText(employee)"
-                    ></MButton>
-
-                    <div
-                        class="input__icon-box ml-8"
-                        @click="handleClickOptionMenu($event, employee)"
-                        ref="iconContextMenu"
+                <template v-for="header in headers" :key="header">
+                    <td v-if="header === 'Selected'" class="text-align-center">
+                        <MCheckbox
+                            v-model="employee.Selected"
+                            :initValue="employee.Selected"
+                            @handleCheckbox="
+                                handleCheckbox(
+                                    $event,
+                                    employee.EmployeeId,
+                                    employee.EmployeeCode
+                                )
+                            "
+                            ref="checkbox"
+                        ></MCheckbox>
+                    </td>
+                    <td
+                        v-else-if="header === 'Feature'"
+                        class="dropdown-fun text-align-center"
                     >
-                        <div class="icon-dropdown" ref="ContextMenu"></div>
-                    </div>
-                </td>
+                        <MButton
+                            kind="link"
+                            className="link-btn btn-link"
+                            :text="$t('Fix')"
+                            :click="() => doubleClickEditText(employee)"
+                        ></MButton>
+                        <div
+                            class="input__icon-box ml-8"
+                            @click="handleClickOptionMenu($event, employee)"
+                            ref="iconContextMenu"
+                        >
+                            <div class="icon-dropdown" ref="ContextMenu"></div>
+                        </div>
+                    </td>
+
+                    <td
+                        v-else-if="header === 'Gender'"
+                        class="text-align-left"
+                        style="min-width: 200px"
+                    >
+                        {{ formatGender(employee?.Gender) }}
+                    </td>
+
+                    <td
+                        v-else-if="header === 'DateOfBirth'"
+                        class="text-align-center"
+                    >
+                        {{ formatDate(employee?.DateOfBirth) }}
+                    </td>
+
+                    <td v-else>{{ employee[header] }}</td>
+                </template>
             </tr>
         </tbody>
     </table>
@@ -143,10 +148,13 @@ import axios from "axios";
 import MISAResouce from "@/js/resource";
 import MISAEnum from "@/js/enum";
 import moment from "moment";
-
+import { VueDraggableNext } from "vue-draggable-next";
 export default {
     name: "TheTable",
-
+    display: "Table Column",
+    components: {
+        draggable: VueDraggableNext,
+    },
     props: {
         selectedCheckbox: {
             type: Array,
@@ -192,6 +200,20 @@ export default {
             totalRecord: 0,
             keyWord: "",
             isDialogDeleteMul: false,
+            headers: [
+                "Selected",
+                "EmployeeCode",
+                "FullName",
+                "Gender",
+                "DateOfBirth",
+                "IdentityNumber",
+                "PositionName",
+                "DepartmentName",
+                "BankAccount",
+                "BankName",
+                "BankBranch",
+                "Feature",
+            ],
         };
     },
 

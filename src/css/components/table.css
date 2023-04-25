@@ -51,6 +51,7 @@ th {
     font-weight: 600;
     font-size: 1.4rem;
     color: #000000;
+    cursor: all-scroll;
 }
 
 .employee thead tr th:last-child,
