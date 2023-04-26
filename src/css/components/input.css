@@ -5,8 +5,8 @@
 } */
 
 .input__wrapper {
-    min-width: 260px;
-    height: 36px;
+    width: 200px;
+    height: 26px;
     background-color: var(--white-color);
     display: flex;
     align-items: center;
@@ -16,13 +16,8 @@
     position: relative;
 }
 
-.input__wrapper:hover {
-    border: 1px solid #e6e6e6;
-    background-color: #f6f6f6;
-}
-
-.input__wrapper:hover .input__type {
-    background-color: #f6f6f6;
+.input__wrapper.dropdown:focus {
+    border: 1px solid red;
 }
 
 .input__type {
@@ -30,18 +25,14 @@
     flex: 1;
     outline: none;
     border: 1px solid var(--boder-primary);
-    padding: 10px 5px 10px 12px;
+    padding: 10px 5px 10px 10px;
     border-radius: var(--border-radius);
 }
 
 .input__type::placeholder {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     font-weight: 400;
     color: #9e9e9e;
-}
-
-.input__type:hover {
-    background-color: #f6f6f6;
 }
 
 .input__type:focus {
@@ -53,10 +44,14 @@
     color: #666666;
     display: flex;
     align-items: center;
-    padding: 8px 12px;
+    padding: 8px 8px;
     cursor: pointer;
-    background-color: var(--white-color);
-    border-radius: inherit;
+    background-color: #e0e0e0;
+    border-color: #e0e0e0;
+}
+
+.input__icon.search {
+    background-color: transparent !important;
 }
 
 .input__icon:active {
@@ -78,7 +73,7 @@
 }
 
 .input__wrapper:hover .input__icon {
-    background-color: #f6f6f6;
+    background-color: #e0e0e0;
 }
 
 .input__icon:active + .input__type {

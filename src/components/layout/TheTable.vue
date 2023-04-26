@@ -51,9 +51,14 @@
                 v-for="(employee, index) in employees"
                 :key="index"
                 @dblclick="($event) => doubleClickRow($event, employee)"
+                :class="employee?.Selected ? 'tr-hover' : ''"
             >
                 <template v-for="header in headers" :key="header">
-                    <td v-if="header === 'Selected'" class="text-align-center">
+                    <td
+                        v-if="header === 'Selected'"
+                        class="text-align-center"
+                        :class="employee?.Selected ? 'tr-hover' : ''"
+                    >
                         <MCheckbox
                             v-model="employee.Selected"
                             :initValue="employee.Selected"
@@ -70,6 +75,7 @@
                     <td
                         v-else-if="header === 'Feature'"
                         class="dropdown-fun text-align-center"
+                        :class="employee?.Selected ? 'tr-hover' : ''"
                     >
                         <MButton
                             kind="link"
@@ -101,7 +107,9 @@
                         {{ formatDate(employee?.DateOfBirth) }}
                     </td>
 
-                    <td v-else>{{ employee[header] }}</td>
+                    <td :class="employee?.Selected ? 'tr-hover' : ''" v-else>
+                        {{ employee[header] }}
+                    </td>
                 </template>
             </tr>
         </tbody>

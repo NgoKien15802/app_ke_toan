@@ -18,6 +18,6 @@ export default {
 .heading {
     font-size: 2.4rem;
     font-weight: 700;
-    color: #1f1f20;
+    color: #111;
 }
 </style>

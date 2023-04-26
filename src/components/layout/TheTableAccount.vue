@@ -239,7 +239,7 @@ export default {
 <style>
 .dx-treelist {
     line-height: inherit;
-    font-family: "Roboto", sans-serif;
+    font-family: notosans, sans-serif;
     position: relative;
     width: 100%;
 }
@@ -256,10 +256,9 @@ export default {
 .dx-treelist-headers {
     background-color: #eeeeee;
     font-weight: 600;
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     color: #000000;
     cursor: all-scroll;
-    text-transform: uppercase;
     position: sticky;
     top: 0;
     z-index: 2;

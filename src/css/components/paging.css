@@ -1,7 +1,6 @@
 .content__main-paging {
     width: 100%;
-    min-height: 56px;
-    padding: 0 16px;
+    padding: 8px 16px;
     background-color: #f5f5f5;
     display: flex;
     align-items: center;
@@ -16,7 +15,7 @@
 .content__main-paging-left {
     color: #212121;
     font-weight: 400;
-    font-size: 1.4rem;
+    font-size: 1.3rem;
 }
 
 .content__main-paging-right {
@@ -26,15 +25,14 @@
 }
 
 .paging__record {
-    width: 100%;
-    height: 36px;
+    min-width: 200px;
+    height: 26px;
 }
 
 .paging__record-footer {
     display: flex;
     align-items: center;
     column-gap: 16px;
-    width: 80%;
 }
 
 .paging__record-footer-iconRight {

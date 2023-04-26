@@ -14,6 +14,21 @@
         </div>
 
         <div class="sidebar__list scrollbar_customize">
+            <div class="v-popover" style="position: relative">
+                <div aria-describedby="popover_dsre6a3iwg" class="trigger">
+                    <div alt-shortkey-target="A" class="quick-add-voucher">
+                        <div class="quick-add-btn">
+                            <div class="add-icon">
+                                <div class="add-line"></div>
+                            </div>
+                            <div class="quick-add-label">
+                                {{ $t("QuickAdd") }}
+                            </div>
+                        </div>
+                        <!---->
+                    </div>
+                </div>
+            </div>
             <MmenuItem
                 v-for="(menuItem, index) in menuItems"
                 :key="index"

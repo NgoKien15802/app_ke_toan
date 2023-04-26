@@ -15,7 +15,7 @@
     height: 36px;
     border-radius: var(--border-radius);
     font-weight: 500;
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -81,7 +81,7 @@
     height: 36px;
     border-radius: var(--border-radius);
     font-weight: 600;
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     text-align: left;
     display: inline-block;
     text-align: center;

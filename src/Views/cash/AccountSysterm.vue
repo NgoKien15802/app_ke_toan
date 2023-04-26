@@ -12,7 +12,7 @@
                 <div class="content__main-left">
                     <div class="content__main-filter">
                         <div class="input__wrapper">
-                            <button class="input__icon" fdprocessedid="sd2h6">
+                            <button class="input__icon search">
                                 <div class="input__icon-search"></div>
                             </button>
                             <input

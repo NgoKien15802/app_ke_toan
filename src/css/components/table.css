@@ -14,14 +14,13 @@
     left: 0;
     right: 0;
     border: none;
-    text-transform: uppercase;
     z-index: 3;
     height: var(--size-row);
 }
 
 .employee tr td,
 th {
-    padding: 0 16px;
+    padding: 0 10px;
     border-right: 1px solid var(--boder-primary);
     border-bottom: 1px solid var(--boder-primary);
 }
@@ -49,7 +48,7 @@ th {
 .employee th {
     background-color: #eeeeee;
     font-weight: 600;
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     color: #000000;
     cursor: all-scroll;
 }
@@ -206,7 +205,11 @@ th {
 .employee tr:hover td:last-child,
 .employee tr:hover td:first-child,
 .employee tr:hover {
-    background-color: #f2f2f2;
+    background-color: #e5f3ff;
+}
+
+.tr-hover {
+    background-color: #e5f3ff !important;
 }
 
 .employee__checkbox {

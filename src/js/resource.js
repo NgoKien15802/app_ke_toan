@@ -3,19 +3,19 @@ const MISAResouce = {
         // Employee
         Employee: "Nhân viên",
         AddNewEmployee: "Thêm mới nhân viên",
-        EmployeeCode: "MÃ NHÂN VIÊN",
-        FullName: "TÊN NHÂN VIÊN",
-        Gender: "GIỚI TÍNH",
-        DateOfBirth: "NGÀY SINH",
-        IdentityNumber: "SỐ CMND",
-        PositionName: "CHỨC DANH",
-        DepartmentName: "TÊN ĐƠN VỊ",
-        BankAccount: "SỐ TÀI KHOẢN",
-        BankName: "TÊN NGÂN HÀNG",
-        BankBranch: "CHI NHÁNH TK NGÂN HÀNG",
+        EmployeeCode: "Mã nhân viên",
+        FullName: "Tên nhân viên",
+        Gender: "Giới tính",
+        DateOfBirth: "Ngày sinh",
+        IdentityNumber: "Số CMND",
+        PositionName: "Chức danh",
+        DepartmentName: "Tên đơn vị",
+        BankAccount: "Số tài khoản",
+        BankName: "Tên ngân hàng",
+        BankBranch: "Chi nhánh TK ngân hàng",
 
         // Feature
-        Feature: "CHỨC NĂNG",
+        Feature: "Chức năng",
         Fix: "Sửa",
         Duplicate: "Nhân bản",
         StopUsing: "Ngừng sử dụng",
@@ -59,6 +59,7 @@ const MISAResouce = {
         Budget: "Ngân sách",
         Report: "Báo cáo",
         FinancialAnalysis: "Phân tích tài chính",
+        QuickAdd: "Thêm nhanh",
 
         // tooltip
         TooltipIdentityNumber: "Số chứng minh nhân dân",
@@ -171,7 +172,7 @@ const MISAResouce = {
         AddNewEmployee: "Add new employee",
         EmployeeCode: "Employee code",
         FullName: "Employee name",
-        Gender: "gender",
+        Gender: "Gender",
         DateOfBirth: "Date of birth",
         IdentityNumber: "Identity number",
         PositionName: "Position Name",
@@ -225,6 +226,7 @@ const MISAResouce = {
         Budget: "Budget",
         Report: "Report",
         FinancialAnalysis: "Financial analysis",
+        QuickAdd: "Quick add",
 
         // popup
         EmployeeInfo: "Add new employee",
