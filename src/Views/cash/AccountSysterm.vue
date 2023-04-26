@@ -73,6 +73,7 @@
                     @handleClickOptionItem="handleClickOptionItem"
                     @handleClickPrev="handleClickPrev"
                     @handleClickNext="handleClickNext"
+                    @handleClickPageIndex="handleClickPageIndex"
                     :pageCurrent="pageNumber"
                     :isDisabledClickPrev="isDisabledClickPrev"
                     @setIsDisabledClickPrev="setIsDisabledClickPrev"
@@ -194,6 +195,14 @@ export default {
             if (this.pageNumber > 1) {
                 this.isDisabledClickPrev = false;
             }
+        },
+
+        /**
+         * Hàm click vào pageindex
+         * Author: KienNT (17/03/2023)
+         */
+        handleClickPageIndex(index) {
+            this.pageNumber = index;
         },
 
         /**

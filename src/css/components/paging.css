@@ -52,3 +52,25 @@
 .btn-icon:hover {
     background-color: rgb(216, 216, 190);
 }
+
+.pagination {
+    display: flex;
+    align-items: center;
+    list-style: none;
+}
+
+.page-item.active .page-link {
+    border: 1px solid #ccc;
+    font-weight: 700;
+}
+
+.pagination .page-link {
+    text-decoration: none;
+    cursor: pointer;
+    padding: 2px 7px;
+}
+
+.page-item.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}

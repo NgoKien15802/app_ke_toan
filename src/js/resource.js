@@ -23,7 +23,7 @@ const MISAResouce = {
         Delete: "Xoá",
 
         // Record
-        Total: "Tổng",
+        Total: "Tổng số",
         Record: "bản ghi",
 
         // Error message
@@ -189,7 +189,7 @@ const MISAResouce = {
         Delete: "Delete",
 
         // Record
-        Total: "Total",
+        Total: "Total number",
         Record: "Records",
 
         // Error message

@@ -135,6 +135,7 @@
                     :pageCurrent="pageNumber"
                     :isDisabledClickPrev="isDisabledClickPrev"
                     @setIsDisabledClickPrev="setIsDisabledClickPrev"
+                    @handleClickPageIndex="handleClickPageIndex"
                 ></ThePaging>
 
                 <!--  popup -->
@@ -264,6 +265,20 @@ export default {
             if (this.pageNumber > 1) {
                 this.isDisabledClickPrev = false;
             }
+        },
+
+        /**
+         * Hàm click vào pageindex
+         * Author: KienNT (17/03/2023)
+         */
+        handleClickPageIndex(index) {
+            if (index > 1) {
+                this.isDisabledClickPrev = false;
+            }
+            if (index == 1) {
+                this.isDisabledClickPrev = true;
+            }
+            this.pageNumber = index;
         },
 
         /**

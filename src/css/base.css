@@ -200,3 +200,7 @@ div.disabled {
     opacity: 0.5;
     background: #ccc;
 }
+
+.cursor-pointer {
+    cursor: pointer;
+}

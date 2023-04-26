@@ -2,6 +2,7 @@
     <div class="content__main-paging">
         <p class="content__main-paging-left">
             {{ $t("Total") }}: <strong>{{ totalRecord }}</strong>
+            {{ $t("Record") }}
         </p>
         <div class="content__main-paging-right">
             <div
@@ -42,24 +43,50 @@
                 </div>
             </div>
             <div class="paging__record-footer">
-                <div>
-                    {{ offset + 1 }} - {{ offset + pageIndex }}
-                    {{ $t("Record") }}
-                </div>
-                <div
-                    class="wrap-icon btn-icon"
-                    @click="handleClickPrev"
-                    :class="isDisabledClickPrev ? 'disabled' : ''"
+                <!-- <div @click="handleClickPrev">
+                    <p
+                        class="paging__text"
+                        :class="isDisabledClickPrev ? 'disabled' : ''"
+                    >
+                    </p>
+                </div> -->
+
+                <!-- <div class="page-index">
+                    <div
+                        class="cursor-pointer"
+                        v-for="(page, index) in Math.round(
+                            totalRecord / pageIndex
+                        )"
+                        :key="index"
+                        :class="index + 1 == pageNumber ? 'pageSelected' : ''"
+                        @click="() => handleClickPageIndex(index + 1)"
+                    >
+                        {{ index + 1 }}
+                    </div>
+                </div> -->
+                <paginate
+                    v-model="page"
+                    :page-count="Math.round(totalRecord / pageIndex)"
+                    :page-range="3"
+                    :margin-pages="1"
+                    :click-handler="handleClickPageIndex"
+                    :prev-text="$t('Previous')"
+                    :next-text="$t('Next')"
+                    :container-class="'pagination'"
+                    :page-class="'page-item'"
                 >
-                    <div class="paging__record-footer-iconLeft"></div>
-                </div>
-                <div
-                    class="wrap-icon btn-icon"
-                    @click="handleClickNext"
-                    :class="offset + pageIndex >= totalRecord ? 'disabled' : ''"
-                >
-                    <div class="paging__record-footer-iconRight"></div>
-                </div>
+                </paginate>
+
+                <!-- <div @click="handleClickNext">
+                    <p
+                        class="paging__text"
+                        :class="
+                            offset + pageIndex >= totalRecord ? 'disabled' : ''
+                        "
+                    >
+                        {{ $t("Next") }}
+                    </p>
+                </div> -->
             </div>
         </div>
     </div>
@@ -67,6 +94,7 @@
 <script>
 import MISAResouce from "../../js/resource";
 import TheOptionItem from "./TheOptionItem.vue";
+import Paginate from "vuejs-paginate-next";
 export default {
     name: "ThePaging",
 
@@ -115,6 +143,7 @@ export default {
     },
     components: {
         TheOptionItem,
+        Paginate,
     },
     watch: {
         pageCurrent: function () {
@@ -218,7 +247,17 @@ export default {
          * Author: KienNT (17/03/2023)
          */
         handleClickNext() {
-            this.$emit("handleClickNext");
+            if (this.offset + this.pageIndex <= this.totalRecord) {
+                this.$emit("handleClickNext");
+            }
+        },
+
+        /**
+         * handle khi click vào pageindex
+         * Author: KienNT (17/03/2023)
+         */
+        handleClickPageIndex(index) {
+            this.$emit("handleClickPageIndex", index);
         },
     },
 };

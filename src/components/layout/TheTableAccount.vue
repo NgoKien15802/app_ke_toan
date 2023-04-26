@@ -14,13 +14,6 @@
             :cellHintEnabled="true"
             :errorRowEnabled="false"
         >
-            <DxPaging :enabled="true" />
-            <DxEditing
-                :allow-updating="true"
-                :allow-deleting="true"
-                :allow-adding="true"
-                mode="row"
-            />
             <DxColumn
                 data-field="AccountNumber"
                 :caption="$t('AccountNumber')"
@@ -53,25 +46,26 @@
                 :width="150"
             />
             <DxColumnFixing :enabled="true" />
-            <!-- <DxColumn :min-width="50">
-            <dxo-cell-template v-slot="data">
-                <div class="dropdown-fun text-align-center">
-                    <MButton
-                        kind="link"
-                        className="link-btn btn-link"
-                        :text="$t('Fix')"
-                        :click="() => doubleClickEditText(data)"
-                    ></MButton>
-                    <div
-                        class="input__icon-box ml-8"
-                        @click="handleClickOptionMenu($event, data)"
-                        ref="iconContextMenu"
-                    >
-                        <div class="icon-dropdown" ref="ContextMenu"></div>
+            <DxColumn :min-width="50" :caption="$t('Feature')">
+                <!-- <dxo-cell-template v-slot="data">
+                    <div class="dropdown-fun text-align-center">
+                        <MButton
+                            kind="link"
+                            className="link-btn btn-link"
+                            :text="$t('Fix')"
+                            :click="() => doubleClickEditText(data)"
+                        ></MButton>
+                        <div
+                            class="input__icon-box ml-8"
+                            @click="handleClickOptionMenu($event, data)"
+                            ref="iconContextMenu"
+                        >
+                            <div class="icon-dropdown" ref="ContextMenu"></div>
+                        </div>
                     </div>
-                </div>
-            </dxo-cell-template>
-        </DxColumn> -->
+                </dxo-cell-template> -->
+                <dxButton></dxButton>
+            </DxColumn>
         </DxTreeList>
     </div>
 </template>
@@ -81,11 +75,13 @@ import { DxTreeList, DxColumn } from "devextreme-vue/tree-list";
 import MISAEnum from "@/js/enum";
 import axios from "axios";
 import MISAResouce from "@/js/resource";
+import dxButton from "devextreme/ui/button";
 export default {
     name: "TheTableAccount",
     components: {
         DxTreeList,
         DxColumn,
+        dxButton,
     },
 
     props: {
