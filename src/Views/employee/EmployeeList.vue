@@ -83,7 +83,7 @@
                     </div>
 
                     <div
-                        class="content__main-refresh wrap-icon"
+                        class="wrap-icon"
                         @click="handleExport"
                         :class="totalRecord == 0 ? 'disabled' : ''"
                     >

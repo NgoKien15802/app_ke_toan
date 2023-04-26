@@ -2,7 +2,8 @@
     <!-- dialog -->
     <div class="dialog">
         <div class="dialog__wrapper">
-            <div class="dialog__header">
+            <!-- ZEROHEIGHT 
+                <div class="dialog__header">
                 <div class="dialog__header-left">
                     <h2 class="dialog__header-title">
                         {{ title }}
@@ -20,11 +21,12 @@
                         ></MTooltip>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <div class="dialog__body">
                 <div :class="iconClass"></div>
                 <p class="dialog__text ml-8">{{ message }}</p>
             </div>
+            <div data-v-29af0734="" class="mess-line"></div>
             <div v-if="kind === 'error'" class="dialog__footer">
                 <div class=""></div>
                 <div class="dialog__footer-right">

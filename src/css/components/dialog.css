@@ -11,6 +11,15 @@
     z-index: 5;
 }
 
+/* zeroheight:
+.dialog__wrapper {
+    width: 427px;
+    padding: 24px;
+    background-color: var(--white-color);
+    box-shadow: 0 4px 16px rgba(23, 27, 42, 0.24);
+    border-radius: var(--border-radius);
+} */
+
 .dialog__wrapper {
     width: 427px;
     padding: 24px;
@@ -36,10 +45,25 @@
     color: #1f1f1f;
 }
 
-.dialog__body {
+/*
+zeroheight
+ .dialog__body {
     margin: 24px 0;
     display: flex;
     align-items: center;
+} */
+
+.dialog__body {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.mess-line {
+    border-top: 1px solid #b8bcc3;
+    width: 100%;
+    margin-top: 16px;
+    margin-bottom: 10px;
 }
 
 .dialog__text {

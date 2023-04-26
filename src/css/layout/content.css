@@ -48,19 +48,15 @@
 }
 
 .content__main-refresh-icon {
-    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -1098px -90px;
-    width: 20px;
-    height: 21px;
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -425px -201px;
+    width: 21px;
+    height: 23px;
 }
 
-.content__main-refresh:hover {
-    background-color: rgb(216, 216, 190);
-}
-
-.content__main-exprort-icon {
-    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -705px -258px;
-    width: 23px;
-    height: 20px;
+.content__main-refresh-icon:hover {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -1096px -89px;
+    width: 22px;
+    height: 23px;
 }
 
 /* content body */

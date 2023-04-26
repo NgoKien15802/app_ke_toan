@@ -190,7 +190,7 @@ const MISAResouce = {
 
         // Record
         Total: "Total number",
-        Record: "Records",
+        Record: "records",
 
         // Error message
         ErrorEmpty: " cannot be left blank, please re-enter",
