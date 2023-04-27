@@ -2,7 +2,7 @@ const MISAResouce = {
     vi: {
         // Employee
         Employee: "Nhân viên",
-        AddNewEmployee: "Thêm mới nhân viên",
+        AddNewEmployee: "Thêm",
         EmployeeCode: "Mã nhân viên",
         FullName: "Tên nhân viên",
         Gender: "Giới tính",
@@ -40,7 +40,7 @@ const MISAResouce = {
         RecordInPage: "bản ghi trên 1 trang",
 
         //placehoder
-        TxtSearch: "Theo mã, tên, SĐT, ngày sinh",
+        TxtSearch: "Tìm kiếm",
         TxtSearchAccount: "Tìm kiếm theo số, tên tài khoản",
 
         //Sidebar
@@ -102,7 +102,7 @@ const MISAResouce = {
         // button
         BtnDestroy: "Hủy",
         BtnYes: "Có",
-        BtnDestroyDialog: "Hủy bỏ",
+        BtnDestroyDialog: "Không",
         BtnDeleteDialog: "Xóa",
         BtnNo: "Không",
         BtnSaveEndAdd: "Cất và thêm",
@@ -116,7 +116,7 @@ const MISAResouce = {
         DialogNotifyError: "Thông báo lỗi",
         DialogNotify: "Thông báo",
         DialogWarning: "Cảnh báo",
-        MessageNotify: "Dữ liệu của bạn đã thay đổi bạn có muốn cất không?",
+        MessageNotify: "Dữ liệu đã thay đổi. Bạn có muốn cất không?",
         MessageWarning: "Bạn có muốn xóa nhân viên ",
         MessageWarningMul: "Bạn có muốn xóa tất cả nhân viên được chọn",
         TxtNo: "không",
@@ -169,7 +169,7 @@ const MISAResouce = {
     en: {
         // Employee
         Employee: "Employee",
-        AddNewEmployee: "Add new employee",
+        AddNewEmployee: "Add",
         EmployeeCode: "Employee code",
         FullName: "Employee name",
         Gender: "Gender",
@@ -207,7 +207,7 @@ const MISAResouce = {
         RecordInPage: "Records in a page",
 
         //placehoder
-        TxtSearch: "By code, name, phone number, date of birth",
+        TxtSearch: "Search",
         TxtSearchAccount: "Search by number, account name",
 
         //Sidebar
@@ -267,7 +267,7 @@ const MISAResouce = {
         // button
         BtnDestroy: "Destroy",
         BtnSaveEndAdd: "Save and add",
-        BtnDestroyDialog: "Destroy",
+        BtnDestroyDialog: "No",
         BtnDeleteDialog: "Delete",
         BtnSave: "Save",
         BtnClose: "Close",
@@ -282,7 +282,7 @@ const MISAResouce = {
         DialogWarning: "Warning",
         DialogNotify: "Notification",
 
-        MessageNotify: "Your data has changed do you want to save it?",
+        MessageNotify: "Data has changed. Do you want to save it?",
         MessageWarning: "Do you want to delete an employee ",
         MessageWarningMul: "Do you want to delete all selected employees ",
         TxtNo: "no",

@@ -4,14 +4,6 @@
             <div class="content__header-title">
                 <MHeading :text="$t('Employee')"></MHeading>
             </div>
-
-            <MButton
-                :text="$t('AddNewEmployee')"
-                id="addEmployee"
-                kind="primary"
-                className="btn-primary"
-                :click="showPopup"
-            ></MButton>
         </div>
 
         <div class="content__main">
@@ -54,7 +46,10 @@
                 <div class="content__main-right">
                     <div class="content__main-filter">
                         <div class="input__wrapper">
-                            <button class="input__icon" fdprocessedid="sd2h6">
+                            <button
+                                class="input__icon search"
+                                fdprocessedid="sd2h6"
+                            >
                                 <div class="input__icon-search"></div>
                             </button>
                             <input
@@ -95,6 +90,13 @@
                             ></MTooltip>
                         </div>
                     </div>
+
+                    <MButton
+                        mode="btnAdd"
+                        :text="$t('AddNewEmployee')"
+                        id="addEmployee"
+                        :click="showPopup"
+                    ></MButton>
                 </div>
             </div>
 

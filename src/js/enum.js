@@ -14,7 +14,7 @@ const MISAEnum = {
     // cộng thêm cho tọa đô x,y khi hiển thị contextmenu
     getbounding: {
         x: 70,
-        y: 25,
+        y: 15,
     },
 
     // Trạng thái: ngừng sử dụng, đang sử dụng

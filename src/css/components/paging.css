@@ -29,6 +29,11 @@
     height: 26px;
 }
 
+.paging__record.block__lang {
+    min-width: 35%;
+    height: 26px;
+}
+
 .paging__record-footer {
     display: flex;
     align-items: center;

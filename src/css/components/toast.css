@@ -10,7 +10,7 @@
     min-width: 450px;
     max-width: 650px;
     background-color: var(--white-color);
-    padding: 16px;
+    padding: 8px;
     border-radius: var(--border-radius);
     display: flex;
     align-items: center;

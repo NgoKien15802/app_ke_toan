@@ -15,7 +15,7 @@
     left: 50%;
     transform: translateX(-50%);
     box-shadow: 2px 2px 2px 0 #d4d7dc;
-    height: 36px;
+    height: 26px;
     display: flex;
     align-items: center;
 }
@@ -24,13 +24,13 @@
     background-color: var(--bg-tooltip);
     color: var(--white-color);
     text-transform: initial;
+    line-height: 26px;
 }
 
 .tooltiptext::after {
     content: "";
     position: absolute;
     bottom: 100%;
-
     left: 50%;
     transform: translateX(-50%);
     border-width: 5px;
@@ -43,10 +43,12 @@
     width: max-content;
     text-align: center;
     border-radius: var(--border-radius);
-    padding: 12px 16px;
+    line-height: 26px;
+    padding: 0 16px;
     position: absolute;
     z-index: 5;
     top: 114%;
+
     left: 50%;
     transform: translateX(-50%);
     box-shadow: 2px 2px 2px 0 #d4d7dc;
@@ -70,8 +72,9 @@
 }
 
 .tooltip:hover .tooltiptext {
-    --bg-tooltip: #041434;
+    --bg-tooltip: #111;
     visibility: visible;
+    font-weight: 500;
 }
 
 .tooltip-error:hover .tooltiptext-error {

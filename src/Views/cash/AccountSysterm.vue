@@ -12,9 +12,7 @@
                 <div class="content__main-left">
                     <div class="content__main-filter">
                         <div class="input__wrapper">
-                            <button class="input__icon search">
-                                <div class="input__icon-search"></div>
-                            </button>
+                            <div class="input__icon-search"></div>
                             <input
                                 type="text"
                                 class="input__type input__search"

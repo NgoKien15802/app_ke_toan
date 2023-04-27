@@ -11,7 +11,7 @@
     --color-blue-active: #08458a;
 
     /* border color primary */
-    --boder-primary: #e0e0e0;
+    --boder-primary: #babec5;
 
     /* button color */
     --btn-color-primary-hover: #5dc748;
@@ -29,7 +29,7 @@
     --border-radius: 2px;
 
     /* độ rộng cột thứ nhất, thứ 2 */
-    --size-column-first: 56px;
+    --size-column-first: 40px;
     --size-column-second: 160px;
     --size-row: 30px;
 
@@ -134,7 +134,7 @@ button {
 
 /* .m-row */
 .m-row + .m-row {
-    margin-top: 24px;
+    margin-top: 8px;
 }
 
 /* w-50% */
@@ -168,6 +168,7 @@ button {
 /* quay 180 deg */
 .rorate-180 {
     transform: rotate(180deg);
+    transition: all 0.25s ease;
 }
 
 /*  */
@@ -192,9 +193,14 @@ button {
     justify-content: center;
 }
 
+input#email,
 input[type="text"],
 input[type="date"] {
     font-family: notosans, sans-serif;
+}
+
+input[type="date"]::placeholder {
+    font-style: italic;
 }
 
 /* disabled div */
@@ -206,4 +212,14 @@ div.disabled {
 
 .cursor-pointer {
     cursor: pointer;
+}
+
+.mi-48 {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

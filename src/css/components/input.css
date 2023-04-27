@@ -60,14 +60,20 @@
 
 /* input default */
 .input-default {
-    padding: 10px 12px;
-    height: 36px;
+    padding: 0 12px 0 10px;
+    height: 26px;
 }
 
 /* input search */
 .input__search {
+    width: calc(200px - 36px);
     border: none;
 }
+
+.input__search::placeholder {
+    font-style: italic;
+}
+
 .input__search:focus {
     border: none;
 }

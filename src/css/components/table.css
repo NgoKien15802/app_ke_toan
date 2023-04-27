@@ -180,10 +180,13 @@ th {
 }
 
 .employee thead tr th:nth-child(12),
-.employee tbody tr td:nth-child(12),
+.employee tbody tr td:nth-child(12) {
+    min-width: 120px;
+}
+
 .employee thead tr th:nth-child(4),
 .employee tbody tr td:nth-child(4) {
-    min-width: 120px;
+    min-width: 100px;
 }
 
 .employee thead tr th:nth-child(6),
@@ -226,11 +229,12 @@ th {
 
 /* icon chức năng */
 .input__icon-box {
-    padding: 0 5px;
+    padding: 5px 5px;
     cursor: pointer;
     border: 1px solid transparent;
     display: inline-block;
     position: relative;
+    transform: translateY(6px);
 }
 
 .input__icon-box:active {

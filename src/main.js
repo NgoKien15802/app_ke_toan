@@ -12,6 +12,7 @@ import MRadio from "./components/base/Mradio.vue";
 import MTooltip from "./components/base/Mtooltip.vue";
 import MToast from "./components/base/Mtoast.vue";
 import MContextmenu from "./components/base/Mcontextmenu.vue";
+import SkeletonTable from "./components/base/SkeletonTable.vue";
 
 const i18n = createI18n({
     locale: localStorage.getItem("lang") || "vi",
@@ -39,6 +40,7 @@ app.component("MRadio", MRadio);
 app.component("MTooltip", MTooltip);
 app.component("MToast", MToast);
 app.component("MContextmenu", MContextmenu);
+app.component("SkeletonTable", SkeletonTable);
 
 app.use(i18n);
 

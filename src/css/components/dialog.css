@@ -21,8 +21,8 @@
 } */
 
 .dialog__wrapper {
-    width: 427px;
-    padding: 24px;
+    width: 444px;
+    padding: 16px 20px 10px;
     background-color: var(--white-color);
     box-shadow: 0 4px 16px rgba(23, 27, 42, 0.24);
     border-radius: var(--border-radius);
@@ -71,6 +71,7 @@ zeroheight
     font-size: 1.3rem;
     color: #1f1f1f;
     line-height: 2rem;
+    margin-left: 15px;
     /* display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;

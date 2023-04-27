@@ -7,9 +7,9 @@
                     :key="header"
                     :scope="header === 'Selected' ? 'col' : null"
                     :class="
-                        header === 'DateOfBirth'
-                            ? 'text-align-center'
-                            : 'text-align-left'
+                        header !== 'DateOfBirth' && header !== 'Feature'
+                            ? 'text-align-left'
+                            : ''
                     "
                 >
                     <template v-if="header === 'Selected'">
@@ -41,17 +41,24 @@
                         }}</span>
                     </template>
                     <template v-else>
-                        <span>{{ $t(header) }}</span>
+                        <span class="text-align-left">{{ $t(header) }}</span>
                     </template>
                 </th>
             </draggable>
         </thead>
         <tbody>
+            <SkeletonTable
+                v-if="isShowSkeleton"
+                :employees="employees"
+            ></SkeletonTable>
             <tr
+                v-else
                 v-for="(employee, index) in employees"
                 :key="index"
                 @dblclick="($event) => doubleClickRow($event, employee)"
                 :class="employee?.Selected ? 'tr-hover' : ''"
+                @click="handleActiveRow($event)"
+                ref="trElementRef"
             >
                 <template v-for="header in headers" :key="header">
                     <td
@@ -95,7 +102,7 @@
                     <td
                         v-else-if="header === 'Gender'"
                         class="text-align-left"
-                        style="min-width: 200px"
+                        :class="employee?.Selected ? 'tr-hover' : ''"
                     >
                         {{ formatGender(employee?.Gender) }}
                     </td>
@@ -103,6 +110,7 @@
                     <td
                         v-else-if="header === 'DateOfBirth'"
                         class="text-align-center"
+                        :class="employee?.Selected ? 'tr-hover' : ''"
                     >
                         {{ formatDate(employee?.DateOfBirth) }}
                     </td>
@@ -141,7 +149,7 @@
                 : $t('MessageWarningMul') + ' ' + $t('TxtNo') + '?'
         "
         :BtnWarningNo="$t('BtnDestroyDialog')"
-        :textButton="$t('BtnDeleteDialog')"
+        :textButton="$t('BtnYes')"
         @onBtnWarningNo="onBtnWarningNo"
         @onBtnWarningYes="
             onBtnWarningYes(
@@ -157,11 +165,13 @@ import MISAResouce from "@/js/resource";
 import MISAEnum from "@/js/enum";
 import moment from "moment";
 import { VueDraggableNext } from "vue-draggable-next";
+import SkeletonTable from "../base/SkeletonTable.vue";
 export default {
     name: "TheTable",
     display: "Table Column",
     components: {
         draggable: VueDraggableNext,
+        SkeletonTable,
     },
     props: {
         selectedCheckbox: {
@@ -222,6 +232,7 @@ export default {
                 "BankBranch",
                 "Feature",
             ],
+            isShowSkeleton: false,
         };
     },
 
@@ -339,7 +350,7 @@ export default {
                     .get(
                         `https://localhost:7153/api/v1/Employees/Filter?keyword=${this.keyWord}&pageSize=${this.pageSize}&pageNumber=${this.pageNumber}`
                     )
-                    .then(this.hideShowLoading(true))
+                    .then((this.isShowSkeleton = true))
                     .then((response) => {
                         this.employees = response?.data?.Data?.Data;
                         this.totalRecord = response?.data?.Data?.TotalRecord;
@@ -376,15 +387,15 @@ export default {
                         } else {
                             this.selectedAll = false;
                         }
-                        this.hideShowLoading(false);
+                        this.isShowSkeleton = false;
                     })
                     .catch((error) => {
                         console.log(error);
-                        this.hideShowLoading(false);
+                        this.isShowSkeleton = false;
                     });
             } catch (error) {
                 console.log(error);
-                this.hideShowLoading(false);
+                this.isShowSkeleton = false;
             }
         },
 
@@ -395,6 +406,40 @@ export default {
          */
         hideShowLoading(isLoading) {
             this.$emit("hideShowLoading", isLoading);
+        },
+
+        /**
+         * Xử lý khi click vào hàng
+         * Author: KienNT (27/03/2023)
+         *   @param (event): là event
+         */
+        handleActiveRow(event) {
+            const trElements = this.$refs["trElementRef"];
+            for (let index = 0; index < trElements.length; index++) {
+                const element = trElements[index];
+                const isChecked =
+                    element.firstElementChild.firstElementChild
+                        .firstElementChild.checked;
+                let children = element.childNodes;
+                for (const node of children) {
+                    if (node.tagName && node.tagName.toLowerCase() === "td") {
+                        if (node.classList.contains("tr-hover") && !isChecked) {
+                            node.classList.remove("tr-hover");
+                            element.classList.remove("tr-hover");
+                        }
+                    }
+                }
+            }
+            const trElement = event.target.parentNode;
+            if (trElement.hasChildNodes()) {
+                let children = trElement.childNodes;
+
+                for (const node of children) {
+                    if (node.tagName && node.tagName.toLowerCase() === "td") {
+                        node.classList.add("tr-hover");
+                    }
+                }
+            }
         },
 
         /**
@@ -521,7 +566,7 @@ export default {
                             );
                             this.hideShowLoading(false);
                             this.$emit("hideShowToast", "delete");
-                            this.$emit("handleReLoadData");
+                            this.loadData();
                         })
                         .catch((error) => {
                             console.log(error);
@@ -548,7 +593,7 @@ export default {
                             this.$emit("setIsDialogDeleteMuliple");
                             this.hideShowLoading(false);
                             this.$emit("hideShowToast", "delete");
-                            this.$emit("handleReLoadData");
+                            this.loadData();
                         })
                         .catch((error) => {
                             console.log(error);

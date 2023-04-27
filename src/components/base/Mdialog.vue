@@ -2,32 +2,16 @@
     <!-- dialog -->
     <div class="dialog">
         <div class="dialog__wrapper">
-            <!-- ZEROHEIGHT 
-                <div class="dialog__header">
-                <div class="dialog__header-left">
-                    <h2 class="dialog__header-title">
-                        {{ title }}
-                    </h2>
-                </div>
-                <div
-                    class="dialog__header-right wrap-icon"
-                    @click="closeDialog"
-                >
-                    <div class="icon-close tooltip">
-                        <MTooltip
-                            kind="close"
-                            :subtext="$t('TooltipClose')"
-                            style="top: 163%"
-                        ></MTooltip>
-                    </div>
-                </div>
-            </div> -->
             <div class="dialog__body">
-                <div :class="iconClass"></div>
-                <p class="dialog__text ml-8">{{ message }}</p>
+                <div class="mi-48"><div :class="iconClass"></div></div>
+                <p class="dialog__text">{{ message }}</p>
             </div>
             <div data-v-29af0734="" class="mess-line"></div>
-            <div v-if="kind === 'error'" class="dialog__footer">
+            <div
+                v-if="kind === 'error'"
+                class="dialog__footer"
+                style="justify-content: center"
+            >
                 <div class=""></div>
                 <div class="dialog__footer-right">
                     <div class=""></div>
@@ -56,13 +40,13 @@
                 </div>
             </div>
             <div v-if="kind === 'warning'" class="dialog__footer">
-                <div class=""></div>
+                <div class="btn btn-default" @click="onBtnWarningNo">
+                    {{ BtnWarningNo }}
+                </div>
                 <div class="dialog__footer-right">
-                    <div class="btn btn-default" @click="onBtnWarningNo">
-                        {{ BtnWarningNo }}
-                    </div>
+                    <div></div>
                     <MButton
-                        class="btn-delete dialog-close flex-end"
+                        class="btn-primary dialog-close flex-end"
                         :text="textButton"
                         :click="onBtnWarningYes"
                     >

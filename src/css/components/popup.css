@@ -20,7 +20,7 @@
 
 /* header */
 .popup__form-wrapper {
-    padding: 24px 24px 0 24px;
+    padding: 16px 16px 0 16px;
 }
 
 .popup__form-header {
@@ -65,15 +65,17 @@
 
 /* info */
 .popup__form-body {
-    margin-top: 24px;
+    margin-top: 12px;
     width: 100%;
     display: flex;
     flex-direction: column;
+    border-bottom: 1px solid #e0e0e0;
 }
 
 .popup__form-body-info {
     display: flex;
     column-gap: 24px;
+    align-items: center;
 }
 
 .popup__form-body-left {
@@ -103,10 +105,10 @@
 
 .form__label {
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 2px;
     font-size: 1.3rem;
-    color: #1f1f1fc4;
-    font-weight: 600;
+    color: #111;
+    font-weight: 700;
     cursor: pointer;
 }
 .popup__form-body-right {
@@ -118,17 +120,24 @@
 
 .popup__form-body-contact {
     width: 100%;
-    margin: 48px 0;
+    margin: 12px 0;
 }
 
 .form__group-contact-second {
     display: flex;
     align-items: center;
-    column-gap: 8px;
+    column-gap: 14px;
 }
 
 .form__group-contact-input {
     width: 207px;
+}
+
+.divide {
+    width: 100%;
+    border-top: 1px solid #e0e0e0;
+    margin: 12px 24px 10px 24px;
+    position: relative;
 }
 
 /* footer */
@@ -138,8 +147,7 @@
     align-items: center;
     border-radius: 0 0 4px 4px;
     justify-content: space-between;
-    padding: 12px 24px;
-    background-color: #f5f5f5;
+    padding: 10px 16px;
 }
 .popup__form-footer-right {
     display: flex;

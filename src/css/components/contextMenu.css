@@ -2,7 +2,7 @@
     min-width: 100px;
     height: auto;
     border: 1px solid var(--boder-primary);
-    padding: 5px 0;
+    padding: 3px 0;
     z-index: 4;
     position: fixed;
     background-color: var(--white-color);
@@ -20,7 +20,7 @@
     color: #1f1f1f;
     font-size: 1.3rem;
     font-weight: 400;
-    margin-top: 5px;
+    transition: all 0.25s ease;
 }
 
 .contextmenu__fun-list
@@ -30,5 +30,7 @@
 }
 
 .contextmenu__fun-link:hover {
-    background-color: rgba(80, 184, 60, 0.1);
+    background: #e8e9ec;
+    color: var(--color-primary);
+    transition: color 0ms;
 }

@@ -1,5 +1,19 @@
 <template>
     <button
+        class="btn combox-btn"
+        v-if="mode === 'btnAdd'"
+        :tabindex="tabindex"
+        :id="id"
+        :disabled="disabled"
+    >
+        <span class="combox-btn-text" @click="click">{{ text }}</span>
+        <span class="combox-btn-mark"></span>
+
+        <div class="wrap-icon-combox"><div class="icon__combox-btn"></div></div>
+    </button>
+
+    <button
+        v-else
         :tabindex="tabindex"
         :class="kind !== 'link' ? `btn ${className}` : className"
         :id="id"
@@ -47,6 +61,11 @@ export default {
         disabled: {
             type: Boolean,
             default: false,
+        },
+
+        // Loại button: add, ...
+        mode: {
+            type: String,
         },
     },
 };
