@@ -223,3 +223,23 @@ div.disabled {
     align-items: center;
     justify-content: center;
 }
+
+.pr-4 {
+    padding-right: 4px !important;
+}
+
+.opacity {
+    opacity: 0.5;
+}
+.ms-con-dropdown {
+    pointer-events: none;
+}
+.mi-arrow-up--black {
+    background-position: -560px -359px;
+}
+.mi-16 {
+    width: 16px;
+    height: 16px;
+    min-width: 16px;
+    min-height: 16px;
+}

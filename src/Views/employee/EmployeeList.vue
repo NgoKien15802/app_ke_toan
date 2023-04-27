@@ -8,55 +8,52 @@
 
         <div class="content__main">
             <!-- header main -->
-            <div
-                class="content__main-header"
-                :style="selectedCheckbox.length < 1 && 'justify-content: end'"
-            >
-                <div
-                    v-if="selectedCheckbox.length >= 1"
-                    class="content__main-left"
-                >
-                    <p>
-                        {{ $t("SelectedCheckbox") }}
-                        <strong>{{ selectedCheckbox.length }}</strong>
-                    </p>
-                    <MButton
-                        kind="link"
-                        className="link-btn btn-link-delete"
-                        :click="handleUndoSeleted"
-                        :text="$t('UndoSelected')"
-                    ></MButton>
-
-                    <MButton
+            <div class="content__main-header">
+                <div class="content__main-left">
+                    <button
+                        name="button"
+                        class="batchExecution"
                         :class="
-                            selectedCheckbox.length >= 1
-                                ? 'btn btn-delete'
-                                : 'btn btn-default'
+                            selectedCheckbox.length < 1 ? 'disabled' : 'active'
                         "
-                        :text="
-                            selectedCheckbox.length == 1
-                                ? $t('BtnDeleteDialog')
-                                : $t('BtnDeleteAll')
-                        "
-                        :disabled="selectedCheckbox.length < 1"
-                        :click="handleDeleteAll"
+                        @click="handleBatchExecution"
+                        ref="iconContextMenu"
                     >
-                    </MButton>
+                        <div
+                            class="ms-button-text ms-button--text flex align-center"
+                        >
+                            <span class="pr-4">{{ $t("batchExecution") }}</span>
+                            <div
+                                icon="expand-more"
+                                iconpack="material-icons"
+                                class="mi mi-16 mi-arrow-up--black"
+                                :class="
+                                    selectedCheckbox.length <= 1
+                                        ? 'opacity'
+                                        : ''
+                                "
+                            ></div>
+                        </div>
+
+                        <MContextmenu
+                            v-if="isContextMenu"
+                            kind="batchExecution"
+                            @hideContextMenu="hideContextMenu"
+                            @handleRemove="handleDeleteAll"
+                            :refElement="this.$refs.iconContextMenu"
+                        ></MContextmenu>
+                    </button>
                 </div>
                 <div class="content__main-right">
                     <div class="content__main-filter">
                         <div class="input__wrapper">
-                            <button
-                                class="input__icon search"
-                                fdprocessedid="sd2h6"
-                            >
+                            <button class="input__icon search">
                                 <div class="input__icon-search"></div>
                             </button>
                             <input
                                 type="text"
                                 class="input__type input__search"
                                 :placeholder="$t('TxtSearch')"
-                                fdprocessedid="q9kjmf"
                                 v-model.lazy="keyWordSearch"
                             />
                         </div>
@@ -114,7 +111,7 @@
                         :pageCurrent="pageNumber"
                         :keyWordSearch="keyWordSearch"
                         :isReload="isReload"
-                        @handleClickNextsetIsReLoad="setIsReLoad"
+                        @setIsReLoad="setIsReLoad"
                         @handleReLoadData="handleReLoadData"
                         :isDialogDeleteMultiple="isDialogDeleteMultiple"
                         :selectedEmployeeIds="selectedEmployeeIds"
@@ -191,6 +188,7 @@ export default {
         return {
             MISAResouce,
             isShowPopup: false,
+            isContextMenu: false,
             isLoading: false,
             isShowToastAdd: false,
             isShowToastEdit: false,
@@ -209,6 +207,8 @@ export default {
             selectedEmployeeIds: [],
             isDisabledClickPrev: true,
             isDeleteOne: false,
+            leftContextMenu: "",
+            topContextMenu: "",
         };
     },
     components: {
@@ -241,6 +241,21 @@ export default {
     },
 
     methods: {
+        /**
+         * Hàm thực hiện hành động hàng loạt
+         * Author: KienNT 27/04/2023
+         */
+        handleBatchExecution() {
+            this.isContextMenu = true;
+        },
+
+        /**
+         * Hàm ẩn contextmenu khi click ra ngoài element
+         * Author: KienNT (04/03/2023)
+         */
+        hideContextMenu() {
+            this.isContextMenu = !this.isContextMenu;
+        },
         /**
          * Hàm thực hiện reload lại trang
          * Author: KienNT (18/03/2023)

@@ -10,6 +10,7 @@
 
 .contextmenu__fun-item {
     list-style: none;
+    text-align: left;
 }
 .contextmenu__fun-link {
     display: inline-block;

@@ -311,8 +311,8 @@ export default {
          */
         isReload: function (newValue) {
             if (newValue) {
-                this.$emit("setIsReLoad");
                 this.loadData();
+                this.$emit("setIsReLoad");
             }
         },
 

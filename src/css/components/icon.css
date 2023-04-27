@@ -13,7 +13,10 @@
 /* all icon sidebar */
 
 /* icon default */
-
+.mi {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat;
+    cursor: pointer;
+}
 .icon-overview-default {
     background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -33px -1630px;
     width: 18px;
@@ -239,6 +242,13 @@
     background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -147px -147px;
     width: 18px;
     height: 18px;
+    cursor: pointer;
+}
+
+.icon__close-toast {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -1178px -362px;
+    width: 12px;
+    height: 12px;
     cursor: pointer;
 }
 

@@ -21,6 +21,7 @@ const MISAResouce = {
         StopUsing: "Ngừng sử dụng",
         Using: "Đang sử dụng",
         Delete: "Xoá",
+        Merge: "Gộp",
 
         // Record
         Total: "Tổng số",
@@ -111,6 +112,7 @@ const MISAResouce = {
         BtnDeleteAll: "Xóa tất cả",
         BtnSaveData: "Lưu",
         BtnNoSave: "Không lưu",
+        batchExecution: "Thực hiện hàng loạt",
 
         // title dialog
         DialogNotifyError: "Thông báo lỗi",
@@ -188,6 +190,7 @@ const MISAResouce = {
         StopUsing: "Stop using",
         Using: "Using",
         Delete: "Delete",
+        Merge: "Merge",
 
         // Record
         Total: "Total number",
@@ -276,6 +279,7 @@ const MISAResouce = {
         BtnDeleteAll: "Delete all",
         BtnSaveData: "Save",
         BtnNoSave: "Don't save",
+        batchExecution: "batch execution",
 
         // title dialog
         DialogNotifyError: "Error! ",

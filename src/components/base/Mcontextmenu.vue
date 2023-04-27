@@ -1,5 +1,22 @@
 <template>
     <ul
+        v-if="kind == 'batchExecution'"
+        class="contextmenu__fun-list d-block"
+        style="position: absolute; top: 110%; right: 0"
+        ref="contextmenu"
+    >
+        <li class="contextmenu__fun-item">
+            <a href="#" class="contextmenu__fun-link" @click="handleRemove">{{
+                $t("Delete")
+            }}</a>
+        </li>
+        <li class="contextmenu__fun-item">
+            <a href="#" class="contextmenu__fun-link">{{ $t("Merge") }}</a>
+        </li>
+    </ul>
+
+    <ul
+        v-else
         class="contextmenu__fun-list d-block"
         :style="`left: ${left}px ; top: ${top}px`"
         ref="contextmenu"
@@ -43,6 +60,13 @@ export default {
             default: "",
             required: true,
         },
+
+        // loai nao do
+        kind: {
+            type: String,
+            default: "",
+        },
+
         // tham chiếu đến 1 element
         refElement: {
             type: Node,
@@ -71,9 +95,15 @@ export default {
          */
         handleOutsideContext(event) {
             let check = true;
-            for (let index = 0; index < this.refElement.length; index++) {
-                const element = this.refElement[index];
-                if (element.contains(event.target)) {
+            if (this.refElement.length) {
+                for (let index = 0; index < this.refElement.length; index++) {
+                    const element = this.refElement[index];
+                    if (element.contains(event.target)) {
+                        check = false;
+                    }
+                }
+            } else {
+                if (this.refElement.contains(event.target)) {
                     check = false;
                 }
             }
@@ -94,6 +124,14 @@ export default {
             if (this.employeeIdSelected) {
                 this.$emit("handleDeleteRow");
             }
+        },
+
+        /**
+         * handle hàng loạt
+         * Author: KienNT (27/03/2023)
+         */
+        handleRemove() {
+            this.$emit("handleRemove");
         },
 
         /**
