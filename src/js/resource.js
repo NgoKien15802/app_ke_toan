@@ -43,6 +43,11 @@ const MISAResouce = {
         //placehoder
         TxtSearch: "Tìm kiếm",
         TxtSearchAccount: "Tìm kiếm theo số, tên tài khoản",
+        TxtConditionFilter: "Nhập giá trị lọc",
+        Filter: "Lọc",
+        Unfiltered: "Bỏ lọc",
+        Contain: "Chứa",
+        FixThisColumn: "Cố định cột này",
 
         //Sidebar
         Overview: "Tổng quan",
@@ -214,6 +219,12 @@ const MISAResouce = {
         //placehoder
         TxtSearch: "Search",
         TxtSearchAccount: "Search by number, account name",
+        TxtConditionFilter: "Enter filter value",
+        Filter: "Filter",
+        Unfiltered: "Unfiltered",
+        Contain: "Contain",
+        FixThisColumn: "Fix this column",
+        FilterCondition: "Lọc Tên nhân viên",
 
         //Sidebar
         Overview: "Overview",

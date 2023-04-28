@@ -33,18 +33,30 @@
                     </template>
 
                     <template v-else-if="header === 'DateOfBirth'">
-                        <span class="text-align-center">{{
-                            $t("DateOfBirth")
-                        }}</span>
+                        <span style="display: flex">
+                            <span class="text-align-center">{{
+                                $t("DateOfBirth")
+                            }}</span>
+                            <div
+                                class="mi-16 icon-head mi-header-option"
+                                @click="handleShowConditionFilter($event)"
+                                ref="iconConditionFilter"
+                            ></div
+                        ></span>
                     </template>
 
                     <template v-else-if="header === 'IdentityNumber'">
-                        <span class="text-align-left">
+                        <span class="text-align-left" style="display: flex">
                             <MTooltip
                                 kind="title"
                                 :text="$t('IdentityNumber')"
                                 :subtext="$t('TooltipIdentityNumber')"
                             ></MTooltip>
+                            <div
+                                class="mi-16 icon-head mi-header-option"
+                                @click="handleShowConditionFilter($event)"
+                                ref="iconConditionFilter"
+                            ></div>
                         </span>
                     </template>
                     <template v-else-if="header === 'Feature'">
@@ -53,16 +65,25 @@
                         }}</span>
                     </template>
                     <template v-else>
-                        <span class="text-align-left">{{ $t(header) }}</span>
+                        <span style="display: flex">
+                            <span class="text-align-left">{{
+                                $t(header)
+                            }}</span>
+                            <div
+                                class="mi-16 icon-head mi-header-option"
+                                @click="handleShowConditionFilter($event)"
+                                ref="iconConditionFilter"
+                            ></div>
+                        </span>
                     </template>
                 </th>
             </draggable>
         </thead>
         <tbody>
-            <SkeletonTable
+            <MSkeletonTable
                 v-if="isShowSkeleton"
                 :employees="employees"
-            ></SkeletonTable>
+            ></MSkeletonTable>
             <tr
                 v-else
                 v-for="(employee, index) in employees"
@@ -192,6 +213,14 @@
         "
         kind="warning"
     ></MDialog>
+
+    <MconditionFilter
+        v-if="isConditionFilter"
+        :top="topConditionFilter"
+        :left="leftConditionFilter"
+        :refElement="this.$refs.iconConditionFilter"
+        @handleHideConditionFilter="handleHideConditionFilter"
+    ></MconditionFilter>
 </template>
 <script>
 import axios from "axios";
@@ -199,13 +228,11 @@ import MISAResouce from "@/js/resource";
 import MISAEnum from "@/js/enum";
 import moment from "moment";
 import { VueDraggableNext } from "vue-draggable-next";
-import SkeletonTable from "../base/SkeletonTable.vue";
 export default {
     name: "TheTable",
     display: "Table Column",
     components: {
         draggable: VueDraggableNext,
-        SkeletonTable,
     },
     props: {
         selectedCheckbox: {
@@ -267,8 +294,10 @@ export default {
                 "Feature",
             ],
             isShowSkeleton: false,
-            topTooltip: 0,
-            leftTooltip: 0,
+            topConditionFilter: 0,
+            leftConditionFilter: 0,
+            isConditionFilter: false,
+            myInput: null,
         };
     },
 
@@ -446,9 +475,25 @@ export default {
         },
 
         /**
+         * xử lý hiển thị Condition filter
+         * Author: KienNT (28/04/2023)
+         * @param (event): là event
+         */
+        handleShowConditionFilter(event) {
+            this.isConditionFilter = !this.isConditionFilter;
+            this.leftConditionFilter =
+                event.target.getBoundingClientRect().left;
+            this.topConditionFilter = event.target.getBoundingClientRect().top;
+        },
+
+        handleHideConditionFilter() {
+            this.isConditionFilter = false;
+        },
+
+        /**
          * Xử lý khi click vào hàng
          * Author: KienNT (27/03/2023)
-         *   @param (event): là event
+
          */
         handleActiveRow(event) {
             const trElements = this.$refs["trElementRef"];

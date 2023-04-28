@@ -1,0 +1,135 @@
+.condition-container {
+    position: absolute;
+    right: -1px;
+    padding: 22px 17px;
+    border: 1px solid #babec5;
+    z-index: 22;
+    background: #fff;
+    min-width: 350px;
+    max-width: 350px;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+    font-weight: 400;
+    font-size: 13px;
+    border-radius: 2px;
+    box-shadow: 3px 3px 6px #ddd;
+    transform: translate(-95%, 24px);
+}
+
+.condition-container .lock {
+    position: relative;
+    padding-left: 30px;
+    line-height: 24px;
+    cursor: pointer;
+    border-bottom: 1px solid #ebedf0;
+    padding-bottom: 14px;
+    margin-bottom: 14px;
+}
+
+.condition-container .lock:before {
+    content: "";
+    position: absolute;
+    display: block;
+    height: 24px;
+    width: 24px;
+    top: 0;
+    left: 2px;
+    background: transparent url(../../assets/img/Sprites.64af8f61.svg) no-repeat -1726px -560px;
+}
+
+.condition-container .unlock:before {
+    background-position: -1766px -560px;
+}
+
+.condition-container .filter-container {
+    margin-top: 14px;
+    margin-bottom: 14px;
+}
+
+.condition-container .filter-container button {
+    width: auto !important;
+}
+
+.condition-container .column-filter {
+    display: inline-block;
+    white-space: normal;
+    max-width: 310px;
+}
+
+.condition-container .filter-op {
+    font-size: 13px;
+    font-weight: 600;
+    color: #0075c0;
+    cursor: pointer;
+    position: relative;
+    padding-right: 20px;
+    display: inline-block;
+    margin-left: 15px;
+    line-height: 19px;
+}
+
+.condition-container .filter-op:after {
+    content: "";
+    position: absolute;
+    height: 10px;
+    width: 13px;
+    background: transparent url(../../assets/img/Sprites.64af8f61.svg) no-repeat -178px -363px;
+    top: 4px;
+    right: 2px;
+}
+
+.condition-container .filter-value {
+    margin-top: 20px;
+}
+
+.condition-container .buttons {
+    flex-direction: row-reverse;
+    margin-top: 16px;
+}
+
+.condition-container .filter-op-dropdown {
+    display: inline-block;
+    float: right;
+    display: inline-flex;
+    align-items: center;
+    column-gap: 5px;
+    cursor: pointer;
+}
+
+.condition-container .filter-op-dropdown .ms-button {
+    padding: 0 !important;
+    height: auto;
+}
+
+.condition-container .filter-op-dropdown .ms-button .ms-button-text {
+    outline: none;
+}
+
+.condition-container .filter-op-dropdown .ms-button [icon="expand-more"] {
+    display: none;
+}
+
+.input__condition {
+    font-size: 13px;
+    height: 26px;
+    color: inherit;
+    position: relative;
+    padding: 0 10px;
+    border-radius: 2px;
+    border: 1px solid #babec5;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0 12px 0 10px;
+}
+
+.input__condition::placeholder {
+    font-style: italic;
+}
+
+.buttons.row-flex {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+}

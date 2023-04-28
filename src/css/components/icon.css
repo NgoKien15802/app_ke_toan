@@ -17,6 +17,13 @@
     background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat;
     cursor: pointer;
 }
+
+.icon__arrow {
+    background: url("../../assets/img/Sprites.64af8f61.svg") -178px -364px;
+    width: 12px;
+    height: 8px;
+}
+
 .icon-overview-default {
     background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -33px -1630px;
     width: 18px;

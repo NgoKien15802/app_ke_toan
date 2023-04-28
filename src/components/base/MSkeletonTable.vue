@@ -129,7 +129,7 @@
 
 <script>
 export default {
-    name: "SkeletonTable",
+    name: "MSkeletonTable",
     props: {
         employees: {
             type: Array,

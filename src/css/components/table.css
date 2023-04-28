@@ -193,6 +193,25 @@
     cursor: pointer;
 }
 
+.icon-head {
+    height: fit-content;
+    position: absolute;
+    right: 3px;
+    top: calc(50% - 8px);
+    visibility: hidden;
+    cursor: pointer;
+}
+
+.employee tr th:hover .icon-head {
+    visibility: visible;
+}
+
+.mi-header-option {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -1688px -565px;
+    width: 14px;
+    height: 14px;
+}
+
 /* .dropdown-fun {
     display: inline-flex;
     align-items: center;
