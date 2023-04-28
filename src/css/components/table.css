@@ -18,10 +18,14 @@
     height: var(--size-row);
 }
 
-.employee tr td,
-th {
+.employee tr td {
     padding: 0 10px;
-    border-right: 1px solid var(--boder-primary);
+    border-right: 1px dotted var(--boder-primary);
+    border-bottom: 1px solid var(--boder-primary);
+}
+
+.employee tr th {
+    padding: 0 10px;
     border-bottom: 1px solid var(--boder-primary);
 }
 
@@ -51,6 +55,7 @@ th {
     font-size: 1.3rem;
     color: #000000;
     cursor: all-scroll;
+    position: relative;
 }
 
 .employee thead tr th:last-child,
@@ -90,19 +95,26 @@ th {
     left: calc(var(--size-column-first) + var(--size-column-second));
 }
 
-.employee thead tr th:nth-child(3)::after,
 .employee tbody tr td:nth-child(3)::after,
-.employee thead tr th:nth-child(2)::after,
 .employee tbody tr td:nth-child(2)::after,
-.employee thead tr th:first-child::after,
 .employee tbody tr td:first-child::after {
+    content: "";
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 4;
+    border-right: 1px dotted var(--boder-primary);
+}
+
+.employee thead tr th:not(:nth-last-child(2)):not(:last-child)::after {
     content: "";
     width: 1px;
     height: 100%;
     position: absolute;
     right: 0;
     top: 0;
-    z-index: 4;
+    z-index: 1;
     background-color: var(--boder-primary);
 }
 
@@ -130,68 +142,28 @@ th {
     background-color: #eeeeee;
 }
 
-.employee thead tr th:last-child::after,
 .employee tbody tr td:last-child::after {
     content: "";
-    width: 1px;
     height: 100%;
     position: absolute;
     left: 0;
     top: 0;
     z-index: 4;
-    background-color: var(--boder-primary);
+    border-right: 1px dotted var(--boder-primary);
 }
 
-.employee thead tr th:first-child,
-.employee tbody tr td:first-child {
-    min-width: var(--size-column-first);
-    height: var(--size-row);
+.employee thead tr th:last-child::after {
+    content: "";
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 4;
+    border-right: 1px solid var(--boder-primary);
 }
 
 .employee tbody tr td:last-child {
     background-color: #ffff;
-}
-
-.employee thead tr th:nth-child(7),
-.employee tbody tr td:nth-child(7),
-.employee thead tr th:nth-child(9),
-.employee tbody tr td:nth-child(9),
-.employee thead tr th:nth-child(5),
-.employee tbody tr td:nth-child(5),
-.employee thead tr th:nth-child(2),
-.employee tbody tr td:nth-child(2) {
-    min-width: 160px;
-}
-
-.employee thead tr th:nth-child(11),
-.employee tbody tr td:nth-child(11),
-.employee thead tr th:nth-child(8),
-.employee tbody tr td:nth-child(8),
-.employee thead tr th:nth-child(10),
-.employee tbody tr td:nth-child(10),
-.employee thead tr th:nth-child(3),
-.employee tbody tr td:nth-child(3) {
-    min-width: 250px;
-}
-
-.employee thead tr th:nth-child(11),
-.employee tbody tr td:nth-child(11) {
-    min-width: 350px;
-}
-
-.employee thead tr th:nth-child(12),
-.employee tbody tr td:nth-child(12) {
-    min-width: 120px;
-}
-
-.employee thead tr th:nth-child(4),
-.employee tbody tr td:nth-child(4) {
-    min-width: 100px;
-}
-
-.employee thead tr th:nth-child(6),
-.employee tbody tr td:nth-child(6) {
-    min-width: 200px;
 }
 
 .employee thead tr th:nth-child(11),

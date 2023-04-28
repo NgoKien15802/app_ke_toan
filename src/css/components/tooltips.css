@@ -1,6 +1,7 @@
 .tooltip-error,
 .tooltip {
     position: relative;
+    font-family: notosans, sans-serif;
 }
 
 .tooltiptext {
@@ -10,16 +11,46 @@
     border-radius: var(--border-radius);
     padding: 12px 16px;
     position: absolute;
-    z-index: 5;
+    z-index: 11;
     top: 114%;
     left: 50%;
     transform: translateX(-50%);
-    box-shadow: 2px 2px 2px 0 #d4d7dc;
+    height: 26px;
+    display: flex;
+
+    align-items: center;
+}
+
+.tooltipData {
+    visibility: hidden;
+    width: max-content;
+    text-align: center;
+    border-radius: var(--border-radius);
+    padding: 12px 16px;
+    position: absolute;
+    z-index: 99;
+    transform: translateX(-50%);
+    bottom: 100%;
+    left: 50%;
     height: 26px;
     display: flex;
     align-items: center;
 }
 
+.tooltiptextHide {
+    visibility: hidden;
+    width: max-content;
+    text-align: center;
+    border-radius: var(--border-radius);
+    padding: 12px 16px;
+    position: absolute;
+    z-index: 99;
+    transform: translateX(-50%);
+    height: 26px;
+    display: flex;
+    align-items: center;
+}
+.tooltipData,
 .tooltiptext {
     background-color: var(--bg-tooltip);
     color: var(--white-color);
@@ -27,7 +58,36 @@
     line-height: 26px;
 }
 
+.tooltiptextHide {
+    background-color: var(--bg-tooltip);
+    color: var(--white-color);
+    text-transform: initial;
+    line-height: 26px;
+}
+
 .tooltiptext::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent var(--bg-tooltip) transparent;
+}
+
+.tooltipData::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: var(--bg-tooltip) transparent transparent transparent;
+}
+
+.tooltiptextHide::after {
     content: "";
     position: absolute;
     bottom: 100%;
@@ -71,8 +131,15 @@
     border-color: transparent transparent var(--bg-tooltip) transparent;
 }
 
+.tooltip:hover .tooltipData,
 .tooltip:hover .tooltiptext {
-    --bg-tooltip: #111;
+    --bg-tooltip: #505050;
+    visibility: visible;
+    font-weight: 500;
+}
+
+.tooltip:hover .tooltiptextHide {
+    --bg-tooltip: #505050;
     visibility: visible;
     font-weight: 500;
 }

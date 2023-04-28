@@ -135,6 +135,8 @@ const MISAResouce = {
         UndoSelected: "Bỏ chọn",
         SelectAllPage: "Chọn tất cả các trang",
 
+        NoData: "No data",
+
         //navbar cash
         Process: "Quy trình",
         SpendMoney: "Chi tiền",
@@ -297,6 +299,8 @@ const MISAResouce = {
         ToastEditSuccess: "Staff has been edited",
         ToastDuplicateSuccess: "Staff has been duplicated",
         ToastTitleSuccess: "Success",
+
+        NoData: "Không có dữ liệu",
 
         //navbar cash
         Process: "Progress",

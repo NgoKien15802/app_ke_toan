@@ -135,6 +135,11 @@ export default {
             type: Array,
         },
     },
+    watch: {
+        employees: function (newValue) {
+            console.log(newValue);
+        },
+    },
 };
 </script>
 

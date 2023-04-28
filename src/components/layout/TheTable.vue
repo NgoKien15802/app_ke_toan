@@ -6,11 +6,23 @@
                     v-for="header in headers"
                     :key="header"
                     :scope="header === 'Selected' ? 'col' : null"
-                    :class="
+                    :class="[
                         header !== 'DateOfBirth' && header !== 'Feature'
                             ? 'text-align-left'
-                            : ''
-                    "
+                            : '',
+                        header === 'EmployeeCode' ? 'min-w160' : '',
+                        header === 'FullName' ? 'min-w250' : '',
+                        header === 'Gender' ? 'min-w100' : '',
+                        header === 'DateOfBirth' ? 'min-w160' : '',
+                        header === 'IdentityNumber' ? 'min-w200' : '',
+                        header === 'PositionName' ? 'min-w160' : '',
+                        header === 'DepartmentName' ? 'min-w200' : '',
+                        header === 'BankAccount' ? 'min-w160' : '',
+                        header === 'BankName' ? 'min-w160' : '',
+                        header === 'BankBranch' ? 'min-w350' : '',
+                        header === 'Feature' ? 'min-w120' : '',
+                        header === 'Selected' ? 'min-w40' : '',
+                    ]"
                 >
                     <template v-if="header === 'Selected'">
                         <MCheckbox
@@ -63,7 +75,7 @@
                 <template v-for="header in headers" :key="header">
                     <td
                         v-if="header === 'Selected'"
-                        class="text-align-center"
+                        class="text-align-center min-w40"
                         :class="employee?.Selected ? 'tr-hover' : ''"
                     >
                         <MCheckbox
@@ -81,7 +93,7 @@
                     </td>
                     <td
                         v-else-if="header === 'Feature'"
-                        class="dropdown-fun text-align-center"
+                        class="dropdown-fun text-align-center min-w120"
                         :class="employee?.Selected ? 'tr-hover' : ''"
                     >
                         <MButton
@@ -99,25 +111,47 @@
                         </div>
                     </td>
 
-                    <td
+                    <MTooltip
                         v-else-if="header === 'Gender'"
-                        class="text-align-left"
-                        :class="employee?.Selected ? 'tr-hover' : ''"
-                    >
-                        {{ formatGender(employee?.Gender) }}
-                    </td>
+                        kind="data"
+                        :class="
+                            employee?.Selected
+                                ? 'tr-hover text-align-left min-w100'
+                                : 'text-align-left min-w100'
+                        "
+                        :text="formatDate(employee?.DateOfBirth)"
+                        :subtext="formatDate(employee?.DateOfBirth)"
+                    ></MTooltip>
 
-                    <td
+                    <MTooltip
                         v-else-if="header === 'DateOfBirth'"
-                        class="text-align-center"
-                        :class="employee?.Selected ? 'tr-hover' : ''"
-                    >
-                        {{ formatDate(employee?.DateOfBirth) }}
-                    </td>
+                        kind="data"
+                        :class="
+                            employee?.Selected
+                                ? 'tr-hover text-align-center min-w160'
+                                : 'text-align-center min-w160'
+                        "
+                        :text="formatDate(employee?.DateOfBirth)"
+                        :subtext="formatDate(employee?.DateOfBirth)"
+                    ></MTooltip>
 
-                    <td :class="employee?.Selected ? 'tr-hover' : ''" v-else>
-                        {{ employee[header] }}
-                    </td>
+                    <MTooltip
+                        v-else
+                        kind="data"
+                        :className="[
+                            employee?.Selected ? 'tr-hover' : '',
+                            header === 'EmployeeCode' ? 'min-w160' : '',
+                            header === 'FullName' ? 'min-w160' : '',
+                            header === 'IdentityNumber' ? 'min-w200' : '',
+                            header === 'PositionName' ? 'min-w160' : '',
+                            header === 'DepartmentName' ? 'min-w200' : '',
+                            header === 'BankAccount' ? 'min-w160' : '',
+                            header === 'BankName' ? 'min-w160' : '',
+                            header === 'BankBranch' ? 'min-w350' : '',
+                        ]"
+                        :text="employee[header]"
+                        :subtext="employee[header]"
+                    ></MTooltip>
                 </template>
             </tr>
         </tbody>
@@ -233,6 +267,8 @@ export default {
                 "Feature",
             ],
             isShowSkeleton: false,
+            topTooltip: 0,
+            leftTooltip: 0,
         };
     },
 
@@ -242,6 +278,7 @@ export default {
      */
     created() {
         try {
+            this.employees = new Array(10).fill(0);
             this.loadData();
         } catch (error) {
             console.log(error);

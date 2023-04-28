@@ -8,6 +8,15 @@
         subtext
     }}</span>
 
+    <td
+        v-else-if="kind === 'data'"
+        class="tooltip"
+        :class="className != '' && className"
+    >
+        {{ text }}
+        <span class="tooltipData">{{ subtext }}</span>
+    </td>
+
     <span v-else class="tooltiptext" :style="style">{{ subtext }}</span>
 </template>
 <script>
@@ -36,6 +45,20 @@ export default {
         // Style css
         style: {
             type: String,
+        },
+
+        // class thêm
+        className: {
+            type: Array,
+        },
+
+        //vị trí tọa độ y so với trình duyệt
+        top: {
+            type: Number,
+        },
+        //vị trí tọa độ x so với trình duyệt
+        left: {
+            type: Number,
         },
     },
 };

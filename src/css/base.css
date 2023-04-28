@@ -34,7 +34,7 @@
     --size-row: 30px;
 
     /* bg tooltip để thay đổi khi thông báo lỗi hoặc thông báo */
-    --bg-tooltip: #041434;
+    --bg-tooltip: #505050;
 
     /* icon light */
     --i-normal-light: #666666;
@@ -134,7 +134,7 @@ button {
 
 /* .m-row */
 .m-row + .m-row {
-    margin-top: 8px;
+    margin-top: 15px;
 }
 
 /* w-50% */
@@ -242,4 +242,31 @@ div.disabled {
     height: 16px;
     min-width: 16px;
     min-height: 16px;
+}
+
+.min-w40 {
+    min-width: 40px;
+}
+
+.min-w160 {
+    min-width: 160px;
+}
+
+.min-w250 {
+    min-width: 250px;
+}
+
+.min-w350 {
+    min-width: 350px;
+}
+.min-w120 {
+    min-width: 120px;
+}
+
+.min-w100 {
+    min-width: 100px;
+}
+
+.min-w200 {
+    min-width: 200px;
 }

@@ -12,7 +12,7 @@
             /><br data-v-69b95d82="" /><span
                 data-v-69b95d82=""
                 class="nodata-text"
-                >Không có dữ liệu</span
+                >{{ $t("NoData") }}</span
             >
         </div>
     </div>
