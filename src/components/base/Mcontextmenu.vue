@@ -16,6 +16,25 @@
     </ul>
 
     <ul
+        v-else-if="kind == 'conditionFilter'"
+        class="contextmenu__fun-list d-block"
+        :style="`right:0 ; top: 100%`"
+        style="position: absolute"
+        ref="contextmenu"
+    >
+        <li
+            class="contextmenu__fun-item"
+            v-for="(elementArray, index) in contextArray"
+            :key="index"
+            @click="handleClickItemCondition(elementArray.text)"
+        >
+            <a href="#" class="contextmenu__fun-link">{{
+                $t(elementArray.text)
+            }}</a>
+        </li>
+    </ul>
+
+    <ul
         v-else
         class="contextmenu__fun-list d-block"
         :style="`left: ${left}px ; top: ${top}px`"
@@ -61,6 +80,18 @@ export default {
             required: true,
         },
 
+        //vị trí ben phair cua cha
+        right: {
+            type: String,
+            default: "",
+        },
+
+        //vị trí ben duoi cua cha
+        bottom: {
+            type: String,
+            default: "",
+        },
+
         // loai nao do
         kind: {
             type: String,
@@ -76,6 +107,11 @@ export default {
             type: String,
             default: "",
         },
+
+        // mảng danh sách li
+        contextArray: {
+            type: Array,
+        },
     },
     data() {
         return {
@@ -90,12 +126,20 @@ export default {
     },
     methods: {
         /**
+         * Bắt sự kiện click vào option của ContextMenu
+         * Author: KienNT (28/04/2023)
+         *  @param {text}: text để set lại cho condition filter
+         */
+        handleClickItemCondition(text) {
+            this.$emit("handleClickItemCondition", text);
+        },
+        /**
          * nghe sự kiện window. Nếu click ko phải là contextmenu thì ẩn ddi
          * Author: KienNT (06/03/2023)
          */
         handleOutsideContext(event) {
             let check = true;
-            if (this.refElement.length) {
+            if (this.refElement && this.refElement.length) {
                 for (let index = 0; index < this.refElement.length; index++) {
                     const element = this.refElement[index];
                     if (element.contains(event.target)) {

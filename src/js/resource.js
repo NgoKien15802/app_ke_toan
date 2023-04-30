@@ -77,6 +77,8 @@ const MISAResouce = {
         TooltipSaveAndAdd: "Cất và thêm (ctrl + shift + s)",
         TooltipReload: "Lấy lại dữ liệu",
         TooltipExport: "Xuất ra Excel",
+        TooltipCustomizeInterface: "Tùy chỉnh giao diện",
+        ImplicitSampling: "Lấy mẫu ngầm định",
 
         // popup
         Enter: "Nhập",
@@ -140,7 +142,10 @@ const MISAResouce = {
         UndoSelected: "Bỏ chọn",
         SelectAllPage: "Chọn tất cả các trang",
 
-        NoData: "No data",
+        NoData: "Không dữ liệu",
+        DataColumnName: "Tên cột dữ liệu",
+        FixColumn: "Sửa tên cột hiển thị và độ rộng",
+        ShowMore: "Hiển thị thêm",
 
         //navbar cash
         Process: "Quy trình",
@@ -149,6 +154,16 @@ const MISAResouce = {
         Stocktaking: "Kiểm kê",
         CashFlowForecast: "Dự báo dòng tiền",
         Export: "Báo cáo",
+
+        // contextMenu
+        Empty: "Trống",
+        NotEmpty: "(Không trống)",
+        Equal: "Bằng",
+        Other: "Khác",
+        NotContain: "Không chứa",
+        Startwith: "Bắt đầu với",
+        EndWith: "Kết thúc với",
+        DeleteConditionFilter: "Xóa điều kiện lọc",
 
         // cash
         CashBusiness: "Nghiệp vụ tiền mặt",
@@ -279,6 +294,8 @@ const MISAResouce = {
         TooltipSaveAndAdd: "Save and add (ctrl + shift + s)",
         TooltipReload: "Data recovery",
         TooltipExport: "Export excel",
+        TooltipCustomizeInterface: "Customize interface",
+        ImplicitSampling: "Implicit sampling",
 
         // button
         BtnDestroy: "Destroy",
@@ -311,7 +328,10 @@ const MISAResouce = {
         ToastDuplicateSuccess: "Staff has been duplicated",
         ToastTitleSuccess: "Success",
 
-        NoData: "Không có dữ liệu",
+        NoData: "No data",
+        DataColumnName: "Data column name",
+        FixColumn: "Fix display column name and width",
+        ShowMore: "Show more",
 
         //navbar cash
         Process: "Progress",
@@ -320,6 +340,16 @@ const MISAResouce = {
         Stocktaking: "StockTaking",
         CashFlowForecast: "Cash flow forecast",
         Export: "Export",
+
+        // contextMenu
+        Empty: "Empty",
+        NotEmpty: "(NotEmpty)",
+        Equal: "Equal",
+        Other: "Other",
+        NotContain: "Not contain",
+        Startwith: "Start with",
+        EndWith: "End With",
+        DeleteConditionFilter: "Delete condition filter",
 
         // cash
         CashBusiness: "Cash Business",

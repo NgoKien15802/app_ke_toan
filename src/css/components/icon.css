@@ -285,6 +285,17 @@
     object-fit: cover;
 }
 
+.icon__setting {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -33px -143px;
+    width: 23px;
+    height: 26px;
+    opacity: 0.5;
+}
+
+.icon__setting:hover {
+    opacity: 1;
+}
+
 /* .toast__icon-success {
     background-image: url("../../assets/img/success.png");
     background-repeat: no-repeat;
@@ -332,6 +343,25 @@
     background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -852px -365px;
     width: 8px;
     height: 5px;
+}
+
+.mi-close--small {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -84px -316px;
+    width: 8px;
+    height: 8px;
+    cursor: pointer;
+}
+
+.mi-drag-grid {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -419px -363px;
+    width: 10px;
+    height: 10px;
+}
+
+.mi-chevron-left {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -36px -361px;
+    width: 8px;
+    height: 14px;
 }
 
 /* Cash */

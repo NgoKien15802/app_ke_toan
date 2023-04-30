@@ -45,6 +45,14 @@
     --i-normal-dark: #7b8798;
     --i-hover-focus-dark: #ffff;
     --i-disable-dark: #4b5b73;
+
+    --popup-right__title-padding: 16px 16px 12px 16px;
+    --grid-header-background-color: #e5e8ec;
+    --grid-body__line-hover-background-color: #f2f9ff;
+    --grid-header-text-transform: none;
+    --tab__border-color: #d4d7dc;
+    --grid-header-border-left-color: #c7c7c7;
+    --grid-header-border-bottom-color: #d4d7dc;
 }
 
 * {
@@ -114,8 +122,18 @@ button {
     display: flex;
 }
 
+.flex {
+    display: flex !important;
+}
+
 .m-flex-col-gap-8 {
     column-gap: 8px;
+}
+
+.block-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .m-flex-row-gap-8 {
@@ -163,6 +181,10 @@ button {
 /* ẩn */
 .d-none {
     display: none;
+}
+
+.w-1\/2 {
+    width: 50% !important;
 }
 
 /* quay 180 deg */

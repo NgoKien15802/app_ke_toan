@@ -95,6 +95,7 @@
     align-items: center;
     column-gap: 5px;
     cursor: pointer;
+    position: relative;
 }
 
 .condition-container .filter-op-dropdown .ms-button {

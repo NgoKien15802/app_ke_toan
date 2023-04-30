@@ -43,6 +43,45 @@
                             :refElement="this.$refs.iconContextMenu"
                         ></MContextmenu>
                     </button>
+
+                    <div
+                        class="filter-conditions"
+                        v-if="filterConditonArr.length >= 1"
+                    >
+                        <div
+                            class="filter-item"
+                            v-for="(
+                                filterCondition, index
+                            ) in filterConditonArr"
+                            :key="index"
+                        >
+                            {{
+                                $t(Object.keys(filterCondition)[index]) +
+                                " " +
+                                $t(
+                                    filterCondition[
+                                        Object.keys(filterCondition)[index]
+                                    ].option
+                                ).toLocaleLowerCase() +
+                                (filterCondition[
+                                    Object.keys(filterCondition)[0]
+                                ].filterInput
+                                    ? ` "${
+                                          filterCondition[
+                                              Object.keys(filterCondition)[0]
+                                          ].filterInput
+                                      }"`
+                                    : "")
+                            }}
+                            <div class="mi-16 delete-filter-icon">
+                                <div class="mi-close--small"></div>
+                            </div>
+                        </div>
+
+                        <div class="delete-all-filter">
+                            {{ $t("DeleteConditionFilter") }}
+                        </div>
+                    </div>
                 </div>
                 <div class="content__main-right">
                     <div class="content__main-filter">
@@ -88,6 +127,16 @@
                         </div>
                     </div>
 
+                    <div class="wrap-icon" @click="handleShowSettingUI">
+                        <div class="icon__setting tooltip">
+                            <MTooltip
+                                style="top: 163%"
+                                kind="setting"
+                                :subtext="$t('TooltipCustomizeInterface')"
+                            ></MTooltip>
+                        </div>
+                    </div>
+
                     <MButton
                         mode="btnAdd"
                         :text="$t('AddNewEmployee')"
@@ -122,6 +171,8 @@
                         @showPopupDuplicate="showPopupDuplicate"
                         :isDeleteOne="isDeleteOne"
                         @setIsDeleteOne="setIsDeleteOne"
+                        @handleClickFilter="handleClickFilter"
+                        :selectedArrToSetting="selectedArrToSetting"
                     ></TheTable>
                 </div>
 
@@ -171,6 +222,14 @@
                     "
                     classTitle="toast__title-success"
                 ></MToast>
+
+                <TheSettingUI
+                    v-if="isSettingUI"
+                    @closePopupSetting="closePopupSetting"
+                    @handleSavaSelected="handleSavaSelected"
+                    :selectedArrRecv="selectedArrRecv"
+                    @handleClickSavaSelected="handleClickSavaSelected"
+                ></TheSettingUI>
             </div>
         </div>
     </div>
@@ -181,6 +240,8 @@ import axios from "axios";
 import TheTable from "@/components/layout/TheTable.vue";
 import ThePaging from "@/components/layout/ThePaging.vue";
 import Mloading from "@/components/base/Mloading.vue";
+import TheSettingUI from "@/components/layout/TheSettingUI.vue";
+
 import ThePopup from "@/components/layout/ThePopup.vue";
 export default {
     name: "EmployeeList",
@@ -209,6 +270,10 @@ export default {
             isDeleteOne: false,
             leftContextMenu: "",
             topContextMenu: "",
+            filterConditonArr: [],
+            isSettingUI: false,
+            selectedArrRecv: [],
+            selectedArrToSetting: [],
         };
     },
     components: {
@@ -216,6 +281,7 @@ export default {
         ThePaging,
         ThePopup,
         Mloading,
+        TheSettingUI,
     },
 
     watch: {
@@ -249,6 +315,19 @@ export default {
             this.isContextMenu = true;
         },
 
+        handleShowSettingUI() {
+            this.isSettingUI = true;
+        },
+
+        /**
+         * Nhận mảng filter condition text
+         * Author: KienNT (28/04/2023)
+         * @param (filterConditonArr): tham số là mảng text condition filter
+         */
+        handleClickFilter(filterConditonArr) {
+            this.filterConditonArr = filterConditonArr;
+        },
+
         /**
          * Hàm ẩn contextmenu khi click ra ngoài element
          * Author: KienNT (04/03/2023)
@@ -271,6 +350,20 @@ export default {
          */
         handleSelectChechbox(selectedCheckbox) {
             this.selectedCheckbox = selectedCheckbox;
+        },
+
+        /**
+         * Hàm gán giá trị mảng các checkbox được check bên tùy chỉnh UI
+         * Author: KienNT (30/04/2023)
+         *  @param (selectedCheckbox): tham số 1 là mảng checkbox được chọn
+         */
+        handleSavaSelected(selectedArrRecv) {
+            this.selectedArrRecv = selectedArrRecv;
+        },
+
+        handleClickSavaSelected(selectedArrToSetting) {
+            this.isSettingUI = false;
+            this.selectedArrToSetting = selectedArrToSetting.slice();
         },
 
         /**
@@ -551,6 +644,15 @@ export default {
             } catch (error) {
                 console.log(error);
             }
+        },
+
+        /**
+         * Hàm ẩn setting UI
+         * Author: KienNT (11/03/2023)
+         */
+        // popup setting:
+        closePopupSetting() {
+            this.isSettingUI = false;
         },
     },
 };

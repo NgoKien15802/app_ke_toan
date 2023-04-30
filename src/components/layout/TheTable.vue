@@ -34,12 +34,16 @@
 
                     <template v-else-if="header === 'DateOfBirth'">
                         <span style="display: flex">
-                            <span class="text-align-center">{{
-                                $t("DateOfBirth")
-                            }}</span>
+                            <span
+                                style="margin: 0 auto"
+                                class="text-align-center"
+                                >{{ $t("DateOfBirth") }}</span
+                            >
                             <div
                                 class="mi-16 icon-head mi-header-option"
-                                @click="handleShowConditionFilter($event)"
+                                @click="
+                                    handleShowConditionFilter($event, header)
+                                "
                                 ref="iconConditionFilter"
                             ></div
                         ></span>
@@ -54,7 +58,12 @@
                             ></MTooltip>
                             <div
                                 class="mi-16 icon-head mi-header-option"
-                                @click="handleShowConditionFilter($event)"
+                                @click="
+                                    handleShowConditionFilter(
+                                        $event,
+                                        $t('TooltipIdentityNumber')
+                                    )
+                                "
                                 ref="iconConditionFilter"
                             ></div>
                         </span>
@@ -71,7 +80,9 @@
                             }}</span>
                             <div
                                 class="mi-16 icon-head mi-header-option"
-                                @click="handleShowConditionFilter($event)"
+                                @click="
+                                    handleShowConditionFilter($event, header)
+                                "
                                 ref="iconConditionFilter"
                             ></div>
                         </span>
@@ -140,8 +151,8 @@
                                 ? 'tr-hover text-align-left min-w100'
                                 : 'text-align-left min-w100'
                         "
-                        :text="formatDate(employee?.DateOfBirth)"
-                        :subtext="formatDate(employee?.DateOfBirth)"
+                        :text="formatGender(employee?.Gender)"
+                        :subtext="formatGender(employee?.Gender)"
                     ></MTooltip>
 
                     <MTooltip
@@ -218,8 +229,11 @@
         v-if="isConditionFilter"
         :top="topConditionFilter"
         :left="leftConditionFilter"
+        :filterConditon="filterConditon"
+        :header="header"
         :refElement="this.$refs.iconConditionFilter"
         @handleHideConditionFilter="handleHideConditionFilter"
+        @handleClickFilter="handleClickFilter"
     ></MconditionFilter>
 </template>
 <script>
@@ -228,6 +242,7 @@ import MISAResouce from "@/js/resource";
 import MISAEnum from "@/js/enum";
 import moment from "moment";
 import { VueDraggableNext } from "vue-draggable-next";
+
 export default {
     name: "TheTable",
     display: "Table Column",
@@ -259,6 +274,9 @@ export default {
         },
         isDeleteOne: {
             type: Boolean,
+        },
+        selectedArrToSetting: {
+            type: Array,
         },
     },
 
@@ -298,6 +316,10 @@ export default {
             leftConditionFilter: 0,
             isConditionFilter: false,
             myInput: null,
+            filterConditon: "",
+            header: "",
+            selectedArrToSettingUI: [],
+            cloneHeader: [],
         };
     },
 
@@ -308,6 +330,7 @@ export default {
     created() {
         try {
             this.employees = new Array(10).fill(0);
+            this.cloneHeader = this.headers;
             this.loadData();
         } catch (error) {
             console.log(error);
@@ -403,6 +426,37 @@ export default {
                 this.handleDeleteRow();
             }
         },
+
+        selectedArrToSetting: {
+            handler(newValue, oldValue) {
+                if (newValue.length !== oldValue.length) {
+                    this.selectedArrToSettingUI = newValue;
+                    // Lấy phần tử từ thứ 2 đến phần tử kế cuối của headers
+
+                    let filteredHeaders = this.cloneHeader
+                        .slice(1, -1)
+                        .filter((el) => {
+                            return this.selectedArrToSettingUI.includes(el);
+                        });
+                    // Thêm hai phần tử đầu và cuối vào kết quả lọc
+                    filteredHeaders = [
+                        this.cloneHeader[0],
+                        ...filteredHeaders,
+                        this.cloneHeader[this.cloneHeader.length - 1],
+                    ];
+                    this.isShowSkeleton = true;
+                    const cloneEmployees = this.employees;
+                    this.employees = new Array(10).fill(0);
+                    setTimeout(() => {
+                        this.employees = cloneEmployees;
+                        this.headers = filteredHeaders;
+                        this.isShowSkeleton = false;
+                    }, 2000);
+                    console.log(this.headers);
+                }
+            },
+            deep: true,
+        },
     },
 
     methods: {
@@ -475,17 +529,32 @@ export default {
         },
 
         /**
+         * Xử lý gửi mảng filter condition lên cha
+         * Author: KienNT (28/04/2023)
+         * @param (filterConditonArr): tham số là mảng text condition filter
+         */
+        handleClickFilter(filterConditonArr) {
+            this.$emit("handleClickFilter", filterConditonArr);
+        },
+
+        /**
          * xử lý hiển thị Condition filter
          * Author: KienNT (28/04/2023)
          * @param (event): là event
          */
-        handleShowConditionFilter(event) {
+        handleShowConditionFilter(event, header) {
+            this.header = header;
+            this.filterConditon = this.$t(header).toLocaleLowerCase();
             this.isConditionFilter = !this.isConditionFilter;
             this.leftConditionFilter =
                 event.target.getBoundingClientRect().left;
             this.topConditionFilter = event.target.getBoundingClientRect().top;
         },
 
+        /**
+         * Bắt sự kiện ẩn condition Filter
+         * Author: KienNT (28/04/2023)
+         */
         handleHideConditionFilter() {
             this.isConditionFilter = false;
         },
