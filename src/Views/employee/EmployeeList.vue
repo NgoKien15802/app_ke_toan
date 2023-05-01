@@ -173,6 +173,7 @@
                         @setIsDeleteOne="setIsDeleteOne"
                         @handleClickFilter="handleClickFilter"
                         :selectedArrToSetting="selectedArrToSetting"
+                        @changeSelectedArrToSetting="changeSelectedArrToSetting"
                     ></TheTable>
                 </div>
 
@@ -361,9 +362,18 @@ export default {
             this.selectedArrRecv = selectedArrRecv;
         },
 
+        /**
+         * Hàm gán giá trị mảng các checkbox được check bên tùy chỉnh UI khi click btn cất
+         * Author: KienNT (01/05/2023)
+         *  @param (selectedArrToSetting): tham số 1 là mảng checkbox được chọn
+         */
         handleClickSavaSelected(selectedArrToSetting) {
             this.isSettingUI = false;
             this.selectedArrToSetting = selectedArrToSetting.slice();
+        },
+
+        changeSelectedArrToSetting() {
+            this.selectedArrRecv = [];
         },
 
         /**

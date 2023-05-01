@@ -92,7 +92,7 @@
 
 .employee thead tr th:nth-child(3),
 .employee tbody tr td:nth-child(3) {
-    left: calc(var(--size-column-first) + var(--size-column-second));
+    left: var(--size-column-total);
 }
 
 .employee tbody tr td:nth-child(3)::after,

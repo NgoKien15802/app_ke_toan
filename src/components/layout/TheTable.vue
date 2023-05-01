@@ -23,6 +23,7 @@
                         header === 'Feature' ? 'min-w120' : '',
                         header === 'Selected' ? 'min-w40' : '',
                     ]"
+                    ref="thElement"
                 >
                     <template v-if="header === 'Selected'">
                         <MCheckbox
@@ -329,8 +330,9 @@ export default {
      */
     created() {
         try {
-            this.employees = new Array(10).fill(0);
+            this.employees = new Array(5).fill(0);
             this.cloneHeader = this.headers;
+            this.$emit("changeSelectedArrToSetting");
             this.loadData();
         } catch (error) {
             console.log(error);
@@ -451,10 +453,37 @@ export default {
                         this.employees = cloneEmployees;
                         this.headers = filteredHeaders;
                         this.isShowSkeleton = false;
+                        const thElement = this.$refs["thElement"];
+                        if (thElement) {
+                            for (
+                                let index = 0;
+                                index < thElement.length;
+                                index++
+                            ) {
+                                const element = thElement[index];
+                                if (
+                                    element.innerText ===
+                                    this.$t(this.headers[1])
+                                ) {
+                                    console.log(
+                                        element,
+                                        element.offsetWidth + 40 + "px"
+                                    );
+                                    document.documentElement.style.setProperty(
+                                        "--size-column-total",
+                                        element.offsetWidth + 40 + "px"
+                                    );
+                                }
+                            }
+                        }
                     }, 2000);
-                    console.log(this.headers);
                 }
             },
+            deep: true,
+        },
+
+        headers: {
+            handler() {},
             deep: true,
         },
     },

@@ -31,6 +31,10 @@
     /* độ rộng cột thứ nhất, thứ 2 */
     --size-column-first: 40px;
     --size-column-second: 160px;
+    --size-column-total: calc(
+        var(--size-column-first) + var(--size-column-second)
+    );
+
     --size-row: 30px;
 
     /* bg tooltip để thay đổi khi thông báo lỗi hoặc thông báo */
