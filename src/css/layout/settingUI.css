@@ -300,6 +300,10 @@ th {
     background: #fff;
 }
 
+.is-full-screen-true {
+    transform: rotateY(180deg);
+}
+
 .is-full-screen-false {
     transform: rotateY(0deg);
 }

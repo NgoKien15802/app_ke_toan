@@ -20,13 +20,27 @@
 
 .employee tr td {
     padding: 0 10px;
-    border-right: 1px dotted var(--boder-primary);
+
     border-bottom: 1px solid var(--boder-primary);
+}
+
+.employee tr td:not(:last-child):not(:nth-last-child(2)):not(:first-child) {
+    border-right: 1px dotted var(--boder-primary);
 }
 
 .employee tr th {
     padding: 0 10px;
     border-bottom: 1px solid var(--boder-primary);
+}
+
+.employee tr th:not(:last-child):not(:nth-last-child(2))::after {
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 1px;
+    right: 0;
+    top: 0;
+    border-right: 1px solid var(--boder-primary);
 }
 
 .employee .table__field th {
@@ -67,11 +81,11 @@
 .employee thead tr th:first-child .wrap-icon {
     margin: 0 auto;
 }
-
+/* 
 .employee thead tr th:nth-child(3),
-.employee tbody tr td:nth-child(3),
+.employee tbody tr td:nth-child(3), 
 .employee thead tr th:nth-child(2),
-.employee tbody tr td:nth-child(2),
+.employee tbody tr td:nth-child(2),*/
 .employee thead tr th:first-child,
 .employee tbody tr td:first-child {
     position: sticky;
@@ -85,18 +99,18 @@
     left: 0;
 }
 
-.employee thead tr th:nth-child(2),
+/* .employee thead tr th:nth-child(2),
 .employee tbody tr td:nth-child(2) {
     left: var(--size-column-first);
-}
+} */
 
-.employee thead tr th:nth-child(3),
+/* .employee thead tr th:nth-child(3),
 .employee tbody tr td:nth-child(3) {
     left: var(--size-column-total);
-}
+} */
 
-.employee tbody tr td:nth-child(3)::after,
-.employee tbody tr td:nth-child(2)::after,
+/* .employee tbody tr td:nth-child(3)::after,
+.employee tbody tr td:nth-child(2)::after, */
 .employee tbody tr td:first-child::after {
     content: "";
     height: 100%;
@@ -107,7 +121,7 @@
     border-right: 1px dotted var(--boder-primary);
 }
 
-.employee thead tr th:not(:nth-last-child(2)):not(:last-child)::after {
+/* .employee thead tr th:first-child::after {
     content: "";
     width: 1px;
     height: 100%;
@@ -116,7 +130,7 @@
     top: 0;
     z-index: 1;
     background-color: var(--boder-primary);
-}
+} */
 
 .employee thead tr th:nth-child(3),
 .employee thead tr th:nth-child(2),

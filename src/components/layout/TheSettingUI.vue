@@ -7,6 +7,7 @@
         <div
             class="ms-popup ms-popup-content ms-popup-is-right"
             style="min-width: 800px; max-width: 800px; width: 800px"
+            ref="containerSettingUI"
         >
             <span
                 class="popup-shortkey"
@@ -274,7 +275,11 @@
                     </div>
                 </div>
             </div>
-            <div class="resize flex is-full-screen-false">
+            <div
+                class="resize flex is-full-screen-false"
+                @click="handleResizeComponent"
+                ref="iconResize"
+            >
                 <div class="mi mi-16 mi-chevron-left"></div>
             </div>
             <div class="ms-popup--extend-part"></div>
@@ -293,47 +298,58 @@ export default {
     data() {
         return {
             selectedAll: false,
-            selectedArr: [],
+            selectedArr: [
+                "EmployeeCode",
+                "FullName",
+                "Gender",
+                "DateOfBirth",
+                "IdentityNumber",
+                "PositionName",
+                "DepartmentName",
+                "BankAccount",
+                "BankName",
+                "BankBranch",
+            ],
             columns: [
                 {
-                    isSelected: false,
+                    isSelected: true,
                     nameColumn: "EmployeeCode",
                 },
                 {
-                    isSelected: false,
+                    isSelected: true,
                     nameColumn: "FullName",
                 },
                 {
-                    isSelected: false,
+                    isSelected: true,
                     nameColumn: "Gender",
                 },
                 {
-                    isSelected: false,
+                    isSelected: true,
                     nameColumn: "DateOfBirth",
                 },
                 {
-                    isSelected: false,
+                    isSelected: true,
                     nameColumn: "IdentityNumber",
                 },
                 {
-                    isSelected: false,
+                    isSelected: true,
                     nameColumn: "PositionName",
                 },
                 {
-                    isSelected: false,
+                    isSelected: true,
                     nameColumn: "DepartmentName",
                 },
 
                 {
-                    isSelected: false,
+                    isSelected: true,
                     nameColumn: "BankAccount",
                 },
                 {
-                    isSelected: false,
+                    isSelected: true,
                     nameColumn: "BankName",
                 },
                 {
-                    isSelected: false,
+                    isSelected: true,
                     nameColumn: "BankBranch",
                 },
             ],
@@ -346,20 +362,14 @@ export default {
         window.removeEventListener("keydown", this.handlePressKeyShort);
     },
     created() {
-        this.selectedArr = this.selectedArrRecv;
+        if (this.selectedArrRecv.length > 0) {
+            this.selectedArr = this.selectedArrRecv;
+        }
         if (this.selectedArr && this.selectedArr.length > 0) {
-            this.columns.forEach((el) => {
-                for (let index = 0; index < this.selectedArr.length; index++) {
-                    const oldElement = this.selectedArr[index];
-                    if (
-                        el.nameColumn === oldElement &&
-                        el.isSelected === false
-                    ) {
-                        el.isSelected = true;
-                        break;
-                    }
-                }
-            });
+            this.columns.forEach(
+                (el) =>
+                    (el.isSelected = this.selectedArr.includes(el.nameColumn))
+            );
         }
 
         if (
@@ -467,6 +477,33 @@ export default {
          */
         btnSave() {
             this.$emit("handleClickSavaSelected", this.selectedArr);
+        },
+
+        /**
+         * Xử lý thay đổi width của component
+         * Author: KienNT (01/05/2023)
+         */
+        handleResizeComponent() {
+            const iconResize = this.$refs["iconResize"];
+            const containerSettingUI = this.$refs["containerSettingUI"];
+            if (iconResize) {
+                if (iconResize.classList.contains("is-full-screen-false")) {
+                    iconResize.classList.remove("is-full-screen-false");
+                    iconResize.classList.add("is-full-screen-true");
+                } else if (
+                    iconResize.classList.contains("is-full-screen-true")
+                ) {
+                    iconResize.classList.remove("is-full-screen-true");
+                    iconResize.classList.add("is-full-screen-false");
+                }
+            }
+            if (containerSettingUI) {
+                if (iconResize.classList.contains("is-full-screen-true")) {
+                    containerSettingUI.style.minWidth = "calc(100vw - 6px)";
+                } else {
+                    containerSettingUI.style.minWidth = "800px";
+                }
+            }
         },
     },
 };

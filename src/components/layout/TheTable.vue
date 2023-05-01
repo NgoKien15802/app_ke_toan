@@ -453,29 +453,6 @@ export default {
                         this.employees = cloneEmployees;
                         this.headers = filteredHeaders;
                         this.isShowSkeleton = false;
-                        const thElement = this.$refs["thElement"];
-                        if (thElement) {
-                            for (
-                                let index = 0;
-                                index < thElement.length;
-                                index++
-                            ) {
-                                const element = thElement[index];
-                                if (
-                                    element.innerText ===
-                                    this.$t(this.headers[1])
-                                ) {
-                                    console.log(
-                                        element,
-                                        element.offsetWidth + 40 + "px"
-                                    );
-                                    document.documentElement.style.setProperty(
-                                        "--size-column-total",
-                                        element.offsetWidth + 40 + "px"
-                                    );
-                                }
-                            }
-                        }
                     }, 2000);
                 }
             },
