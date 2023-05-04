@@ -161,7 +161,7 @@ const MISAResouce = {
         Equal: "Bằng",
         Other: "Khác",
         NotContain: "Không chứa",
-        Startwith: "Bắt đầu với",
+        StartWith: "Bắt đầu với",
         EndWith: "Kết thúc với",
         DeleteConditionFilter: "Xóa điều kiện lọc",
 
@@ -347,7 +347,7 @@ const MISAResouce = {
         Equal: "Equal",
         Other: "Other",
         NotContain: "Not contain",
-        Startwith: "Start with",
+        StartWith: "Start with",
         EndWith: "End With",
         DeleteConditionFilter: "Delete condition filter",
 

@@ -60,10 +60,7 @@
                             <div
                                 class="mi-16 icon-head mi-header-option"
                                 @click="
-                                    handleShowConditionFilter(
-                                        $event,
-                                        $t('TooltipIdentityNumber')
-                                    )
+                                    handleShowConditionFilter($event, header)
                                 "
                                 ref="iconConditionFilter"
                             ></div>
@@ -235,6 +232,7 @@
         :refElement="this.$refs.iconConditionFilter"
         @handleHideConditionFilter="handleHideConditionFilter"
         @handleClickFilter="handleClickFilter"
+        :filterConditonArrs="filterConditonArr"
     ></MconditionFilter>
 </template>
 <script>
@@ -279,6 +277,9 @@ export default {
         selectedArrToSetting: {
             type: Array,
         },
+        filterConditonArr: {
+            type: Array,
+        },
     },
 
     data() {
@@ -321,6 +322,8 @@ export default {
             header: "",
             selectedArrToSettingUI: [],
             cloneHeader: [],
+            conditionFilters: "{}",
+            conditionFilterArr: [],
         };
     },
 
@@ -459,6 +462,25 @@ export default {
             deep: true,
         },
 
+        conditionFilterArr: {
+            handler(newValue) {
+                let filterObject = newValue.reduce((acc, el) => {
+                    return { ...acc, ...el[Object.keys(el)[0]] };
+                }, {});
+                filterObject = `'${JSON.stringify(filterObject)}'`;
+                this.conditionFilters = filterObject || "{}";
+                this.loadData();
+            },
+            deep: true,
+        },
+
+        filterConditonArr: {
+            handler(newValue) {
+                this.conditionFilterArr = newValue;
+            },
+            deep: true,
+        },
+
         headers: {
             handler() {},
             deep: true,
@@ -474,7 +496,7 @@ export default {
             try {
                 axios
                     .get(
-                        `https://localhost:7153/api/v1/Employees/Filter?keyword=${this.keyWord}&pageSize=${this.pageSize}&pageNumber=${this.pageNumber}`
+                        `https://localhost:7153/api/v1/Employees/Filter?keyword=${this.keyWord}&pageSize=${this.pageSize}&conditionFilters=${this.conditionFilters}&pageNumber=${this.pageNumber}`
                     )
                     .then((this.isShowSkeleton = true))
                     .then((response) => {
@@ -540,6 +562,7 @@ export default {
          * @param (filterConditonArr): tham số là mảng text condition filter
          */
         handleClickFilter(filterConditonArr) {
+            this.conditionFilterArr = filterConditonArr;
             this.$emit("handleClickFilter", filterConditonArr);
         },
 

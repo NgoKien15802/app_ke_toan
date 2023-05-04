@@ -52,7 +52,10 @@
         </div>
         <div class="buttons row-flex">
             <div>
-                <div class="btn btn-default" @click="handleHideConditionFilter">
+                <div
+                    class="btn btn-default"
+                    @click="handleDestroyConditionFilter"
+                >
                     {{ $t("Unfiltered") }}
                 </div>
             </div>
@@ -61,7 +64,7 @@
                     :text="$t('Filter')"
                     kind="primary"
                     className="btn-primary"
-                    :click="() => handleFilter(textBtnLink, keyWordSearch)"
+                    @click="() => handleFilter(textBtnLink, keyWordSearch)"
                 ></MButton>
             </div>
         </div>
@@ -69,6 +72,7 @@
 </template>
 
 <script>
+import MISAEnum from "@/js/enum";
 export default {
     name: "MconditionFilter",
     props: {
@@ -91,8 +95,14 @@ export default {
             type: Number,
         },
 
+        // ref của element
         refElement: {
             type: Node,
+        },
+
+        // mảng lọc
+        filterConditonArrs: {
+            type: Array,
         },
     },
 
@@ -100,6 +110,7 @@ export default {
         return {
             isContextMenu: false,
             textBtnLink: "Contain",
+            keyWordSearch: "",
             contextArray: [
                 {
                     text: "Empty",
@@ -121,7 +132,7 @@ export default {
                 },
 
                 {
-                    text: "Startwith",
+                    text: "StartWith",
                 },
 
                 {
@@ -142,6 +153,40 @@ export default {
         this.$nextTick(function () {
             this.$refs["minput"] && this.$refs["minput"].focus();
         });
+        if (this.filterConditonArrs.length > 0) {
+            this.filterConditonArr = [...this.filterConditonArrs];
+
+            this.filterConditonArr.forEach((el) => {
+                if (this.header === "Gender") {
+                    if (Object.keys(el)[0] === this.header) {
+                        this.keyWordSearch =
+                            el[Object.keys(el)[0]][Object.keys(el)[0]] ===
+                            MISAEnum.Gender.Male
+                                ? this.$t("LabelMale")
+                                : el[Object.keys(el)[0]][Object.keys(el)[0]] ===
+                                  MISAEnum.Gender.Female
+                                ? this.$t("LabelFemale")
+                                : el[Object.keys(el)[0]][Object.keys(el)[0]] ===
+                                  MISAEnum.Gender.Other
+                                ? this.$t("LabelOther")
+                                : el[Object.keys(el)[0]][Object.keys(el)[0]];
+                        this.textBtnLink =
+                            el[Object.keys(el)[0]][
+                                `${Object.keys(el)[0]}Option`
+                            ];
+                    }
+                } else {
+                    if (Object.keys(el)[0] === this.header) {
+                        this.keyWordSearch =
+                            el[Object.keys(el)[0]][Object.keys(el)[0]];
+                        this.textBtnLink =
+                            el[Object.keys(el)[0]][
+                                `${Object.keys(el)[0]}Option`
+                            ];
+                    }
+                }
+            });
+        }
     },
 
     mounted() {
@@ -151,22 +196,78 @@ export default {
         window.removeEventListener("click", this.handleClickOutConditionFilter);
     },
 
+    watch: {
+        textBtnLink: function (newValue) {
+            if (
+                this.$t(newValue) === this.$t("Empty") ||
+                this.$t(newValue) === this.$t("NotEmpty")
+            ) {
+                this.keyWordSearch = "";
+            }
+        },
+    },
+
     methods: {
+        /**
+         * Bắt sự kiện click vào lọc
+         * Author: KienNT (03/05/2023)
+         *  @param {textBtnLink,keyWordSearch}: tham số 1: Btn link, keyWordSearch: tìm kiếm theo điều kiện
+         */
         handleFilter(textBtnLink, keyWordSearch) {
             this.handleHideConditionFilter();
-            // const filter = `${
-            //     this.filterConditon.charAt(0).toUpperCase() +
-            //     this.filterConditon.slice(1)
-            // } ${this.$t(textBtnLink).toLocaleLowerCase()} ${
-            //     keyWordSearch ? `"${keyWordSearch}"` : ""
-            // } `;
-
-            this.filterConditonArr.push({
-                [this.header]: {
-                    option: textBtnLink,
-                    filterInput: keyWordSearch || "",
-                },
-            });
+            const index =
+                this.filterConditonArr.length > 0
+                    ? this.filterConditonArr.findIndex((item) =>
+                          Object.prototype.hasOwnProperty.call(
+                              item,
+                              this.header
+                          )
+                      )
+                    : -1;
+            if (this.header === "Gender") {
+                if (index === -1) {
+                    this.filterConditonArr.push({
+                        [this.header]: {
+                            [`${this.header}Option`]: textBtnLink,
+                            [this.header]:
+                                keyWordSearch === this.$t("LabelMale")
+                                    ? MISAEnum.Gender.Male
+                                    : keyWordSearch === this.$t("LabelFemale")
+                                    ? MISAEnum.Gender.Female
+                                    : keyWordSearch === this.$t("LabelOther")
+                                    ? MISAEnum.Gender.Other
+                                    : keyWordSearch || "",
+                        },
+                    });
+                } else {
+                    this.filterConditonArr[index][this.header][
+                        `${this.header}Option`
+                    ] = textBtnLink;
+                    this.filterConditonArr[index][this.header][this.header] =
+                        keyWordSearch === this.$t("LabelMale")
+                            ? MISAEnum.Gender.Male
+                            : keyWordSearch === this.$t("LabelFemale")
+                            ? MISAEnum.Gender.Female
+                            : keyWordSearch === this.$t("LabelOther")
+                            ? MISAEnum.Gender.Other
+                            : keyWordSearch || "";
+                }
+            } else {
+                if (index === -1) {
+                    this.filterConditonArr.push({
+                        [this.header]: {
+                            [`${this.header}Option`]: textBtnLink,
+                            [this.header]: keyWordSearch || "",
+                        },
+                    });
+                } else {
+                    this.filterConditonArr[index][this.header][
+                        `${this.header}Option`
+                    ] = textBtnLink;
+                    this.filterConditonArr[index][this.header][this.header] =
+                        keyWordSearch || "";
+                }
+            }
 
             this.$emit("handleClickFilter", this.filterConditonArr);
         },
@@ -178,6 +279,28 @@ export default {
         handleClickItemCondition(text) {
             this.textBtnLink = text;
         },
+
+        /**
+         * đóng và xóa condition filter
+         * Author: KienNT (04/05/2023)
+         */
+        handleDestroyConditionFilter() {
+            this.handleHideConditionFilter();
+            const index =
+                this.filterConditonArr.length > 0
+                    ? this.filterConditonArr.findIndex((item) =>
+                          Object.prototype.hasOwnProperty.call(
+                              item,
+                              this.header
+                          )
+                      )
+                    : -1;
+            if (index !== -1) {
+                this.filterConditonArr.splice(index, 1);
+            }
+            this.$emit("handleClickFilter", this.filterConditonArr);
+        },
+
         /**
          * nghe sự kiện window. Nếu click ko phải là ConditionFilter
          * Author: KienNT (28/04/2023)

@@ -56,29 +56,151 @@
                             :key="index"
                         >
                             {{
-                                $t(Object.keys(filterCondition)[index]) +
-                                " " +
-                                $t(
-                                    filterCondition[
-                                        Object.keys(filterCondition)[index]
-                                    ].option
-                                ).toLocaleLowerCase() +
-                                (filterCondition[
-                                    Object.keys(filterCondition)[0]
-                                ].filterInput
-                                    ? ` "${
+                                Object.keys(filterCondition)[index]
+                                    ? $t(Object.keys(filterCondition)[index]) +
+                                      " " +
+                                      $t(
+                                          filterCondition[
+                                              Object.keys(filterCondition)[
+                                                  index
+                                              ]
+                                          ][
+                                              `${
+                                                  Object.keys(filterCondition)[
+                                                      index
+                                                  ]
+                                              }Option`
+                                          ]
+                                      ).toLocaleLowerCase() +
+                                      (filterCondition[
+                                          Object.keys(filterCondition)[index]
+                                      ][Object.keys(filterCondition)[index]] ||
+                                      filterCondition[
+                                          Object.keys(filterCondition)[index]
+                                      ][Object.keys(filterCondition)[index]] ===
+                                          0
+                                          ? ` "${
+                                                filterCondition[
+                                                    Object.keys(
+                                                        filterCondition
+                                                    )[index]
+                                                ][
+                                                    Object.keys(
+                                                        filterCondition
+                                                    )[index]
+                                                ] === MISAEnum.Gender.Male
+                                                    ? this.$t("LabelMale")
+                                                    : filterCondition[
+                                                          Object.keys(
+                                                              filterCondition
+                                                          )[index]
+                                                      ][
+                                                          Object.keys(
+                                                              filterCondition
+                                                          )[index]
+                                                      ] ===
+                                                      MISAEnum.Gender.Female
+                                                    ? this.$t("LabelFemale")
+                                                    : filterCondition[
+                                                          Object.keys(
+                                                              filterCondition
+                                                          )[index]
+                                                      ][
+                                                          Object.keys(
+                                                              filterCondition
+                                                          )[index]
+                                                      ] ===
+                                                      MISAEnum.Gender.Other
+                                                    ? this.$t("LabelOther")
+                                                    : filterCondition[
+                                                          Object.keys(
+                                                              filterCondition
+                                                          )[index]
+                                                      ][
+                                                          Object.keys(
+                                                              filterCondition
+                                                          )[index]
+                                                      ]
+                                            }"`
+                                          : "")
+                                    : $t(Object.keys(filterCondition)[0]) +
+                                      " " +
+                                      $t(
                                           filterCondition[
                                               Object.keys(filterCondition)[0]
-                                          ].filterInput
-                                      }"`
-                                    : "")
+                                          ][
+                                              `${
+                                                  Object.keys(
+                                                      filterCondition
+                                                  )[0]
+                                              }Option`
+                                          ]
+                                      ).toLocaleLowerCase() +
+                                      (filterCondition[
+                                          Object.keys(filterCondition)[0]
+                                      ][Object.keys(filterCondition)[0]] ||
+                                      filterCondition[
+                                          Object.keys(filterCondition)[0]
+                                      ][Object.keys(filterCondition)[0]] === 0
+                                          ? ` "${
+                                                filterCondition[
+                                                    Object.keys(
+                                                        filterCondition
+                                                    )[0]
+                                                ][
+                                                    Object.keys(
+                                                        filterCondition
+                                                    )[0]
+                                                ] === MISAEnum.Gender.Male
+                                                    ? this.$t("LabelMale")
+                                                    : filterCondition[
+                                                          Object.keys(
+                                                              filterCondition
+                                                          )[0]
+                                                      ][
+                                                          Object.keys(
+                                                              filterCondition
+                                                          )[0]
+                                                      ] ===
+                                                      MISAEnum.Gender.Female
+                                                    ? this.$t("LabelFemale")
+                                                    : filterCondition[
+                                                          Object.keys(
+                                                              filterCondition
+                                                          )[0]
+                                                      ][
+                                                          Object.keys(
+                                                              filterCondition
+                                                          )[0]
+                                                      ] ===
+                                                      MISAEnum.Gender.Other
+                                                    ? this.$t("LabelOther")
+                                                    : filterCondition[
+                                                          Object.keys(
+                                                              filterCondition
+                                                          )[0]
+                                                      ][
+                                                          Object.keys(
+                                                              filterCondition
+                                                          )[0]
+                                                      ]
+                                            }"`
+                                          : "")
                             }}
-                            <div class="mi-16 delete-filter-icon">
+                            <div
+                                class="mi-16 delete-filter-icon"
+                                @click="
+                                    () => handleDeleteFilter(filterCondition)
+                                "
+                            >
                                 <div class="mi-close--small"></div>
                             </div>
                         </div>
 
-                        <div class="delete-all-filter">
+                        <div
+                            class="delete-all-filter"
+                            @click="handleDeleteAllFilter"
+                        >
                             {{ $t("DeleteConditionFilter") }}
                         </div>
                     </div>
@@ -174,6 +296,7 @@
                         @handleClickFilter="handleClickFilter"
                         :selectedArrToSetting="selectedArrToSetting"
                         @changeSelectedArrToSetting="changeSelectedArrToSetting"
+                        :filterConditonArr="filterConditonArr"
                     ></TheTable>
                 </div>
 
@@ -244,10 +367,12 @@ import Mloading from "@/components/base/Mloading.vue";
 import TheSettingUI from "@/components/layout/TheSettingUI.vue";
 
 import ThePopup from "@/components/layout/ThePopup.vue";
+import MISAEnum from "@/js/enum";
 export default {
     name: "EmployeeList",
     data() {
         return {
+            MISAEnum,
             MISAResouce,
             isShowPopup: false,
             isContextMenu: false,
@@ -327,6 +452,25 @@ export default {
          */
         handleClickFilter(filterConditonArr) {
             this.filterConditonArr = filterConditonArr;
+        },
+
+        /**
+         * Hàm xoá 1 điều kiện lọc
+         * Author: KienNT (02/05/2023)
+         */
+        handleDeleteFilter(filterCondition) {
+            const index = this.filterConditonArr.indexOf(filterCondition);
+            if (index !== -1) {
+                this.filterConditonArr.splice(index, 1);
+            }
+        },
+
+        /**
+         * Hàm xoá tất cả điều kiện lọc
+         * Author: KienNT (02/05/2023)
+         */
+        handleDeleteAllFilter() {
+            this.filterConditonArr = [];
         },
 
         /**
