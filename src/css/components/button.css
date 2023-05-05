@@ -88,6 +88,7 @@
     line-height: 26px;
     background-color: transparent;
     cursor: pointer;
+    font-family: notosans, sans-serif;
 }
 
 .btn-link-primary {

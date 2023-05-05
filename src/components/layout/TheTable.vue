@@ -93,6 +93,7 @@
                 v-if="isShowSkeleton"
                 :employees="employees"
             ></MSkeletonTable>
+
             <tr
                 v-else
                 v-for="(employee, index) in employees"
@@ -149,8 +150,8 @@
                                 ? 'tr-hover text-align-left min-w100'
                                 : 'text-align-left min-w100'
                         "
-                        :text="formatGender(employee?.Gender)"
-                        :subtext="formatGender(employee?.Gender)"
+                        :text="formatGender(employee?.Gender) || ''"
+                        :subtext="formatGender(employee?.Gender) || ''"
                     ></MTooltip>
 
                     <MTooltip
@@ -161,8 +162,8 @@
                                 ? 'tr-hover text-align-center min-w160'
                                 : 'text-align-center min-w160'
                         "
-                        :text="formatDate(employee?.DateOfBirth)"
-                        :subtext="formatDate(employee?.DateOfBirth)"
+                        :text="formatDate(employee?.DateOfBirth) || ''"
+                        :subtext="formatDate(employee?.DateOfBirth) || ''"
                     ></MTooltip>
 
                     <MTooltip
@@ -179,14 +180,14 @@
                             header === 'BankName' ? 'min-w160' : '',
                             header === 'BankBranch' ? 'min-w350' : '',
                         ]"
-                        :text="employee[header]"
-                        :subtext="employee[header]"
+                        :text="employee[header] || ''"
+                        :subtext="employee[header] || ''"
                     ></MTooltip>
                 </template>
             </tr>
         </tbody>
     </table>
-
+    <MNotData v-if="employees.length <= 0 && !isShowSkeleton"></MNotData>
     <MContextmenu
         v-if="isContextMenu"
         :left="leftContextMenu"

@@ -163,6 +163,10 @@ const MISAResouce = {
         NotContain: "Không chứa",
         StartWith: "Bắt đầu với",
         EndWith: "Kết thúc với",
+        LessThan: "Nhỏ hơn",
+        LessThanOrEqual: "Nhỏ hơn hoặc bằng",
+        GreaterThan: "Lớn hơn",
+        GreaterThanOrEqual: "Lớn hơn hoặc bằng",
         DeleteConditionFilter: "Xóa điều kiện lọc",
 
         // cash
@@ -349,6 +353,10 @@ const MISAResouce = {
         NotContain: "Not contain",
         StartWith: "Start with",
         EndWith: "End With",
+        LessThan: "Less than",
+        LessThanOrEqual: "Less than or equal",
+        GreaterThan: "Greater than",
+        GreaterThanOrEqual: "Greater than or equal",
         DeleteConditionFilter: "Delete condition filter",
 
         // cash

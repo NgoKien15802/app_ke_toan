@@ -9,7 +9,101 @@
             <div class="lock">{{ $t("FixThisColumn") }}</div>
         </div>
         <div class="filter-container">
-            <div class="view-fitler-text">
+            <div class="view-fitler-text" v-if="header === 'Gender'">
+                <div class="column-filter">
+                    {{ $t("Filter") }} {{ filterConditon }}
+                </div>
+
+                <div class="filter-value">
+                    <div
+                        class="paging__record block__lang"
+                        @click="handleOpenDropdown"
+                        ref="dropdown"
+                        style="width: 100%"
+                    >
+                        <div
+                            class="input__wrapper input__wrapprt-lang dropdown"
+                        >
+                            <button
+                                class="input__icon dropdown-icon"
+                                fdprocessedid="jeq9qa"
+                            >
+                                <div
+                                    class="input__icon-dropdown"
+                                    ref="iconDropdown"
+                                ></div>
+                            </button>
+                            <input
+                                readonly="true"
+                                type="text"
+                                style="border: none"
+                                class="input__type dropdown-input paging-input input__lang"
+                                v-model="keyWordSearch"
+                                fdprocessedid="epqss"
+                            />
+
+                            <div
+                                v-if="isOpenDropdown"
+                                class="option__wrapper-lang"
+                            >
+                                <ul class="option__list scrollbar_customize">
+                                    <TheOptionItem
+                                        v-for="(item, index) in optionItem"
+                                        :key="index"
+                                        :text="$t(item.text)"
+                                        :isActive="item.isActive"
+                                        @handleClickItem="handleClickItem"
+                                        :isDropdownLang="true"
+                                    ></TheOptionItem>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="view-fitler-text" v-else-if="header === 'DateOfBirth'">
+                <div class="column-filter">
+                    {{ $t("Filter") }} {{ filterConditon }}
+                </div>
+                <div
+                    class="filter-op-dropdown"
+                    ref="iconContextMenu"
+                    @click="handleClickOptionCondition"
+                >
+                    <MButton
+                        kind="link"
+                        className="link-btn btn-link"
+                        :text="$t(textBtnLink)"
+                    >
+                        <MContextmenu
+                            v-show="isContextMenu"
+                            kind="conditionFilter"
+                            @hideContextMenu="hideContextMenu"
+                            :refElement="this.$refs.iconContextMenu"
+                            :contextArray="contextArrayDOB"
+                            @handleClickItemCondition="handleClickItemCondition"
+                            ref="TxtContextMenu"
+                        ></MContextmenu>
+                    </MButton>
+                    <div class="icon__arrow"></div>
+                </div>
+
+                <div class="filter-value">
+                    <input
+                        type="date"
+                        class="input__type input__condition"
+                        v-model="keyWordSearch"
+                        ref="minput"
+                        :disabled="
+                            $t(textBtnLink) === $t('Empty') ||
+                            $t(textBtnLink) === $t('NotEmpty')
+                        "
+                    />
+                </div>
+            </div>
+
+            <div class="view-fitler-text" v-else>
                 <div class="column-filter">
                     {{ $t("Filter") }} {{ filterConditon }}
                 </div>
@@ -35,6 +129,7 @@
                     </MButton>
                     <div class="icon__arrow"></div>
                 </div>
+
                 <div class="filter-value">
                     <input
                         type="text"
@@ -72,9 +167,14 @@
 </template>
 
 <script>
+import moment from "moment";
 import MISAEnum from "@/js/enum";
+import TheOptionItem from "@/components/layout/TheOptionItem.vue";
 export default {
     name: "MconditionFilter",
+    components: {
+        TheOptionItem,
+    },
     props: {
         // text lọc theo điều kiện gì
         filterConditon: {
@@ -139,7 +239,50 @@ export default {
                     text: "EndWith",
                 },
             ],
+            contextArrayDOB: [
+                {
+                    text: "Empty",
+                },
+                {
+                    text: "NotEmpty",
+                },
+                {
+                    text: "Equal",
+                },
+                {
+                    text: "Other",
+                },
+                {
+                    text: "LessThan",
+                },
+                {
+                    text: "LessThanOrEqual",
+                },
+
+                {
+                    text: "GreaterThan",
+                },
+
+                {
+                    text: "GreaterThanOrEqual",
+                },
+            ],
             filterConditonArr: [],
+            isOpenDropdown: false,
+            optionItem: [
+                {
+                    text: "LabelMale",
+                    isActive: false,
+                },
+                {
+                    text: "LabelFemale",
+                    isActive: false,
+                },
+                {
+                    text: "LabelOther",
+                    isActive: false,
+                },
+            ],
         };
     },
 
@@ -153,6 +296,9 @@ export default {
         this.$nextTick(function () {
             this.$refs["minput"] && this.$refs["minput"].focus();
         });
+        if (this.header === "DateOfBirth") {
+            this.textBtnLink = "Equal";
+        }
         if (this.filterConditonArrs.length > 0) {
             this.filterConditonArr = [...this.filterConditonArrs];
 
@@ -175,6 +321,17 @@ export default {
                                 `${Object.keys(el)[0]}Option`
                             ];
                     }
+                } else if (this.header === "DateOfBirth") {
+                    if (Object.keys(el)[0] === this.header) {
+                        this.keyWordSearch =
+                            el[Object.keys(el)[0]][Object.keys(el)[0]];
+                        this.textBtnLink =
+                            el[Object.keys(el)[0]][
+                                `${Object.keys(el)[0]}Option`
+                            ];
+                    }
+                    let date = new Date(this.keyWordSearch);
+                    this.keyWordSearch = moment(date).format("YYYY-DD-MM");
                 } else {
                     if (Object.keys(el)[0] === this.header) {
                         this.keyWordSearch =
@@ -191,9 +348,13 @@ export default {
 
     mounted() {
         window.addEventListener("click", this.handleClickOutConditionFilter);
-    },
-    beforeUnmount() {
-        window.removeEventListener("click", this.handleClickOutConditionFilter);
+        this.optionItem.forEach((option) => {
+            if (this.keyWordSearch.indexOf(this.$t(option.text)) !== -1) {
+                option.isActive = true;
+            } else {
+                option.isActive = false;
+            }
+        });
     },
 
     watch: {
@@ -251,6 +412,27 @@ export default {
                             : keyWordSearch === this.$t("LabelOther")
                             ? MISAEnum.Gender.Other
                             : keyWordSearch || "";
+                }
+            } else if (this.header === "DateOfBirth") {
+                if (index === -1) {
+                    this.filterConditonArr.push({
+                        [this.header]: {
+                            [`${this.header}Option`]: textBtnLink,
+                            [this.header]: this.keyWordSearch
+                                ? moment(this.keyWordSearch).format(
+                                      "DD/MM/YYYY"
+                                  )
+                                : "",
+                        },
+                    });
+                } else {
+                    this.filterConditonArr[index][this.header][
+                        `${this.header}Option`
+                    ] = textBtnLink;
+                    this.filterConditonArr[index][this.header][this.header] =
+                        this.keyWordSearch
+                            ? moment(this.keyWordSearch).format("DD/MM/YYYY")
+                            : "";
                 }
             } else {
                 if (index === -1) {
@@ -310,8 +492,9 @@ export default {
             try {
                 const RefConditionFilter = this.$refs["RefConditionFilter"];
                 const iconContextMenu = this.$refs["iconContextMenu"];
+                const dropdown = this.$refs["dropdown"];
                 let check = true;
-                if (this.refElement.length) {
+                if (this.refElement.length > 0) {
                     for (
                         let index = 0;
                         index < this.refElement.length;
@@ -328,8 +511,16 @@ export default {
                     }
                 }
 
-                if (check && !iconContextMenu.contains(event.target)) {
+                if (
+                    check &&
+                    iconContextMenu &&
+                    !iconContextMenu.contains(event.target)
+                ) {
                     this.isContextMenu = false;
+                }
+
+                if (dropdown && !dropdown.contains(event.target)) {
+                    check = false;
                 }
 
                 if (
@@ -371,6 +562,54 @@ export default {
          */
         hideContextMenu() {
             this.isContextMenu = !this.isContextMenu;
+        },
+
+        /**
+         * Hiển thị dropdown option item
+         * Author: KienNT (05/05/2023)
+         */
+        handleOpenDropdown() {
+            try {
+                this.$refs["iconDropdown"].classList.toggle("rorate-180");
+                this.isOpenDropdown = !this.isOpenDropdown;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
+         * handle khi click option item
+         * Author: KienNT (06/03/2023)
+         *   @param (event): là event
+         */
+        handleClickItem(event) {
+            try {
+                this.optionItem.forEach((option) => {
+                    if (option.isActive === true) {
+                        option.isActive = false;
+                    }
+                });
+                this.optionItem.forEach((option) => {
+                    if (
+                        event.target.textContent.indexOf(
+                            this.$t(option.text)
+                        ) !== -1
+                    ) {
+                        option.isActive = true;
+                        this.keyWordSearch = event.target.textContent;
+                    } else {
+                        option.isActive = false;
+                    }
+                });
+
+                this.optionItem.forEach((el) => {
+                    if (this.keyWordSearch.includes(this.$t(el.text))) {
+                        this.keyWordSearch = this.$t(el.text);
+                    }
+                });
+            } catch (error) {
+                console.log(error);
+            }
         },
     },
 };

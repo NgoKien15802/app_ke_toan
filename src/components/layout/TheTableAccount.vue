@@ -277,7 +277,7 @@ tr.dx-row.dx-data-row.dx-row-lines.dx-column-lines:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    top: 120%;
+    top: 80%;
     left: 6px;
     border: 1px solid #959595;
     color: #959595;
@@ -300,7 +300,7 @@ tr.dx-row.dx-data-row.dx-row-lines.dx-column-lines:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    top: 120%;
+    top: 80%;
     left: 6px;
     border: 1px solid #959595;
     color: #959595;

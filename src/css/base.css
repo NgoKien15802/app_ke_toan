@@ -254,6 +254,13 @@ div.disabled {
     padding-right: 4px !important;
 }
 
+.w-full {
+    width: 100% !important;
+}
+.pb-4 {
+    padding-bottom: 1rem !important;
+}
+
 .opacity {
     opacity: 0.5;
 }

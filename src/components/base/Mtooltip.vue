@@ -10,8 +10,7 @@
 
     <td
         v-else-if="kind === 'data'"
-        class="tooltip"
-        :class="className != '' && className"
+        :class="[className != '' && className, subtext !== '' ? 'tooltip' : '']"
     >
         {{ text }}
         <span class="tooltipData">{{ subtext }}</span>

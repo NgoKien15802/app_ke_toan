@@ -151,6 +151,7 @@ export default {
                     check = false;
                 }
             }
+
             if (
                 check &&
                 this.$refs["contextmenu"] &&

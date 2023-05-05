@@ -14,6 +14,7 @@ import MToast from "./components/base/Mtoast.vue";
 import MContextmenu from "./components/base/Mcontextmenu.vue";
 import MSkeletonTable from "./components/base/MSkeletonTable.vue";
 import MconditionFilter from "./components/base/MconditionFilter.vue";
+import MNotData from "./components/base/MNotData.vue";
 
 const i18n = createI18n({
     locale: localStorage.getItem("lang") || "vi",
@@ -43,6 +44,7 @@ app.component("MToast", MToast);
 app.component("MContextmenu", MContextmenu);
 app.component("MSkeletonTable", MSkeletonTable);
 app.component("MconditionFilter", MconditionFilter);
+app.component("MNotData", MNotData);
 
 app.use(i18n);
 
