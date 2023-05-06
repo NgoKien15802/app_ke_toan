@@ -1,7 +1,8 @@
 <template>
     <label
-        class="input__checkbox-wrapper"
+        class="input__checkbox-wrapper margin-0"
         @click="this.$emit('handleCheckbox', $event)"
+        :style="styleElement"
     >
         <input
             :id="id"
@@ -34,6 +35,9 @@ export default {
         },
         isChange: {
             type: Boolean,
+        },
+        styleElement: {
+            type: String,
         },
     },
 

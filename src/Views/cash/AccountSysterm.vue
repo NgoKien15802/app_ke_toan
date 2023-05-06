@@ -12,12 +12,13 @@
                 <div class="content__main-left">
                     <div class="content__main-filter">
                         <div class="input__wrapper">
-                            <div class="input__icon-search"></div>
+                            <button class="input__icon search">
+                                <div class="input__icon-search"></div>
+                            </button>
                             <input
                                 type="text"
                                 class="input__type input__search"
                                 :placeholder="$t('TxtSearchAccount')"
-                                fdprocessedid="q9kjmf"
                                 v-model.lazy="keyWordSearch"
                             />
                         </div>
@@ -45,10 +46,10 @@
                     </div>
 
                     <MButton
-                        :text="$t('AddNewAccount')"
-                        kind="primary"
-                        className="btn-primary"
-                        :click="showPopup"
+                        mode="btnAdd"
+                        :text="$t('AddNewEmployee')"
+                        id="addEmployee"
+                        :click="showAccountSysterm"
                     ></MButton>
                 </div>
             </div>
@@ -77,18 +78,14 @@
                     @setIsDisabledClickPrev="setIsDisabledClickPrev"
                 ></ThePaging>
 
-                <!--  popup -->
-                <ThePopup
-                    v-if="isShowPopup"
-                    @onClosePopup="closePopup"
-                    @hideShowLoading="hideShowLoading"
-                    :employeeIdSelected="employeeIdSelected"
-                    :textTitlePopup="textTitlePopup"
-                    @hideShowToast="hideShowToast"
-                    @handleReLoadData="handleReLoadData"
+                <!--  AccountSystermDetail -->
+                <AccountSystermDetail
+                    v-if="isAccountSysterm"
+                    :textTitleAccountSysterm="textTitleAccountSysterm"
+                    @closeAccountSysterm="closeAccountSysterm"
+                    @closeAccountSystermDetail="closeAccountSysterm"
                     :formMode="formMode"
-                    @handleSetModeForm="() => (formMode = null)"
-                ></ThePopup>
+                ></AccountSystermDetail>
 
                 <!-- loading -->
                 <Mloading v-if="isLoading"></Mloading>
@@ -121,13 +118,13 @@ import axios from "axios";
 import TheTableAccount from "@/components/layout/TheTableAccount.vue";
 import ThePaging from "@/components/layout/ThePaging.vue";
 import Mloading from "@/components/base/Mloading.vue";
-import ThePopup from "@/components/layout/ThePopup.vue";
+import AccountSystermDetail from "./AccountSystermDetail.vue";
+import MISAEnum from "@/js/enum";
 export default {
     name: "AccountSysterm",
     data() {
         return {
             MISAResouce,
-            isShowPopup: false,
             isLoading: false,
             isShowToastAdd: false,
             isShowToastEdit: false,
@@ -135,7 +132,7 @@ export default {
             isShowToastDuplicate: false,
             employeeIdSelected: null,
             formMode: "",
-            textTitlePopup: "",
+            textTitleAccountSysterm: "",
             selectedCheckbox: [],
             totalRecord: 0,
             pageSize: 0,
@@ -146,13 +143,14 @@ export default {
             selectedEmployeeIds: [],
             isDisabledClickPrev: true,
             isDeleteOne: false,
+            isAccountSysterm: false,
         };
     },
     components: {
         TheTableAccount,
         ThePaging,
-        ThePopup,
         Mloading,
+        AccountSystermDetail,
     },
 
     watch: {
@@ -207,10 +205,10 @@ export default {
          * Hàm hiển thị popup và truyền formMode cho Popup, EmployeeId được chọn
          * Author: KienNT (28/03/2023)
          */
-        showPopupDuplicate(formMode, employeeIdSelected) {
-            this.isShowPopup = true;
+        showAccountSystermDuplicate(formMode, employeeIdSelected) {
+            this.isAccountSysterm = true;
             this.formMode = formMode;
-            this.textTitlePopup = this.$t("DuplicateEmployeeInfo");
+            this.textTitleAccountSysterm = this.$t("DuplicateEmployeeInfo");
             this.employeeIdSelected = employeeIdSelected;
         },
 
@@ -337,6 +335,14 @@ export default {
         },
 
         /**
+         * Hàm ẩn popup account
+         * Author: KienNT (06/05/2023)
+         */
+        closeAccountSysterm() {
+            this.isAccountSysterm = false;
+        },
+
+        /**
          * Hàm ẩn dialog đi khi xóa nhiều bản ghi emit từ con
          * Author: KienNT (20/03/2023)
          */
@@ -346,13 +352,14 @@ export default {
 
         /**
          * Hàm hiển thị popup khi click vào thêm mới nhân viên và lấy mã từ Call API
-         * Author: KienNT (01/03/2023)
+         * Author: KienNT (06/05/2023)
          */
-        showPopup() {
+        showAccountSysterm() {
             try {
                 this.employeeIdSelected = "";
-                this.textTitlePopup = this.$t("EmployeeInfo");
-                this.isShowPopup = true;
+                this.isAccountSysterm = true;
+                this.textTitleAccountSysterm = this.$t("AddNewAccount");
+                this.formMode = MISAEnum.formMode.Add;
             } catch (error) {
                 console.log(error);
             }
@@ -366,7 +373,7 @@ export default {
         onDoubleClick(employee) {
             try {
                 this.employeeIdSelected = employee.EmployeeId;
-                this.textTitlePopup = this.$t("EditEmployeeInfo");
+                this.textTitleAccountSysterm = this.$t("EditEmployeeInfo");
                 this.isShowPopup = true;
             } catch (error) {
                 console.log(error);
@@ -441,4 +448,7 @@ export default {
 </script>
 <style scoped>
 @import url(../../css/layout/content.css);
+.content__main-filter .input__wrapper {
+    width: 250px;
+}
 </style>

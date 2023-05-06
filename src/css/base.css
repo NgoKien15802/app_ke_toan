@@ -139,11 +139,14 @@ button {
     align-items: center;
     justify-content: center;
 }
-
-.m-flex-row-gap-8 {
-    column-gap: 8px;
+.align-center {
+    justify-content: center;
+    align-items: center;
 }
 
+.w-5\/6 {
+    width: 83.33333% !important;
+}
 /* required */
 .error-info,
 .required {
@@ -194,6 +197,12 @@ button {
 /* quay 180 deg */
 .rorate-180 {
     transform: rotate(180deg);
+    transition: all 0.25s ease;
+}
+
+/* quay 90 deg */
+.rorate-90 {
+    transform: rotate(90deg);
     transition: all 0.25s ease;
 }
 
@@ -274,6 +283,17 @@ div.disabled {
     display: flex !important;
 }
 
+.row-input {
+    padding-bottom: 15px;
+}
+
+.p-r-12 {
+    padding-right: 12px;
+}
+
+.w-1\/2 {
+    width: 50% !important;
+}
 .opacity {
     opacity: 0.5;
 }

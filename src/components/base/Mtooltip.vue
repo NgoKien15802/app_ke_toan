@@ -16,6 +16,13 @@
         <span class="tooltipData">{{ subtext }}</span>
     </td>
 
+    <span
+        v-else-if="kind == 'AccountSysterm'"
+        class="tooltipData"
+        :style="style"
+        >{{ subtext }}</span
+    >
+
     <span v-else class="tooltiptext" :style="style">{{ subtext }}</span>
 </template>
 <script>

@@ -388,9 +388,15 @@
     width: 20px;
     height: 22px;
 }
-
+/* account systerm */
 .accountSystem {
     background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -1378px -257px;
     width: 21px;
     height: 22px;
+}
+
+.mi-arrow-right--black {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -324px -363px;
+    width: 8px;
+    height: 10px;
 }

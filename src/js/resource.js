@@ -146,6 +146,9 @@ const MISAResouce = {
         DataColumnName: "Tên cột dữ liệu",
         FixColumn: "Sửa tên cột hiển thị và độ rộng",
         ShowMore: "Hiển thị thêm",
+        ColNameOnInterface: "Tên cột trên giao diện",
+        ColWidth: "Độ rộng",
+        FixedCol: "Cố định cột",
 
         //navbar cash
         Process: "Quy trình",
@@ -177,7 +180,7 @@ const MISAResouce = {
         Option: "Tùy chọn",
 
         // accountSysterm
-        AddNewAccount: "Thêm mới tài khoản",
+        AddNewAccount: "Thêm tài khoản",
         Extend: "Mở rộng",
         AccountNumber: "Số tài khoản",
         AccountName: "Tên tài khoản",
@@ -189,6 +192,17 @@ const MISAResouce = {
         ExcessYes: "Dư có",
         Hermaphrodite: "Lưỡng tính",
         Nobalance: "Không có số dư",
+
+        // popup Account
+        LabelAccountNumber: "Số tài khoản",
+        LabelAccountName: "Tên tài khoản",
+        LabelEnglishName: "Tên tiếng anh",
+        LabelGeneralAccount: "Tài khoản tổng hợp",
+        LabelProperty: "Tính chất",
+        LabelInterpret: "Diễn giải",
+        ForeignCurrencyPlan: "Có hạch toán ngoại tệ",
+        Object: "Đối tượng",
+        followDetail: "Theo dõi chi tiết theo",
 
         //other
         Username: "Ngô Trung Kiên",
@@ -336,6 +350,9 @@ const MISAResouce = {
         DataColumnName: "Data column name",
         FixColumn: "Fix display column name and width",
         ShowMore: "Show more",
+        ColNameOnInterface: "Column names on interface",
+        ColWidth: "Width",
+        FixedCol: "Fixed column",
 
         //navbar cash
         Process: "Progress",
@@ -366,7 +383,7 @@ const MISAResouce = {
         Provider: "Provider",
         Option: "Options",
         Extend: "Extend",
-        AddNewAccount: "Add new account",
+        AddNewAccount: "Add account",
         AccountNumber: "Account number",
         AccountName: "Account name",
         Property: "Property",
@@ -377,6 +394,17 @@ const MISAResouce = {
         ExcessYes: "Excess yes",
         Hermaphrodite: "Hermaphrodite",
         Nobalance: "No balance",
+
+        // popup account
+        LabelAccountNumber: "Account number",
+        LabelAccountName: "Account name",
+        LabelEnglishName: "English name",
+        LabelGeneralAccount: "General account",
+        LabelProperty: "Property",
+        LabelInterpret: "Interpret",
+        ForeignCurrencyPlan: "Have a foregin currency plan",
+        Object: "Object",
+        followDetail: "Track tracking details",
 
         // checkbox
         SelectedCheckbox: "selected: ",

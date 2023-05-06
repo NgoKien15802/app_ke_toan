@@ -748,7 +748,6 @@ export default {
             if (this.isEmpty(this.dataEmployeeIdSelected)) {
                 this.departmentName = null;
                 this.getNewEmployeeCode();
-                console.log(this.newEmployee);
             } else if (
                 /**
                  * TH nhân bản

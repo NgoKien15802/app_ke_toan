@@ -179,8 +179,11 @@
                                                                         isEditable
                                                                     "
                                                                 >
-                                                                    Tên cột trên
-                                                                    giao diện
+                                                                    {{
+                                                                        $t(
+                                                                            "ColNameOnInterface"
+                                                                        )
+                                                                    }}
                                                                 </th>
                                                                 <th
                                                                     ms-field="definition"
@@ -197,7 +200,11 @@
                                                                         isEditable
                                                                     "
                                                                 >
-                                                                    Độ rộng
+                                                                    {{
+                                                                        $t(
+                                                                            "ColWidth"
+                                                                        )
+                                                                    }}
                                                                 </th>
                                                                 <th
                                                                     ms-field="definition"
@@ -209,12 +216,17 @@
                                                                         min-width: 120px;
                                                                         width: 120px;
                                                                         top: 0px;
+                                                                        text-align: center;
                                                                     "
                                                                     v-if="
                                                                         isEditable
                                                                     "
                                                                 >
-                                                                    Cố định cột
+                                                                    {{
+                                                                        $t(
+                                                                            "FixedCol"
+                                                                        )
+                                                                    }}
                                                                 </th>
                                                             </tr>
                                                         </thead>
