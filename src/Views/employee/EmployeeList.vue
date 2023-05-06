@@ -312,6 +312,7 @@
                         :selectedArrToSetting="selectedArrToSetting"
                         @changeSelectedArrToSetting="changeSelectedArrToSetting"
                         :filterConditonArr="filterConditonArr"
+                        :columnEditable="columnEditable"
                     ></TheTable>
                 </div>
 
@@ -368,6 +369,7 @@
                     @handleSavaSelected="handleSavaSelected"
                     :selectedArrRecv="selectedArrRecv"
                     @handleClickSavaSelected="handleClickSavaSelected"
+                    :columnEditableRecv="columnEditable"
                 ></TheSettingUI>
             </div>
         </div>
@@ -415,6 +417,7 @@ export default {
             isSettingUI: false,
             selectedArrRecv: [],
             selectedArrToSetting: [],
+            columnEditable: [],
         };
     },
     components: {
@@ -526,9 +529,10 @@ export default {
          * Author: KienNT (01/05/2023)
          *  @param (selectedArrToSetting): tham số 1 là mảng checkbox được chọn
          */
-        handleClickSavaSelected(selectedArrToSetting) {
+        handleClickSavaSelected(selectedArrToSetting, columnEditable) {
             this.isSettingUI = false;
             this.selectedArrToSetting = selectedArrToSetting.slice();
+            this.columnEditable = columnEditable.slice();
         },
 
         changeSelectedArrToSetting() {

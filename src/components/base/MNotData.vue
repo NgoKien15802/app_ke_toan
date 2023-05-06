@@ -20,7 +20,6 @@ export default {
     position: -webkit-sticky;
     position: sticky;
     bottom: 0;
-    z-index: 5;
     background-color: #fff;
     display: flex;
 }

@@ -261,6 +261,19 @@ div.disabled {
     padding-bottom: 1rem !important;
 }
 
+.w-full {
+    width: 100% !important;
+}
+.flex-1 {
+    flex: 1 1 0% !important;
+}
+.items-center {
+    align-items: center !important;
+}
+.flex {
+    display: flex !important;
+}
+
 .opacity {
     opacity: 0.5;
 }

@@ -24,6 +24,18 @@
                         header === 'Selected' ? 'min-w40' : '',
                     ]"
                     ref="thElement"
+                    :style="
+                        !isShowSkeleton
+                            ? {
+                                  'min-width':
+                                      columnWidth.length > 0
+                                          ? columnWidth.filter(
+                                                (el) => el.textColumn == header
+                                            )[0][header] + 'px'
+                                          : '',
+                              }
+                            : ''
+                    "
                 >
                     <template v-if="header === 'Selected'">
                         <MCheckbox
@@ -67,9 +79,9 @@
                         </span>
                     </template>
                     <template v-else-if="header === 'Feature'">
-                        <span class="text-align-center">{{
-                            $t("Feature")
-                        }}</span>
+                        <span class="text-align-center"
+                            >{{ $t("Feature") }}
+                        </span>
                     </template>
                     <template v-else>
                         <span style="display: flex">
@@ -278,6 +290,11 @@ export default {
         selectedArrToSetting: {
             type: Array,
         },
+
+        columnEditable: {
+            type: Array,
+        },
+
         filterConditonArr: {
             type: Array,
         },
@@ -314,6 +331,7 @@ export default {
                 "BankBranch",
                 "Feature",
             ],
+            columnWidth: [],
             isShowSkeleton: false,
             topConditionFilter: 0,
             leftConditionFilter: 0,
@@ -457,7 +475,27 @@ export default {
                         this.employees = cloneEmployees;
                         this.headers = filteredHeaders;
                         this.isShowSkeleton = false;
+                        console.log(this.columnWidth);
                     }, 2000);
+                }
+            },
+            deep: true,
+        },
+
+        columnEditable: {
+            handler(newValue, oldValue) {
+                if (newValue.length !== oldValue.length) {
+                    this.columnWidth = newValue;
+                    this.columnWidth.unshift({
+                        Selected: 40,
+                        nameCoumn: this.$t("Selected"),
+                        textColumn: "Selected",
+                    });
+                    this.columnWidth.push({
+                        Feature: 120,
+                        nameCoumn: this.$t("Feature"),
+                        textColumn: "Feature",
+                    });
                 }
             },
             deep: true,

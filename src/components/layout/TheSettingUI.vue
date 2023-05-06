@@ -61,8 +61,11 @@
                             />
                         </div>
                     </div>
-                    <div class="w-1/2">
-                        <div class="show-layout-info text-right">
+                    <div>
+                        <div
+                            class="show-layout-info text-right"
+                            @click="handleShowIsEditable"
+                        >
                             {{ $t("FixColumn") }}
                         </div>
                     </div>
@@ -162,6 +165,57 @@
                                                                         )
                                                                     }}
                                                                 </th>
+                                                                <th
+                                                                    ms-field="definition"
+                                                                    colspan="1"
+                                                                    rowspan="1"
+                                                                    title="Tên cột dữ liệu"
+                                                                    class="dynamic-header col-0 col p-0"
+                                                                    style="
+                                                                        min-width: 200px;
+                                                                        top: 0px;
+                                                                    "
+                                                                    v-if="
+                                                                        isEditable
+                                                                    "
+                                                                >
+                                                                    Tên cột trên
+                                                                    giao diện
+                                                                </th>
+                                                                <th
+                                                                    ms-field="definition"
+                                                                    colspan="1"
+                                                                    rowspan="1"
+                                                                    title="Tên cột dữ liệu"
+                                                                    class="dynamic-header col-0 col p-0"
+                                                                    style="
+                                                                        min-width: 100px;
+                                                                        top: 0px;
+                                                                        width: 100px;
+                                                                    "
+                                                                    v-if="
+                                                                        isEditable
+                                                                    "
+                                                                >
+                                                                    Độ rộng
+                                                                </th>
+                                                                <th
+                                                                    ms-field="definition"
+                                                                    colspan="1"
+                                                                    rowspan="1"
+                                                                    title="Tên cột dữ liệu"
+                                                                    class="dynamic-header col-0 col p-0"
+                                                                    style="
+                                                                        min-width: 120px;
+                                                                        width: 120px;
+                                                                        top: 0px;
+                                                                    "
+                                                                    v-if="
+                                                                        isEditable
+                                                                    "
+                                                                >
+                                                                    Cố định cột
+                                                                </th>
                                                             </tr>
                                                         </thead>
                                                         <tbody
@@ -214,6 +268,180 @@
                                                                             column.nameColumn
                                                                         )
                                                                     }}
+                                                                </td>
+                                                                <td
+                                                                    class="td ms-table--td dynamic-column border-left-none"
+                                                                    v-if="
+                                                                        isEditable
+                                                                    "
+                                                                    @click="
+                                                                        (
+                                                                            $event
+                                                                        ) =>
+                                                                            handleShowEditable(
+                                                                                $event
+                                                                            )
+                                                                    "
+                                                                >
+                                                                    <div
+                                                                        class="editable"
+                                                                        candraggable="true"
+                                                                        drilldown=""
+                                                                    >
+                                                                        <div
+                                                                            class="flex items-center flex-1 w-full"
+                                                                        >
+                                                                            <div
+                                                                                class="td-text"
+                                                                                style="
+                                                                                    justify-content: left;
+                                                                                "
+                                                                            >
+                                                                                {{
+                                                                                    columnEditable[
+                                                                                        index
+                                                                                    ]
+                                                                                        .nameCoumn
+                                                                                }}
+                                                                            </div>
+                                                                            <div
+                                                                                style="
+                                                                                    width: 100%;
+                                                                                    display: none;
+                                                                                "
+                                                                            >
+                                                                                <div
+                                                                                    class="ms-component ms-con-textarea"
+                                                                                >
+                                                                                    <span
+                                                                                        class="text-area--validate"
+                                                                                    >
+                                                                                        <textarea
+                                                                                            mstextfield=""
+                                                                                            rows="1"
+                                                                                            class="ms-textarea grid-editor"
+                                                                                            style="
+                                                                                                height: 27px;
+                                                                                            "
+                                                                                            v-model="
+                                                                                                columnEditable[
+                                                                                                    index
+                                                                                                ]
+                                                                                                    .nameCoumn
+                                                                                            "
+                                                                                            @blur="
+                                                                                                (
+                                                                                                    $event
+                                                                                                ) =>
+                                                                                                    handleBlurEditable(
+                                                                                                        $event
+                                                                                                    )
+                                                                                            "
+                                                                                        ></textarea>
+                                                                                    </span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td
+                                                                    class="td ms-table--td dynamic-column border-left-none"
+                                                                    v-if="
+                                                                        isEditable
+                                                                    "
+                                                                    @click="
+                                                                        (
+                                                                            $event
+                                                                        ) =>
+                                                                            handleShowEditable(
+                                                                                $event
+                                                                            )
+                                                                    "
+                                                                >
+                                                                    <div
+                                                                        class="editable"
+                                                                        candraggable="true"
+                                                                        drilldown=""
+                                                                    >
+                                                                        <div
+                                                                            class="flex items-center flex-1 w-full"
+                                                                        >
+                                                                            <div
+                                                                                class="td-text"
+                                                                                style="
+                                                                                    justify-content: left;
+                                                                                "
+                                                                            >
+                                                                                {{
+                                                                                    columnEditable[
+                                                                                        index
+                                                                                    ][
+                                                                                        columnEditable[
+                                                                                            index
+                                                                                        ]
+                                                                                            .textColumn
+                                                                                    ]
+                                                                                }}
+                                                                            </div>
+                                                                            <div
+                                                                                style="
+                                                                                    width: 100%;
+                                                                                    display: none;
+                                                                                "
+                                                                            >
+                                                                                <div
+                                                                                    class="ms-component ms-con-textarea"
+                                                                                >
+                                                                                    <span
+                                                                                        class="text-area--validate"
+                                                                                    >
+                                                                                        <textarea
+                                                                                            mstextfield=""
+                                                                                            rows="1"
+                                                                                            class="ms-textarea grid-editor"
+                                                                                            style="
+                                                                                                height: 27px;
+                                                                                            "
+                                                                                            v-model="
+                                                                                                columnEditable[
+                                                                                                    index
+                                                                                                ][
+                                                                                                    columnEditable[
+                                                                                                        index
+                                                                                                    ]
+                                                                                                        .textColumn
+                                                                                                ]
+                                                                                            "
+                                                                                            @blur="
+                                                                                                (
+                                                                                                    $event
+                                                                                                ) =>
+                                                                                                    handleBlurEditable(
+                                                                                                        $event
+                                                                                                    )
+                                                                                            "
+                                                                                        ></textarea>
+                                                                                    </span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td
+                                                                    class="td ms-table--td dynamic-column border-left-none"
+                                                                    v-if="
+                                                                        isEditable
+                                                                    "
+                                                                >
+                                                                    <MCheckbox
+                                                                        @handleCheckbox="
+                                                                            handleCheckbox(
+                                                                                $event,
+                                                                                column.nameColumn
+                                                                            )
+                                                                        "
+                                                                        ref="checkbox"
+                                                                    ></MCheckbox>
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -294,10 +522,14 @@ export default {
         selectedArrRecv: {
             type: Array,
         },
+        columnEditableRecv: {
+            type: Array,
+        },
     },
     data() {
         return {
             selectedAll: false,
+            isEditable: false,
             selectedArr: [
                 "EmployeeCode",
                 "FullName",
@@ -353,6 +585,67 @@ export default {
                     nameColumn: "BankBranch",
                 },
             ],
+            columnEditable: [
+                {
+                    EmployeeCode: 160,
+                    nameCoumn: this.$t("EmployeeCode"),
+                    textColumn: "EmployeeCode",
+                },
+
+                {
+                    FullName: 250,
+                    nameCoumn: this.$t("FullName"),
+                    textColumn: "FullName",
+                },
+
+                {
+                    Gender: 100,
+                    nameCoumn: this.$t("Gender"),
+                    textColumn: "Gender",
+                },
+
+                {
+                    DateOfBirth: 160,
+                    nameCoumn: this.$t("DateOfBirth"),
+                    textColumn: "DateOfBirth",
+                },
+
+                {
+                    IdentityNumber: 200,
+                    nameCoumn: this.$t("IdentityNumber"),
+                    textColumn: "IdentityNumber",
+                },
+
+                {
+                    PositionName: 160,
+                    nameCoumn: this.$t("PositionName"),
+                    textColumn: "PositionName",
+                },
+
+                {
+                    DepartmentName: 200,
+                    nameCoumn: this.$t("DepartmentName"),
+                    textColumn: "DepartmentName",
+                },
+
+                {
+                    BankAccount: 160,
+                    nameCoumn: this.$t("BankAccount"),
+                    textColumn: "BankAccount",
+                },
+
+                {
+                    BankName: 160,
+                    nameCoumn: this.$t("BankName"),
+                    textColumn: "BankName",
+                },
+
+                {
+                    BankBranch: 120,
+                    nameCoumn: this.$t("BankBranch"),
+                    textColumn: "BankBranch",
+                },
+            ],
         };
     },
     mounted() {
@@ -364,6 +657,12 @@ export default {
     created() {
         if (this.selectedArrRecv.length > 0) {
             this.selectedArr = this.selectedArrRecv;
+        }
+        if (this.columnEditableRecv.length > 0) {
+            let cloneColumnEditableRecv = [...this.columnEditableRecv];
+            cloneColumnEditableRecv.pop();
+            cloneColumnEditableRecv.shift();
+            this.columnEditable = cloneColumnEditableRecv;
         }
         if (this.selectedArr && this.selectedArr.length > 0) {
             this.columns.forEach(
@@ -476,7 +775,11 @@ export default {
          * Author: KienNT (30/04/2023)
          */
         btnSave() {
-            this.$emit("handleClickSavaSelected", this.selectedArr);
+            this.$emit(
+                "handleClickSavaSelected",
+                this.selectedArr,
+                this.columnEditable
+            );
         },
 
         /**
@@ -504,6 +807,57 @@ export default {
                     containerSettingUI.style.minWidth = "800px";
                 }
             }
+        },
+        /**
+         * Xử lý cho edit tên cột
+         * Author: KienNT (06/05/2023)
+         */
+        handleShowEditable(event) {
+            if (event.target.tagName.toLowerCase() === "td") {
+                event.target.firstChild.firstChild.childNodes[0].style.display =
+                    "none";
+                event.target.firstChild.firstChild.childNodes[1].style.display =
+                    "block";
+                event.target.firstChild.firstChild.childNodes[1].firstChild.firstChild.firstChild.focus();
+                event.target.firstChild.firstChild.childNodes[1].firstChild.firstChild.firstChild.style.border =
+                    "1px solid var(--color-primary)";
+            } else if (
+                event.target.tagName.toLowerCase() === "div" &&
+                event.target.classList.contains("editable")
+            ) {
+                event.target.firstChild.childNodes[0].style.display = "none";
+                event.target.firstChild.childNodes[1].style.display = "block";
+                event.target.firstChild.childNodes[1].firstChild.firstChild.firstChild.focus();
+                event.target.firstChild.childNodes[1].firstChild.firstChild.firstChild.style.border =
+                    "1px solid var(--color-primary)";
+            } else {
+                event.target.parentElement.childNodes[0].style.display = "none";
+                event.target.parentElement.childNodes[1].style.display =
+                    "block";
+
+                event.target.parentElement.childNodes[1].firstChild.firstChild.firstChild.focus();
+                event.target.parentElement.childNodes[1].firstChild.firstChild.firstChild.style.border =
+                    "1px solid var(--color-primary)";
+            }
+        },
+
+        /**
+         * Xử lý blur ra ngoài
+         * Author: KienNT (06/05/2023)
+         */
+        handleBlurEditable(event) {
+            event.target.parentElement.parentElement.parentElement.style.display =
+                "none";
+            event.target.parentElement.parentElement.parentElement.parentElement.childNodes[0].style.display =
+                "block";
+        },
+
+        /**
+         * Xử lý hiển thị toggle editable
+         * Author: KienNT (06/05/2023)
+         */
+        handleShowIsEditable() {
+            this.isEditable = !this.isEditable;
         },
     },
 };
