@@ -1,0 +1,19 @@
+.cash_payment tfoot tr th::after {
+    display: none;
+}
+
+tfoot {
+    position: sticky;
+    bottom: 41px;
+    left: 0;
+    right: 0;
+    border: none;
+    z-index: 3;
+    height: var(--size-row);
+}
+.cash_payment tfoot tr th {
+    border-bottom: 0;
+}
+.cash_payment tfoot th {
+    cursor: default;
+}

@@ -34,12 +34,13 @@
     --size-column-total: calc(
         var(--size-column-first) + var(--size-column-second)
     );
+    --tab__router-height: 31px;
 
     --size-row: 30px;
 
     /* bg tooltip để thay đổi khi thông báo lỗi hoặc thông báo */
     --bg-tooltip: #505050;
-
+    --main-background-color: #eceef1;
     /* icon light */
     --i-normal-light: #666666;
     --i-hover-focus-light: #1fb6ff;
@@ -206,6 +207,10 @@ button {
     transition: all 0.25s ease;
 }
 
+.h-60 {
+    height: 60%;
+}
+
 /*  */
 .border-focus {
     border: 1px solid #50b83c !important;
@@ -259,6 +264,13 @@ div.disabled {
     justify-content: center;
 }
 
+.mi-24 {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
+}
+
 .pr-4 {
     padding-right: 4px !important;
 }
@@ -310,12 +322,23 @@ div.disabled {
     min-height: 16px;
 }
 
+.mi-8 {
+    width: 8px;
+    height: 8px;
+    min-width: 8px;
+    min-height: 8px;
+}
+
 .min-w40 {
     min-width: 40px;
 }
 
 .min-w160 {
     min-width: 160px;
+}
+
+.min-w320 {
+    min-width: 320px;
 }
 
 .min-w250 {
@@ -335,4 +358,14 @@ div.disabled {
 
 .min-w200 {
     min-width: 200px;
+}
+.min-w300 {
+    min-width: 300px;
+}
+.min-w230 {
+    min-width: 230px;
+}
+
+.min-w630 {
+    min-width: 630px;
 }

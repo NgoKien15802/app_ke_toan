@@ -17,6 +17,7 @@ const MISAResouce = {
         // Feature
         Feature: "Chức năng",
         Fix: "Sửa",
+        Show: "Xem",
         Duplicate: "Nhân bản",
         StopUsing: "Ngừng sử dụng",
         Using: "Đang sử dụng",
@@ -24,8 +25,9 @@ const MISAResouce = {
         Merge: "Gộp",
 
         // Record
-        Total: "Tổng số",
+        TotalNumber: "Tổng số",
         Record: "bản ghi",
+        Total: "Tổng",
 
         // Error message
         ErrorEmpty: " không được để trống",
@@ -152,7 +154,7 @@ const MISAResouce = {
 
         //navbar cash
         Process: "Quy trình",
-        SpendMoney: "Chi tiền",
+        Payment: "Chi tiền",
         ReceiveMoney: "Thu tiền",
         Stocktaking: "Kiểm kê",
         CashFlowForecast: "Dự báo dòng tiền",
@@ -204,6 +206,19 @@ const MISAResouce = {
         Object: "Đối tượng",
         followDetail: "Theo dõi chi tiết theo",
 
+        //table payment
+        AddNewPayment: "Chi tiền",
+        AccountingDate: "Ngày hạch toán",
+        DayVouchers: "Ngày chứng từ",
+        NumberVouchers: "Số chứng từ",
+        AmountOfMoney: "Số tiền",
+        ObjectCode: "Mã đối tượng",
+        Address: "Địa chỉ",
+        Detail: "Chi tiết",
+        DebitAccount: "TK nợ",
+        CreditAccount: "TK có",
+        ObjectName: "Tên đối tượng",
+
         //other
         Username: "Ngô Trung Kiên",
         MyCompany: "công ty tnhh sản xuất - thương mại - dịch vị qui phúc",
@@ -226,6 +241,7 @@ const MISAResouce = {
         // Feature
         Feature: "Feature",
         Fix: "Edit",
+        Show: "Show",
         Duplicate: "Duplicate",
         StopUsing: "Stop using",
         Using: "Using",
@@ -233,8 +249,9 @@ const MISAResouce = {
         Merge: "Merge",
 
         // Record
-        Total: "Total number",
+        TotalNumber: "Total number",
         Record: "records",
+        Total: "Total",
 
         // Error message
         ErrorEmpty: " cannot be left blank, please re-enter",
@@ -356,7 +373,7 @@ const MISAResouce = {
 
         //navbar cash
         Process: "Progress",
-        SpendMoney: "Spend money",
+        Payment: "Payment",
         ReceiveMoney: "Receive money",
         Stocktaking: "StockTaking",
         CashFlowForecast: "Cash flow forecast",
@@ -410,6 +427,19 @@ const MISAResouce = {
         SelectedCheckbox: "selected: ",
         UndoSelected: "Undo Selected",
         SelectAllPage: "Selete all page",
+
+        //table payment
+        AddNewPayment: "Payment",
+        AccountingDate: "Accounting date",
+        DayVouchers: "Day vouchers",
+        NumberVouchers: "Number vouchers",
+        AmountOfMoney: "Amount of money",
+        ObjectCode: "Object code",
+        Address: "Address",
+        Detail: "Detail",
+        DebitAccount: "Debit account",
+        CreditAccount: "Credit account",
+        ObjectName: "Object name",
 
         //other
         Username: "Kien Ngo Trung",

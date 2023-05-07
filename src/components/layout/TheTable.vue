@@ -103,7 +103,7 @@
         <tbody>
             <MSkeletonTable
                 v-if="isShowSkeleton"
-                :employees="employees"
+                :dataList="employees"
             ></MSkeletonTable>
 
             <tr

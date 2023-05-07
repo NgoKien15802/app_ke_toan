@@ -61,7 +61,7 @@ export default {
                 {
                     icon: "icon-cash-default",
                     text: this.$t("Cash"),
-                    to: "/cash",
+                    to: "/cash/process",
                 },
                 {
                     icon: "icon-cashBank-default",

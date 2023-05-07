@@ -688,5 +688,5 @@ export default {
 
 <style scoped>
 @import url(@/css/layout/settingUI.css);
-@import url(@/css/layout/AccountSystermDetail.css);
+@import url(@/css/layout/accountSystermDetail.css);
 </style>

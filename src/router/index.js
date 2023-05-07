@@ -2,9 +2,10 @@ import { createRouter, createWebHistory } from "vue-router";
 
 import EmployeeList from "@/Views/employee/EmployeeList.vue";
 import CustomerList from "@/Views/customer/CustomerList.vue";
-import TheCash from "@/components/layout/sidebar/TheCash.vue";
 import CashDetail from "@/Views/cash/CashDetail";
 import AccountSysterm from "@/Views/cash/AccountSysterm";
+import CashPayment from "@/Views/cash/CashPayment";
+import CashProcess from "@/Views/cash/CashProcess";
 
 /**
  * Định nghĩa route
@@ -12,11 +13,12 @@ import AccountSysterm from "@/Views/cash/AccountSysterm";
  */
 const routes = [
     { path: "/", component: EmployeeList },
-    { path: "/cash", component: TheCash },
     { path: "/cash/employee", component: EmployeeList },
     { path: "/cash/customer", component: CustomerList },
     { path: "/cash/cashDetail", component: CashDetail },
     { path: "/cash/accountSysterm", component: AccountSysterm },
+    { path: "/cash/payment", component: CashPayment },
+    { path: "/cash/process", component: CashProcess },
     { path: "/:pathMatch(.*)*", component: Error },
 ];
 

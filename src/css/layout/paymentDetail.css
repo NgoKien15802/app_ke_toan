@@ -1,0 +1,216 @@
+.paymentList {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.paymentList .table__field {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    border: none;
+    z-index: 3;
+    height: var(--size-row);
+}
+
+.paymentList tr td {
+    padding: 0 10px;
+
+    border-bottom: 1px solid var(--boder-primary);
+}
+
+.paymentList tr td:not(:last-child):not(:nth-last-child(2)):not(:first-child) {
+    border-right: 1px dotted var(--boder-primary);
+}
+
+.paymentList tr th {
+    padding: 0 10px;
+    border-bottom: 1px solid var(--boder-primary);
+}
+
+.paymentList tr th:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 1px;
+    right: 0;
+    top: 0;
+    border-right: 1px solid var(--boder-primary);
+}
+
+.paymentList .table__field th {
+    border-bottom: 0;
+}
+
+.paymentList .table__field::after {
+    content: "";
+    width: 100%;
+    height: 1px;
+    position: absolute;
+    right: 0;
+    left: 0;
+    z-index: 4;
+    top: calc(var(--size-row) - 1px);
+    background-color: var(--boder-primary);
+}
+
+.paymentList tr {
+    height: var(--size-row);
+}
+
+.paymentList th {
+    background-color: #e5e8ec;
+    font-weight: 600;
+    font-size: 1.3rem;
+    color: #000000;
+    cursor: all-scroll;
+    position: relative;
+}
+
+.paymentList thead tr th:last-child,
+.paymentList tbody tr td:last-child {
+    border-right: 0;
+}
+
+.paymentList tbody tr td:first-child .wrap-icon,
+.paymentList thead tr th:first-child .wrap-icon {
+    margin: 0 auto;
+}
+/* 
+.paymentList thead tr th:nth-child(3),
+.paymentList tbody tr td:nth-child(3), 
+.paymentList thead tr th:nth-child(2),
+.paymentList tbody tr td:nth-child(2),*/
+.paymentList thead tr th:first-child,
+.paymentList tbody tr td:first-child {
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
+    border-right: 0;
+}
+
+.paymentList thead tr th:first-child,
+.paymentList tbody tr td:first-child {
+    left: 0;
+}
+
+/* .paymentList thead tr th:nth-child(2),
+.paymentList tbody tr td:nth-child(2) {
+    left: var(--size-column-first);
+} */
+
+/* .paymentList thead tr th:nth-child(3),
+.paymentList tbody tr td:nth-child(3) {
+    left: var(--size-column-total);
+} */
+
+/* .paymentList tbody tr td:nth-child(3)::after,
+.paymentList tbody tr td:nth-child(2)::after, */
+.paymentList tbody tr td:first-child::after {
+    content: "";
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 4;
+    border-right: 1px dotted var(--boder-primary);
+}
+
+/* .paymentList thead tr th:first-child::after {
+    content: "";
+    width: 1px;
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 1;
+    background-color: var(--boder-primary);
+} */
+
+/* .paymentList thead tr th:nth-child(3),
+.paymentList thead tr th:nth-child(2),
+.paymentList thead tr th:first-child {
+    background-color: #eeeeee;
+}
+
+.paymentList tbody tr td:nth-child(3),
+.paymentList tbody tr td:nth-child(2),
+.paymentList tbody tr td:first-child {
+    background-color: #ffff;
+} */
+
+/* .paymentList thead tr th:last-child,
+.paymentList tbody tr td:last-child {
+    position: sticky;
+    top: 0;
+    right: -1px;
+    z-index: 2;
+} */
+
+/* .paymentList thead tr th:last-child {
+    background-color: #eeeeee;
+} */
+
+.paymentList tbody tr td:last-child::after {
+    content: "";
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 4;
+    border-right: 1px dotted var(--boder-primary);
+}
+
+/* .paymentList thead tr th:last-child::after {
+    content: "";
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 4;
+    border-right: 1px solid var(--boder-primary);
+} */
+
+.paymentList tbody tr td:last-child {
+    background-color: #ffff;
+}
+
+.paymentList thead tr th:nth-child(11),
+.paymentList tbody tr td:nth-child(11) {
+    border-right: 0;
+}
+
+.paymentList tbody tr td:nth-child(11) {
+    line-height: 2rem;
+}
+
+.paymentList tr:hover td:nth-child(2),
+.paymentList tr:hover td:nth-child(3),
+.paymentList tr:hover td:last-child,
+.paymentList tr:hover td:first-child,
+.paymentList tr:hover {
+    background-color: #e5f3ff;
+}
+
+.tr-hover {
+    background-color: #e5f3ff !important;
+}
+
+.paymentList__checkbox {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+}
+
+.icon-head {
+    height: fit-content;
+    position: absolute;
+    right: 3px;
+    top: calc(50% - 8px);
+    visibility: hidden;
+    cursor: pointer;
+}
+
+.paymentList tr th:hover .icon-head {
+    visibility: visible;
+}

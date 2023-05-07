@@ -4,74 +4,26 @@
             <li
                 v-for="(navItem, index) in navItems"
                 :key="index"
-                :class="navItem.isActive ? 'active' : ''"
                 class="nav__item"
             >
-                <a href="#" class="nav__link">
+                <router-link
+                    :to="navItem.to"
+                    class="nav__link"
+                    :class="navItem.isActive ? 'active' : ''"
+                    @click="() => handleClickItem(index)"
+                >
                     {{ navItem.text }}
-                </a>
+                </router-link>
             </li>
         </ul>
 
-        <div class="cash__body">
-            <div class="cash__main">
-                <div class="cash__process">
-                    <div class="cash__process-top">
-                        <div class="cash__process-title">
-                            {{ $t("CashBusiness") }}
-                        </div>
-
-                        <div class="cash__process-main">
-                            <MProcessCash></MProcessCash>
-                            <div class="icon__cash receive">
-                                <div class="icon__title-cash">
-                                    {{ $t("ReceiveMoney") }}
-                                </div>
-                            </div>
-                            <router-link
-                                to="/cash/cashDetail"
-                                class="icon__cash payment"
-                            >
-                                <div class="icon__title-cash">
-                                    {{ $t("SpendMoney") }}
-                                </div>
-                            </router-link>
-                            <div class="icon__cash audit">
-                                <div class="icon__title-cash">
-                                    {{ $t("Stocktaking") }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="cash__process-bottom">
-                        <ul class="cash__process-bottom-list">
-                            <router-link
-                                v-for="(processCash, index) in processCashs"
-                                :key="index"
-                                :to="processCash.to"
-                                class="cash__process-bottom-item"
-                            >
-                                <div :class="processCash.icon"></div>
-                                <p href="" class="cash__process-bottom-text">
-                                    {{ processCash.text }}
-                                </p>
-                            </router-link>
-                        </ul>
-                    </div>
-                </div>
-                <div class="cash__report">
-                    <div class="cash__report-title">
-                        {{ $t("Report") }}
-                    </div>
-                </div>
-            </div>
-        </div>
+        <slot></slot>
     </div>
 </template>
 
 <script>
 import MISAResouce from "@/js/resource";
-import MProcessCash from "@/components/base/MProcessCash.vue";
+
 export default {
     name: "TheCash",
     data() {
@@ -81,35 +33,38 @@ export default {
                 {
                     text: this.$t("Process"),
                     isActive: true,
+                    to: "/cash/process",
                 },
                 {
-                    text: this.$t("SpendMoney"),
+                    text: this.$t("Payment"),
                     isActive: false,
+                    to: "/cash/payment",
                 },
                 {
                     text: this.$t("Stocktaking"),
                     isActive: false,
+                    to: "#",
                 },
                 {
                     text: this.$t("CashFlowForecast"),
                     isActive: false,
+                    to: "#",
                 },
                 {
                     text: this.$t("Export"),
                     isActive: false,
-                },
-            ],
-            processCashs: [
-                {
-                    text: this.$t("AccountSystem"),
-                    icon: "accountSystem",
-                    to: "/cash/accountSysterm",
+                    to: "#",
                 },
             ],
         };
     },
-    components: {
-        MProcessCash,
+    components: {},
+
+    methods: {
+        handleClickItem(index) {
+            this.navItems.find((el) => el.isActive == true).isActive = false;
+            this.navItems[index].isActive = true;
+        },
     },
 };
 </script>

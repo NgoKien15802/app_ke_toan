@@ -400,3 +400,15 @@
     width: 8px;
     height: 10px;
 }
+
+.mi-arrow-check-all {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -259px -147px;
+    width: 18px;
+    height: 18px;
+}
+
+.mi-arrow-dropdown {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -564px -365px;
+    width: 8px;
+    height: 5px;
+}

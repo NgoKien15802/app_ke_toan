@@ -2,7 +2,7 @@
     width: 100%;
     height: calc(100% - var(--header-size));
     background-color: #eeeff1;
-    padding: 24px 24px 48px 24px;
+    padding: 10px 20px 0 20px;
 }
 
 .nav__list {
@@ -10,6 +10,7 @@
     align-items: center;
     list-style: none;
     border-bottom: 1px solid #ccc;
+    height: var(--tab__router-height);
 }
 
 .nav__link {
@@ -17,14 +18,11 @@
     cursor: pointer;
     color: #111;
     text-decoration: none;
-}
-
-.nav__item {
     padding: 4px 20px;
     cursor: pointer;
 }
 
-.nav__item.active {
+.nav__link.active {
     background: #f2ebbf;
     font-weight: 700;
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.16);
@@ -32,6 +30,10 @@
     border-top-right-radius: 5px;
     background-color: #f2ebbf;
     border-bottom: 4px solid var(--color-primary);
+}
+
+.nav__item {
+    color: var(--color-primary);
 }
 
 .nav__link {

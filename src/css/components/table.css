@@ -64,7 +64,7 @@
 }
 
 .employee th {
-    background-color: #eeeeee;
+    background-color: #e5e8ec;
     font-weight: 600;
     font-size: 1.3rem;
     color: #000000;
@@ -132,7 +132,7 @@
     background-color: var(--boder-primary);
 } */
 
-.employee thead tr th:nth-child(3),
+/* .employee thead tr th:nth-child(3),
 .employee thead tr th:nth-child(2),
 .employee thead tr th:first-child {
     background-color: #eeeeee;
@@ -142,7 +142,7 @@
 .employee tbody tr td:nth-child(2),
 .employee tbody tr td:first-child {
     background-color: #ffff;
-}
+} */
 
 .employee thead tr th:last-child,
 .employee tbody tr td:last-child {
@@ -152,9 +152,9 @@
     z-index: 2;
 }
 
-.employee thead tr th:last-child {
+/* .employee thead tr th:last-child {
     background-color: #eeeeee;
-}
+} */
 
 .employee tbody tr td:last-child::after {
     content: "";

@@ -1,7 +1,7 @@
 <template>
     <div class="content__main-paging">
         <p class="content__main-paging-left">
-            {{ $t("Total") }}: <strong>{{ totalRecord }}</strong>
+            {{ $t("TotalNumber") }}: <strong>{{ totalRecord }}</strong>
             {{ $t("Record") }}
         </p>
         <div class="content__main-paging-right">

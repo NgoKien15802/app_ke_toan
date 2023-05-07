@@ -1,5 +1,5 @@
 <template>
-    <tr class="" v-for="(employee, index) in employees" :key="index">
+    <tr class="" v-for="(data, index) in dataList" :key="index">
         <td class="text-align-center">
             <div class="ms-component ms-skeleton">
                 <div
@@ -131,12 +131,12 @@
 export default {
     name: "MSkeletonTable",
     props: {
-        employees: {
+        dataList: {
             type: Array,
         },
     },
     watch: {
-        employees: function (newValue) {
+        dataList: function (newValue) {
             console.log(newValue);
         },
     },
