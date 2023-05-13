@@ -1,5 +1,7 @@
 <template>
-    <div class="ms-component con-ms-popup ms-popup-is-right popup-is-show">
+    <div
+        class="ms-component con-ms-popup ms-popup-is-right popup-is-show account__systerm-detail"
+    >
         <div class="ms-popup--background"></div>
         <div
             class="ms-popup ms-popup-content ms-popup-is-right"
@@ -61,7 +63,6 @@
                             :isShowTooltip="isTooltip.isTooltipAccountNumber"
                             :required="true"
                             ref="txtAccountNumber"
-                            :isDisabled="isDisabledAccountNumber"
                             @blur="
                                 isEmpty(accountList.AccountNumber)
                                     ? (isTooltip.isTooltipAccountNumber = true)

@@ -47,6 +47,8 @@
     --i-op-disable-light: 50%;
 
     --row-spacing: 8px;
+    --footer-height: 42px;
+    --footer-background-color: #38393d;
 
     /* icon dark */
     --i-normal-dark: #7b8798;
@@ -76,6 +78,11 @@ html {
 @font-face {
     font-family: notosans;
     src: url(../assets/fonts/notosans-regular.2cb88a13.woff2);
+}
+
+@font-face {
+    font-family: notosansBold;
+    src: url(../assets/fonts/notosans-bold.3ede5aff.woff2);
 }
 
 body {
@@ -137,6 +144,13 @@ button {
     column-gap: 8px;
 }
 
+.m-flex-col-gap-10 {
+    column-gap: 10px;
+}
+
+.flex-grow {
+    flex-grow: 1 !important;
+}
 .block-center {
     display: flex;
     align-items: center;
@@ -175,6 +189,10 @@ button {
 /* .m-row */
 .m-row + .m-row {
     margin-top: 15px;
+}
+
+.m-row-padding + .m-row-padding {
+    padding-top: 15px;
 }
 
 /* w-50% */
@@ -332,6 +350,11 @@ div.disabled {
 .flex-1 {
     flex: 1 1 0% !important;
 }
+
+.flex-row-reverse {
+    flex-direction: row-reverse !important;
+}
+
 .items-center {
     align-items: center !important;
 }

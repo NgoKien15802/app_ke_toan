@@ -109,3 +109,13 @@
 .input__wrapper-combobox {
     width: 100%;
 }
+
+.account__systerm-detail.ms-popup-content-right {
+    padding: 0 16px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    min-width: 0;
+}

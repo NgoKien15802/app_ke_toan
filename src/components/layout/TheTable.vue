@@ -219,8 +219,9 @@
         :message="
             isDialogWarning
                 ? $t('MessageWarning') +
+                  '( ' +
                   employeeCodeSelected +
-                  ' ' +
+                  ' ) ' +
                   $t('TxtNo') +
                   '?'
                 : $t('MessageWarningMul') + ' ' + $t('TxtNo') + '?'
@@ -521,7 +522,9 @@ export default {
         },
 
         headers: {
-            handler() {},
+            handler(newValue) {
+                this.$emit("handleChangeHeader", newValue);
+            },
             deep: true,
         },
     },

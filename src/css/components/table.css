@@ -131,18 +131,18 @@
     z-index: 1;
     background-color: var(--boder-primary);
 } */
-
-/* .employee thead tr th:nth-child(3),
-.employee thead tr th:nth-child(2),
+/* 
+.employee thead tr th:nth-child(3),
+.employee thead tr th:nth-child(2), */
 .employee thead tr th:first-child {
     background-color: #eeeeee;
 }
-
+/* 
 .employee tbody tr td:nth-child(3),
-.employee tbody tr td:nth-child(2),
+.employee tbody tr td:nth-child(2), */
 .employee tbody tr td:first-child {
     background-color: #ffff;
-} */
+}
 
 .employee thead tr th:last-child,
 .employee tbody tr td:last-child {

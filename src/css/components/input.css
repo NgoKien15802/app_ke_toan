@@ -91,3 +91,8 @@
 .invalid-error {
     border: 1px solid #e61d1d !important;
 }
+
+.kindNumber {
+    text-align: right;
+    font-style: italic;
+}

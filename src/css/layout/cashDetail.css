@@ -17,7 +17,7 @@
     border-radius: 4px;
 }
 
-.ms-popup {
+.cash_detail .ms-popup {
     position: relative;
     transition: all 0.2s;
     z-index: 200;
@@ -74,6 +74,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-family: notosansBold;
 }
 
 .header__popup-detail .header-detail-input {
@@ -132,4 +133,97 @@
     padding-left: 16px;
     border-left: 1px solid #d4d7dc;
     width: 185px;
+}
+
+.cash-detail .summary-info-title {
+    text-align: right;
+    font-size: 1.3rem;
+}
+
+.cash-detail .summary-info-number {
+    font-size: 36px;
+    font-weight: 800;
+    text-align: right;
+    font-family: notosansBold;
+}
+
+.cash-detail .original__vouchers {
+    margin-left: 7px;
+}
+
+.cash-detail .reference-title {
+    margin-right: 16px;
+    min-width: 75px;
+}
+
+.cash-detail .grid__table {
+    background: #fff;
+    width: 100%;
+    position: relative;
+}
+
+.cash-detail .ms-tabs-position-top {
+    width: auto;
+    overflow: visible;
+}
+.cash-detail .tabs {
+    position: relative;
+}
+
+.cash-detail .ms-reference {
+    color: #0075c0;
+}
+
+.cash-detail .header__reference {
+    width: 100vw;
+    padding: 8px 0 8px 8px;
+    position: -webkit-sticky;
+    position: sticky;
+    left: 0;
+    display: flex;
+}
+
+.cash-detail .text__reference {
+    font-weight: 700;
+    font-family: notosansBold;
+    padding: 0 16px;
+}
+
+.cash-detail .wrap__table {
+    padding: 0 20px;
+}
+
+.cash-detail .footer__layout {
+    z-index: 99;
+}
+
+.cash-detail .footer__layout button {
+    font-family: notosans;
+}
+
+.cash-detail .footer__button-group {
+    padding: 0 16px;
+    position: relative;
+    height: var(--footer-height);
+    width: 100%;
+    background-color: var(--footer-background-color);
+    display: flex;
+    align-items: center;
+}
+
+.cash-detail .footer__group-right {
+    text-align: right;
+    justify-content: flex-end;
+    z-index: 1;
+}
+
+.cash-detail .footer__layout .btn-default {
+    background-color: transparent;
+    color: var(--white-color);
+}
+
+.cash-detail .grid__control-item {
+    width: 100%;
+    padding: 0 20px;
+    background-color: #fff;
 }

@@ -157,7 +157,10 @@
         </div>
     </TheCash>
 
-    <TheCashDetail v-if="isCashDetail"></TheCashDetail>
+    <TheCashDetail
+        v-if="isCashDetail"
+        @closeCashDetail="closeCashDetail"
+    ></TheCashDetail>
 </template>
 
 <script>
@@ -201,6 +204,9 @@ export default {
     },
 
     methods: {
+        closeCashDetail() {
+            this.isCashDetail = false;
+        },
         /**
          * Hàm show cash deatil khi click btn Chi tiền
          * Author: KienNT (08/05/2023)

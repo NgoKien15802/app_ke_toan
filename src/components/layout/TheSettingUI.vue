@@ -9,10 +9,7 @@
             style="min-width: 800px; max-width: 800px; width: 800px"
             ref="containerSettingUI"
         >
-            <span
-                class="popup-shortkey"
-                shortkey="Close|Save|SaveAndAdd|Help|Print|DeleteCacheAdvance"
-            ></span>
+            <span class="popup-shortkey"></span>
             <header class="ms-popup--header">
                 <div class="ms-popup--title ms-popup-title-right">
                     <div class="header-popup flex">
@@ -537,6 +534,9 @@ export default {
         columnEditableRecv: {
             type: Array,
         },
+        columnList: {
+            type: Array,
+        },
     },
     data() {
         return {
@@ -667,9 +667,22 @@ export default {
         window.removeEventListener("keydown", this.handlePressKeyShort);
     },
     created() {
+        // if (this.columnList.length > 0) {
+        //     let cloneColumnList = [...this.columnList];
+        //     cloneColumnList.pop();
+        //     cloneColumnList.shift();
+        //     cloneColumnList = cloneColumnList.map((el) => {
+        //         return {
+        //             isSelected: true,
+        //             nameColumn: el,
+        //         };
+        //     });
+        //     this.columns = cloneColumnList;
+        // }
         if (this.selectedArrRecv.length > 0) {
             this.selectedArr = this.selectedArrRecv;
         }
+
         if (this.columnEditableRecv.length > 0) {
             let cloneColumnEditableRecv = [...this.columnEditableRecv];
             cloneColumnEditableRecv.pop();

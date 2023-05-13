@@ -7,6 +7,7 @@
         :disabled="isDisabled"
         :tabindex="tabindex"
         :autocomplete="autocomplete"
+        :placeholder="placeHolder"
         class="input__type reset-input"
         :style="style"
         :class="[

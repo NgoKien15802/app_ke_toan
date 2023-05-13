@@ -130,7 +130,7 @@
                                             <div class="header-detail-btn">
                                                 <div
                                                     class="wrap-icon confirm__close-popup mi-24"
-                                                    @click="closePopup"
+                                                    @click="closeCashDetail"
                                                 >
                                                     <div
                                                         class="icon-close tooltip"
@@ -217,21 +217,20 @@
                                                                 >
                                                                     <label
                                                                         class="form__label"
-                                                                        for="ObjectCode"
+                                                                        for="Receiver"
                                                                         >{{
                                                                             $t(
-                                                                                "LabelObjectCode"
+                                                                                "LabelReceiver"
                                                                             )
                                                                         }}</label
                                                                     >
                                                                     <MInput
                                                                         tabindex="4"
-                                                                        id="ObjectCode"
-                                                                        name="MartialStatusName"
+                                                                        id="Receiver"
                                                                         kind="default"
-                                                                        ref="txtObjectCode"
+                                                                        ref="txtReceiver"
                                                                         v-model="
-                                                                            paymentDetail.ObjectCode
+                                                                            paymentDetail.Receiver
                                                                         "
                                                                     />
                                                                 </div>
@@ -240,21 +239,20 @@
                                                                 >
                                                                     <label
                                                                         class="form__label"
-                                                                        for="ObjectName"
+                                                                        for="Address"
                                                                         >{{
                                                                             $t(
-                                                                                "LabelObjectName"
+                                                                                "LabelAddress"
                                                                             )
                                                                         }}</label
                                                                     >
                                                                     <MInput
                                                                         tabindex="4"
-                                                                        id="ObjectName"
-                                                                        name="MartialStatusName"
+                                                                        id="Address"
                                                                         kind="default"
-                                                                        ref="txtObjectName"
+                                                                        ref="txtAddress"
                                                                         v-model="
-                                                                            paymentDetail.ObjectName
+                                                                            paymentDetail.Address
                                                                         "
                                                                     />
                                                                 </div>
@@ -266,21 +264,20 @@
                                                                 >
                                                                     <label
                                                                         class="form__label"
-                                                                        for="ObjectCode"
+                                                                        for="PaymentReason"
                                                                         >{{
                                                                             $t(
-                                                                                "LabelObjectCode"
+                                                                                "LabelPaymentReason"
                                                                             )
                                                                         }}</label
                                                                     >
                                                                     <MInput
                                                                         tabindex="4"
-                                                                        id="ObjectCode"
-                                                                        name="MartialStatusName"
+                                                                        id="PaymentReason"
                                                                         kind="default"
-                                                                        ref="txtObjectCode"
+                                                                        ref="txtPaymentReason"
                                                                         v-model="
-                                                                            paymentDetail.ObjectCode
+                                                                            paymentDetail.PaymentReason
                                                                         "
                                                                     />
                                                                 </div>
@@ -294,21 +291,20 @@
                                                                 >
                                                                     <label
                                                                         class="form__label"
-                                                                        for="ObjectCode"
+                                                                        for="Employee"
                                                                         >{{
                                                                             $t(
-                                                                                "LabelObjectCode"
+                                                                                "LabelEmployee"
                                                                             )
                                                                         }}</label
                                                                     >
                                                                     <MInput
                                                                         tabindex="4"
-                                                                        id="ObjectCode"
-                                                                        name="MartialStatusName"
+                                                                        id="Employee"
                                                                         kind="default"
-                                                                        ref="txtObjectCode"
+                                                                        ref="txtEmployee"
                                                                         v-model="
-                                                                            paymentDetail.ObjectCode
+                                                                            paymentDetail.Employee
                                                                         "
                                                                     />
                                                                 </div>
@@ -317,29 +313,63 @@
                                                                 >
                                                                     <label
                                                                         class="form__label"
-                                                                        for="ObjectName"
+                                                                        for="Attach"
                                                                         >{{
                                                                             $t(
-                                                                                "LabelObjectName"
+                                                                                "LabelAttach"
                                                                             )
                                                                         }}</label
                                                                     >
                                                                     <MInput
                                                                         tabindex="4"
-                                                                        id="ObjectName"
+                                                                        id="Attach"
                                                                         name="MartialStatusName"
                                                                         kind="default"
-                                                                        ref="txtObjectName"
+                                                                        ref="txtAttach"
                                                                         v-model="
-                                                                            paymentDetail.ObjectName
+                                                                            paymentDetail.Attach
+                                                                        "
+                                                                        className="kindNumber"
+                                                                        :placeHolder="
+                                                                            $t(
+                                                                                'Quantity'
+                                                                            )
                                                                         "
                                                                     />
+                                                                </div>
+                                                                <div
+                                                                    class="original__vouchers"
+                                                                >
+                                                                    {{
+                                                                        $t(
+                                                                            "LabelOriginalVouchers"
+                                                                        )
+                                                                    }}
+                                                                </div>
+                                                            </div>
+
+                                                            <div
+                                                                class="m-row flex reference"
+                                                            >
+                                                                <div
+                                                                    class="reference-title"
+                                                                >
+                                                                    {{
+                                                                        $t(
+                                                                            "LabelReference"
+                                                                        )
+                                                                    }}
+                                                                </div>
+                                                                <div
+                                                                    class="ms-reference"
+                                                                >
+                                                                    ...
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="w-1/5">
                                                             <div
-                                                                class="left-separate m-row"
+                                                                class="left-separate m-row-padding"
                                                             >
                                                                 <label
                                                                     for="AccountingDate"
@@ -394,15 +424,222 @@
                                                                     ></MTooltip>
                                                                 </div>
                                                             </div>
+                                                            <div
+                                                                class="left-separate m-row-padding"
+                                                            >
+                                                                <label
+                                                                    for="PaymentDate"
+                                                                    class="form__label"
+                                                                    >{{
+                                                                        $t(
+                                                                            "LabelPaymentDate"
+                                                                        )
+                                                                    }}
+                                                                </label>
+                                                                <div
+                                                                    :class="{
+                                                                        'tooltip-error':
+                                                                            isTooltip.isTooltipPaymentDate,
+                                                                    }"
+                                                                >
+                                                                    <MInput
+                                                                        type="date"
+                                                                        tabindex="5"
+                                                                        name="PaymentDate"
+                                                                        id="PaymentDate"
+                                                                        kind="default"
+                                                                        ref="txtPaymentDate"
+                                                                        v-model="
+                                                                            paymentDetail.PaymentDate
+                                                                        "
+                                                                        :isShowTooltip="
+                                                                            isTooltip.isTooltipPaymentDate
+                                                                        "
+                                                                        @blur="
+                                                                            isInValid(
+                                                                                paymentDetail.PaymentDate,
+                                                                                'date'
+                                                                            )
+                                                                                ? (isTooltip.isTooltipPaymentDate = true)
+                                                                                : (isTooltip.isTooltipPaymentDate = false)
+                                                                        "
+                                                                    />
+                                                                    <MTooltip
+                                                                        v-if="
+                                                                            isTooltip.isTooltipPaymentDate
+                                                                        "
+                                                                        :subtext="
+                                                                            $t(
+                                                                                'LabelPaymentDate'
+                                                                            ) +
+                                                                            $t(
+                                                                                'ErrorDate'
+                                                                            )
+                                                                        "
+                                                                        kind="error"
+                                                                    ></MTooltip>
+                                                                </div>
+                                                            </div>
+                                                            <div
+                                                                class="left-separate m-row-padding"
+                                                            >
+                                                                <label
+                                                                    class="form__label"
+                                                                    for="PaymentNumber"
+                                                                    >{{
+                                                                        $t(
+                                                                            "LabelPaymentNumber"
+                                                                        )
+                                                                    }}</label
+                                                                >
+                                                                <MInput
+                                                                    tabindex="4"
+                                                                    id="PaymentNumber"
+                                                                    kind="default"
+                                                                    ref="txtPaymentNumber"
+                                                                    v-model="
+                                                                        paymentDetail.PaymentNumber
+                                                                    "
+                                                                />
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="w-1/4"></div>
+                                                <div class="w-1/4">
+                                                    <div
+                                                        class="summary-info-title"
+                                                    >
+                                                        {{
+                                                            $t(
+                                                                "LabelTotalMoney"
+                                                            )
+                                                        }}
+                                                    </div>
+                                                    <h1
+                                                        class="summary-info-number"
+                                                    >
+                                                        0
+                                                    </h1>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="ms-con-dropdown grid__table">
+                                        <div>
+                                            <div
+                                                class="ms-tabs-position-top tabs"
+                                            >
+                                                <div class="header__reference">
+                                                    <span
+                                                        class="text__reference"
+                                                        >{{
+                                                            $t(
+                                                                "LabelAccounting"
+                                                            )
+                                                        }}</span
+                                                    >
+                                                </div>
+                                            </div>
+                                            <div class="wrap__table">
+                                                <TheTablePaymentDetail></TheTablePaymentDetail>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div
+                                        class="grid__control-item flex m-flex-col-gap-8"
+                                    >
+                                        <MButton
+                                            class="btn btn-default close__add-employee tooltip"
+                                            tabindex="17"
+                                            :text="$t('AddLine')"
+                                            :click="() => AddLineAndClose(true)"
+                                            ref="AddLine"
+                                        >
+                                        </MButton
+                                        ><MButton
+                                            class="btn btn-default close__add-employee tooltip"
+                                            tabindex="17"
+                                            :text="$t('DeleteAllLine')"
+                                            :click="
+                                                () =>
+                                                    DeleteAllLineAndClose(true)
+                                            "
+                                            ref="DeleteAllLine"
+                                        >
+                                        </MButton>
+                                    </div>
                                 </div>
-                                <div class="footer-layout"></div>
+                                <div class="footer__layout">
+                                    <div
+                                        class="footer__button-group flex-row-reverse"
+                                    >
+                                        <div class="footer__group-right flex">
+                                            <div class="flex m-flex-col-gap-10">
+                                                <div>
+                                                    <MButton
+                                                        class="btn btn-default close__add-employee tooltip"
+                                                        tabindex="17"
+                                                        :text="$t('BtnSave')"
+                                                        :click="
+                                                            () =>
+                                                                btnSaveAndClose(
+                                                                    true
+                                                                )
+                                                        "
+                                                        ref="btnSave"
+                                                    >
+                                                        <MTooltip
+                                                            kind="AccountSysterm"
+                                                            :subtext="
+                                                                $t(
+                                                                    'TooltipSave'
+                                                                )
+                                                            "
+                                                        ></MTooltip>
+                                                    </MButton>
+                                                </div>
+                                                <div>
+                                                    <MButton
+                                                        class="btn btn-primary close__add-employee tooltip"
+                                                        tabindex="18"
+                                                        :text="
+                                                            $t('BtnSaveEndAdd')
+                                                        "
+                                                        :click="
+                                                            () =>
+                                                                btnSaveAndClose(
+                                                                    false
+                                                                )
+                                                        "
+                                                        ref="btnSaveEndAdd"
+                                                    >
+                                                        <MTooltip
+                                                            kind="AccountSysterm"
+                                                            :subtext="
+                                                                $t(
+                                                                    'TooltipSaveAndAdd'
+                                                                )
+                                                            "
+                                                        ></MTooltip>
+                                                    </MButton>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="footer__group-left flex-grow flex"
+                                        >
+                                            <MButton
+                                                class="btn btn-default close__add-employee"
+                                                tabindex="19"
+                                                :text="$t('BtnDestroy')"
+                                                :click="destroyPopup"
+                                                ref="btnDestroy"
+                                            >
+                                            </MButton>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -414,10 +651,12 @@
 
 <script>
 import TheOptionItem from "@/components/layout/TheOptionItem.vue";
+import TheTablePaymentDetail from "./TheTablePaymentDetail.vue";
 export default {
     name: "CashDetail",
     components: {
         TheOptionItem,
+        TheTablePaymentDetail,
     },
     data() {
         return {
@@ -440,9 +679,18 @@ export default {
             ],
             isTooltip: {
                 isTooltipAccountingDate: false,
+                isTooltipPaymentDate: false,
             },
         };
     },
+
+    mounted() {
+        window.addEventListener("keydown", this.handlePressKeyShort);
+    },
+    beforeUnmount() {
+        window.removeEventListener("keydown", this.handlePressKeyShort);
+    },
+
     methods: {
         handleOpenDropdown() {
             try {
@@ -450,6 +698,21 @@ export default {
                 this.isOpenDropdown = !this.isOpenDropdown;
             } catch (error) {
                 console.log(error);
+            }
+        },
+        closeCashDetail() {
+            this.$emit("closeCashDetail");
+        },
+
+        /**
+         *  handle khi nhấn phím tắt
+         * Author: KienNT (30/04/2023)
+         * @param (event): là event
+         */
+        handlePressKeyShort(event) {
+            // khi nhấn phím esc thì đóng form
+            if (event.key === "Escape" || event.keyCode === 27) {
+                this.$emit("closeCashDetail");
             }
         },
     },

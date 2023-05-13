@@ -313,6 +313,7 @@
                         @changeSelectedArrToSetting="changeSelectedArrToSetting"
                         :filterConditonArr="filterConditonArr"
                         :columnEditable="columnEditable"
+                        @handleChangeHeader="handleChangeHeader"
                     ></TheTable>
                 </div>
 
@@ -370,6 +371,7 @@
                     :selectedArrRecv="selectedArrRecv"
                     @handleClickSavaSelected="handleClickSavaSelected"
                     :columnEditableRecv="columnEditable"
+                    :columnList="columnList"
                 ></TheSettingUI>
             </div>
         </div>
@@ -418,6 +420,7 @@ export default {
             selectedArrRecv: [],
             selectedArrToSetting: [],
             columnEditable: [],
+            columnList: [],
         };
     },
     components: {
@@ -451,6 +454,13 @@ export default {
     },
 
     methods: {
+        /**
+         * Hàm thực hiện gán lại header
+         * Author: KienNT 27/04/2023
+         */
+        handleChangeHeader(column) {
+            this.columnList = column;
+        },
         /**
          * Hàm thực hiện hành động hàng loạt
          * Author: KienNT 27/04/2023

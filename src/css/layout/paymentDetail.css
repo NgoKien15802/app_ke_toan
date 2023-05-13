@@ -126,18 +126,16 @@
     z-index: 1;
     background-color: var(--boder-primary);
 } */
-
-/* .paymentList thead tr th:nth-child(3),
-.paymentList thead tr th:nth-child(2),
+/* 
+.paymentList thead tr th:nth-child(3),
+.paymentList thead tr th:nth-child(2), */
 .paymentList thead tr th:first-child {
     background-color: #eeeeee;
 }
 
-.paymentList tbody tr td:nth-child(3),
-.paymentList tbody tr td:nth-child(2),
 .paymentList tbody tr td:first-child {
     background-color: #ffff;
-} */
+}
 
 /* .paymentList thead tr th:last-child,
 .paymentList tbody tr td:last-child {

@@ -50,6 +50,7 @@ const MISAResouce = {
         Unfiltered: "Bỏ lọc",
         Contain: "Chứa",
         FixThisColumn: "Cố định cột này",
+        Quantity: "Số lượng",
 
         //Sidebar
         Overview: "Tổng quan",
@@ -230,6 +231,12 @@ const MISAResouce = {
         LabelPaymentDate: "Ngày phiếu chi",
         LabelPaymentNumber: "Số phiếu chi",
         LabelAttach: "Kèm theo",
+        LabelTotalMoney: "Tổng tiền",
+        LabelOriginalVouchers: "Chứng từ gốc",
+        LabelReference: "Tham chiếu",
+        LabelAccounting: "Hạch toán",
+        AddLine: "Thêm dòng",
+        DeleteAllLine: "Xóa hết dòng",
 
         //other
         Username: "Ngô Trung Kiên",
@@ -286,7 +293,7 @@ const MISAResouce = {
         Unfiltered: "Unfiltered",
         Contain: "Contain",
         FixThisColumn: "Fix this column",
-        FilterCondition: "Lọc Tên nhân viên",
+        Quantity: "Quantity",
 
         //Sidebar
         Overview: "Overview",
