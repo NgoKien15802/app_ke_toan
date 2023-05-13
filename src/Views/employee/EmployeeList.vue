@@ -379,7 +379,7 @@
 import MISAResouce from "@/js/resource";
 import axios from "axios";
 import TheTable from "@/components/layout/TheTable.vue";
-import ThePaging from "@/components/layout/ThePaging.vue";
+import ThePaging from "@/components/base/MPaging.vue";
 import Mloading from "@/components/base/Mloading.vue";
 import TheSettingUI from "@/components/layout/TheSettingUI.vue";
 

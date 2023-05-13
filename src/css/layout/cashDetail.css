@@ -1,0 +1,135 @@
+.cash_detail.con-ms-popup {
+    transition: all 0.2s;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    z-index: 200;
+}
+
+.ms-popup-content {
+    position: relative;
+    border-radius: 4px;
+}
+
+.ms-popup {
+    position: relative;
+    transition: all 0.2s;
+    z-index: 200;
+    max-width: calc(100% - 30px);
+    box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+}
+
+.ms-popup--header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+}
+
+.cash_detail.con-ms-popup .ms-popup--content {
+    transition: all 0.23s ease 0.1s;
+    flex-direction: column;
+    display: flex;
+    width: 100%;
+}
+.header-layout-wrap {
+    background: #fff;
+}
+.base-view-detail {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    height: 100vh;
+}
+
+.header__popup-detail {
+    top: 0;
+    width: 100%;
+    background-color: var(--main-background-color);
+}
+
+.top-header {
+    padding: var(--popup-right__title-padding);
+    display: flex;
+    display: -webkit-flex;
+    width: 100%;
+}
+
+.header__popup-detail .title__popup-detail {
+    font-weight: 700;
+    font-size: 24px;
+    top: -7px;
+    left: 20px;
+    color: #111;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.header__popup-detail .header-detail-input {
+    display: flex;
+    display: -webkit-flex;
+    justify-content: left;
+    align-items: center;
+    padding-left: 24px;
+    flex: 1;
+    min-width: 600px;
+}
+
+.header-detail-buttons {
+    align-items: center;
+    right: 0;
+    position: relative;
+}
+
+.header__popup-detail .guide-tour {
+    display: flex;
+    display: -webkit-flex;
+    margin: 0 12px;
+}
+
+.header__popup-detail .label-guide-tour {
+    padding-left: 5px;
+}
+
+.header-detail-btn {
+    padding: 6px 8px;
+    cursor: pointer;
+    height: 100%;
+    display: flex;
+    display: -webkit-flex;
+    align-items: center;
+}
+
+.body__popup-detail {
+    flex: 1;
+    min-height: 0;
+    min-width: 0;
+    overflow: auto;
+    position: relative;
+    scroll-behavior: smooth;
+}
+
+.cash-detail .bg {
+    background-color: var(--main-background-color);
+}
+
+.body-layout-main {
+    padding: 6px 20px 12px 20px;
+}
+
+.left-separate {
+    padding-left: 16px;
+    border-left: 1px solid #d4d7dc;
+    width: 185px;
+}

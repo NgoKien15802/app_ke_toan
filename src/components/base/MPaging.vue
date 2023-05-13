@@ -93,7 +93,7 @@
 </template>
 <script>
 import MISAResouce from "../../js/resource";
-import TheOptionItem from "./TheOptionItem.vue";
+import TheOptionItem from "../layout/TheOptionItem.vue";
 import Paginate from "vuejs-paginate-next";
 export default {
     name: "ThePaging",

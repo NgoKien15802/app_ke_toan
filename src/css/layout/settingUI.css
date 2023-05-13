@@ -114,7 +114,7 @@
     min-height: 24px;
 }
 
-.ms-popup--content.ms-popup-content-right {
+.setting_UI .ms-popup--content.ms-popup-content-right {
     padding: 0 16px;
     overflow-y: auto;
     display: flex;
@@ -131,7 +131,7 @@
     text-align: right;
 }
 
-.ms-popup--content.ms-popup-content-right {
+.setting_UI .ms-popup--content.ms-popup-content-right {
     overflow: auto;
 }
 .popup-util {
@@ -282,7 +282,7 @@ th {
     border: 0 solid #c7c7c7 !important;
 }
 
-.ms-popup--content {
+.setting_UI .ms-popup--content {
     transition: all 0.23s ease 0.1s;
     flex-direction: column;
     display: flex;

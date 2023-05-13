@@ -292,6 +292,12 @@
     opacity: 0.5;
 }
 
+.icon__setting_cash_detail {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -33px -143px;
+    width: 23px;
+    height: 26px;
+}
+
 .icon__setting:hover {
     opacity: 1;
 }
@@ -411,4 +417,16 @@
     background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -564px -365px;
     width: 8px;
     height: 5px;
+}
+
+.recent-log-btn {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -648px -145px;
+    width: 24px;
+    height: 23px;
+}
+
+.mi-tour {
+    background: url("../../assets/img/Sprites.64af8f61.svg") -984px -145px;
+    width: 23px;
+    height: 22px;
 }

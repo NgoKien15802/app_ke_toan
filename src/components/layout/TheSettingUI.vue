@@ -1,6 +1,6 @@
 <template>
     <div
-        class="ms-component con-ms-popup ms-popup-is-right popup-is-show"
+        class="ms-component con-ms-popup ms-popup-is-right popup-is-show setting_UI"
         style=""
     >
         <div class="ms-popup--background"></div>

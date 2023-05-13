@@ -99,7 +99,7 @@
                     <MButton
                         mode="btnAdd"
                         :text="$t('Payment')"
-                        :click="showPopup"
+                        :click="showCashDetail"
                     ></MButton>
                 </div>
             </div>
@@ -156,22 +156,32 @@
             </div>
         </div>
     </TheCash>
+
+    <TheCashDetail v-if="isCashDetail"></TheCashDetail>
 </template>
 
 <script>
 import TheCash from "@/components/layout/sidebar/TheCash.vue";
 import TheTablePayment from "@/components/layout/TheTablePayment.vue";
-import ThePaging from "@/components/layout/ThePaging.vue";
+import ThePaging from "@/components/base/MPaging.vue";
 import MISAEnum from "@/js/enum";
 import MISAResouce from "@/js/resource";
 import TheTablePaymentDetail from "@/components/layout/TheTablePaymentDetail.vue";
+import TheCashDetail from "../../components/layout/TheCashDetail.vue";
 export default {
     name: "CashPayment",
-    components: { TheCash, TheTablePayment, ThePaging, TheTablePaymentDetail },
+    components: {
+        TheCash,
+        TheTablePayment,
+        ThePaging,
+        TheTablePaymentDetail,
+        TheCashDetail,
+    },
     data() {
         return {
             isContextMenu: false,
             isLoading: false,
+            isCashDetail: false,
             MISAEnum,
             MISAResouce,
             formMode: "",
@@ -191,6 +201,18 @@ export default {
     },
 
     methods: {
+        /**
+         * Hàm show cash deatil khi click btn Chi tiền
+         * Author: KienNT (08/05/2023)
+         */
+        showCashDetail() {
+            this.isCashDetail = true;
+        },
+
+        /**
+         * Hàm show detail
+         * Author: KienNT (08/05/2023)
+         */
         handleShowDetailSection() {
             const masterSection = this.$refs["masterSection"];
             const detailSection = this.$refs["detailSection"];

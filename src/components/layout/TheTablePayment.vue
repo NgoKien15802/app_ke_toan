@@ -224,6 +224,16 @@
             </tr>
         </tfoot>
     </table>
+
+    <MNotData v-if="paymentList.length <= 0 && !isShowSkeleton"></MNotData>
+    <MContextmenu
+        v-if="isContextMenu"
+        kind="contextMenuPayment"
+        :left="leftContextMenu"
+        :top="topContextMenu"
+        @hideContextMenu="hideContextMenu"
+        :refElement="this.$refs.iconContextMenu"
+    ></MContextmenu>
 </template>
 
 <script>
@@ -806,7 +816,35 @@ export default {
         };
     },
 
-    methods: {},
+    methods: {
+        /**
+         * Hàm lấy toại độ sau đó set tọa độ cho contextmenu để hiển thị
+         * Author: KienNT (14/05/2023)
+         *  @param (event,employee): tham số 1 là event, tham số 2 là thông tin của 1 nhân viên
+         */
+        handleClickOptionMenu(event, payment) {
+            try {
+                console.log(payment);
+                this.isContextMenu = !this.isContextMenu;
+                this.leftContextMenu =
+                    event.target.getBoundingClientRect().x -
+                    MISAEnum.getbounding.x;
+                this.topContextMenu =
+                    event.target.getBoundingClientRect().y +
+                    MISAEnum.getbounding.y;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
+         * Hàm ẩn contextmenu khi click ra ngoài element
+         * Author: KienNT (14/05/2023)
+         */
+        hideContextMenu() {
+            this.isContextMenu = !this.isContextMenu;
+        },
+    },
 
     computed: {
         /**

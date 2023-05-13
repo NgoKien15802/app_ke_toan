@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 
 import EmployeeList from "@/Views/employee/EmployeeList.vue";
 import CustomerList from "@/Views/customer/CustomerList.vue";
-import CashDetail from "@/Views/cash/CashDetail";
+import TheCashDetail from "@/components/layout/TheCashDetail.vue";
 import AccountSysterm from "@/Views/cash/AccountSysterm";
 import CashPayment from "@/Views/cash/CashPayment";
 import CashProcess from "@/Views/cash/CashProcess";
@@ -15,7 +15,7 @@ const routes = [
     { path: "/", component: EmployeeList },
     { path: "/cash/employee", component: EmployeeList },
     { path: "/cash/customer", component: CustomerList },
-    { path: "/cash/cashDetail", component: CashDetail },
+    { path: "/cash/cashDetail", component: TheCashDetail },
     { path: "/cash/accountSysterm", component: AccountSysterm },
     { path: "/cash/payment", component: CashPayment },
     { path: "/cash/process", component: CashProcess },

@@ -37,7 +37,7 @@
     --tab__router-height: 31px;
 
     --size-row: 30px;
-
+    --popup-right__title-padding: 16px 16px 12px 16px;
     /* bg tooltip để thay đổi khi thông báo lỗi hoặc thông báo */
     --bg-tooltip: #505050;
     --main-background-color: #eceef1;
@@ -45,6 +45,8 @@
     --i-normal-light: #666666;
     --i-hover-focus-light: #1fb6ff;
     --i-op-disable-light: 50%;
+
+    --row-spacing: 8px;
 
     /* icon dark */
     --i-normal-dark: #7b8798;
@@ -148,6 +150,18 @@ button {
 .w-5\/6 {
     width: 83.33333% !important;
 }
+
+.w-3\/7 {
+    width: 42.8571428% !important;
+}
+
+.w-4\/7 {
+    width: 57.1428571% !important;
+}
+
+.column-space {
+    padding-right: 12px;
+}
 /* required */
 .error-info,
 .required {
@@ -193,6 +207,36 @@ button {
 
 .w-1\/2 {
     width: 50% !important;
+}
+
+.w-3\/4 {
+    width: 75% !important;
+}
+.w-1\/4 {
+    width: 25% !important;
+}
+
+.w-4\/5 {
+    width: 80% !important;
+}
+
+.w-1\/5 {
+    width: 20% !important;
+}
+.left-0 {
+    left: 0;
+}
+
+.right-separate {
+    padding-right: 16px;
+}
+
+.m-row {
+    align-items: flex-end;
+}
+
+.ms-con-dropdown {
+    padding-bottom: var(--row-spacing);
 }
 
 /* quay 180 deg */
@@ -299,10 +343,16 @@ div.disabled {
     padding-bottom: 15px;
 }
 
+.width-240 {
+    width: 240px !important;
+}
+
 .p-r-12 {
     padding-right: 12px;
 }
-
+.p-r-10 {
+    padding-right: 10px;
+}
 .w-1\/2 {
     width: 50% !important;
 }

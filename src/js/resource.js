@@ -219,6 +219,18 @@ const MISAResouce = {
         CreditAccount: "TK có",
         ObjectName: "Tên đối tượng",
 
+        // payment detail
+        Tutorial: "Hướng dẫn",
+        LabelObjectCode: "Mã đối tượng",
+        LabelObjectName: "Tên đối tượng",
+        LabelReceiver: "Người nhận",
+        LabelPaymentReason: "Lý do chi",
+        LabelEmployee: "Nhân viên",
+        LabelAccountingDate: "Ngày hạch toán",
+        LabelPaymentDate: "Ngày phiếu chi",
+        LabelPaymentNumber: "Số phiếu chi",
+        LabelAttach: "Kèm theo",
+
         //other
         Username: "Ngô Trung Kiên",
         MyCompany: "công ty tnhh sản xuất - thương mại - dịch vị qui phúc",
@@ -440,6 +452,9 @@ const MISAResouce = {
         DebitAccount: "Debit account",
         CreditAccount: "Credit account",
         ObjectName: "Object name",
+
+        // payment detail
+        Tutorial: "Tutorial",
 
         //other
         Username: "Kien Ngo Trung",

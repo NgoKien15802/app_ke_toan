@@ -76,7 +76,6 @@
                                             "
                                             :required="true"
                                             ref="txtEmployeeCode"
-                                            :isDisabled="isDisabledEmployeeCode"
                                             @blur="
                                                 isEmpty(
                                                     newEmployee.EmployeeCode
@@ -425,13 +424,7 @@
                             </div>
                         </div>
                         <div class="m-row form__group-contact-second">
-                            <div
-                                class="form__group form__group-contact-input"
-                                :class="{
-                                    'tooltip-error':
-                                        isTooltip.isTooltipPhoneNumber,
-                                }"
-                            >
+                            <div class="form__group form__group-contact-input">
                                 <label for="sodienthoai" class="form__label">
                                     <MTooltip
                                         kind="title"
@@ -450,34 +443,9 @@
                                         $t('TooltipPhoneNumber').toLowerCase()
                                     "
                                     v-model="newEmployee.PhoneNumber"
-                                    :isShowTooltip="
-                                        isTooltip.isTooltipPhoneNumber
-                                    "
-                                    @blur="
-                                        isInValid(
-                                            newEmployee.PhoneNumber,
-                                            'number'
-                                        )
-                                            ? (isTooltip.isTooltipPhoneNumber = true)
-                                            : (isTooltip.isTooltipPhoneNumber = false)
-                                    "
                                 />
-                                <MTooltip
-                                    v-if="isTooltip.isTooltipPhoneNumber"
-                                    :subtext="
-                                        $t('LabelPhoneNumber') +
-                                        $t('ErrorNotNumber')
-                                    "
-                                    kind="error"
-                                ></MTooltip>
                             </div>
-                            <div
-                                class="form__group form__group-contact-input"
-                                :class="{
-                                    'tooltip-error':
-                                        isTooltip.isTooltipLandlineNumber,
-                                }"
-                            >
+                            <div class="form__group form__group-contact-input">
                                 <label for="sodienthoaiCD" class="form__label">
                                     <MTooltip
                                         kind="title"
@@ -497,26 +465,7 @@
                                         ).toLowerCase()
                                     "
                                     v-model="newEmployee.LandlineNumber"
-                                    :isShowTooltip="
-                                        isTooltip.isTooltipLandlineNumber
-                                    "
-                                    @blur="
-                                        isInValid(
-                                            newEmployee.LandlineNumber,
-                                            'number'
-                                        )
-                                            ? (isTooltip.isTooltipLandlineNumber = true)
-                                            : (isTooltip.isTooltipLandlineNumber = false)
-                                    "
                                 />
-                                <MTooltip
-                                    v-if="isTooltip.isTooltipLandlineNumber"
-                                    :subtext="
-                                        $t('LabelLandlineNumber') +
-                                        $t('ErrorNotNumber')
-                                    "
-                                    kind="error"
-                                ></MTooltip>
                             </div>
                             <div class="form__group form__group-contact-input">
                                 <label for="email" class="form__label">{{
@@ -1140,6 +1089,9 @@ export default {
                                 case "EmployeeCode":
                                 case "InvalidEmployeeCode":
                                     this.isTooltip.isTooltipEmployeeCode = true;
+                                    if (this.errorExistId) {
+                                        this.errorExistId = false;
+                                    }
                                     this.invalidEmployeeCode = errorData[key];
                                     this.handleValidateBE(
                                         errorData,
@@ -1269,24 +1221,24 @@ export default {
                 );
 
                 // nếu có value thì mới check input number
-                this.checkFieldInvalid(
-                    "isTooltipPhoneNumber",
-                    this.newEmployee.PhoneNumber,
-                    this.$t("LabelPhoneNumber"),
-                    "number",
-                    this.$t("ErrorNotNumber"),
-                    "txtPhoneNumber"
-                );
+                // this.checkFieldInvalid(
+                //     "isTooltipPhoneNumber",
+                //     this.newEmployee.PhoneNumber,
+                //     this.$t("LabelPhoneNumber"),
+                //     "number",
+                //     this.$t("ErrorNotNumber"),
+                //     "txtPhoneNumber"
+                // );
 
-                // nếu có value thì mới check input number
-                this.checkFieldInvalid(
-                    "isTooltipLandlineNumber",
-                    this.newEmployee.LandlineNumber,
-                    this.$t("LabelLandlineNumber"),
-                    "number",
-                    this.$t("ErrorNotNumber"),
-                    "txtLandlineNumber"
-                );
+                // // nếu có value thì mới check input number
+                // this.checkFieldInvalid(
+                //     "isTooltipLandlineNumber",
+                //     this.newEmployee.LandlineNumber,
+                //     this.$t("LabelLandlineNumber"),
+                //     "number",
+                //     this.$t("ErrorNotNumber"),
+                //     "txtLandlineNumber"
+                // );
 
                 // nếu có value thì mới check input number
                 this.checkFieldInvalid(
