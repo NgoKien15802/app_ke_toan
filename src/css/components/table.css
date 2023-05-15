@@ -135,7 +135,7 @@
 .employee thead tr th:nth-child(3),
 .employee thead tr th:nth-child(2), */
 .employee thead tr th:first-child {
-    background-color: #eeeeee;
+    background-color: #e5e8ec;
 }
 /* 
 .employee tbody tr td:nth-child(3),

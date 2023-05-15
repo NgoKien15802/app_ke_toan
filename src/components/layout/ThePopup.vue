@@ -92,8 +92,7 @@
                                                 isEmpty(
                                                     newEmployee.EmployeeCode
                                                 )
-                                                    ? MISAResouce.vi
-                                                          .LabelEmployeeCode +
+                                                    ? $t('LabelEmployeeCode') +
                                                       $t('ErrorEmpty')
                                                     : errorExistId
                                                     ? errorExistId
@@ -243,8 +242,7 @@
                                                 isTooltip.isTooltipDateOfBirth
                                             "
                                             :subtext="
-                                                MISAResouce.vi
-                                                    .LabelDateOfBirth +
+                                                $t('LabelDateOfBirth') +
                                                 $t('ErrorDate')
                                             "
                                             kind="error"
@@ -380,8 +378,7 @@
                                                 isTooltip.isTooltipIdentityDate
                                             "
                                             :subtext="
-                                                MISAResouce.vi
-                                                    .LabelIdentityDate +
+                                                $t('LabelIdentityDate') +
                                                 $t('ErrorDate')
                                             "
                                             kind="error"

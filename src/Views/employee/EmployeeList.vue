@@ -15,14 +15,14 @@
                         class="content__main-left"
                     >
                         <p>
-                            {{ MISAResouce.vi.SelectedCheckbox }}
+                            {{ $t("SelectedCheckbox") }}
                             <strong>{{ selectedCheckbox.length }}</strong>
                         </p>
                         <MButton
                             kind="link"
                             className="link-btn btn-link-delete"
                             :click="handleUndoSeleted"
-                            :text="MISAResouce.vi.UndoSelected"
+                            :text="$t('UndoSelected')"
                         ></MButton>
                     </div>
                     <button
