@@ -222,15 +222,33 @@
                 </div>
                 <div class="content__main-right">
                     <div class="content__main-filter">
-                        <div class="input__wrapper">
+                        <div
+                            class="input__wrapper is-full-false"
+                            style="
+                                min-width: 107px;
+                                max-width: 107px;
+                                width: 107px;
+                            "
+                        >
                             <button class="input__icon search">
                                 <div class="input__icon-search"></div>
                             </button>
                             <input
+                                style="
+                                    min-width: 73px;
+                                    max-width: 73px;
+                                    width: 73px;
+                                "
                                 type="text"
                                 class="input__type input__search"
                                 :placeholder="$t('TxtSearch')"
                                 v-model.lazy="keyWordSearch"
+                                @focus="
+                                    ($event) => handleFocusInput($event, true)
+                                "
+                                @blur="
+                                    ($event) => handleFocusInput($event, false)
+                                "
                             />
                         </div>
                     </div>
@@ -340,6 +358,7 @@
                     @handleReLoadData="handleReLoadData"
                     :formMode="formMode"
                     @handleSetModeForm="() => (formMode = null)"
+                    @handleChangeTitlePopup="handleChangeTitlePopup"
                 ></ThePopup>
 
                 <!-- loading -->
@@ -836,6 +855,46 @@ export default {
         // popup setting:
         closePopupSetting() {
             this.isSettingUI = false;
+        },
+
+        /**
+         * Hàm sửa title popup
+         * Author: KienNT (11/03/2023)
+         */
+        handleChangeTitlePopup(textTitle) {
+            this.textTitlePopup = textTitle;
+        },
+
+        /**
+         * Hàm xử lý khi focus vào input search
+         * Author: KienNT (11/03/2023)
+         */
+        handleFocusInput(event, isEditPlaceholder) {
+            const inputElement = event.target;
+            const parentInputElement = event.target.parentNode;
+            if (isEditPlaceholder) {
+                inputElement.placeholder = this.$t("TxtSearchEmployee");
+            } else {
+                inputElement.placeholder = this.$t("TxtSearch");
+            }
+            if (parentInputElement) {
+                if (parentInputElement.classList.contains("is-full-false")) {
+                    parentInputElement.classList.remove("is-full-false");
+                    parentInputElement.classList.add("is-full-true");
+                } else if (
+                    parentInputElement.classList.contains("is-full-true")
+                ) {
+                    parentInputElement.classList.remove("is-full-true");
+                    parentInputElement.classList.add("is-full-false");
+                }
+            }
+            if (parentInputElement.classList.contains("is-full-true")) {
+                parentInputElement.style.minWidth = "250px";
+                inputElement.style.minWidth = "216px";
+            } else {
+                parentInputElement.style.minWidth = "107px";
+                inputElement.style.minWidth = "73px";
+            }
         },
     },
 };

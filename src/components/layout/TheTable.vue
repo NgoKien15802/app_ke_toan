@@ -219,9 +219,9 @@
         :message="
             isDialogWarning
                 ? $t('MessageWarning') +
-                  '( ' +
+                  '<' +
                   employeeCodeSelected +
-                  ' ) ' +
+                  '> ' +
                   $t('TxtNo') +
                   '?'
                 : $t('MessageWarningMul') + ' ' + $t('TxtNo') + '?'

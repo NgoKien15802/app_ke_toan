@@ -44,6 +44,7 @@ const MISAResouce = {
 
         //placehoder
         TxtSearch: "Tìm kiếm",
+        TxtSearchEmployee: "Tìm kiếm mã, tên, số điện thoại",
         TxtSearchAccount: "Tìm kiếm theo số, tên tài khoản",
         TxtConditionFilter: "Nhập giá trị lọc",
         Filter: "Lọc",
@@ -287,6 +288,7 @@ const MISAResouce = {
 
         //placehoder
         TxtSearch: "Search",
+        TxtSearchEmployee: "Search by ID, name, phone number",
         TxtSearchAccount: "Search by number, account name",
         TxtConditionFilter: "Enter filter value",
         Filter: "Filter",

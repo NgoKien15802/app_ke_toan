@@ -439,9 +439,6 @@
                                     class="check-number"
                                     kind="default"
                                     ref="txtPhoneNumber"
-                                    :placeHolder="
-                                        $t('TooltipPhoneNumber').toLowerCase()
-                                    "
                                     v-model="newEmployee.PhoneNumber"
                                 />
                             </div>
@@ -459,11 +456,6 @@
                                     name="LandlineNumber"
                                     kind="default"
                                     ref="txtLandlineNumber"
-                                    :placeHolder="
-                                        $t(
-                                            'TooltipFixPhoneNumber'
-                                        ).toLowerCase()
-                                    "
                                     v-model="newEmployee.LandlineNumber"
                                 />
                             </div>
@@ -787,11 +779,10 @@ export default {
                     this.newEmployee = res?.data?.Data;
                     if (formMode === MISAEnum.formMode.Duplicate) {
                         this.getNewEmployeeCode();
-                        this.setFocusInput("txtEmployeeCode");
                     } else {
                         this.isDisabledEmployeeCode = true;
-                        this.setFocusInput("txtFullName");
                     }
+                    this.setFocusInput("txtEmployeeCode");
                     //có API thì sửa department ở đây
                     this.departmentName = this.newEmployee.DepartmentName;
                     this.newEmployee.DateOfBirth = this.formatDate(
@@ -967,7 +958,6 @@ export default {
         btnSaveAndClose(isCloseForm) {
             try {
                 if (this.handleValidate()) {
-                    console.log(this.newEmployee);
                     // thêm nhân viên nếu ko có employeeIdSelected
                     if (this.isEmpty(this.dataEmployeeIdSelected)) {
                         if (this.isEmpty(this.newEmployee.Gender)) {
@@ -998,6 +988,10 @@ export default {
                                     this.newEmployee = {};
                                     // lấy 1 id mới
                                     this.getNewEmployeeCode();
+                                    this.$emit(
+                                        "handleChangeTitlePopup",
+                                        this.$t("EmployeeInfo")
+                                    );
                                     this.errorMessage = [];
                                     this.departmentName = "";
                                     this.dataEmployeeIdSelected = null;
@@ -1043,6 +1037,10 @@ export default {
                         } else {
                             // reset nhưng ko đóng form
                             this.newEmployee = {};
+                            this.$emit(
+                                "handleChangeTitlePopup",
+                                this.$t("EmployeeInfo")
+                            );
                             // lấy 1 id mới
                             this.getNewEmployeeCode();
                             this.errorMessage = [];
