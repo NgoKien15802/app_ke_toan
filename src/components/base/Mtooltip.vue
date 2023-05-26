@@ -16,6 +16,23 @@
         <span class="tooltipData">{{ subtext }}</span>
     </td>
 
+    <td
+        v-else-if="kind === 'data_parent'"
+        :class="[className != '' && className, subtext !== '' ? 'tooltip' : '']"
+    >
+        <div
+            class="flex"
+            style="align-items: center"
+            :style="{
+                'padding-left': (paddingLeft - 100) * (grade - 1) + 'px',
+            }"
+        >
+            <slot></slot>
+            {{ text }}
+        </div>
+        <span class="tooltipData">{{ subtext }}</span>
+    </td>
+
     <span
         v-else-if="kind == 'AccountSysterm'"
         class="tooltipData"
@@ -64,6 +81,13 @@ export default {
         },
         //vị trí tọa độ x so với trình duyệt
         left: {
+            type: Number,
+        },
+        paddingLeft: {
+            type: Number,
+        },
+
+        grade: {
             type: Number,
         },
     },

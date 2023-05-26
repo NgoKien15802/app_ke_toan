@@ -16,6 +16,7 @@ const MISAResouce = {
 
         // Feature
         Feature: "Chức năng",
+        feature: "Chức năng",
         Fix: "Sửa",
         Show: "Xem",
         Duplicate: "Nhân bản",
@@ -186,6 +187,7 @@ const MISAResouce = {
         // accountSysterm
         AddNewAccount: "Thêm tài khoản",
         Extend: "Mở rộng",
+        Collapse: "Thu gọn",
         AccountNumber: "Số tài khoản",
         AccountName: "Tên tài khoản",
         Property: "Tính chất",
@@ -196,6 +198,12 @@ const MISAResouce = {
         ExcessYes: "Dư có",
         Hermaphrodite: "Lưỡng tính",
         Nobalance: "Không có số dư",
+        account_number: "Số tài khoản",
+        account_name: "Tên tài khoản",
+        account_category_kind: "Tính chất",
+        account_name_english: "Tên tiếng anh",
+        description: "Diễn giải",
+        state: "Trạng thái",
 
         // popup Account
         LabelAccountNumber: "Số tài khoản",
@@ -260,6 +268,7 @@ const MISAResouce = {
 
         // Feature
         Feature: "Feature",
+        feature: "Feature",
         Fix: "Edit",
         Show: "Show",
         Duplicate: "Duplicate",
@@ -421,6 +430,7 @@ const MISAResouce = {
         Provider: "Provider",
         Option: "Options",
         Extend: "Extend",
+        Collapse: "Collapse",
         AddNewAccount: "Add account",
         AccountNumber: "Account number",
         AccountName: "Account name",
@@ -432,6 +442,12 @@ const MISAResouce = {
         ExcessYes: "Excess yes",
         Hermaphrodite: "Hermaphrodite",
         Nobalance: "No balance",
+        account_number: "Account number",
+        account_name: "Account name",
+        account_category_kind: "Property",
+        account_name_english: "English name",
+        description: "Interpret",
+        state: "Status",
 
         // popup account
         LabelAccountNumber: "Account number",

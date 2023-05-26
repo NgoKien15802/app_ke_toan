@@ -401,6 +401,18 @@
     height: 22px;
 }
 
+.mi-tree-expand--small {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -608px -312px;
+    width: 15px;
+    height: 15px;
+}
+
+.mi-tree-collapse--small {
+    background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -560px -312px;
+    width: 15px;
+    height: 15px;
+}
+
 .mi-arrow-right--black {
     background: url("../../assets/img/Sprites.64af8f61.svg") no-repeat -324px -363px;
     width: 8px;

@@ -2,7 +2,7 @@
     width: 100%;
     height: calc(100% - var(--header-size));
     background-color: #eceef1;
-    padding: 24px 24px 48px 24px;
+    padding: 15px 24px 48px 24px;
 }
 
 /* begin header content*/
@@ -86,6 +86,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-bottom: 15px;
 }
 
 /* begin main content*/

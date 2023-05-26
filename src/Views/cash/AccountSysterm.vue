@@ -28,7 +28,8 @@
                     <MButton
                         kind="link"
                         className="link-btn btn-link"
-                        :text="$t('Extend')"
+                        :text="isExpand ? $t('Collapse') : $t('Extend')"
+                        :click="handleExpandList"
                     ></MButton>
                     <div
                         class="content__main-refresh wrap-icon"
@@ -57,13 +58,24 @@
             <div class="content__main-body scrollbar_customize">
                 <div class="content__main-table">
                     <!--  table -->
-                    <TheTableAccount
+                    <!-- <TheTableAccount
                         @getTotalRecord="getTotalRecord"
                         @hideShowLoading="hideShowLoading"
                         :keyWordSearch="keyWordSearch"
                         :pageSizeNumber="pageSize"
                         :pageCurrent="pageNumber"
-                    ></TheTableAccount>
+                    ></TheTableAccount> -->
+
+                    <GridAccount
+                        @getTotalRecord="getTotalRecord"
+                        @hideShowLoading="hideShowLoading"
+                        :keyWordSearch="keyWordSearch"
+                        :pageSizeNumber="pageSize"
+                        :pageCurrent="pageNumber"
+                        :isExpandAccount="isExpand"
+                        :isReload="isReload"
+                        @setIsReLoad="setIsReLoad"
+                    ></GridAccount>
                 </div>
 
                 <!--  paging -->
@@ -115,16 +127,18 @@
 <script>
 import MISAResouce from "@/js/resource";
 import axios from "axios";
-import TheTableAccount from "@/components/layout/TheTableAccount.vue";
+// import TheTableAccount from "@/components/layout/TheTableAccount.vue";
 import ThePaging from "@/components/base/MPaging.vue";
 import Mloading from "@/components/base/Mloading.vue";
 import AccountSystermDetail from "./AccountSystermDetail.vue";
 import MISAEnum from "@/js/enum";
+import GridAccount from "./GridAccount.vue";
 export default {
     name: "AccountSysterm",
     data() {
         return {
             MISAResouce,
+            isExpand: false,
             isLoading: false,
             isShowToastAdd: false,
             isShowToastEdit: false,
@@ -147,7 +161,7 @@ export default {
         };
     },
     components: {
-        TheTableAccount,
+        GridAccount,
         ThePaging,
         Mloading,
         AccountSystermDetail,
@@ -167,11 +181,19 @@ export default {
     methods: {
         /**
          * Hàm thực hiện reload lại trang
-         * Author: KienNT (18/03/2023)
+         * Author: KienNT (26/05/2023)
          */
         handleReLoadData() {
             this.isReload = true;
             // this.isDisabledClickPrev = true;
+        },
+
+        /**
+         * Hàm emit từ con để set lại reload lần sau
+         * Author: KienNT (26/05/2023)
+         */
+        setIsReLoad() {
+            this.isReload = false;
         },
         /**
          * Hàm gán giá trị mảng các checkbox được check
@@ -191,6 +213,13 @@ export default {
             if (this.pageNumber > 1) {
                 this.isDisabledClickPrev = false;
             }
+        },
+        /**
+         * Hàm click btn mở rộng
+         * Author: KienNT (26/05/2023)
+         */
+        handleExpandList() {
+            this.isExpand = !this.isExpand;
         },
 
         /**
@@ -290,14 +319,6 @@ export default {
             } catch (error) {
                 console.log(error);
             }
-        },
-
-        /**
-         * Hàm emit từ con để set lại reload lần sau
-         * Author: KienNT (18/03/2023)
-         */
-        setIsReLoad() {
-            this.isReload = false;
         },
 
         /**

@@ -263,11 +263,7 @@
                                             :text="$t('LabelMale')"
                                             :checked="
                                                 newEmployee.Gender ===
-                                                    MISAEnum.Gender.Male ||
-                                                (isEmpty(
-                                                    dataEmployeeIdSelected
-                                                ) === true &&
-                                                    true)
+                                                MISAEnum.Gender.Male
                                             "
                                             tabindex="6"
                                             v-model="newEmployee.Gender"

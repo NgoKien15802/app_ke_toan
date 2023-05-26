@@ -9,62 +9,56 @@
             :column-auto-width="true"
             :show-row-lines="true"
             :show-borders="true"
-            key-expr="ID"
-            parent-id-expr="ParentAccountID"
+            key-expr="account_id"
+            parent-id-expr="parent_id"
             :cellHintEnabled="true"
             :errorRowEnabled="false"
         >
             <DxColumn
-                data-field="AccountNumber"
+                data-field="account_number"
                 :caption="$t('AccountNumber')"
                 :width="180"
             />
             <DxColumn
-                data-field="AccountName"
+                data-field="account_name"
                 :caption="$t('AccountName')"
                 :min-width="50"
                 :width="200"
             />
             <DxColumn
-                data-field="Property"
+                data-field="account_category_kind"
                 :caption="$t('Property')"
                 :width="150"
             />
             <DxColumn
-                data-field="EnglishName"
+                data-field="account_name_english"
                 :caption="$t('EnglishName')"
                 :width="180"
             />
             <DxColumn
-                data-field="Interpret"
+                data-field="description"
                 :caption="$t('Interpret')"
                 width="calc(100% - 660px)"
             />
-            <DxColumn
-                data-field="Status"
-                :caption="$t('Status')"
-                :width="150"
-            />
-            <DxColumnFixing :enabled="true" />
+            <DxColumn data-field="state" :caption="$t('Status')" :width="150" />
             <DxColumn :min-width="50" :caption="$t('Feature')">
-                <!-- <dxo-cell-template v-slot="data">
+                <template #functionColumn>
                     <div class="dropdown-fun text-align-center">
                         <MButton
                             kind="link"
                             className="link-btn btn-link"
                             :text="$t('Fix')"
-                            :click="() => doubleClickEditText(data)"
+                            :click="() => doubleClickEditText(employee)"
                         ></MButton>
                         <div
                             class="input__icon-box ml-8"
-                            @click="handleClickOptionMenu($event, data)"
+                            @click="handleClickOptionMenu($event, employee)"
                             ref="iconContextMenu"
                         >
                             <div class="icon-dropdown" ref="ContextMenu"></div>
                         </div>
                     </div>
-                </dxo-cell-template> -->
-                <dxButton></dxButton>
+                </template>
             </DxColumn>
         </DxTreeList>
     </div>
@@ -75,13 +69,11 @@ import { DxTreeList, DxColumn } from "devextreme-vue/tree-list";
 import MISAEnum from "@/js/enum";
 import axios from "axios";
 import MISAResouce from "@/js/resource";
-import dxButton from "devextreme/ui/button";
 export default {
     name: "TheTableAccount",
     components: {
         DxTreeList,
         DxColumn,
-        dxButton,
     },
 
     props: {
@@ -156,19 +148,20 @@ export default {
             try {
                 axios
                     .get(
-                        `https://localhost:7153/api/v1/Accounts/Filter?keyword=${this.keyWord}&pageSize=${this.pageSize}&pageNumber=${this.pageNumber}`
+                        `https://localhost:7153/api/v1/Accounts/FilterTable?keyword=${this.keyWord}&pageSize=${this.pageSize}&pageNumber=${this.pageNumber}`
                     )
                     .then(this.hideShowLoading(true))
                     .then((response) => {
                         this.accounts = response?.data?.Data?.Data;
                         this.accounts = this.accounts.map((account) => ({
-                            ID: account.AccountId,
+                            account_id: account.account_id,
                             ...account,
-                            Property: this.formatProperty(account.Property),
-                            Status: this.formatStatus(account.Status),
+                            account_category_kind: this.formatProperty(
+                                account.account_category_kind
+                            ),
+                            state: this.formatStatus(account.state),
                         }));
 
-                        console.log(this.accounts);
                         this.totalRecord = response?.data?.Data?.TotalRecord;
                         this.$emit("getTotalRecord", this.totalRecord);
                         this.hideShowLoading(false);
@@ -242,6 +235,7 @@ export default {
     font-family: notosans, sans-serif;
     position: relative;
     width: 100%;
+    font-size: 1.3rem;
 }
 .dx-treelist .dx-row > td {
     padding: 0 16px;
@@ -254,10 +248,11 @@ export default {
 }
 
 .dx-treelist-headers {
-    background-color: #eeeeee;
+    background-color: #e5e8ec;
     font-weight: 600;
-    font-size: 1.3rem;
-    color: #000000;
+    font-size: 1.2rem;
+    color: #111;
+    font-family: notosansBold;
     cursor: all-scroll;
     position: sticky;
     top: 0;
@@ -272,18 +267,19 @@ tr.dx-row.dx-data-row.dx-row-lines.dx-column-lines:hover {
     content: "\002B";
     position: absolute;
     display: block;
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
-    top: 80%;
+    top: 76%;
     left: 6px;
     border: 1px solid #959595;
     color: #959595;
     border-radius: 3px;
     font-family: "Font Awesome 5 Free";
     padding: 5px;
+    cursor: pointer;
 }
 
 .dx-treelist-rowsview tr:not(.dx-row-focused) .dx-treelist-empty-space {
@@ -295,18 +291,19 @@ tr.dx-row.dx-data-row.dx-row-lines.dx-column-lines:hover {
     content: "\2212";
     position: absolute;
     display: block;
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
-    top: 80%;
+    top: 76%;
     left: 6px;
     border: 1px solid #959595;
     color: #959595;
     border-radius: 3px;
     font-family: "Font Awesome 5 Free";
     padding: 5px;
+    cursor: pointer;
 }
 .dx-treelist-text-content.dx-text-content-alignment-right {
     float: left;
@@ -314,10 +311,12 @@ tr.dx-row.dx-data-row.dx-row-lines.dx-column-lines:hover {
 
 tr.dx-row.dx-data-row.dx-row-lines.dx-column-lines:has(.dx-treelist-collapsed) {
     font-weight: 600;
+    font-size: 1.3rem;
 }
 
 tr.dx-row.dx-data-row.dx-row-lines.dx-column-lines:has(.dx-treelist-expanded) {
     font-weight: 600;
+    font-size: 1.3rem;
 }
 
 .dx-state-hover {
@@ -339,5 +338,26 @@ tr.dx-row.dx-data-row.dx-row-lines.dx-column-lines:has(.dx-treelist-expanded) {
     border-top: 0;
     border-bottom: 0;
     display: none;
+}
+
+.dx-scrollable-scroll-content {
+    display: none;
+}
+.dx-treelist .dx-row-lines td {
+    border-right: 1px dotted var(--boder-primary);
+    border-left: none;
+}
+
+tr.dx-row.dx-column-lines.dx-header-row td:not(:last-child) {
+    border-right: 1px solid var(--boder-primary);
+    border-left: none;
+}
+.dx-treelist-headers.dx-treelist-nowrap {
+    border-left: none;
+    border-right: none;
+}
+.dx-treelist-headers.dx-treelist-nowrap {
+    border-top: none;
+    border-bottom: none;
 }
 </style>
