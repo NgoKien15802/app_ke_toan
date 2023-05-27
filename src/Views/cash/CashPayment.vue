@@ -209,7 +209,7 @@ export default {
         },
         /**
          * Hàm show cash deatil khi click btn Chi tiền
-         * Author: KienNT (08/05/2023)
+         * Author: KienNT (25/05/2023)
          */
         showCashDetail() {
             this.isCashDetail = true;
@@ -217,7 +217,7 @@ export default {
 
         /**
          * Hàm show detail
-         * Author: KienNT (08/05/2023)
+         * Author: KienNT (25/05/2023)
          */
         handleShowDetailSection() {
             const masterSection = this.$refs["masterSection"];
@@ -232,7 +232,7 @@ export default {
         },
         /**
          * Hàm ẩn contextmenu khi click ra ngoài element
-         * Author: KienNT (07/05/2023)
+         * Author: KienNT (25/05/2023)
          */
         hideContextMenu() {
             this.isContextMenu = !this.isContextMenu;

@@ -30,6 +30,18 @@ const MISAEnum = {
         Hermaphrodite: 2,
         Nobalance: 3,
     },
+
+    // khoảng cách với cha nó
+    SpaceWithParent: {
+        IsParent: 120,
+        IsNotParent: 130,
+    },
+
+    // mode danh sách tài khoản
+    ModeListAccount: {
+        Collapse: 0,
+        Expand: 1,
+    },
 };
 
 export default MISAEnum;

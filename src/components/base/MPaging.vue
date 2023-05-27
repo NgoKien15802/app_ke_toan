@@ -1,7 +1,7 @@
 <template>
     <div class="content__main-paging">
         <p class="content__main-paging-left">
-            {{ $t("TotalNumber") }}: <strong>{{ totalRecord }}</strong>
+            {{ $t("TotalNumber") }}: <strong>{{ countRecord }}</strong>
             {{ $t("Record") }}
         </p>
         <div class="content__main-paging-right">
@@ -108,35 +108,38 @@ export default {
         isDisabledClickPrev: {
             type: Boolean,
         },
+        countRecord: {
+            type: Number,
+        },
     },
     data() {
         return {
             MISAResouce,
             isOpenDropdown: false,
-            valueInput: `20 ${this.$t("RecordInPage")}`,
+            valueInput: `2 ${this.$t("RecordInPage")}`,
             optionItem: [
                 {
-                    text: 10,
-                    isActive: false,
-                },
-                {
-                    text: 20,
+                    text: 2,
                     isActive: true,
                 },
                 {
-                    text: 30,
+                    text: 3,
                     isActive: false,
                 },
                 {
-                    text: 40,
+                    text: 4,
                     isActive: false,
                 },
                 {
-                    text: 50,
+                    text: 5,
+                    isActive: false,
+                },
+                {
+                    text: 6,
                     isActive: false,
                 },
             ],
-            pageIndex: 20,
+            pageIndex: 2,
             pageNumber: 1,
             offset: 0,
         };
@@ -149,6 +152,10 @@ export default {
         pageCurrent: function () {
             this.pageNumber = this.pageCurrent;
             this.offset = (this.pageNumber - 1) * this.pageIndex;
+        },
+
+        countRecord: function () {
+            console.log(this.totalRecord);
         },
     },
 

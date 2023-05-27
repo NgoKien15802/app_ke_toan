@@ -36,7 +36,8 @@
     );
     --tab__router-height: 31px;
 
-    --size-row: 28px;
+    --size-row: 30px;
+    --size-row-header: 28px;
     --popup-right__title-padding: 16px 16px 12px 16px;
     /* bg tooltip để thay đổi khi thông báo lỗi hoặc thông báo */
     --bg-tooltip: #505050;
@@ -119,6 +120,13 @@ button {
 /* text align- center */
 .text-align-center {
     text-align: center;
+}
+
+.text-only-line {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
 }
 
 .mr-7 {

@@ -567,7 +567,7 @@ export default {
         try {
             /**
              * Call API lấy ra id bất kỳ khi click btn thêm mới
-             * Author: KienNT (06/05/2023)
+             * Author: KienNT (27/05/2023)
              */
             if (this.formModeAccount === MISAEnum.formMode.Add) {
                 this.setFocusInput("txtAccountNumber");
@@ -575,7 +575,7 @@ export default {
             // else if (
             // /**
             //  * TH nhân bản
-            //  *Author: KienNT (06/05/2023)
+            //  *Author: KienNT (27/05/2023)
             //  */
             //     !this.isEmpty(this.dataEmployeeIdSelected) &&
             //     this.formModePopup == MISAEnum.formMode.Duplicate
@@ -584,7 +584,7 @@ export default {
             // } else {
             //     /**
             //      * Call API lấy ra id bất kỳ khi có id để sửa
-            //      *Author: KienNT (06/05/2023)
+            //      *Author: KienNT (27/05/2023)
             //      */
             //     this.getDataByEmplyeeId();
             // }
@@ -596,7 +596,7 @@ export default {
     methods: {
         /**
          *  handle ẩn popup Account
-         * Author: KienNT (06/05/2023)
+         * Author: KienNT (27/05/2023)
          */
         closeAccountSysterm() {
             this.$emit("closeAccountSysterm");
@@ -604,7 +604,7 @@ export default {
 
         /**
          *  handle khi click vào text link hiển thị chi tiết theo
-         * Author: KienNT (06/05/2023)
+         * Author: KienNT (27/05/2023)
          */
         handleShowFollowDetail() {
             const linkElementFollowDteail = this.$refs["linkShowFollowDetail"];
@@ -624,7 +624,7 @@ export default {
 
         /**
          * Xử lý thay đổi width của component
-         * Author: KienNT (06/05/2023)
+         * Author: KienNT (27/05/2023)
          */
         handleResizeComponent() {
             const iconResize = this.$refs["iconResize"];
@@ -651,7 +651,7 @@ export default {
 
         /**
          *  handle khi nhấn phím tắt
-         * Author: KienNT (06/05/2023)
+         * Author: KienNT (27/05/2023)
          * @param (event): là event
          */
         handlePressKeyShort(event) {
@@ -663,7 +663,7 @@ export default {
 
         /**
          *  handle ẩn popup account
-         * Author: KienNT (06/05/2023)
+         * Author: KienNT (27/05/2023)
          */
         closeAccountSystermDetail() {
             this.$emit("closeAccountSystermDetail");
@@ -671,7 +671,7 @@ export default {
 
         /**
          * Hàm set focus cho element xác định
-         * Author: KienNT (06/05/2023)
+         * Author: KienNT (27/05/2023)
          * @param (value): tham số 1: là element cần focus
          */
         setFocusInput(element) {

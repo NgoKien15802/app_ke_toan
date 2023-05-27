@@ -15,7 +15,7 @@
     right: 0;
     border: none;
     z-index: 3;
-    height: var(--size-row);
+    height: var(--size-row-header);
 }
 
 .employee tr td {
@@ -55,7 +55,7 @@
     right: 0;
     left: 0;
     z-index: 4;
-    top: calc(var(--size-row) - 1px);
+    top: calc(var(--size-row) - 2px);
     background-color: var(--boder-primary);
 }
 

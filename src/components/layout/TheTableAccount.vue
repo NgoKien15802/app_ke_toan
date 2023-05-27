@@ -1,80 +1,144 @@
 <template>
-    <div>
-        <DxTreeList
-            id="accounts"
-            :data-source="accounts"
-            :allow-column-resizing="true"
-            column-resizing-mode="nextColumn"
-            :column-min-width="50"
-            :column-auto-width="true"
-            :show-row-lines="true"
-            :show-borders="true"
-            key-expr="account_id"
-            parent-id-expr="parent_id"
-            :cellHintEnabled="true"
-            :errorRowEnabled="false"
-        >
-            <DxColumn
-                data-field="account_number"
-                :caption="$t('AccountNumber')"
-                :width="180"
-            />
-            <DxColumn
-                data-field="account_name"
-                :caption="$t('AccountName')"
-                :min-width="50"
-                :width="200"
-            />
-            <DxColumn
-                data-field="account_category_kind"
-                :caption="$t('Property')"
-                :width="150"
-            />
-            <DxColumn
-                data-field="account_name_english"
-                :caption="$t('EnglishName')"
-                :width="180"
-            />
-            <DxColumn
-                data-field="description"
-                :caption="$t('Interpret')"
-                width="calc(100% - 660px)"
-            />
-            <DxColumn data-field="state" :caption="$t('Status')" :width="150" />
-            <DxColumn :min-width="50" :caption="$t('Feature')">
-                <template #functionColumn>
-                    <div class="dropdown-fun text-align-center">
+    <table id="tbEmployeeList" class="employee" ref="gridTable">
+        <thead>
+            <draggable tag="tr" v-model="headers" class="table__field">
+                <th
+                    v-for="header in headers"
+                    :key="header"
+                    :class="[
+                        header === 'account_number' ? 'min-w160' : '',
+                        header === 'account_name' ? 'min-w250' : '',
+                        header === 'account_category_kind' ? 'min-w160' : '',
+                        header === 'account_name_english' ? 'min-200' : '',
+                        header === 'description' ? 'min-w350' : '',
+                        header === 'state' ? 'min-w100' : '',
+                        header === 'feature' ? 'min-w120' : '',
+                    ]"
+                    ref="thElement"
+                >
+                    <template v-if="header === 'feature'">
+                        <span class="text-align-center"
+                            >{{ $t("feature") }}
+                        </span>
+                    </template>
+                    <template v-else>
+                        <span style="display: flex">
+                            <span class="text-align-left">{{
+                                $t(header)
+                            }}</span>
+                            <div
+                                class="mi-16 icon-head mi-header-option"
+                                @click="
+                                    handleShowConditionFilter($event, header)
+                                "
+                                ref="iconConditionFilter"
+                            ></div>
+                        </span>
+                    </template>
+                </th>
+            </draggable>
+        </thead>
+        <tbody>
+            <MSkeletonTable
+                v-if="isShowSkeleton"
+                :dataList="accounts"
+                :columnCount="headers"
+            ></MSkeletonTable>
+
+            <tr
+                v-else
+                v-for="(account, index) in accounts"
+                v-show="account?.isShow"
+                :key="index"
+                @dblclick="($event) => doubleClickRow($event, account)"
+                ref="trElementRef"
+                :class="account?.is_parent ? 'row-parent' : ''"
+            >
+                <template v-for="header in headers" :key="header">
+                    <td
+                        v-if="header === 'feature'"
+                        class="dropdown-fun text-align-center min-w120"
+                    >
                         <MButton
                             kind="link"
                             className="link-btn btn-link"
                             :text="$t('Fix')"
-                            :click="() => doubleClickEditText(employee)"
+                            :click="() => doubleClickEditText(account)"
                         ></MButton>
                         <div
                             class="input__icon-box ml-8"
-                            @click="handleClickOptionMenu($event, employee)"
+                            @click="handleClickOptionMenu($event, account)"
                             ref="iconContextMenu"
                         >
                             <div class="icon-dropdown" ref="ContextMenu"></div>
                         </div>
-                    </div>
+                    </td>
+
+                    <MTooltip
+                        v-else-if="header === 'account_number'"
+                        kind="data_parent"
+                        :className="[
+                            header === 'account_number' ? 'min-w160' : '',
+                        ]"
+                        :paddingLeft="account.isClassML"
+                        :grade="account?.grade"
+                        :text="account[header] || ''"
+                        :subtext="account[header] || ''"
+                        ><div
+                            v-if="account.is_parent"
+                            style="cursor: pointer"
+                            @click="
+                                () => {
+                                    account.isExpand = !account.isExpand;
+                                    handleClickParent(
+                                        account.account_id,
+                                        account?.grade,
+                                        account?.isShow,
+                                        account.isExpand
+                                    );
+                                }
+                            "
+                            class="mi-16 mr-7"
+                            :class="
+                                account.is_parent
+                                    ? account.isExpand
+                                        ? 'mr-12 mi-tree-expand--small'
+                                        : 'mr-12 mi-tree-collapse--small'
+                                    : ''
+                            "
+                        ></div
+                    ></MTooltip>
+
+                    <MTooltip
+                        v-else
+                        kind="data"
+                        :className="[
+                            header === 'account_name' ? 'min-w250' : '',
+                            header === 'account_category_kind'
+                                ? 'min-w160'
+                                : '',
+                            header === 'account_name_english' ? 'min-200' : '',
+                            header === 'description' ? 'min-w350' : '',
+                            header === 'state' ? 'min-w160' : '',
+                        ]"
+                        :text="account[header] || ''"
+                        :subtext="account[header] || ''"
+                    ></MTooltip>
                 </template>
-            </DxColumn>
-        </DxTreeList>
-    </div>
+            </tr>
+        </tbody>
+    </table>
+    <MNotData v-if="accounts.length <= 0 && !isShowSkeleton"></MNotData>
 </template>
 
 <script>
-import { DxTreeList, DxColumn } from "devextreme-vue/tree-list";
 import MISAEnum from "@/js/enum";
 import axios from "axios";
+import { VueDraggableNext } from "vue-draggable-next";
 import MISAResouce from "@/js/resource";
 export default {
     name: "TheTableAccount",
-    components: {
-        DxTreeList,
-        DxColumn,
-    },
+    components: { draggable: VueDraggableNext },
 
     props: {
         pageSizeNumber: {
@@ -86,21 +150,49 @@ export default {
         pageCurrent: {
             type: String,
         },
+        isExpandAccount: {
+            type: Boolean,
+        },
+        isReload: {
+            type: String,
+        },
+        checkReload: {
+            type: Boolean,
+        },
     },
 
     data() {
         return {
             MISAResouce,
             accounts: [],
-            pageSize: 20,
+            pageSize: 2,
             pageNumber: 1,
             totalRecord: 0,
+            totalRecordParent: 0,
             keyWord: "",
+            isShowSkeleton: false,
+            headers: [
+                "account_number",
+                "account_name",
+                "account_category_kind",
+                "account_name_english",
+                "description",
+                "state",
+                "feature",
+            ],
+            cloneAccounts: [],
+            modeListAccount: "",
+            isCallExpand: false,
+            totalRecordParentInPage: 0,
+            cloneAccountExpand: [],
+            cloneAccountCollapse: [],
         };
     },
 
     created() {
         try {
+            this.accounts = new Array(this.pageSize).fill(0);
+            this.isCallExpand = false;
             this.loadData();
         } catch (error) {
             console.log(error);
@@ -110,74 +202,338 @@ export default {
     watch: {
         /**
          * Theo dõi sự thay đổi pageSizeNumber. nếu pagesize thay đổi
-         * Author: KienNT (25/04/2023)
+         * Author: KienNT (26/05/2023)
          */
         pageSizeNumber: function () {
             this.pageSize = this.pageSizeNumber;
             if (this.pageNumber == 1) {
                 this.loadData();
             }
+            this.isCallExpand = false;
         },
         /**
          * Theo dõi sự thay đổi keyWordSearch. tìm kiếm thay đổi
-         * Author: KienNT (25/04/2023)
+         * Author: KienNT (26/05/2023)
          */
         keyWordSearch: function () {
             this.keyWord = this.keyWordSearch;
             this.pageNumber = 1;
+            if (this.keyWord === "") {
+                this.isCallExpand = false;
+                this.cloneAccountCollapse = [];
+            } else {
+                this.isCallExpand = true;
+            }
             this.loadData();
         },
 
         /**
          * Theo dõi sự thay đổi pageCurrent. khi click vào btn next
-         * Author: KienNT (25/04/2023)
+         * Author: KienNT (26/05/2023)
          */
 
         pageCurrent: function () {
             this.pageNumber = this.pageCurrent;
             this.loadData();
+            this.isCallExpand = false;
+        },
+
+        isExpandAccount: function (newValue) {
+            if (newValue) {
+                this.isCallExpand = newValue;
+
+                if (
+                    this.cloneAccountCollapse.length !=
+                    this.cloneAccountExpand.length
+                ) {
+                    this.loadData();
+                } else {
+                    this.modeListAccount = MISAEnum.ModeListAccount.Expand;
+                }
+            } else {
+                this.isCallExpand = newValue;
+                this.modeListAccount = MISAEnum.ModeListAccount.Collapse;
+                if (this.checkReload) {
+                    this.cloneAccountCollapse = [];
+                    this.$emit("setCheckReLoad");
+                } else if (this.keyWord !== "") {
+                    this.cloneAccountCollapse = this.accounts;
+                }
+            }
+        },
+
+        modeListAccount: function (newValue) {
+            if (newValue === MISAEnum.ModeListAccount.Expand) {
+                this.accounts.forEach((el) => {
+                    el.isShow = true;
+                    el.isExpand = false;
+                    el.isClassML = el.is_parent
+                        ? MISAEnum.SpaceWithParent.IsParent
+                        : MISAEnum.SpaceWithParent.IsNotParent;
+                });
+            } else {
+                this.accounts.forEach((el) => {
+                    if (el.grade != 1) {
+                        el.isShow = false;
+                        el.isExpand = true;
+                    } else {
+                        el.isExpand = true;
+                    }
+                });
+            }
+        },
+
+        /**
+         * Theo dõi sự thay đổi isReload: nếu thay đổi là true thì reload lại trang
+         * Author: KienNT (26/05/2023)
+         */
+        isReload: function (newValue) {
+            if (newValue) {
+                this.isCallExpand = false;
+                this.loadData();
+                this.$emit("setIsReLoad");
+            } else {
+                this.cloneAccountCollapse = [];
+            }
         },
     },
 
     methods: {
         /**
          * Call API get data account
-         * Author: KienNT (25/04/2023)
+         * Author: KienNT (26/05/2023)
          */
         loadData() {
             try {
                 axios
                     .get(
-                        `https://localhost:7153/api/v1/Accounts/FilterTable?keyword=${this.keyWord}&pageSize=${this.pageSize}&pageNumber=${this.pageNumber}`
+                        `https://localhost:7153/api/v1/Accounts/FilterTable?keyword=${this.keyWord}&pageSize=${this.pageSize}&pageNumber=${this.pageNumber}&isExpand=${this.isCallExpand}`
                     )
-                    .then(this.hideShowLoading(true))
+                    // .then(this.hideShowLoading(true))
+                    .then((this.isShowSkeleton = true))
                     .then((response) => {
                         this.accounts = response?.data?.Data?.Data;
-                        this.accounts = this.accounts.map((account) => ({
-                            account_id: account.account_id,
-                            ...account,
-                            account_category_kind: this.formatProperty(
-                                account.account_category_kind
-                            ),
-                            state: this.formatStatus(account.state),
-                        }));
+                        if (this.isCallExpand) {
+                            this.accounts = this.accounts.map((account) => {
+                                account.isShow = true;
+                                account.isClassML = account.is_parent
+                                    ? MISAEnum.SpaceWithParent.IsParent
+                                    : MISAEnum.SpaceWithParent.IsNotParent;
+                                account.isExpand = false;
+                                account.state = this.formatStatus(
+                                    account.state
+                                );
+                                account.account_category_kind =
+                                    this.formatProperty(
+                                        account.account_category_kind
+                                    );
+                                return account;
+                            });
+                            this.cloneAccountExpand = this.accounts;
+                        } else {
+                            this.accounts = this.accounts.map((account) => {
+                                account.isShow = account?.grade == 1;
+                                account.isClassML = 0;
+                                account.isExpand = true;
+                                account.state = this.formatStatus(
+                                    account.state
+                                );
+                                account.account_category_kind =
+                                    this.formatProperty(
+                                        account.account_category_kind
+                                    );
+                                return account;
+                            });
+                            this.totalRecordParentInPage = this.accounts.length;
+                            this.cloneAccountExpand = this.accounts;
+                        }
+
+                        this.cloneAccounts = this.accounts;
+
+                        if (this.isCallExpand) {
+                            this.modeListAccount =
+                                MISAEnum.ModeListAccount.Expand;
+                            this.$emit("setModeAccountList", true);
+                            this.cloneAccountCollapse = this.accounts;
+                        } else {
+                            this.modeListAccount =
+                                MISAEnum.ModeListAccount.Collapse;
+                            this.$emit("setModeAccountList", false);
+                        }
 
                         this.totalRecord = response?.data?.Data?.TotalRecord;
-                        this.$emit("getTotalRecord", this.totalRecord);
-                        this.hideShowLoading(false);
+                        this.totalRecordParent =
+                            response?.data?.Data?.TotalRecordParent;
+                        this.$emit(
+                            "getTotalRecord",
+                            this.totalRecord,
+                            this.totalRecordParent
+                        );
+                        // this.hideShowLoading(false);
+                        this.isShowSkeleton = false;
                     })
                     .catch((error) => {
                         console.log(error);
-                        this.hideShowLoading(false);
+                        // this.hideShowLoading(false);
+                        this.isShowSkeleton = false;
                     });
             } catch (error) {
                 console.log(error);
                 this.hideShowLoading(false);
             }
         },
+
+        /**
+         * Thực hiện ẩn các danh sách con cháu,...
+         * Author: KienNT (26/05/2023)
+         */
+        setHideAndShow(account_id) {
+            this.accounts.forEach((el) => {
+                if (el.parent_id === account_id) {
+                    el.isShow = false;
+                    this.setHideAndShow(el.account_id);
+                }
+            });
+        },
+
+        /**
+         * Thực hiện click vào icon expand and collapse
+         * Author: KienNT (26/05/2023)
+         */
+        handleClickParent(account_id, grade, isShow, isExpand) {
+            let check = true;
+            this.cloneAccounts.forEach((el) => {
+                if (el.parent_id === account_id) {
+                    check = false;
+                }
+            });
+            if (check) {
+                this.getRecordChildren(account_id);
+            } else {
+                if (isExpand == true) {
+                    this.accounts.forEach((el) => {
+                        if (
+                            el.parent_id === account_id &&
+                            el?.grade === grade + 1 &&
+                            el.isShow == true
+                        ) {
+                            el.isShow = false;
+                            this.setHideAndShow(el.account_id);
+                        }
+                    });
+                } else {
+                    this.accounts.forEach((el) => {
+                        if (
+                            el.parent_id === account_id &&
+                            el?.grade === grade + 1 &&
+                            el.isShow == false
+                        ) {
+                            el.isShow = true;
+                            el.isExpand = true;
+                            if (this.isCallExpand) {
+                                el.isClassML = el.is_parent
+                                    ? MISAEnum.SpaceWithParent.IsParent
+                                    : MISAEnum.SpaceWithParent.IsNotParent;
+                            }
+                        } else if (
+                            el.parent_id === account_id &&
+                            el?.grade === grade + 1 &&
+                            el.isShow == true
+                        ) {
+                            el.isShow = !isShow;
+                            el.isClassML = 0;
+                        }
+                    });
+                }
+            }
+        },
+
+        /**
+         * lấy danh sách con
+         * Author: KienNT (26/05/2023)
+         */
+        getRecordChildren(account_id) {
+            try {
+                let parentIdArray = [];
+                if (!Array.isArray(account_id)) {
+                    parentIdArray.push(account_id);
+                } else {
+                    account_id.forEach((el) => {
+                        parentIdArray.push(el.account_id);
+                    });
+                }
+
+                axios
+                    .get(
+                        "https://localhost:7153/api/v1/Accounts/GetRecordChildren",
+                        {
+                            headers: {
+                                parent_ids: parentIdArray.join(","), // Chuyển đổi mảng thành một chuỗi phân cách bằng dấu phẩy
+                            },
+                        }
+                    )
+                    // .then(this.hideShowLoading(true))
+                    .then((this.isShowSkeleton = true))
+                    .then((response) => {
+                        let accountChildrents = response?.data?.Data;
+
+                        accountChildrents = accountChildrents.map((account) => {
+                            account.isShow = true;
+                            account.isClassML = account.is_parent
+                                ? MISAEnum.SpaceWithParent.IsParent
+                                : MISAEnum.SpaceWithParent.IsNotParent;
+                            account.isExpand = account.is_parent;
+                            account.state = this.formatStatus(account.state);
+                            account.account_category_kind = this.formatProperty(
+                                account.account_category_kind
+                            );
+                            return account;
+                        });
+
+                        let index = 0;
+                        for (let i = 0; i < this.cloneAccounts.length; i++) {
+                            if (
+                                this.cloneAccounts[i].account_id == account_id
+                            ) {
+                                index = i;
+                                break;
+                            }
+                        }
+
+                        let check = true;
+                        accountChildrents.forEach((el) => {
+                            this.cloneAccounts.forEach((el2) => {
+                                if (el.account_id === el2.account_id) {
+                                    check = false;
+                                }
+                            });
+                        });
+
+                        if (check) {
+                            this.cloneAccounts.splice(
+                                index + 1,
+                                0,
+                                ...accountChildrents
+                            );
+                            this.accounts = [...this.cloneAccounts];
+                        }
+
+                        this.isShowSkeleton = false;
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        // this.hideShowLoading(false);
+                        this.isShowSkeleton = false;
+                    });
+            } catch (error) {
+                console.log(error);
+                this.hideShowLoading(false);
+            }
+        },
+
         /**
          * Xử lý loading gửi emit lên cha
-         * Author: KienNT (25/04/2023)
+         * Author: KienNT (26/05/2023)
          * @param (isLoading): tham số là giá trị boolean loading có hay không
          */
         hideShowLoading(isLoading) {
@@ -186,7 +542,7 @@ export default {
 
         /**
          * Hàm thực hiện format property
-         * Author: KienNT (25/04/2023)
+         * Author: KienNT (26/05/2023)
          *  @param (property): là số cần truyền convert sang text
          */
         formatProperty(property) {
@@ -211,7 +567,7 @@ export default {
 
         /**
          * Hàm thực hiện format status
-         * Author: KienNT (25/04/2023)
+         * Author: KienNT (26/05/2023)
          *  @param (status): là số cần truyền convert sang text
          */
         formatStatus(status) {
@@ -229,135 +585,6 @@ export default {
     },
 };
 </script>
-<style>
-.dx-treelist {
-    line-height: inherit;
-    font-family: notosans, sans-serif;
-    position: relative;
-    width: 100%;
-    font-size: 1.3rem;
-}
-.dx-treelist .dx-row > td {
-    padding: 0 16px;
-    max-height: var(--size-row);
-    line-height: var(--size-row);
-}
-
-.dx-treelist-text-content {
-    text-align: left;
-}
-
-.dx-treelist-headers {
-    background-color: #e5e8ec;
-    font-weight: 600;
-    font-size: 1.2rem;
-    color: #111;
-    font-family: notosansBold;
-    cursor: all-scroll;
-    position: sticky;
-    top: 0;
-    z-index: 2;
-}
-
-tr.dx-row.dx-data-row.dx-row-lines.dx-column-lines:hover {
-    background-color: #f2f2f2;
-}
-
-.dx-treelist-rowsview .dx-treelist-collapsed span::before {
-    content: "\002B";
-    position: absolute;
-    display: block;
-    width: 16px;
-    height: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    top: 76%;
-    left: 6px;
-    border: 1px solid #959595;
-    color: #959595;
-    border-radius: 3px;
-    font-family: "Font Awesome 5 Free";
-    padding: 5px;
-    cursor: pointer;
-}
-
-.dx-treelist-rowsview tr:not(.dx-row-focused) .dx-treelist-empty-space {
-    color: #959595;
-    margin-right: 10px;
-}
-
-.dx-treelist-rowsview .dx-treelist-expanded span::before {
-    content: "\2212";
-    position: absolute;
-    display: block;
-    width: 16px;
-    height: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    top: 76%;
-    left: 6px;
-    border: 1px solid #959595;
-    color: #959595;
-    border-radius: 3px;
-    font-family: "Font Awesome 5 Free";
-    padding: 5px;
-    cursor: pointer;
-}
-.dx-treelist-text-content.dx-text-content-alignment-right {
-    float: left;
-}
-
-tr.dx-row.dx-data-row.dx-row-lines.dx-column-lines:has(.dx-treelist-collapsed) {
-    font-weight: 600;
-    font-size: 1.3rem;
-}
-
-tr.dx-row.dx-data-row.dx-row-lines.dx-column-lines:has(.dx-treelist-expanded) {
-    font-weight: 600;
-    font-size: 1.3rem;
-}
-
-.dx-state-hover {
-    height: 100px;
-}
-
-.dx-scrollable-scroll.dx-state-invisible {
-    display: block !important;
-    background-color: rgba(0, 0, 0, 0);
-    opacity: 1;
-    -webkit-transition: opacity 0.5s linear 1s;
-    transition: opacity 0.5s linear 1s;
-}
-
-.dx-treelist-rowsview .dx-row.dx-row-lines:first-child {
-    border-top: none;
-}
-.dx-treelist-rowsview .dx-treelist-table .dx-row.dx-virtual-row {
-    border-top: 0;
-    border-bottom: 0;
-    display: none;
-}
-
-.dx-scrollable-scroll-content {
-    display: none;
-}
-.dx-treelist .dx-row-lines td {
-    border-right: 1px dotted var(--boder-primary);
-    border-left: none;
-}
-
-tr.dx-row.dx-column-lines.dx-header-row td:not(:last-child) {
-    border-right: 1px solid var(--boder-primary);
-    border-left: none;
-}
-.dx-treelist-headers.dx-treelist-nowrap {
-    border-left: none;
-    border-right: none;
-}
-.dx-treelist-headers.dx-treelist-nowrap {
-    border-top: none;
-    border-bottom: none;
-}
+<style scoped>
+@import url(../../css/components/table.css);
 </style>

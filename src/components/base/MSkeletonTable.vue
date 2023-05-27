@@ -1,120 +1,6 @@
 <template>
     <tr class="" v-for="(data, index) in dataList" :key="index">
-        <td class="text-align-center">
-            <div class="ms-component ms-skeleton">
-                <div
-                    class="skeleton-text"
-                    style="
-                        width: 70%;
-                        background-color: rgb(235, 237, 240);
-                        margin: 0 auto;
-                    "
-                >
-                    <div class="skeleton-box"></div>
-                </div>
-            </div>
-        </td>
-        <td class="">
-            <div class="ms-component ms-skeleton">
-                <div
-                    class="skeleton-text"
-                    style="width: 100%; background-color: rgb(235, 237, 240)"
-                >
-                    <div class="skeleton-box"></div>
-                </div>
-            </div>
-        </td>
-        <td class="">
-            <div class="ms-component ms-skeleton">
-                <div
-                    class="skeleton-text"
-                    style="width: 100%; background-color: rgb(235, 237, 240)"
-                >
-                    <div class="skeleton-box"></div>
-                </div>
-            </div>
-        </td>
-        <td data-v-72a5f462="" class="text-align-left" style="min-width: 200px">
-            <div class="ms-component ms-skeleton">
-                <div
-                    class="skeleton-text"
-                    style="width: 100%; background-color: rgb(235, 237, 240)"
-                >
-                    <div class="skeleton-box"></div>
-                </div>
-            </div>
-        </td>
-        <td class="text-align-center">
-            <div class="ms-component ms-skeleton">
-                <div
-                    class="skeleton-text"
-                    style="width: 100%; background-color: rgb(235, 237, 240)"
-                >
-                    <div class="skeleton-box"></div>
-                </div>
-            </div>
-        </td>
-        <td class="">
-            <div class="ms-component ms-skeleton">
-                <div
-                    class="skeleton-text"
-                    style="width: 100%; background-color: rgb(235, 237, 240)"
-                >
-                    <div class="skeleton-box"></div>
-                </div>
-            </div>
-        </td>
-        <td class="">
-            <div class="ms-component ms-skeleton">
-                <div
-                    class="skeleton-text"
-                    style="width: 100%; background-color: rgb(235, 237, 240)"
-                >
-                    <div class="skeleton-box"></div>
-                </div>
-            </div>
-        </td>
-        <td class="">
-            <div class="ms-component ms-skeleton">
-                <div
-                    class="skeleton-text"
-                    style="width: 100%; background-color: rgb(235, 237, 240)"
-                >
-                    <div class="skeleton-box"></div>
-                </div>
-            </div>
-        </td>
-        <td class="">
-            <div class="ms-component ms-skeleton">
-                <div
-                    class="skeleton-text"
-                    style="width: 100%; background-color: rgb(235, 237, 240)"
-                >
-                    <div class="skeleton-box"></div>
-                </div>
-            </div>
-        </td>
-        <td class="">
-            <div class="ms-component ms-skeleton">
-                <div
-                    class="skeleton-text"
-                    style="width: 100%; background-color: rgb(235, 237, 240)"
-                >
-                    <div class="skeleton-box"></div>
-                </div>
-            </div>
-        </td>
-        <td class="">
-            <div class="ms-component ms-skeleton">
-                <div
-                    class="skeleton-text"
-                    style="width: 100%; background-color: rgb(235, 237, 240)"
-                >
-                    <div class="skeleton-box"></div>
-                </div>
-            </div>
-        </td>
-        <td class="dropdown-fun text-align-center">
+        <td class="" v-for="(data, index) in columnCount" :key="index">
             <div class="ms-component ms-skeleton">
                 <div
                     class="skeleton-text"
@@ -134,10 +20,9 @@ export default {
         dataList: {
             type: Array,
         },
-    },
-    watch: {
-        dataList: function (newValue) {
-            console.log(newValue);
+
+        columnCount: {
+            type: Array,
         },
     },
 };

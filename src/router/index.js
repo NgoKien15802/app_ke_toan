@@ -3,7 +3,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import EmployeeList from "@/Views/employee/EmployeeList.vue";
 import CustomerList from "@/Views/customer/CustomerList.vue";
 import TheCashDetail from "@/components/layout/TheCashDetail.vue";
-import AccountSysterm from "@/Views/cash/AccountSysterm";
+import AccountSysterm from "@/Views/account/AccountSysterm";
 import CashPayment from "@/Views/cash/CashPayment";
 import CashProcess from "@/Views/cash/CashProcess";
 

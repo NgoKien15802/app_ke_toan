@@ -12,7 +12,7 @@
         v-else-if="kind === 'data'"
         :class="[className != '' && className, subtext !== '' ? 'tooltip' : '']"
     >
-        {{ text }}
+        <span class="text-only-line">{{ text }}</span>
         <span class="tooltipData">{{ subtext }}</span>
     </td>
 

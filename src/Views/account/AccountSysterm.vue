@@ -66,7 +66,7 @@
                         :pageCurrent="pageNumber"
                     ></TheTableAccount> -->
 
-                    <GridAccount
+                    <TheTableAccount
                         @getTotalRecord="getTotalRecord"
                         @hideShowLoading="hideShowLoading"
                         :keyWordSearch="keyWordSearch"
@@ -74,13 +74,17 @@
                         :pageCurrent="pageNumber"
                         :isExpandAccount="isExpand"
                         :isReload="isReload"
+                        :checkReload="checkReload"
                         @setIsReLoad="setIsReLoad"
-                    ></GridAccount>
+                        @setModeAccountList="setModeAccountList"
+                        @setCheckReLoad="setCheckReLoad"
+                    ></TheTableAccount>
                 </div>
 
                 <!--  paging -->
                 <ThePaging
                     :totalRecord="totalRecord"
+                    :countRecord="countRecord"
                     @handleClickOptionItem="handleClickOptionItem"
                     @handleClickPrev="handleClickPrev"
                     @handleClickNext="handleClickNext"
@@ -132,7 +136,7 @@ import ThePaging from "@/components/base/MPaging.vue";
 import Mloading from "@/components/base/Mloading.vue";
 import AccountSystermDetail from "./AccountSystermDetail.vue";
 import MISAEnum from "@/js/enum";
-import GridAccount from "./GridAccount.vue";
+import TheTableAccount from "../../components/layout/TheTableAccount.vue";
 export default {
     name: "AccountSysterm",
     data() {
@@ -149,10 +153,12 @@ export default {
             textTitleAccountSysterm: "",
             selectedCheckbox: [],
             totalRecord: 0,
+            countRecord: 0,
             pageSize: 0,
             pageNumber: 1,
             keyWordSearch: "",
             isReload: false,
+            checkReload: false,
             isDialogDeleteMultiple: false,
             selectedEmployeeIds: [],
             isDisabledClickPrev: true,
@@ -161,16 +167,16 @@ export default {
         };
     },
     components: {
-        GridAccount,
         ThePaging,
         Mloading,
         AccountSystermDetail,
+        TheTableAccount,
     },
 
     watch: {
         /**
          * Hàm khi thay đổi keyword thì quay lại trang đầu nếu là rỗng
-         * Author: KienNT (17/03/2023)
+         * Author: KienNT (26/05/2023)
          */
         keyWordSearch: function () {
             this.pageNumber = 1;
@@ -185,6 +191,7 @@ export default {
          */
         handleReLoadData() {
             this.isReload = true;
+            this.checkReload = true;
             // this.isDisabledClickPrev = true;
         },
 
@@ -195,9 +202,17 @@ export default {
         setIsReLoad() {
             this.isReload = false;
         },
+
+        /**
+         * Hàm emit từ con để set lại check lần sau
+         * Author: KienNT (26/05/2023)
+         */
+        setCheckReLoad() {
+            this.checkReload = false;
+        },
         /**
          * Hàm gán giá trị mảng các checkbox được check
-         * Author: KienNT (15/03/2023)
+         * Author: KienNT (26/05/2023)
          *  @param (selectedCheckbox): tham số 1 là mảng checkbox được chọn
          */
         handleSelectChechbox(selectedCheckbox) {
@@ -206,7 +221,7 @@ export default {
 
         /**
          * Hàm click icon Next trang
-         * Author: KienNT (17/03/2023)
+         * Author: KienNT (26/05/2023)
          */
         handleClickNext() {
             this.pageNumber += 1;
@@ -214,6 +229,15 @@ export default {
                 this.isDisabledClickPrev = false;
             }
         },
+
+        /**
+         * Hàm set mode Account
+         * Author: KienNT (26/05/2023)
+         */
+        setModeAccountList(isExpand) {
+            this.isExpand = isExpand;
+        },
+
         /**
          * Hàm click btn mở rộng
          * Author: KienNT (26/05/2023)
@@ -224,7 +248,7 @@ export default {
 
         /**
          * Hàm click vào pageindex
-         * Author: KienNT (17/03/2023)
+         * Author: KienNT (26/05/2023)
          */
         handleClickPageIndex(index) {
             this.pageNumber = index;
@@ -232,7 +256,7 @@ export default {
 
         /**
          * Hàm hiển thị popup và truyền formMode cho Popup, EmployeeId được chọn
-         * Author: KienNT (28/03/2023)
+         * Author: KienNT (26/05/2023)
          */
         showAccountSystermDuplicate(formMode, employeeIdSelected) {
             this.isAccountSysterm = true;
@@ -243,7 +267,7 @@ export default {
 
         /**
          * Hàm click icon previous trang
-         * Author: KienNT (17/03/2023)
+         * Author: KienNT (26/05/2023)
          */
         handleClickPrev() {
             if (this.pageNumber > 1) {
@@ -257,7 +281,7 @@ export default {
 
         /**
          * Hàm click option, lấy pageSize
-         * Author: KienNT (17/03/2023)
+         * Author: KienNT (26/05/2023)
          *  @param (pageSize): tham số 1 là số bản ghi trên 1 trang
          */
         handleClickOptionItem(pageSize) {
@@ -267,7 +291,7 @@ export default {
 
         /**
          * Hàm thực hiện disabled div prev khi click vào chọn bản ghi trên 1 trang từ con emit lên
-         * Author: KienNT (20/03/2023)
+         * Author: KienNT (26/05/2023)
          */
         setIsDisabledClickPrev() {
             this.isDisabledClickPrev = true;
@@ -275,7 +299,7 @@ export default {
 
         /**
          * Hàm set lại isDeleteOne của component con gửi lên
-         * Author: KienNT (12/04/2023)
+         * Author: KienNT (26/05/2023)
          */
         setIsDeleteOne() {
             this.isDeleteOne = false;
@@ -283,7 +307,7 @@ export default {
 
         /**
          * Hàm thực hiện CALL API Export
-         * Author: KienNT (30/03/2023)
+         * Author: KienNT (26/05/2023)
          */
         handleExport() {
             try {
@@ -323,16 +347,17 @@ export default {
 
         /**
          * Hàm gán số bản ghi từ con emit lên
-         * Author: KienNT (17/03/2023)
+         * Author: KienNT (26/05/2023)
          *  @param (totalRecord): tham số 1 là số bản ghi
          */
-        getTotalRecord(totalRecord) {
+        getTotalRecord(count, totalRecord) {
             this.totalRecord = totalRecord;
+            this.countRecord = count;
         },
 
         /**
          * Hàm thực hiện cho các checkbox bỏ chọn
-         * Author: KienNT (15/03/2023)
+         * Author: KienNT (26/05/2023)
          */
         handleUndoSeleted() {
             this.selectedCheckbox = [];
@@ -340,7 +365,7 @@ export default {
 
         /**
          * Hàm thực hiện xóa tất cả những checkbox được check, xóa bên table khi có dialog delete multiple
-         * Author: KienNT (20/03/2023)
+         * Author: KienNT (26/05/2023)
          */
         handleDeleteAll() {
             if (this.selectedCheckbox.length > 1) {
@@ -357,7 +382,7 @@ export default {
 
         /**
          * Hàm ẩn popup account
-         * Author: KienNT (06/05/2023)
+         * Author: KienNT (26/05/2023)
          */
         closeAccountSysterm() {
             this.isAccountSysterm = false;
@@ -365,7 +390,7 @@ export default {
 
         /**
          * Hàm ẩn dialog đi khi xóa nhiều bản ghi emit từ con
-         * Author: KienNT (20/03/2023)
+         * Author: KienNT (26/05/2023)
          */
         setIsDialogDeleteMul() {
             this.isDialogDeleteMultiple = false;
@@ -373,7 +398,7 @@ export default {
 
         /**
          * Hàm hiển thị popup khi click vào thêm mới nhân viên và lấy mã từ Call API
-         * Author: KienNT (06/05/2023)
+         * Author: KienNT (26/05/2023)
          */
         showAccountSysterm() {
             try {
@@ -388,7 +413,7 @@ export default {
 
         /**
          * Hàm handle khi double click và lấy id employee
-         * Author: KienNT (04/03/2023)
+         * Author: KienNT (26/05/2023)
          *  @param (employee): tham số 1 là danh object chứa các thông tin nhân viên
          */
         onDoubleClick(employee) {
@@ -403,7 +428,7 @@ export default {
 
         /**
          * Hàm đóng popup khi click vào icon close từ con
-         * Author: KienNT (01/03/2023)
+         * Author: KienNT (26/05/2023)
          */
         closePopup() {
             try {
@@ -415,7 +440,7 @@ export default {
 
         /**
          * Hàm hiện thị và ẩn loading khi load dữ liệu
-         * Author: KienNT (02/03/2023)
+         * Author: KienNT (26/05/2023)
          * @param (isLoading): tham số là true, false ẩn hiển
          */
         hideShowLoading(isLoading) {
@@ -428,7 +453,7 @@ export default {
 
         /**
          * Hàm hiện thị toast khi thực hiện thêm, sửa, xóa thành công
-         * Author: KienNT (11/03/2023)
+         * Author: KienNT (26/05/2023)
          * @param (isToast): tham số là true, false ẩn hiển
          */
         hideShowToast(kind) {
