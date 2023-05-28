@@ -52,7 +52,7 @@
                                                         <ul
                                                             class="option__list scrollbar_customize"
                                                         >
-                                                            <TheOptionItem
+                                                            <MOptionItem
                                                                 v-for="(
                                                                     item, index
                                                                 ) in optionItem"
@@ -68,7 +68,7 @@
                                                                 @handleClickItem="
                                                                     handleClickItem
                                                                 "
-                                                            ></TheOptionItem>
+                                                            ></MOptionItem>
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -650,12 +650,10 @@
 </template>
 
 <script>
-import TheOptionItem from "@/components/layout/TheOptionItem.vue";
 import TheTablePaymentDetail from "./TheTablePaymentDetail.vue";
 export default {
     name: "CashDetail",
     components: {
-        TheOptionItem,
         TheTablePaymentDetail,
     },
     data() {

@@ -94,6 +94,10 @@
     transition: all 0.2s ease-out;
 }
 
+.account__systerm-detail .con-content--item {
+    height: 280px;
+}
+
 .ms-collapse.default .open-item .con-content--item {
     opacity: 1;
 }
@@ -118,4 +122,14 @@
     flex: 1;
     min-height: 0;
     min-width: 0;
+}
+
+.account__systerm-detail .paging__record {
+    width: 100%;
+    height: 26px;
+}
+
+.account__systerm-detail .input__wrapper {
+    width: 100%;
+    height: 26px;
 }

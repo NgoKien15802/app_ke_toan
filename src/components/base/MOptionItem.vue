@@ -16,7 +16,7 @@
 import MISAResouce from "../../js/resource";
 
 export default {
-    name: "TheOptionItem",
+    name: "MOptionItem",
     props: {
         text: {
             type: String,

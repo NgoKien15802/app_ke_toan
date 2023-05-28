@@ -13,7 +13,7 @@
         :class="[className != '' && className, subtext !== '' ? 'tooltip' : '']"
     >
         <span class="text-only-line">{{ text }}</span>
-        <span class="tooltipData">{{ subtext }}</span>
+        <span class="tooltipData account">{{ subtext }}</span>
     </td>
 
     <td
@@ -30,12 +30,12 @@
             <slot></slot>
             {{ text }}
         </div>
-        <span class="tooltipData">{{ subtext }}</span>
+        <span class="tooltipData account">{{ subtext }}</span>
     </td>
 
     <span
         v-else-if="kind == 'AccountSysterm'"
-        class="tooltipData"
+        class="tooltipData tooltopTop"
         :style="style"
         >{{ subtext }}</span
     >

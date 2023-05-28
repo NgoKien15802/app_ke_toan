@@ -46,14 +46,14 @@
 
                         <div v-if="isOpenDropdown" class="option__wrapper-lang">
                             <ul class="option__list scrollbar_customize">
-                                <TheOptionItem
+                                <MOptionItem
                                     v-for="(item, index) in optionItem"
                                     :key="index"
                                     :text="item.text"
                                     :isActive="item.isActive"
                                     @handleClickItem="handleClickItem"
                                     :isDropdownLang="true"
-                                ></TheOptionItem>
+                                ></MOptionItem>
                             </ul>
                         </div>
                     </div>
@@ -81,12 +81,9 @@
 </template>
 <script>
 import MISAResouce from "@/js/resource";
-import TheOptionItem from "./TheOptionItem.vue";
 export default {
     name: "TheHeader",
-    components: {
-        TheOptionItem,
-    },
+    components: {},
     data() {
         const valueInput = localStorage.getItem("lang") || "vi";
         return {

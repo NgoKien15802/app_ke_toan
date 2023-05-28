@@ -58,13 +58,13 @@
                             name="AccountNumber"
                             tabindex="1"
                             autocomplete="off"
-                            v-model="accountList.AccountNumber"
+                            v-model="account.account_number"
                             kind="default"
                             :isShowTooltip="isTooltip.isTooltipAccountNumber"
                             :required="true"
                             ref="txtAccountNumber"
                             @blur="
-                                isEmpty(accountList.AccountNumber)
+                                isEmpty(account.AccountNumber)
                                     ? (isTooltip.isTooltipAccountNumber = true)
                                     : (isTooltip.isTooltipAccountNumber = false)
                             "
@@ -72,7 +72,7 @@
                         <MTooltip
                             v-if="isTooltip.isTooltipAccountNumber"
                             :subtext="
-                                isEmpty(accountList.AccountNumber)
+                                isEmpty(account.AccountNumber)
                                     ? $t('LabelAccountNumber') +
                                       $t('ErrorEmpty')
                                     : errorExistId
@@ -101,7 +101,7 @@
                                     name="AccountName"
                                     tabindex="1"
                                     autocomplete="off"
-                                    v-model="accountList.AccountName"
+                                    v-model="account.account_name"
                                     kind="default"
                                     :isShowTooltip="
                                         isTooltip.isTooltipAccountName
@@ -109,7 +109,7 @@
                                     :required="true"
                                     ref="txtAccountName"
                                     @blur="
-                                        isEmpty(accountList.AccountName)
+                                        isEmpty(account.AccountName)
                                             ? (isTooltip.isTooltipAccountName = true)
                                             : (isTooltip.isTooltipAccountName = false)
                                     "
@@ -141,7 +141,7 @@
                                     name="EnglishName"
                                     tabindex="1"
                                     autocomplete="off"
-                                    v-model="accountList.EnglishName"
+                                    v-model="account.account_name_english"
                                     kind="default"
                                     :isShowTooltip="
                                         isTooltip.isTooltipEnglishName
@@ -149,7 +149,7 @@
                                     :required="true"
                                     ref="txtEnglishName"
                                     @blur="
-                                        isEmpty(accountList.EnglishName)
+                                        isEmpty(account.EnglishName)
                                             ? (isTooltip.isTooltipEnglishName = true)
                                             : (isTooltip.isTooltipEnglishName = false)
                                     "
@@ -174,15 +174,18 @@
                             >{{ $t("LabelGeneralAccount") }}
                         </label>
 
-                        <MCombobox
-                            :isShowTooltip="isTooltip.isTooltipGeneralAccount"
-                            @handleCheckEmpty="handleCheckEmpty"
-                            ref="txtGeneralAccount"
-                            tabindex="3"
-                            @setFocus="setFocus"
-                            @handleMountOver="handleMountOver"
-                            @handleMountOut="handleMountOut"
-                        ></MCombobox>
+                        <MComboboxTable
+                            :data="dataAccountParent"
+                            :iconCombobox="iconComboboxGeneralAccount"
+                            :btnIconCombobox="btnIconComboboxGeneralAccount"
+                            :optionWrapperCombobox="
+                                optionWrapperComboboxGeneralAccount
+                            "
+                            @selectedDepartment="selectedParent"
+                            kind="generalAccount"
+                            :departmentName="parent_id"
+                            :headersData="['account_number', 'account_name']"
+                        ></MComboboxTable>
                         <MTooltip
                             v-if="isTooltip.isTooltipGeneralAccount"
                             :subtext="
@@ -195,12 +198,21 @@
                     <div class="w-1/2">
                         <label class="form__label"
                             >{{ $t("LabelProperty") }}
+                            <span class="required">*</span>
                         </label>
 
                         <MCombobox
                             :isShowTooltip="isTooltip.isTooltipProperty"
                             @handleCheckEmpty="handleCheckEmpty"
-                            ref="txtProperty"
+                            :data="propertyList"
+                            :departmentName="account_category_kind"
+                            :btnIconCombobox="btnIconComboboxProperty"
+                            :optionWrapperCombobox="
+                                optionWrapperComboboxProperty
+                            "
+                            @selectedDepartment="selectedDepartment"
+                            kind="property"
+                            :iconCombobox="iconComboboxProperty"
                             tabindex="3"
                             @setFocus="setFocus"
                             @handleMountOver="handleMountOver"
@@ -219,13 +231,17 @@
                     <label class="form__label"
                         >{{ $t("LabelInterpret") }}
                     </label>
-                    <textarea maxlength="255" class="ms-textarea"></textarea>
+                    <textarea
+                        maxlength="255"
+                        v-model="account.description"
+                        class="ms-textarea"
+                    ></textarea>
                 </div>
 
                 <div class="w-full flex m-flex-row-gap-8">
                     <MCheckbox
-                        v-model="isForeignCurrencyPlan"
-                        :initValue="isForeignCurrencyPlan"
+                        v-model="account.is_postable_in_foreign_currency"
+                        :initValue="account.is_postable_in_foreign_currency"
                         @handleCheckbox="handleCheckbox($event)"
                         ref="checkbox"
                     ></MCheckbox>
@@ -269,92 +285,170 @@
                                                     >
                                                         <MCheckbox
                                                             v-model="
-                                                                isForeignCurrencyPlan
+                                                                account.account_object_type
                                                             "
                                                             :initValue="
-                                                                isForeignCurrencyPlan
+                                                                account.account_object_type
                                                             "
                                                             @handleCheckbox="
-                                                                handleCheckbox(
-                                                                    $event
-                                                                )
+                                                                ($event) =>
+                                                                    handleCheckboxAccount(
+                                                                        event,
+                                                                        'account_object_type',
+                                                                        'valueInputAccount_object_type',
+                                                                        $t(
+                                                                            'CustomerCash'
+                                                                        )
+                                                                    )
                                                             "
                                                             styleElement="margin: none"
                                                             ref="checkbox"
                                                         ></MCheckbox>
-                                                        <span>
+                                                        <span
+                                                            @click="
+                                                                () =>
+                                                                    handleCheckboxAccount(
+                                                                        event,
+                                                                        'account_object_type',
+                                                                        'valueInputAccount_object_type',
+                                                                        $t(
+                                                                            'CustomerCash'
+                                                                        )
+                                                                    )
+                                                            "
+                                                        >
                                                             {{ $t("Object") }}
                                                         </span>
                                                     </div>
                                                     <div
                                                         class="w-1/2 flex m-flex-row-gap-8"
                                                     >
-                                                        <MCombobox
-                                                            :isShowTooltip="
-                                                                isTooltip.isTooltipProperty
+                                                        <div
+                                                            class="paging__record"
+                                                            @click="
+                                                                () => {
+                                                                    account.account_object_type
+                                                                        ? handleAccount_object_type()
+                                                                        : '';
+                                                                }
                                                             "
-                                                            @handleCheckEmpty="
-                                                                handleCheckEmpty
+                                                            style="
+                                                                max-width: 100%;
                                                             "
-                                                            ref="txtProperty"
-                                                            tabindex="3"
-                                                            @setFocus="setFocus"
-                                                            @handleMountOver="
-                                                                handleMountOver
-                                                            "
-                                                            @handleMountOut="
-                                                                handleMountOut
-                                                            "
-                                                        ></MCombobox>
+                                                            ref="dropdownAccount_object_type"
+                                                        >
+                                                            <div
+                                                                class="input__wrapper dropdown"
+                                                                :class="
+                                                                    !account.account_object_type
+                                                                        ? 'disabledDopdown'
+                                                                        : ''
+                                                                "
+                                                            >
+                                                                <button
+                                                                    class="input__icon dropdown-icon"
+                                                                    fdprocessedid="jeq9qa"
+                                                                    :class="
+                                                                        !account.account_object_type
+                                                                            ? 'disabledDopdown'
+                                                                            : ''
+                                                                    "
+                                                                >
+                                                                    <div
+                                                                        class="input__icon-dropdown"
+                                                                        ref="iconAccount_object_type"
+                                                                    ></div>
+                                                                </button>
+                                                                <input
+                                                                    readonly="true"
+                                                                    type="text"
+                                                                    style="
+                                                                        border: none;
+                                                                    "
+                                                                    class="input__type dropdown-input paging-input"
+                                                                    v-model="
+                                                                        valueInput.valueInputAccount_object_type
+                                                                    "
+                                                                    :class="
+                                                                        !account.account_object_type
+                                                                            ? 'disabledDopdown'
+                                                                            : ''
+                                                                    "
+                                                                    fdprocessedid="epqss"
+                                                                />
+
+                                                                <div
+                                                                    v-if="
+                                                                        isOpenAccount_object_type
+                                                                    "
+                                                                    class="option__wrapper-lang"
+                                                                >
+                                                                    <ul
+                                                                        class="option__list scrollbar_customize"
+                                                                    >
+                                                                        <MOptionItem
+                                                                            v-for="(
+                                                                                item,
+                                                                                index
+                                                                            ) in account_object_type"
+                                                                            :key="
+                                                                                index
+                                                                            "
+                                                                            :text="
+                                                                                item.text
+                                                                            "
+                                                                            :isActive="
+                                                                                item.isActive
+                                                                            "
+                                                                            @handleClickItem="
+                                                                                handleClickItemAccount_object_type
+                                                                            "
+                                                                            :isDropdownLang="
+                                                                                true
+                                                                            "
+                                                                        ></MOptionItem>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="w-1/2">
                                                 <div
                                                     class="w-5/6 m-flex-row-gap-8 flex align-center"
+                                                    style="
+                                                        justify-content: start;
+                                                    "
                                                 >
                                                     <div
                                                         class="w-1/2 flex m-flex-row-gap-8"
                                                     >
                                                         <MCheckbox
                                                             v-model="
-                                                                isForeignCurrencyPlan
+                                                                account.detail_by_bank_account
                                                             "
                                                             :initValue="
-                                                                isForeignCurrencyPlan
-                                                            "
-                                                            @handleCheckbox="
-                                                                handleCheckbox(
-                                                                    $event
-                                                                )
+                                                                account.detail_by_bank_account
                                                             "
                                                             styleElement="margin: none"
                                                             ref="checkbox"
                                                         ></MCheckbox>
-                                                        <span>
-                                                            {{ $t("Object") }}
+                                                        <span
+                                                            @click="
+                                                                () =>
+                                                                    handleCheckboxAccount(
+                                                                        event,
+                                                                        'detail_by_bank_account'
+                                                                    )
+                                                            "
+                                                        >
+                                                            {{
+                                                                $t(
+                                                                    "Detail_by_bank_account"
+                                                                )
+                                                            }}
                                                         </span>
-                                                    </div>
-                                                    <div
-                                                        class="w-1/2 flex m-flex-row-gap-8"
-                                                    >
-                                                        <MCombobox
-                                                            :isShowTooltip="
-                                                                isTooltip.isTooltipProperty
-                                                            "
-                                                            @handleCheckEmpty="
-                                                                handleCheckEmpty
-                                                            "
-                                                            ref="txtProperty"
-                                                            tabindex="3"
-                                                            @setFocus="setFocus"
-                                                            @handleMountOver="
-                                                                handleMountOver
-                                                            "
-                                                            @handleMountOut="
-                                                                handleMountOut
-                                                            "
-                                                        ></MCombobox>
                                                     </div>
                                                 </div>
                                             </div>
@@ -369,43 +463,68 @@
                                                     >
                                                         <MCheckbox
                                                             v-model="
-                                                                isForeignCurrencyPlan
+                                                                account.detail_by_job
                                                             "
                                                             :initValue="
-                                                                isForeignCurrencyPlan
+                                                                account.detail_by_job
                                                             "
                                                             @handleCheckbox="
-                                                                handleCheckbox(
-                                                                    $event
+                                                                handleCheckboxAccount(
+                                                                    event,
+                                                                    'detail_by_job'
                                                                 )
                                                             "
                                                             styleElement="margin: none"
                                                             ref="checkbox"
                                                         ></MCheckbox>
-                                                        <span>
-                                                            {{ $t("Object") }}
+                                                        <span
+                                                            @click="
+                                                                () =>
+                                                                    handleCheckboxAccount(
+                                                                        event,
+                                                                        'detail_by_job'
+                                                                    )
+                                                            "
+                                                        >
+                                                            {{
+                                                                $t(
+                                                                    "Detail_by_job"
+                                                                )
+                                                            }}
                                                         </span>
                                                     </div>
                                                     <div
                                                         class="w-1/2 flex m-flex-row-gap-8"
                                                     >
-                                                        <MCombobox
-                                                            :isShowTooltip="
-                                                                isTooltip.isTooltipProperty
+                                                        <TheDropdownAccount
+                                                            :dropdownRef="
+                                                                dropdownDetail_by_job
                                                             "
-                                                            @handleCheckEmpty="
-                                                                handleCheckEmpty
+                                                            :iconDropdownRef="
+                                                                iconDropdownDetail_by_job
                                                             "
-                                                            ref="txtProperty"
-                                                            tabindex="3"
-                                                            @setFocus="setFocus"
-                                                            @handleMountOver="
-                                                                handleMountOver
+                                                            :isOpenDropdown="
+                                                                isOpen.isOpenDropdownDetail_by_job
                                                             "
-                                                            @handleMountOut="
-                                                                handleMountOut
+                                                            @setIsOpenDropdown="
+                                                                (isShow) => {
+                                                                    setIsOpenDropdown(
+                                                                        isShow,
+                                                                        'isOpenDropdownDetail_by_job'
+                                                                    );
+                                                                }
                                                             "
-                                                        ></MCombobox>
+                                                            @handleReceiveValue="
+                                                                (value) =>
+                                                                    handleReceiveValueInput(
+                                                                        value,
+                                                                        'valueInputDetail_by_job'
+                                                                    )
+                                                            "
+                                                            :diabledDropdown="
+                                                                account.detail_by_job
+                                                            "
+                                                        ></TheDropdownAccount>
                                                     </div>
                                                 </div>
                                             </div>
@@ -418,43 +537,519 @@
                                                     >
                                                         <MCheckbox
                                                             v-model="
-                                                                isForeignCurrencyPlan
+                                                                account.detail_by_project_work
                                                             "
                                                             :initValue="
-                                                                isForeignCurrencyPlan
+                                                                account.detail_by_project_work
                                                             "
                                                             @handleCheckbox="
-                                                                handleCheckbox(
-                                                                    $event
+                                                                handleCheckboxAccount(
+                                                                    event,
+                                                                    'detail_by_project_work'
                                                                 )
                                                             "
                                                             styleElement="margin: none"
                                                             ref="checkbox"
                                                         ></MCheckbox>
-                                                        <span>
-                                                            {{ $t("Object") }}
+                                                        <span
+                                                            @click="
+                                                                () =>
+                                                                    handleCheckboxAccount(
+                                                                        event,
+                                                                        'detail_by_project_work'
+                                                                    )
+                                                            "
+                                                        >
+                                                            {{
+                                                                $t(
+                                                                    "Detail_by_project_work"
+                                                                )
+                                                            }}
                                                         </span>
                                                     </div>
                                                     <div
                                                         class="w-1/2 flex m-flex-row-gap-8"
                                                     >
-                                                        <MCombobox
-                                                            :isShowTooltip="
-                                                                isTooltip.isTooltipProperty
+                                                        <TheDropdownAccount
+                                                            :dropdownRef="
+                                                                dropdownDetail_by_project_work
                                                             "
-                                                            @handleCheckEmpty="
-                                                                handleCheckEmpty
+                                                            :iconDropdownRef="
+                                                                iconDropdownDetail_by_project_work
                                                             "
-                                                            ref="txtProperty"
-                                                            tabindex="3"
-                                                            @setFocus="setFocus"
-                                                            @handleMountOver="
-                                                                handleMountOver
+                                                            :isOpenDropdown="
+                                                                isOpen.isOpenDropdownDetail_by_project_work
                                                             "
-                                                            @handleMountOut="
-                                                                handleMountOut
+                                                            @setIsOpenDropdown="
+                                                                (isShow) => {
+                                                                    setIsOpenDropdown(
+                                                                        isShow,
+                                                                        'isOpenDropdownDetail_by_project_work'
+                                                                    );
+                                                                }
                                                             "
-                                                        ></MCombobox>
+                                                            @handleReceiveValue="
+                                                                (value) =>
+                                                                    handleReceiveValueInput(
+                                                                        value,
+                                                                        'valueInputDetail_by_project_work'
+                                                                    )
+                                                            "
+                                                            :diabledDropdown="
+                                                                account.detail_by_project_work
+                                                            "
+                                                        ></TheDropdownAccount>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="w-full row-input flex">
+                                            <div class="w-1/2">
+                                                <div
+                                                    class="w-5/6 m-flex-row-gap-8 flex align-center"
+                                                >
+                                                    <div
+                                                        class="w-1/2 flex m-flex-row-gap-8"
+                                                    >
+                                                        <MCheckbox
+                                                            v-model="
+                                                                account.detail_by_order
+                                                            "
+                                                            :initValue="
+                                                                account.detail_by_order
+                                                            "
+                                                            @handleCheckbox="
+                                                                handleCheckboxAccount(
+                                                                    event,
+                                                                    'detail_by_order'
+                                                                )
+                                                            "
+                                                            styleElement="margin: none"
+                                                            ref="checkbox"
+                                                        ></MCheckbox>
+                                                        <span
+                                                            @click="
+                                                                () =>
+                                                                    handleCheckboxAccount(
+                                                                        event,
+                                                                        'detail_by_order'
+                                                                    )
+                                                            "
+                                                        >
+                                                            {{
+                                                                $t(
+                                                                    "Detail_by_order"
+                                                                )
+                                                            }}
+                                                        </span>
+                                                    </div>
+                                                    <div
+                                                        class="w-1/2 flex m-flex-row-gap-8"
+                                                    >
+                                                        <TheDropdownAccount
+                                                            :dropdownRef="
+                                                                dropdownDetail_by_order
+                                                            "
+                                                            :iconDropdownRef="
+                                                                iconDropdownDetail_by_order
+                                                            "
+                                                            :isOpenDropdown="
+                                                                isOpen.isOpenDropdownDetail_by_order
+                                                            "
+                                                            @setIsOpenDropdown="
+                                                                (isShow) => {
+                                                                    setIsOpenDropdown(
+                                                                        isShow,
+                                                                        'isOpenDropdownDetail_by_order'
+                                                                    );
+                                                                }
+                                                            "
+                                                            @handleReceiveValue="
+                                                                (value) =>
+                                                                    handleReceiveValueInput(
+                                                                        value,
+                                                                        'valueInputDetail_by_order'
+                                                                    )
+                                                            "
+                                                            :diabledDropdown="
+                                                                account.detail_by_order
+                                                            "
+                                                        ></TheDropdownAccount>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="w-1/2">
+                                                <div
+                                                    class="w-5/6 m-flex-row-gap-8 flex align-center"
+                                                >
+                                                    <div
+                                                        class="w-1/2 flex m-flex-row-gap-8"
+                                                    >
+                                                        <MCheckbox
+                                                            v-model="
+                                                                account.detail_by_contract
+                                                            "
+                                                            :initValue="
+                                                                account.detail_by_contract
+                                                            "
+                                                            @handleCheckbox="
+                                                                handleCheckboxAccount(
+                                                                    event,
+                                                                    'detail_by_contract'
+                                                                )
+                                                            "
+                                                            styleElement="margin: none"
+                                                            ref="checkbox"
+                                                        ></MCheckbox>
+                                                        <span
+                                                            @click="
+                                                                () =>
+                                                                    handleCheckboxAccount(
+                                                                        event,
+                                                                        'detail_by_contract'
+                                                                    )
+                                                            "
+                                                        >
+                                                            {{
+                                                                $t(
+                                                                    "Detail_by_contract"
+                                                                )
+                                                            }}
+                                                        </span>
+                                                    </div>
+                                                    <div
+                                                        class="w-1/2 flex m-flex-row-gap-8"
+                                                    >
+                                                        <TheDropdownAccount
+                                                            :dropdownRef="
+                                                                dropdownDetail_by_contract
+                                                            "
+                                                            :iconDropdownRef="
+                                                                iconDropdownDetail_by_contract
+                                                            "
+                                                            :isOpenDropdown="
+                                                                isOpen.isOpenDropdownDetail_by_contract
+                                                            "
+                                                            @setIsOpenDropdown="
+                                                                (isShow) => {
+                                                                    setIsOpenDropdown(
+                                                                        isShow,
+                                                                        'isOpenDropdownDetail_by_contract'
+                                                                    );
+                                                                }
+                                                            "
+                                                            @handleReceiveValue="
+                                                                (value) =>
+                                                                    handleReceiveValueInput(
+                                                                        value,
+                                                                        'valueInputDetail_by_contract'
+                                                                    )
+                                                            "
+                                                            :diabledDropdown="
+                                                                account.detail_by_contract
+                                                            "
+                                                        ></TheDropdownAccount>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="w-full row-input flex">
+                                            <div class="w-1/2">
+                                                <div
+                                                    class="w-5/6 m-flex-row-gap-8 flex align-center"
+                                                >
+                                                    <div
+                                                        class="w-1/2 flex m-flex-row-gap-8"
+                                                    >
+                                                        <MCheckbox
+                                                            v-model="
+                                                                account.detail_by_pu_contract
+                                                            "
+                                                            :initValue="
+                                                                account.detail_by_pu_contract
+                                                            "
+                                                            @handleCheckbox="
+                                                                handleCheckboxAccount(
+                                                                    event,
+                                                                    'detail_by_pu_contract'
+                                                                )
+                                                            "
+                                                            styleElement="margin: none"
+                                                            ref="checkbox"
+                                                        ></MCheckbox>
+                                                        <span
+                                                            @click="
+                                                                () =>
+                                                                    handleCheckboxAccount(
+                                                                        event,
+                                                                        'detail_by_pu_contract'
+                                                                    )
+                                                            "
+                                                        >
+                                                            {{
+                                                                $t(
+                                                                    "Detail_by_pu_contract"
+                                                                )
+                                                            }}
+                                                        </span>
+                                                    </div>
+                                                    <div
+                                                        class="w-1/2 flex m-flex-row-gap-8"
+                                                    >
+                                                        <TheDropdownAccount
+                                                            :dropdownRef="
+                                                                dropdownDetail_by_pu_contract
+                                                            "
+                                                            :iconDropdownRef="
+                                                                iconDropdownDetail_by_pu_contract
+                                                            "
+                                                            :isOpenDropdown="
+                                                                isOpen.isOpenDropdownDetail_by_pu_contract
+                                                            "
+                                                            @setIsOpenDropdown="
+                                                                (isShow) => {
+                                                                    setIsOpenDropdown(
+                                                                        isShow,
+                                                                        'isOpenDropdownDetail_by_pu_contract'
+                                                                    );
+                                                                }
+                                                            "
+                                                            @handleReceiveValue="
+                                                                (value) =>
+                                                                    handleReceiveValueInput(
+                                                                        value,
+                                                                        'valueInputDetail_by_pu_contract'
+                                                                    )
+                                                            "
+                                                            :diabledDropdown="
+                                                                account.detail_by_pu_contract
+                                                            "
+                                                        ></TheDropdownAccount>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="w-1/2">
+                                                <div
+                                                    class="w-5/6 m-flex-row-gap-8 flex align-center"
+                                                >
+                                                    <div
+                                                        class="w-1/2 flex m-flex-row-gap-8"
+                                                    >
+                                                        <MCheckbox
+                                                            v-model="
+                                                                account.detail_by_expense_item
+                                                            "
+                                                            :initValue="
+                                                                account.detail_by_expense_item
+                                                            "
+                                                            @handleCheckbox="
+                                                                handleCheckboxAccount(
+                                                                    event,
+                                                                    'detail_by_expense_item'
+                                                                )
+                                                            "
+                                                            styleElement="margin: none"
+                                                            ref="checkbox"
+                                                        ></MCheckbox>
+                                                        <span
+                                                            @click="
+                                                                () =>
+                                                                    handleCheckboxAccount(
+                                                                        event,
+                                                                        'detail_by_expense_item'
+                                                                    )
+                                                            "
+                                                        >
+                                                            {{
+                                                                $t(
+                                                                    "Detail_by_expense_item"
+                                                                )
+                                                            }}
+                                                        </span>
+                                                    </div>
+                                                    <div
+                                                        class="w-1/2 flex m-flex-row-gap-8"
+                                                    >
+                                                        <TheDropdownAccount
+                                                            :dropdownRef="
+                                                                dropdownDetail_by_expense_item
+                                                            "
+                                                            :iconDropdownRef="
+                                                                iconDropdownDetail_by_expense_item
+                                                            "
+                                                            :isOpenDropdown="
+                                                                isOpen.isOpenDropdownDetail_by_expense_item
+                                                            "
+                                                            @setIsOpenDropdown="
+                                                                (isShow) => {
+                                                                    setIsOpenDropdown(
+                                                                        isShow,
+                                                                        'isOpenDropdownDetail_by_expense_item'
+                                                                    );
+                                                                }
+                                                            "
+                                                            @handleReceiveValue="
+                                                                (value) =>
+                                                                    handleReceiveValueInput(
+                                                                        value,
+                                                                        'valueInputDetail_by_expense_item'
+                                                                    )
+                                                            "
+                                                            :diabledDropdown="
+                                                                account.detail_by_expense_item
+                                                            "
+                                                        ></TheDropdownAccount>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="w-full row-input flex">
+                                            <div class="w-1/2">
+                                                <div
+                                                    class="w-5/6 m-flex-row-gap-8 flex align-center"
+                                                >
+                                                    <div
+                                                        class="w-1/2 flex m-flex-row-gap-8"
+                                                    >
+                                                        <MCheckbox
+                                                            v-model="
+                                                                account.detail_by_department
+                                                            "
+                                                            :initValue="
+                                                                account.detail_by_department
+                                                            "
+                                                            @handleCheckbox="
+                                                                handleCheckboxAccount(
+                                                                    event,
+                                                                    'detail_by_department'
+                                                                )
+                                                            "
+                                                            styleElement="margin: none"
+                                                            ref="checkbox"
+                                                        ></MCheckbox>
+                                                        <span
+                                                            @click="
+                                                                () =>
+                                                                    handleCheckboxAccount(
+                                                                        event,
+                                                                        'detail_by_department'
+                                                                    )
+                                                            "
+                                                        >
+                                                            {{
+                                                                $t(
+                                                                    "Detail_by_department"
+                                                                )
+                                                            }}
+                                                        </span>
+                                                    </div>
+                                                    <div
+                                                        class="w-1/2 flex m-flex-row-gap-8"
+                                                    >
+                                                        <TheDropdownAccount
+                                                            :dropdownRef="
+                                                                dropdownDetail_by_department
+                                                            "
+                                                            :iconDropdownRef="
+                                                                iconDropdownDetail_by_department
+                                                            "
+                                                            :isOpenDropdown="
+                                                                isOpen.isOpenDropdownDetail_by_department
+                                                            "
+                                                            @setIsOpenDropdown="
+                                                                (isShow) => {
+                                                                    setIsOpenDropdown(
+                                                                        isShow,
+                                                                        'isOpenDropdownDetail_by_department'
+                                                                    );
+                                                                }
+                                                            "
+                                                            @handleReceiveValue="
+                                                                (value) =>
+                                                                    handleReceiveValueInput(
+                                                                        value,
+                                                                        'valueInputDetail_by_department'
+                                                                    )
+                                                            "
+                                                            :diabledDropdown="
+                                                                account.detail_by_department
+                                                            "
+                                                        ></TheDropdownAccount>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="w-1/2">
+                                                <div
+                                                    class="w-5/6 m-flex-row-gap-8 flex align-center"
+                                                >
+                                                    <div
+                                                        class="w-1/2 flex m-flex-row-gap-8"
+                                                    >
+                                                        <MCheckbox
+                                                            v-model="
+                                                                account.detail_by_list_item
+                                                            "
+                                                            :initValue="
+                                                                account.detail_by_list_item
+                                                            "
+                                                            @handleCheckbox="
+                                                                handleCheckboxAccount(
+                                                                    event,
+                                                                    'detail_by_list_item'
+                                                                )
+                                                            "
+                                                            styleElement="margin: none"
+                                                            ref="checkbox"
+                                                        ></MCheckbox>
+                                                        <span
+                                                            @click="
+                                                                () =>
+                                                                    handleCheckboxAccount(
+                                                                        event,
+                                                                        'detail_by_list_item'
+                                                                    )
+                                                            "
+                                                        >
+                                                            {{
+                                                                $t(
+                                                                    "Detail_by_list_item"
+                                                                )
+                                                            }}
+                                                        </span>
+                                                    </div>
+                                                    <div
+                                                        class="w-1/2 flex m-flex-row-gap-8"
+                                                    >
+                                                        <TheDropdownAccount
+                                                            :dropdownRef="
+                                                                dropdownDetail_by_list_item
+                                                            "
+                                                            :iconDropdownRef="
+                                                                iconDropdownDetail_by_list_item
+                                                            "
+                                                            :isOpenDropdown="
+                                                                isOpen.isOpenDropdownDetail_by_list_item
+                                                            "
+                                                            @setIsOpenDropdown="
+                                                                (isShow) => {
+                                                                    setIsOpenDropdown(
+                                                                        isShow,
+                                                                        'isOpenDropdownDetail_by_list_item'
+                                                                    );
+                                                                }
+                                                            "
+                                                            @handleReceiveValue="
+                                                                (value) =>
+                                                                    handleReceiveValueInput(
+                                                                        value,
+                                                                        'valueInputDetail_by_list_item'
+                                                                    )
+                                                            "
+                                                            :diabledDropdown="
+                                                                account.detail_by_list_item
+                                                            "
+                                                        ></TheDropdownAccount>
                                                     </div>
                                                 </div>
                                             </div>
@@ -527,8 +1122,10 @@
 <script>
 import MISAResouce from "@/js/resource";
 import MISAEnum from "@/js/enum";
+import TheDropdownAccount from "@/components/layout/TheDropdownAccount.vue";
 
 export default {
+    components: { TheDropdownAccount },
     name: "AccountSystermDetail",
     props: {
         textTitleAccountSysterm: {
@@ -541,7 +1138,77 @@ export default {
     data() {
         return {
             MISAResouce,
-            accountList: {},
+            account_category_kind: "",
+            parent_id: "",
+            dataAccountParent: [],
+            account: {
+                account_object_type: false,
+                detail_by_job: false,
+                detail_by_project_work: false,
+                detail_by_order: false,
+                detail_by_contract: false,
+                detail_by_pu_contract: false,
+                detail_by_expense_item: false,
+                detail_by_department: false,
+                detail_by_list_item: false,
+            },
+            valueInput: {
+                valueInputAccount_object_type: "",
+                valueInputDetail_by_job: "",
+                valueInputDetail_by_project_work: "",
+                valueInputDetail_by_order: "",
+                valueInputDetail_by_contract: "",
+                valueInputDetail_by_pu_contract: "",
+                valueInputDetail_by_expense_item: "",
+                valueInputDetail_by_department: "",
+                valueInputDetail_by_list_item: "",
+            },
+
+            isOpen: {
+                isOpenDropdownDetail_by_job: false,
+                isOpenDropdownDetail_by_project_work: false,
+                isOpenDropdownDetail_by_order: false,
+                isOpenDropdownDetail_by_contract: false,
+                isOpenDropdownDetail_by_pu_contract: false,
+                isOpenDropdownDetail_by_expense_item: false,
+                isOpenDropdownDetail_by_department: false,
+                isOpenDropdownDetail_by_list_item: false,
+            },
+
+            isOpenAccount_object_type: false,
+
+            dropdownDetail_by_job: null,
+            iconDropdownDetail_by_job: null,
+
+            dropdownDetail_by_project_work: null,
+            iconDropdownDetail_by_project_work: null,
+
+            dropdownDetail_by_order: null,
+            iconDropdownDetail_by_order: null,
+
+            dropdownDetail_by_contract: null,
+            iconDropdownDetail_by_contract: null,
+
+            dropdownDetail_by_pu_contract: null,
+            iconDropdownDetail_by_pu_contract: null,
+
+            dropdownDetail_by_expense_item: null,
+            iconDropdownDetail_by_expense_item: null,
+
+            dropdownDetail_by_department: null,
+            iconDropdownDetail_by_department: null,
+
+            dropdownDetail_by_list_item: null,
+            iconDropdownDetail_by_list_item: null,
+
+            btnIconComboboxProperty: null,
+            optionWrapperComboboxProperty: null,
+            iconComboboxProperty: null,
+            departmentInputProperty: null,
+            iconComboboxGeneralAccount: null,
+            btnIconComboboxGeneralAccount: null,
+            optionWrapperComboboxGeneralAccount: null,
+            account_name: "",
             formModeAccount: "",
             isTooltip: {
                 isTooltipAccountNumber: false,
@@ -551,19 +1218,98 @@ export default {
                 isTooltipProperty: false,
             },
             isDisabledAccountNumber: false,
+
             isForeignCurrencyPlan: false,
+
+            account_object_type: [
+                {
+                    text: this.$t("Provider"),
+                    isActive: false,
+                },
+                {
+                    text: this.$t("CustomerCash"),
+                    isActive: true,
+                },
+                {
+                    text: this.$t("Employee"),
+                    isActive: false,
+                },
+            ],
+
+            propertyList: [],
         };
     },
     mounted() {
         window.addEventListener("keydown", this.handlePressKeyShort);
+        window.addEventListener("click", this.handleOutsideClick);
+        this.dropdownDetail_by_job = this.$refs.dropdownDetail_by_job;
+        this.iconDropdownDetail_by_job = this.$refs.iconDropdownDetail_by_job;
+        this.dropdownDetail_by_project_work =
+            this.$refs.dropdownDetail_by_project_work;
+        this.iconDropdownDetail_by_project_work =
+            this.$refs.iconDropdownDetail_by_project_work;
+
+        this.dropdownDetail_by_order = this.$refs.dropdownDetail_by_order;
+        this.iconDropdownDetail_by_order =
+            this.$refs.iconDropdownDetail_by_order;
+
+        this.dropdownDetail_by_contract = this.$refs.dropdownDetail_by_contract;
+        this.iconDropdownDetail_by_contract =
+            this.$refs.iconDropdownDetail_by_contract;
+
+        this.dropdownDetail_by_pu_contract =
+            this.$refs.dropdownDetail_by_pu_contract;
+        this.iconDropdownDetail_by_pu_contract =
+            this.$refs.iconDropdownDetail_by_pu_contract;
+
+        this.dropdownDetail_by_expense_item =
+            this.$refs.dropdownDetail_by_expense_item;
+        this.iconDropdownDetail_by_expense_item =
+            this.$refs.iconDropdownDetail_by_expense_item;
+
+        this.dropdownDetail_by_department =
+            this.$refs.dropdownDetail_by_department;
+        this.iconDropdownDetail_by_department =
+            this.$refs.iconDropdownDetail_by_department;
+        this.dropdownDetail_by_list_item =
+            this.$refs.dropdownDetail_by_list_item;
+        this.iconDropdownDetail_by_list_item =
+            this.$refs.iconDropdownDetail_by_list_item;
+
+        this.btnIconComboboxProperty = this.$refs.btnIconComboboxProperty;
+        this.optionWrapperComboboxProperty =
+            this.$refs.optionWrapperComboboxProperty;
+        this.iconComboboxProperty = this.$refs.iconComboboxProperty;
+        this.departmentInputProperty = this.$refs.departmentInputProperty;
+        this.iconComboboxGeneralAccount = this.$refs.iconComboboxGeneralAccount;
+        this.btnIconComboboxGeneralAccount =
+            this.$refs.btnIconComboboxGeneralAccount;
+        this.optionWrapperComboboxGeneralAccount =
+            this.$refs.optionWrapperComboboxGeneralAccount;
     },
     beforeUnmount() {
         window.removeEventListener("keydown", this.handlePressKeyShort);
+        window.addEventListener("click", this.handleOutsideClick);
     },
 
     created() {
         this.formModeAccount = this.formMode;
-
+        this.account_category_kind = null;
+        this.parent_id = null;
+        this.propertyList = [
+            {
+                name: this.$t("Debt"),
+            },
+            {
+                name: this.$t("ExcessYes"),
+            },
+            {
+                name: this.$t("Hermaphrodite"),
+            },
+            {
+                name: this.$t("Nobalance"),
+            },
+        ];
         try {
             /**
              * Call API lấy ra id bất kỳ khi click btn thêm mới
@@ -594,6 +1340,205 @@ export default {
     },
 
     methods: {
+        /**
+         * handle thay đổi trạng thái checkbox
+         * Author: KienNT (28/05/2023)
+         */
+        setIsOpenDropdown(isShow, kind) {
+            this.isOpen[kind] = isShow;
+        },
+
+        /**
+         * handle nhận giá trị tử dropdown trả về
+         * Author: KienNT (28/05/2023)
+         */
+        handleReceiveValueInput(value, kind) {
+            this.valueInput[kind] = value;
+        },
+
+        /**
+         * handle khi click option item
+         * Author: KienNT (27/05/2023)
+         *   @param (event): là event
+         */
+        handleClickItemAccount_object_type(event) {
+            try {
+                this.account_object_type.forEach((option) => {
+                    if (option.isActive === true) {
+                        option.isActive = false;
+                    }
+                });
+                this.account_object_type.forEach((option) => {
+                    if (event.target.textContent.indexOf(option.text) !== -1) {
+                        option.isActive = true;
+                        this.valueInput.valueInputAccount_object_type =
+                            event.target.textContent;
+                    } else {
+                        option.isActive = false;
+                    }
+                });
+                this.account_object_type.forEach((el) => {
+                    if (
+                        this.valueInput.valueInputAccount_object_type.includes(
+                            el.text
+                        )
+                    ) {
+                        alert(el.text);
+                    }
+                });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
+         * Hàm kiểm tra input có rỗng không
+         * Author: KienNT (02/03/2023)
+         * @param (value): tham số là giá trị chuỗi từ input
+         */
+        isEmpty(value) {
+            try {
+                if (value === "" || value === null || value === undefined) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        /**
+         * nghe sự kiện window. Nếu click ko phải là dropdown thì ẩn dropdown
+         * Author: KienNT (27/05/2023)
+         *   @param (event): là event
+         */
+        handleOutsideClick(event) {
+            try {
+                if (
+                    this.$refs["dropdownAccount_object_type"] &&
+                    !this.$refs["dropdownAccount_object_type"].contains(
+                        event.target
+                    )
+                ) {
+                    this.isOpenAccount_object_type = false;
+                    if (!this.isOpenAccount_object_type) {
+                        if (
+                            this.$refs[
+                                "iconAccount_object_type"
+                            ].classList.contains("rorate-180")
+                        ) {
+                            this.$refs[
+                                "iconAccount_object_type"
+                            ].classList.remove("rorate-180");
+                        }
+                    }
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
+         * Hàm lấy giá trị input bên cb sau đó check isEmpty
+         * Author: KienNT (28/05/2023)
+         * @param (valueInput): Giá trị của value được emit từ con
+         */
+        handleCheckEmpty(valueInput, category) {
+            try {
+                this.account_category_kind = valueInput;
+                if (category && category.length > 0) {
+                    if (
+                        category.filter(
+                            (el) => el.name === this.account_category_kind
+                        ).length <= 0
+                    ) {
+                        this.isTooltip.isTooltipProperty = true;
+                        this.account.account_category_kind = "";
+                    } else {
+                        category.forEach((el) => {
+                            if (el.name === this.account_category_kind) {
+                                this.account.account_category_kind = el.name;
+                            }
+                        });
+                        this.isTooltip.isTooltipProperty = false;
+                    }
+                }
+                if (this.isEmpty(this.account_category_kind)) {
+                    this.isTooltip.isTooltipProperty = true;
+                } else if (this.account.account_category_kind !== null) {
+                    this.isTooltip.isTooltipProperty = false;
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
+         * Click checkbox object type
+         * Author: KienNT (27/05/2023)
+         */
+        handleCheckboxAccount(event, kind, valueInput = "", valueDefault = "") {
+            this.account[kind] = !this.account[kind];
+
+            if (valueInput && valueDefault) {
+                if (this.account[kind]) {
+                    this.valueInput[valueInput] = valueDefault;
+                } else {
+                    this.valueInput[valueInput] = "";
+                }
+            }
+        },
+
+        /**
+         * Hàm lấy tính chất từ combobox
+         * Author: KienNT (28/05/2023)
+         */
+        selectedDepartment(name) {
+            try {
+                this.account.account_category_kind =
+                    name === this.$t("Debt")
+                        ? MISAEnum.Property.Debt
+                        : name === this.$t("ExcessYes")
+                        ? MISAEnum.Property.ExcessYes
+                        : name === this.$t("Hermaphrodite")
+                        ? MISAEnum.Property.Hermaphrodite
+                        : name === this.$t("Nobalance")
+                        ? MISAEnum.Property.Nobalance
+                        : "";
+                alert(this.account.account_category_kind);
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
+         * Hàm lấy parent_id từ combobox
+         * Author: KienNT (28/05/2023)
+         */
+        selectedParent(account_id) {
+            try {
+                this.account.parent_id = account_id;
+                alert(this.account.parent_id);
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
+         * Hiển thị dropdown option item
+         * Author: KienNT (27/05/2023)
+         */
+        handleAccount_object_type() {
+            try {
+                this.$refs["iconAccount_object_type"].classList.toggle(
+                    "rorate-180"
+                );
+                this.isOpenAccount_object_type =
+                    !this.isOpenAccount_object_type;
+            } catch (error) {
+                console.log(error);
+            }
+        },
         /**
          *  handle ẩn popup Account
          * Author: KienNT (27/05/2023)

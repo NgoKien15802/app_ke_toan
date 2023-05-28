@@ -402,7 +402,6 @@ export default {
          */
         showAccountSysterm() {
             try {
-                this.employeeIdSelected = "";
                 this.isAccountSysterm = true;
                 this.textTitleAccountSysterm = this.$t("AddNewAccount");
                 this.formMode = MISAEnum.formMode.Add;

@@ -216,6 +216,19 @@ const MISAResouce = {
         Object: "Đối tượng",
         followDetail: "Theo dõi chi tiết theo",
 
+        // chưa có english
+        Detail_by_job: "Đối tượng THCP",
+        Detail_by_order: "Đơn đặt hàng",
+        Detail_by_pu_contract: "Hợp đồng mua",
+        Detail_by_department: "Đơn vị",
+        Detail_by_bank_account: "Tài khoản ngân hàng",
+        Detail_by_project_work: "Công trình",
+        Detail_by_contract: "Hợp đồng bán",
+        Detail_by_expense_item: "Khoản mục CP",
+        Detail_by_list_item: "Mã thống kê",
+        Warning_only: "Chỉ cảnh báo",
+        Require_type: "Bắt buộc nhập",
+
         //table payment
         AddNewPayment: "Chi tiền",
         AccountingDate: "Ngày hạch toán",

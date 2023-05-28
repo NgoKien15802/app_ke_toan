@@ -31,13 +31,13 @@
 
                     <div v-if="isOpenDropdown" class="option__wrapper">
                         <ul class="option__list scrollbar_customize">
-                            <TheOptionItem
+                            <MOptionItem
                                 v-for="(item, index) in optionItem"
                                 :key="index"
                                 :text="item.text"
                                 :isActive="item.isActive"
                                 @handleClickItem="handleClickItem"
-                            ></TheOptionItem>
+                            ></MOptionItem>
                         </ul>
                     </div>
                 </div>
@@ -93,7 +93,6 @@
 </template>
 <script>
 import MISAResouce from "../../js/resource";
-import TheOptionItem from "../layout/TheOptionItem.vue";
 import Paginate from "vuejs-paginate-next";
 export default {
     name: "ThePaging",
@@ -145,7 +144,6 @@ export default {
         };
     },
     components: {
-        TheOptionItem,
         Paginate,
     },
     watch: {

@@ -36,6 +36,10 @@
     align-items: center;
 }
 
+.tooltipData.tooltopTop {
+    top: -100%;
+}
+
 .tooltiptextHide {
     visibility: hidden;
     width: max-content;
@@ -84,6 +88,10 @@
     border-width: 5px;
     border-style: solid;
     border-color: transparent transparent var(--bg-tooltip) transparent;
+}
+
+.tooltipData.tooltopTop::after {
+    display: none;
 }
 
 .tooltiptextHide::after {
@@ -149,4 +157,32 @@
 
 .tooltip-error {
     --bg-tooltip: #ff7777;
+}
+
+.tooltipData.account {
+    visibility: hidden;
+    width: -moz-max-content;
+    width: max-content;
+    text-align: center;
+    border-radius: var(--border-radius);
+    padding: 12px 16px;
+    position: absolute;
+    z-index: 100;
+    transform: translateX(-50%);
+    top: -100%;
+    left: 50%;
+    height: 26px;
+    display: flex;
+    align-items: center;
+}
+
+.tooltipData.account::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: var(--bg-tooltip) transparent transparent transparent;
 }

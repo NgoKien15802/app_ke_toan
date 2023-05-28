@@ -31,7 +31,7 @@
 
         <div
             class="option__wrapper-combobox"
-            ref="option__wrapper-combobox"
+            ref="optionWrapperCombobox"
             @mouseover="handleMountOver"
             @mouseout="handleMountOut"
         >
@@ -43,9 +43,7 @@
                     @click="itemOnClick(department, index)"
                     :class="selectedDepartment === index ? 'active' : ''"
                 >
-                    <a class="option__link-combobox">{{
-                        department.DepartmentName
-                    }}</a>
+                    <a class="option__link-combobox">{{ department.name }}</a>
                 </li>
             </ul>
         </div>
@@ -53,7 +51,6 @@
 </template>
 <script>
 import MISAResouce from "@/js/resource";
-import axios from "axios";
 export default {
     name: "MCombobox",
     props: {
@@ -71,6 +68,28 @@ export default {
         // tên phòng ban khi truyền từ popup
         departmentName: {
             type: String,
+        },
+        data: {
+            type: Array,
+        },
+        kind: {
+            type: String,
+        },
+        btnIconCombobox: {
+            type: Object,
+            default: null,
+        },
+        optionWrapperCombobox: {
+            type: Object,
+            default: null,
+        },
+        iconCombobox: {
+            type: Object,
+            default: null,
+        },
+        departmentInput: {
+            type: Object,
+            default: null,
         },
     },
     data() {
@@ -104,13 +123,8 @@ export default {
      */
     created() {
         try {
-            axios
-                .get("https://localhost:7153/api/v1/Departments")
-                .then((res) => {
-                    this.departments = res.data?.Data;
-                    this.oldDepartments = this.departments;
-                })
-                .catch((error) => console.log(error));
+            this.departments = this.data;
+            this.oldDepartments = this.departments;
         } catch (error) {
             console.log(error);
         }
@@ -138,11 +152,19 @@ export default {
                 this.departments = this.oldDepartments;
                 return;
             }
-            this.oldDepartments.forEach((el) => {
-                if (el.DepartmentName.includes(this.department)) {
-                    dataFilter.push(el);
-                }
-            });
+            if (this.kind === "property") {
+                this.oldDepartments.forEach((el) => {
+                    if (el.name.includes(this.department)) {
+                        dataFilter.push(el);
+                    }
+                });
+            } else {
+                this.oldDepartments.forEach((el) => {
+                    if (el.DepartmentName.includes(this.department)) {
+                        dataFilter.push(el);
+                    }
+                });
+            }
 
             // Phải xóa sạch các dữ liệu cũ của combobox-data.
             this.departments = [];
@@ -153,10 +175,8 @@ export default {
             }
 
             this.departments.length > 0
-                ? this.$refs["option__wrapper-combobox"].classList.add(
-                      "d-block"
-                  )
-                : this.$refs["option__wrapper-combobox"].classList.remove(
+                ? this.$refs["optionWrapperCombobox"].classList.add("d-block")
+                : this.$refs["optionWrapperCombobox"].classList.remove(
                       "d-block"
                   );
         },
@@ -171,7 +191,7 @@ export default {
             } else {
                 event.target.classList.toggle("rorate-180");
             }
-            this.$refs["option__wrapper-combobox"].classList.toggle("d-block");
+            this.$refs["optionWrapperCombobox"].classList.toggle("d-block");
         },
 
         /**
@@ -196,13 +216,21 @@ export default {
                                 item.firstElementChild.textContent;
                             this.departments = this.oldDepartments;
                             this.$refs[
-                                "option__wrapper-combobox"
+                                "optionWrapperCombobox"
                             ].classList.remove("d-block");
                             this.selectedDepartment = index;
-                            this.$emit(
-                                "selectedDepartment",
-                                this.oldDepartments[index].DepartmentId
-                            );
+                            if (this.kind === "property") {
+                                this.$emit(
+                                    "selectedDepartment",
+                                    this.oldDepartments[index].name
+                                );
+                            } else {
+                                this.$emit(
+                                    "selectedDepartment",
+                                    this.oldDepartments[index].DepartmentId
+                                );
+                            }
+
                             break;
                         }
                     }
@@ -314,10 +342,14 @@ export default {
         itemOnClick(department, index) {
             this.selectedDepartment = index;
             const refIconCombobox = this.$refs["iconCombobox"];
-            this.department = department.DepartmentName;
-            this.$refs["option__wrapper-combobox"].classList.remove("d-block");
+            this.department = department.name;
+            this.$refs["optionWrapperCombobox"].classList.remove("d-block");
             refIconCombobox.classList.remove("rorate-180");
-            this.$emit("selectedDepartment", department.DepartmentId);
+            if (this.kind === "property") {
+                this.$emit("selectedDepartment", department.name);
+            } else {
+                this.$emit("selectedDepartment", department.DepartmentId);
+            }
         },
 
         /**
@@ -330,7 +362,7 @@ export default {
                 const refIconCombobox = this.$refs["iconCombobox"];
                 const refBtnIconCombobox = this.$refs["btnIconCombobox"];
 
-                const listOption = this.$refs["option__wrapper-combobox"];
+                const listOption = this.$refs["optionWrapperCombobox"];
                 if (
                     !refIconCombobox.contains(event.target) &&
                     !listOption.contains(event.target) &&

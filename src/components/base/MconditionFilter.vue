@@ -47,14 +47,14 @@
                                 class="option__wrapper-lang"
                             >
                                 <ul class="option__list scrollbar_customize">
-                                    <TheOptionItem
+                                    <MOptionItem
                                         v-for="(item, index) in optionItem"
                                         :key="index"
                                         :text="$t(item.text)"
                                         :isActive="item.isActive"
                                         @handleClickItem="handleClickItem"
                                         :isDropdownLang="true"
-                                    ></TheOptionItem>
+                                    ></MOptionItem>
                                 </ul>
                             </div>
                         </div>
@@ -169,12 +169,9 @@
 <script>
 import moment from "moment";
 import MISAEnum from "@/js/enum";
-import TheOptionItem from "@/components/layout/TheOptionItem.vue";
 export default {
     name: "MconditionFilter",
-    components: {
-        TheOptionItem,
-    },
+    components: {},
     props: {
         // text lọc theo điều kiện gì
         filterConditon: {

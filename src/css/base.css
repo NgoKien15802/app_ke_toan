@@ -46,7 +46,7 @@
     --i-normal-light: #666666;
     --i-hover-focus-light: #1fb6ff;
     --i-op-disable-light: 50%;
-
+    --dropdown__item--hover-text-color: #2ca01c;
     --row-spacing: 8px;
     --footer-height: 42px;
     --footer-background-color: #38393d;
@@ -326,6 +326,11 @@ div.disabled {
     pointer-events: none;
     opacity: 0.5;
     background: #ccc;
+}
+
+.account__systerm-detail .disabledDopdown {
+    pointer-events: none;
+    background-color: #eff0f2;
 }
 
 .cursor-pointer {

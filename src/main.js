@@ -16,6 +16,8 @@ import MSkeletonTable from "./components/base/MSkeletonTable.vue";
 import MconditionFilter from "./components/base/MconditionFilter.vue";
 import MNotData from "./components/base/MNotData.vue";
 import MCombobox from "./components/base/Mcombobox.vue";
+import MOptionItem from "./components/base/MOptionItem.vue";
+import MComboboxTable from "./components/base/MComboboxTable.vue";
 
 const i18n = createI18n({
     locale: localStorage.getItem("lang") || "vi",
@@ -47,6 +49,8 @@ app.component("MSkeletonTable", MSkeletonTable);
 app.component("MconditionFilter", MconditionFilter);
 app.component("MNotData", MNotData);
 app.component("MCombobox", MCombobox);
+app.component("MOptionItem", MOptionItem);
+app.component("MComboboxTable", MComboboxTable);
 
 app.use(i18n);
 
