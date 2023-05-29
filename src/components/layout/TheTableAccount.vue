@@ -84,30 +84,47 @@
                         :grade="account?.grade"
                         :text="account[header] || ''"
                         :subtext="account[header] || ''"
-                        ><div
-                            v-if="account.is_parent"
-                            style="cursor: pointer"
-                            @click="
-                                () => {
-                                    account.isExpand = !account.isExpand;
-                                    handleClickParent(
-                                        account.account_id,
-                                        account?.grade,
-                                        account?.isShow,
-                                        account.isExpand
-                                    );
-                                }
-                            "
-                            class="mi-16 mr-7"
-                            :class="
-                                account.is_parent
-                                    ? account.isExpand
-                                        ? 'mr-12 mi-tree-expand--small'
-                                        : 'mr-12 mi-tree-collapse--small'
-                                    : ''
-                            "
-                        ></div
-                    ></MTooltip>
+                        ><div>
+                            <div
+                                v-if="account.is_parent"
+                                style="cursor: pointer"
+                                @click="
+                                    () => {
+                                        account.isExpand = !account.isExpand;
+                                        handleClickParent(
+                                            account.account_id,
+                                            account?.grade,
+                                            account?.isShow,
+                                            account.isExpand
+                                        );
+                                    }
+                                "
+                                class="mi-16 mr-7"
+                                :class="
+                                    account.is_parent
+                                        ? account.isExpand
+                                            ? 'mr-12 mi-tree-expand--small'
+                                            : 'mr-12 mi-tree-collapse--small'
+                                        : ''
+                                "
+                            ></div>
+                            <div
+                                v-else
+                                style="
+                                    cursor: pointer;
+                                    background-color: transparent;
+                                "
+                                class="mi-16 mr-7"
+                                :class="
+                                    account.is_parent
+                                        ? account.isExpand
+                                            ? 'mr-12 mi-tree-expand--small'
+                                            : 'mr-12 mi-tree-collapse--small'
+                                        : ''
+                                "
+                            ></div>
+                        </div>
+                    </MTooltip>
 
                     <MTooltip
                         v-else
@@ -129,6 +146,51 @@
         </tbody>
     </table>
     <MNotData v-if="accounts.length <= 0 && !isShowSkeleton"></MNotData>
+
+    <MContextmenu
+        v-if="isContextMenu"
+        :left="leftContextMenu"
+        :top="topContextMenu"
+        @hideContextMenu="hideContextMenu"
+        :employeeIdSelected="account_id_delete"
+        :state="stateAccount"
+        :refElement="this.$refs.iconContextMenu"
+        kind="contextAccount"
+        @hideShowLoading="hideShowLoading"
+        @handleDeleteRow="handleDeleteRow"
+    ></MContextmenu>
+
+    <MDialog
+        v-if="isDialogError || isDialogWarning || isDialogDeleteMul"
+        :iconClass="
+            isDialogError ? 'dialog__icon-error' : 'dialog__icon-warning'
+        "
+        :title="
+            isDialogError ? $t('DialogNotifyErrorDelete') : $t('DialogWarning')
+        "
+        :message="
+            isDialogWarning
+                ? $t('MessageWarningAccount') +
+                  '<' +
+                  account_number_delete +
+                  '> ' +
+                  $t('TxtNo') +
+                  '?'
+                : isDialogError
+                ? $t('MessageErrorDeleteAccount')
+                : $t('MessageWarningMul') + ' ' + $t('TxtNo') + '?'
+        "
+        :BtnWarningNo="!isDialogError && $t('BtnDestroyDialog')"
+        :textButton="isDialogError ? $t('BtnClose') : $t('BtnYes')"
+        @onBtnWarningNo="onBtnWarningNo"
+        @hideShowDialogError="hideShowDialogError"
+        @onBtnWarningYes="
+            onBtnWarningYes(
+                isDialogWarning ? 'isDialogWarning' : 'isDialogDeleteMul'
+            )
+        "
+        :kind="isDialogError ? 'error' : 'warning'"
+    ></MDialog>
 </template>
 
 <script>
@@ -165,6 +227,7 @@ export default {
         return {
             MISAResouce,
             accounts: [],
+            isContextMenu: false,
             pageSize: 2,
             pageNumber: 1,
             totalRecord: 0,
@@ -186,6 +249,14 @@ export default {
             totalRecordParentInPage: 0,
             cloneAccountExpand: [],
             cloneAccountCollapse: [],
+            leftContextMenu: "",
+            topContextMenu: "",
+            stateAccount: 0,
+            account_id_delete: "",
+            is_parent: false,
+            account_number_delete: "",
+            isDialogWarning: false,
+            isDialogError: false,
         };
     },
 
@@ -384,6 +455,25 @@ export default {
         },
 
         /**
+         * Hàm gửi emit lên cha để lấy id account, TH double click
+         * Author: KienNT (29/05/2023)
+         *  @param (account): Tham số là object chứa thông tin nhân viên
+         */
+        doubleClickRow(event, account) {
+            // Bỏ handleClickRow với icon ContextMenu khi db click
+            const arrIconContextMenu = this.$refs["iconContextMenu"];
+            const iconContextMenu = this.$refs["ContextMenu"];
+            for (let index = 0; index < arrIconContextMenu.length; index++) {
+                if (
+                    !event.target.isEqualNode(arrIconContextMenu[index]) &&
+                    !event.target.isEqualNode(iconContextMenu[index])
+                ) {
+                    this.$emit("onDoubleClick", account);
+                }
+            }
+        },
+
+        /**
          * Thực hiện ẩn các danh sách con cháu,...
          * Author: KienNT (26/05/2023)
          */
@@ -445,6 +535,25 @@ export default {
                         }
                     });
                 }
+            }
+        },
+
+        /**
+         * Hàm hiển thị dialog có muốn xóa tài khoản không?
+         * Author: KienNT (29/05/2023)
+         */
+        handleDeleteRow() {
+            try {
+                if (this.account_id_delete) {
+                    if (this.is_parent) {
+                        this.isDialogError = true;
+                    } else {
+                        this.isDialogWarning = true;
+                        this.$emit("setIsDeleteOne");
+                    }
+                }
+            } catch (error) {
+                console.log(error);
             }
         },
 
@@ -529,6 +638,134 @@ export default {
                 console.log(error);
                 this.hideShowLoading(false);
             }
+        },
+
+        /**
+         * Hàm xóa tài khoản khi click có xóa
+         * Author: KienNT (29/05/2023)
+         */
+        onBtnWarningYes(isDialogValue) {
+            try {
+                // TH xoá 1 tài khoản
+                if (isDialogValue === "isDialogWarning") {
+                    axios
+                        .delete(
+                            `https://localhost:7153/api/v1/Accounts/${this.account_id_delete}`
+                        )
+                        .then(this.hideShowLoading(true))
+                        .then((res) => {
+                            console.log(res);
+                            this.isDialogWarning = false;
+
+                            this.hideShowLoading(false);
+                            this.$emit(
+                                "hideShowToast",
+                                "delete",
+                                this.$t("Account")
+                            );
+                            this.loadData();
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                            this.hideShowLoading(false);
+                        });
+                } else {
+                    // Xóa nhiều nhân viên
+                    axios
+                        .delete(
+                            "https://localhost:7153/api/v1/Employees/DeleteMultiple",
+                            {
+                                data: this.selectedEmployeeIds,
+                            }
+                        )
+                        .then(this.hideShowLoading(true))
+                        .then((res) => {
+                            console.log(res);
+                            this.isDialogDeleteMul = false;
+                            this.oldCheckedArr = [];
+                            this.$emit(
+                                "handleSelectChechbox",
+                                this.oldCheckedArr
+                            );
+                            this.$emit("setIsDialogDeleteMuliple");
+                            this.hideShowLoading(false);
+                            this.$emit("hideShowToast", "delete");
+                            this.loadData();
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                            this.hideShowLoading(false);
+                        });
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
+         * Hàm gửi emit lên cha để lấy id account, TH click btn sửa
+         * Author: KienNT (04/03/2023)
+         */
+        doubleClickEditText(account) {
+            this.$emit("onDoubleClick", account);
+        },
+
+        /**
+         * Hàm lấy toại độ sau đó set tọa độ cho contextmenu để hiển thị
+         * Author: KienNT (04/03/2023)
+         *  @param (event,employee): tham số 1 là event, tham số 2 là thông tin của 1 nhân viên
+         */
+        handleClickOptionMenu(event, account) {
+            try {
+                this.stateAccount = account.state;
+                this.account_id_delete = account.account_id;
+                this.account_number_delete = account.account_number;
+                this.is_parent = account.is_parent;
+                this.isContextMenu = !this.isContextMenu;
+                this.leftContextMenu =
+                    event.target.getBoundingClientRect().x -
+                    MISAEnum.getboundingAccount.x;
+                this.topContextMenu =
+                    event.target.getBoundingClientRect().y +
+                    MISAEnum.getboundingAccount.y;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
+         * Hàm ẩn hiện dialog error
+         * Author: KienNT (29/05/2023)
+         * @param (isDialogError): tham số là true, false để hiển thị dialog
+         */
+        hideShowDialogError(isDialogError) {
+            try {
+                this.isDialogError = isDialogError;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        /**
+         * Hàm xóa dilog đi nếu ko muốn xóa nhân viên
+         * Author: KienNT (07/03/2023)
+         */
+        onBtnWarningNo() {
+            try {
+                this.isDialogWarning
+                    ? (this.isDialogWarning = false)
+                    : this.isDialogError
+                    ? (this.isDialogError = false)
+                    : this.$emit("setIsDialogDeleteMul");
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        /**
+         * Hàm ẩn contextmenu khi click ra ngoài element
+         * Author: KienNT (29/05/2023)
+         */
+        hideContextMenu() {
+            this.isContextMenu = !this.isContextMenu;
         },
 
         /**
