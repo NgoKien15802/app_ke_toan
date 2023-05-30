@@ -19,11 +19,14 @@
             name="DepartmentName"
             id="donvi"
             style="border: none"
-            @keydown="handleKeyDown"
+            @keydown="
+                ($event) =>
+                    !isLoading && dataTable.length > 0 && handleKeyDown($event)
+            "
             @focus="handleFocusInput"
             @blur="handleBlurInput"
             @input="handleOnInput"
-            v-model="department"
+            v-model="record"
             class="input__type combobox-input input--required reset-input"
             autocomplete="off"
             ref="departmentInput"
@@ -36,14 +39,10 @@
             @mouseout="handleMountOut"
             style="min-width: 400px"
         >
-            <ul class="option__list-combobox scrollbar_customize">
+            <ul class="option__list-combobox">
                 <table id="tbEmployeeList" class="employee" ref="gridTable">
                     <thead>
-                        <draggable
-                            tag="tr"
-                            v-model="headers"
-                            class="table__field"
-                        >
+                        <draggable tag="tr" v-model="headers" class="">
                             <th
                                 v-for="header in headers"
                                 :key="header"
@@ -63,48 +62,65 @@
                             </th>
                         </draggable>
                     </thead>
-                    <tbody>
-                        <tr
-                            v-for="(account, index) in dataTable"
-                            v-show="account?.isShow"
-                            :key="index"
-                            ref="trElementRef"
-                            :class="account?.is_parent ? 'row-parent' : ''"
-                            @click="() => handleClickItem(account, index)"
+                    <tbody :style="isLoading ? 'height: 28px;' : ''">
+                        <MLoadingCombobox v-if="isLoading"></MLoadingCombobox>
+                        <div
+                            class="no-data"
+                            v-else-if="!isLoading && dataTable.length <= 0"
                         >
-                            <template v-for="header in headers" :key="header">
-                                <MTooltip
-                                    v-if="header === 'account_number'"
-                                    kind="data_parent"
-                                    :className="[
-                                        header === 'account_number'
-                                            ? 'min-w200'
-                                            : '',
-                                    ]"
-                                    :paddingLeft="account.isClassML"
-                                    :grade="account?.grade"
-                                    :text="account[header] || ''"
-                                    :subtext="account[header] || ''"
+                            <span>{{ $t("NoData") }}</span>
+                        </div>
+                        <div
+                            class="scroller scrollbar_customize"
+                            ref="scrollElement"
+                            v-show="!isLoading && dataTable.length > 0"
+                        >
+                            <tr
+                                v-for="(account, index) in dataTable"
+                                v-show="account?.isShow"
+                                :key="index"
+                                ref="trElementRef"
+                                :class="[
+                                    account?.is_parent ? 'row-parent' : '',
+                                    account.isActive ? 'active' : '',
+                                ]"
+                                @click="() => handleClickItem(account, index)"
+                            >
+                                <template
+                                    v-for="header in headers"
+                                    :key="header"
                                 >
-                                </MTooltip>
+                                    <MTooltip
+                                        v-if="header === 'account_number'"
+                                        kind="data_parent"
+                                        :className="[
+                                            header === 'account_number'
+                                                ? 'min-w200'
+                                                : '',
+                                        ]"
+                                        :paddingLeft="account.isClassML"
+                                        :grade="account?.grade"
+                                        :text="account[header] || ''"
+                                        :subtext="account[header] || ''"
+                                    >
+                                    </MTooltip>
 
-                                <MTooltip
-                                    v-else
-                                    kind="data"
-                                    :className="[
-                                        header === 'account_name'
-                                            ? 'min-w200'
-                                            : '',
-                                    ]"
-                                    :text="account[header] || ''"
-                                    :subtext="account[header] || ''"
-                                ></MTooltip>
-                            </template>
-                        </tr>
+                                    <MTooltip
+                                        v-else
+                                        kind="data_parent"
+                                        :className="[
+                                            header === 'account_name'
+                                                ? 'min-w200'
+                                                : '',
+                                        ]"
+                                        :text="account[header] || ''"
+                                        :subtext="account[header] || ''"
+                                    ></MTooltip>
+                                </template>
+                            </tr>
+                        </div>
                     </tbody>
                 </table>
-                <!-- loading -->
-                <Mloading v-if="isLoading"></Mloading>
             </ul>
         </div>
     </div>
@@ -130,7 +146,7 @@ export default {
             type: String,
         },
         // tên phòng ban khi truyền từ popup
-        departmentName: {
+        recordData: {
             type: String,
         },
         data: {
@@ -159,33 +175,38 @@ export default {
         headersData: {
             type: Array,
         },
+        headersColumn: {
+            type: Array,
+        },
     },
     data() {
         return {
             MISAResouce,
             MISAEnum,
             dataTable: [],
-            oldDepartments: [],
-            department: "",
+            oldRecords: [],
+            record: "",
             isFocus: false,
-            selectedDepartment: "",
-            isLoading: false,
+            selectedRecord: "",
+            isLoading: true,
             cloneAccounts: [],
             headers: [],
-            pageSize: 20,
+            pageSize: 1,
             pageNumber: 1,
+            loadPageNumber: 1,
+            totalRecordParent: 0,
         };
     },
 
     watch: {
-        departmentName: function (newValue) {
-            this.department = newValue;
+        recordData: function (newValue) {
+            this.record = newValue;
         },
     },
 
     beforeUpdate() {
-        if (this.department) {
-            this.$emit("handleCheckEmpty", this.department, this.dataTable);
+        if (this.record) {
+            this.$emit("handleCheckEmpty", this.record, this.dataTable);
         } else {
             this.$emit("handleChangeDepartmentId");
         }
@@ -197,45 +218,84 @@ export default {
      */
     created() {
         try {
-            this.headers = ["account_number", "account_name"];
-            try {
-                axios
-                    .get(
-                        `https://localhost:7153/api/v1/Accounts/FilterTable?keyword=${
-                            this.department
-                        }&pageSize=${this.pageSize}&pageNumber=${
-                            this.pageNumber
-                        }&isExpand=${true}`
-                    )
-                    .then(this.hideShowLoading(true))
-                    .then((response) => {
-                        this.accounts = response?.data?.Data?.Data;
-                        this.accounts = this.accounts.map((account) => {
-                            account.isShow = true;
-                            account.isClassML = account.is_parent
-                                ? MISAEnum.SpaceWithParent.IsParent
-                                : MISAEnum.SpaceWithParent.IsNotParent;
-                            account.isExpand = true;
-                            return account;
-                        });
-                        this.cloneAccounts = this.accounts;
-                        this.dataTable = this.accounts;
-                        this.hideShowLoading(false);
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                        this.hideShowLoading(false);
-                    });
-            } catch (error) {
-                console.log(error);
-                this.hideShowLoading(false);
-            }
+            this.headers = this.headersColumn;
+            this.loadData();
         } catch (error) {
             console.log(error);
         }
     },
 
     methods: {
+        loadData() {
+            try {
+                axios
+                    .get(
+                        `https://localhost:7153/api/v1/Accounts/FilterTable?keyword=${this.record.trim()}&pageSize=${
+                            this.pageSize
+                        }&pageNumber=${this.pageNumber}&isExpand=${true}`
+                    )
+                    .then(this.hideShowLoading(true))
+                    .then((response) => {
+                        this.accounts = response?.data?.Data?.Data;
+                        this.totalRecordParent =
+                            response?.data?.Data?.TotalRecordParent;
+                        this.accounts = this.accounts.map((account) => {
+                            account.isShow = true;
+                            account.isActive = false;
+                            account.isClassML = account.is_parent
+                                ? MISAEnum.SpaceWithParent.IsParent
+                                : MISAEnum.SpaceWithParent.IsNotParent;
+                            account.isExpand = true;
+                            return account;
+                        });
+
+                        this.cloneAccounts = this.accounts;
+                        if (this.pageNumber == this.loadPageNumber) {
+                            this.dataTable = this.accounts;
+                        } else {
+                            this.dataTable.forEach((el) => {
+                                if (el.isActive === true) {
+                                    el.isActive = false;
+                                }
+                            });
+                            this.dataTable[
+                                this.dataTable.length - 1
+                            ].isActive = true;
+
+                            this.dataTable.push(...this.accounts);
+                            this.loadPageNumber = this.pageNumber;
+                        }
+
+                        // this.oldRecords = this.dataTable;
+                        if (this.dataTable.length <= 0) {
+                            this.isLoading = true;
+                        } else {
+                            this.dataTable.forEach((el) => {
+                                if (el.isActive) {
+                                    el.isActive = false;
+                                }
+                            });
+                            if (this.record) {
+                                this.dataTable[0].isActive = true;
+                            }
+                        }
+                        setTimeout(() => {
+                            this.hideShowLoading(false);
+                        }, 500);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        setTimeout(() => {
+                            this.hideShowLoading(false);
+                        }, 500);
+                    });
+            } catch (error) {
+                console.log(error);
+                setTimeout(() => {
+                    this.hideShowLoading(false);
+                }, 500);
+            }
+        },
         /**
          * ẩn hiện loading
          * Author: KienNT (28/05/2023)
@@ -254,44 +314,37 @@ export default {
         },
         /**
          * Theo dõi sự thay đổi value của input
-         * Author: KienNT (07/03/2023)
+         * Author: KienNT (29/05/2023)
          */
         handleOnInput() {
-            let dataFilter = [];
-
-            // Sử dụng vòng for để duyệt các phần tử trong data gốc, nếu phù hợp thì push vào mảng dữ liệu mới
-            if (this.department === "") {
-                this.dataTable = this.oldDepartments;
-                return;
-            }
-            if (this.kind === "property") {
-                this.oldDepartments.forEach((el) => {
-                    if (el.name.includes(this.department)) {
-                        dataFilter.push(el);
-                    }
-                });
-            } else {
-                this.oldDepartments.forEach((el) => {
-                    if (el.DepartmentName.includes(this.department)) {
-                        dataFilter.push(el);
-                    }
-                });
-            }
-
-            // Phải xóa sạch các dữ liệu cũ của combobox-data.
-            this.dataTable = [];
-
-            for (let index = 0; index < dataFilter.length; index++) {
-                const element = dataFilter[index];
-                this.dataTable.push(element);
-            }
-
-            this.dataTable.length > 0
-                ? this.$refs["optionWrapperCombobox"].classList.add("d-block")
-                : this.$refs["optionWrapperCombobox"].classList.remove(
-                      "d-block"
-                  );
+            setTimeout(() => {
+                this.loadData();
+            }, 500);
+            this.$refs["optionWrapperCombobox"].classList.add("d-block");
+            this.scrollToBottom();
         },
+
+        scrollToBottom() {
+            this.$nextTick(function () {
+                const scrollElement = this.$refs["scrollElement"];
+                const that = this;
+                if (scrollElement) {
+                    scrollElement.addEventListener("scroll", function () {
+                        if (
+                            scrollElement.scrollTop +
+                                scrollElement.clientHeight >=
+                            scrollElement.scrollHeight
+                        ) {
+                            that.pageNumber += 1;
+                            if (that.pageNumber < that.totalRecordParent) {
+                                that.loadData();
+                            }
+                        }
+                    });
+                }
+            });
+        },
+
         /**
          * handle khi click btn icon combobox
          * Author: KienNT (07/03/2023)
@@ -304,6 +357,7 @@ export default {
                 event.target.classList.toggle("rorate-180");
             }
             this.$refs["optionWrapperCombobox"].classList.toggle("d-block");
+            this.scrollToBottom();
         },
 
         /**
@@ -314,8 +368,9 @@ export default {
         handleKeyDown(e) {
             const key = e.keyCode;
             const elComboboxData = e.target.nextElementSibling;
-            const optionItem = elComboboxData.firstElementChild.children;
-
+            const optionItem =
+                elComboboxData.firstElementChild.firstElementChild.children[1]
+                    .firstElementChild.children;
             switch (key) {
                 // nhấn phím enter or tab
                 case 13:
@@ -324,22 +379,24 @@ export default {
                         const item = optionItem[index];
                         // lấy ta ptu đc active thì gán cho value
                         if (item.classList.contains("active")) {
-                            this.department =
-                                item.firstElementChild.textContent;
-                            this.dataTable = this.oldDepartments;
+                            this.record =
+                                item.firstElementChild.firstElementChild.textContent;
+                            // this.dataTable = this.oldRecords;
                             this.$refs[
                                 "optionWrapperCombobox"
                             ].classList.remove("d-block");
-                            this.selectedDepartment = index;
+                            this.selectedRecord = index;
                             if (this.kind === "property") {
                                 this.$emit(
-                                    "selectedDepartment",
-                                    this.oldDepartments[index].name
+                                    "selectedRecord",
+                                    this.dataTable[index].name
                                 );
                             } else {
                                 this.$emit(
-                                    "selectedDepartment",
-                                    this.oldDepartments[index].DepartmentId
+                                    "selectedRecord",
+                                    this.dataTable[index].account_id,
+                                    this.dataTable[index].grade,
+                                    this.dataTable[index].misa_code_id
                                 );
                             }
 
@@ -382,6 +439,9 @@ export default {
                                     optionItem[index].classList.remove(
                                         "active"
                                     );
+                                    optionItem[index - 1].scrollIntoView({
+                                        block: "nearest",
+                                    });
                                 } else {
                                     optionItem[
                                         optionItem.length - 1
@@ -389,7 +449,13 @@ export default {
                                     optionItem[index].classList.remove(
                                         "active"
                                     );
+                                    optionItem[
+                                        optionItem.length - 1
+                                    ].scrollIntoView({
+                                        block: "nearest",
+                                    });
                                 }
+
                                 break;
                             }
                         }
@@ -429,12 +495,23 @@ export default {
                                     optionItem[index].classList.remove(
                                         "active"
                                     );
+                                    if (index && optionItem) {
+                                        optionItem[index + 1].scrollIntoView({
+                                            block: "nearest",
+                                        });
+                                    }
                                 } else {
                                     optionItem[0].classList.add("active");
-                                    optionItem[index].classList.remove(
-                                        "active"
-                                    );
+                                    optionItem[
+                                        optionItem.length - 1
+                                    ].classList.remove("active");
+                                    if (index && optionItem) {
+                                        optionItem[0].scrollIntoView({
+                                            block: "nearest",
+                                        });
+                                    }
                                 }
+
                                 break;
                             }
                         }
@@ -449,16 +526,40 @@ export default {
         /**
          * handle khi click vào item
          * Author: KienNT (08/03/2023)
-         * @param {department, index)}: department: đối tượng department, index của department)
          */
-        handleClickItem(department, index) {
-            this.selectedDepartment = index;
+        handleClickItem(account, index) {
+            this.selectedRecord = index;
+            const trElement = this.$refs.trElementRef;
+            if (trElement) {
+                trElement.forEach((el) => {
+                    if (el.classList.contains("active")) {
+                        el.classList.remove("active");
+                    }
+                });
+            }
+            this.dataTable.forEach((el) => {
+                if (el.isActive === true) {
+                    el.isActive = false;
+                }
+            });
+            this.dataTable.forEach((el) => {
+                if (el.account_id === account.account_id) {
+                    el.isActive = true;
+                } else {
+                    el.isActive = false;
+                }
+            });
             const refIconCombobox = this.$refs["iconCombobox"];
-            this.department = department.account_number;
+            this.record = account.account_number;
             this.$refs["optionWrapperCombobox"].classList.remove("d-block");
             refIconCombobox.classList.remove("rorate-180");
 
-            this.$emit("selectedDepartment", department.account_id);
+            this.$emit(
+                "selectedRecord",
+                account.account_id,
+                account.grade,
+                account.misa_code_id
+            );
         },
 
         /**
@@ -497,7 +598,7 @@ export default {
          */
         handleBlurInput() {
             this.isFocus = false;
-            this.$emit("handleCheckEmpty", this.department);
+            this.$emit("handleCheckEmpty", this.record);
         },
 
         /**
@@ -530,10 +631,11 @@ export default {
 <style scoped>
 @import url(../../css/components/combobox.css);
 @import url(../../css/components/table.css);
+@import url(../../css/base.css);
 .option__list-combobox {
     width: 100%;
     max-height: calc(200px - 16px);
-    overflow-y: auto;
+    overflow-y: hidden;
     overflow-x: hidden;
 }
 
@@ -551,5 +653,29 @@ export default {
 .employee tbody tr:hover {
     background-color: #e8e9ec;
     color: var(--dropdown__item--hover-text-color);
+}
+
+.employee tbody tr.active td {
+    background-color: #2ca01c !important;
+    color: white;
+}
+
+.employee tbody .scroller {
+    height: 154px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.employee tbody tr td:last-child {
+    position: relative;
+    transform: translateX(-1px);
+}
+
+.employee .table__field {
+    position: static;
+}
+
+.employee tr th {
+    border: none;
 }
 </style>
