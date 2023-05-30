@@ -78,6 +78,8 @@
                         @setIsReLoad="setIsReLoad"
                         @setModeAccountList="setModeAccountList"
                         @setCheckReLoad="setCheckReLoad"
+                        @onDoubleClick="onDoubleClick"
+                        @hideShowToast="hideShowToast"
                     ></TheTableAccount>
                 </div>
 
@@ -99,8 +101,13 @@
                     v-if="isAccountSysterm"
                     :textTitleAccountSysterm="textTitleAccountSysterm"
                     @closeAccountSysterm="closeAccountSysterm"
-                    @closeAccountSystermDetail="closeAccountSysterm"
                     :formMode="formMode"
+                    @handleChangeTitlePopup="handleChangeTitlePopup"
+                    @hideShowToast="hideShowToast"
+                    @hideShowLoading="hideShowLoading"
+                    @handleReLoadData="handleReLoadData"
+                    :account_id_selected="account_id_selected"
+                    :totalRecordRoot="totalRecord"
                 ></AccountSystermDetail>
 
                 <!-- loading -->
@@ -117,10 +124,30 @@
                     classIcon="toast__icon-success"
                     :kind="$t('ToastTitleSuccess')"
                     :text="
-                        (isShowToastAdd && $t('ToastAddSuccess')) ||
-                        (isShowToastEdit && $t('ToastEditSuccess')) ||
-                        (isShowToastDelete && $t('ToastDeleteSuccess')) ||
-                        (isShowToastDuplicate && $t('ToastDuplicateSuccess'))
+                        (isShowToastAdd &&
+                            (kindToast === $t('Employee')
+                                ? $t('ToastAddSuccess')
+                                : kindToast == $t('Account')
+                                ? $t('ToastAddSuccessAccount')
+                                : '')) ||
+                        (isShowToastEdit &&
+                            (kindToast === $t('Employee')
+                                ? $t('ToastEditSuccess')
+                                : kindToast == $t('Account')
+                                ? $t('ToastEditSuccessAccount')
+                                : '')) ||
+                        (isShowToastDelete &&
+                            (kindToast === $t('Employee')
+                                ? $t('ToastDeleteSuccess')
+                                : kindToast == $t('Account')
+                                ? $t('ToastDeleteSuccessAccount')
+                                : '')) ||
+                        (isShowToastDuplicate &&
+                            (kindToast === $t('Employee')
+                                ? $t('ToastDuplicateSuccess')
+                                : kindToast == $t('Account')
+                                ? $t('ToastDuplicateSuccessAccount')
+                                : ''))
                     "
                     classTitle="toast__title-success"
                 ></MToast>
@@ -148,7 +175,8 @@ export default {
             isShowToastEdit: false,
             isShowToastDelete: false,
             isShowToastDuplicate: false,
-            employeeIdSelected: null,
+            kindToast: "",
+            account_id_selected: null,
             formMode: "",
             textTitleAccountSysterm: "",
             selectedCheckbox: [],
@@ -201,6 +229,14 @@ export default {
          */
         setIsReLoad() {
             this.isReload = false;
+        },
+
+        /**
+         * Hàm sửa title popup
+         * Author: KienNT (28/05/2023)
+         */
+        handleChangeTitlePopup(textTitle) {
+            this.textTitleAccountSysterm = textTitle;
         },
 
         /**
@@ -258,11 +294,11 @@ export default {
          * Hàm hiển thị popup và truyền formMode cho Popup, EmployeeId được chọn
          * Author: KienNT (26/05/2023)
          */
-        showAccountSystermDuplicate(formMode, employeeIdSelected) {
+        showAccountSystermDuplicate(formMode, account_id_selected) {
             this.isAccountSysterm = true;
             this.formMode = formMode;
             this.textTitleAccountSysterm = this.$t("DuplicateEmployeeInfo");
-            this.employeeIdSelected = employeeIdSelected;
+            this.account_id_selected = account_id_selected;
         },
 
         /**
@@ -415,11 +451,12 @@ export default {
          * Author: KienNT (26/05/2023)
          *  @param (employee): tham số 1 là danh object chứa các thông tin nhân viên
          */
-        onDoubleClick(employee) {
+        onDoubleClick(account) {
             try {
-                this.employeeIdSelected = employee.EmployeeId;
-                this.textTitleAccountSysterm = this.$t("EditEmployeeInfo");
-                this.isShowPopup = true;
+                this.isAccountSysterm = true;
+                this.account_id_selected = account.account_id;
+                this.textTitleAccountSysterm = this.$t("EditNewAccount");
+                this.formMode = MISAEnum.formMode.Edit;
             } catch (error) {
                 console.log(error);
             }
@@ -431,7 +468,7 @@ export default {
          */
         closePopup() {
             try {
-                this.isShowPopup = false;
+                this.isAccountSysterm = false;
             } catch (error) {
                 console.log(error);
             }
@@ -455,8 +492,9 @@ export default {
          * Author: KienNT (26/05/2023)
          * @param (isToast): tham số là true, false ẩn hiển
          */
-        hideShowToast(kind) {
+        hideShowToast(kind, kindToast) {
             try {
+                this.kindToast = kindToast;
                 switch (kind) {
                     case "add":
                         this.isShowToastAdd = true;

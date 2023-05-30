@@ -18,6 +18,7 @@ import MNotData from "./components/base/MNotData.vue";
 import MCombobox from "./components/base/Mcombobox.vue";
 import MOptionItem from "./components/base/MOptionItem.vue";
 import MComboboxTable from "./components/base/MComboboxTable.vue";
+import MLoadingCombobox from "./components/base/MLoadingCombobox.vue";
 
 const i18n = createI18n({
     locale: localStorage.getItem("lang") || "vi",
@@ -51,6 +52,7 @@ app.component("MNotData", MNotData);
 app.component("MCombobox", MCombobox);
 app.component("MOptionItem", MOptionItem);
 app.component("MComboboxTable", MComboboxTable);
+app.component("MLoadingCombobox", MLoadingCombobox);
 
 app.use(i18n);
 

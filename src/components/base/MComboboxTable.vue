@@ -145,7 +145,6 @@ export default {
         tabindex: {
             type: String,
         },
-        // tên phòng ban khi truyền từ popup
         recordData: {
             type: String,
         },

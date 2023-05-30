@@ -65,6 +65,46 @@
     </ul>
 
     <ul
+        v-else-if="kind === 'contextAccount'"
+        class="contextmenu__fun-list d-block"
+        :style="`left: ${left}px ; top: ${top}px`"
+        ref="contextmenu"
+    >
+        <li class="contextmenu__fun-item">
+            <a
+                href="#"
+                class="contextmenu__fun-link"
+                @click="handleDuplicateEmployee"
+                >{{ $t("Duplicate") }}</a
+            >
+        </li>
+        <li class="contextmenu__fun-item">
+            <a
+                href="#"
+                class="contextmenu__fun-link"
+                @click="handleDeleteRow"
+                >{{ $t("Delete") }}</a
+            >
+        </li>
+        <li class="contextmenu__fun-item">
+            <a href="#" class="contextmenu__fun-link">{{
+                $t("TransferAccountingAccounts")
+            }}</a>
+        </li>
+
+        <li class="contextmenu__fun-item">
+            <a
+                href="#"
+                class="contextmenu__fun-link"
+                @click="handleUpdateState"
+                >{{
+                    state === $t("StopUsing") ? $t("Using") : $t("StopUsing")
+                }}</a
+            >
+        </li>
+    </ul>
+
+    <ul
         v-else
         class="contextmenu__fun-list d-block"
         :style="`left: ${left}px ; top: ${top}px`"
@@ -93,6 +133,7 @@
     </ul>
 </template>
 <script>
+import MISAEnum from "@/js/enum";
 import MISAResouce from "@/js/resource";
 export default {
     name: "MContextmenu",
@@ -142,9 +183,17 @@ export default {
         contextArray: {
             type: Array,
         },
+        iconContextMenu: {
+            type: Object,
+            default: null,
+        },
+        state: {
+            type: String,
+        },
     },
     data() {
         return {
+            MISAEnum,
             MISAResouce,
         };
     },
@@ -153,6 +202,12 @@ export default {
     },
     beforeUnmount() {
         window.removeEventListener("click", this.handleOutsideContext);
+    },
+
+    watch: {
+        state: function (newValue) {
+            alert(newValue);
+        },
     },
     methods: {
         /**

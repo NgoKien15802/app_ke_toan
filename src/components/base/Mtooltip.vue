@@ -22,7 +22,7 @@
     >
         <div
             class="flex"
-            style="align-items: center"
+            style="align-items: center; height: 30px"
             :style="{
                 'padding-left': (paddingLeft - 100) * (grade - 1) + 'px',
             }"

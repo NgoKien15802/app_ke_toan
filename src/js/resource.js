@@ -132,8 +132,12 @@ const MISAResouce = {
         DialogWarning: "Cảnh báo",
         MessageNotify: "Dữ liệu đã thay đổi. Bạn có muốn cất không?",
         MessageWarning: "Bạn có muốn xóa nhân viên ",
+        MessageWarningAccount: "Bạn có muốn xóa tài khoản ",
         MessageWarningMul: "Bạn có muốn xóa tất cả nhân viên được chọn",
         TxtNo: "không",
+        DialogNotifyErrorDelete: "Xoá không thành công",
+        MessageErrorDeleteAccount:
+            "Xóa không thành công. Không thể xóa danh mục cha nếu chưa xóa danh mục con.",
 
         // toast
         ToastAddSuccess: "Nhân viên đã được thêm",
@@ -142,12 +146,17 @@ const MISAResouce = {
         ToastDuplicateSuccess: "Nhân viên đã được nhân bản",
         ToastTitleSuccess: "Thành công",
 
+        ToastAddSuccessAccount: "Tài khoản đã được thêm",
+        ToastDeleteSuccessAccount: "Tài khoản đã bị xóa",
+        ToastEditSuccessAccount: "Tài khoản đã được sửa",
+        ToastDuplicateSuccessAccount: "Tài khoản đã được nhân bản",
+
         // checkbox
         SelectedCheckbox: "Đã chọn: ",
         UndoSelected: "Bỏ chọn",
         SelectAllPage: "Chọn tất cả các trang",
 
-        NoData: "Không dữ liệu",
+        NoData: "Không có dữ liệu hiển thị",
         DataColumnName: "Tên cột dữ liệu",
         FixColumn: "Sửa tên cột hiển thị và độ rộng",
         ShowMore: "Hiển thị thêm",
@@ -186,6 +195,8 @@ const MISAResouce = {
 
         // accountSysterm
         AddNewAccount: "Thêm tài khoản",
+        EditNewAccount: "Sửa tài khoản",
+        DuplicateNewAccount: "Nhân bản tài khoản",
         Extend: "Mở rộng",
         Collapse: "Thu gọn",
         AccountNumber: "Số tài khoản",
@@ -215,6 +226,8 @@ const MISAResouce = {
         ForeignCurrencyPlan: "Có hạch toán ngoại tệ",
         Object: "Đối tượng",
         followDetail: "Theo dõi chi tiết theo",
+        Account: "Tài khoản",
+        TransferAccountingAccounts: "Chuyển tài khoản hoạch toán",
 
         // chưa có english
         Detail_by_job: "Đối tượng THCP",
@@ -398,7 +411,9 @@ const MISAResouce = {
         MessageWarning: "Do you want to delete an employee ",
         MessageWarningMul: "Do you want to delete all selected employees ",
         TxtNo: "no",
-
+        DialogNotifyErrorDelete: "Delete failed",
+        MessageErrorDeleteAccount:
+            "Delete failed. The parent category cannot be deleted without deleting the child category.",
         // toast
         ToastAddSuccess: "Staff has been added",
         ToastDeleteSuccess: "Employee has been deleted",
@@ -406,7 +421,12 @@ const MISAResouce = {
         ToastDuplicateSuccess: "Staff has been duplicated",
         ToastTitleSuccess: "Success",
 
-        NoData: "No data",
+        ToastAddSuccessAccount: "Account has been added",
+        ToastDeleteSuccessAccount: "Account has been deleted",
+        ToastEditSuccessAccount: "Account has been edited",
+        ToastDuplicateSuccessAccount: "Account has been duplicated",
+
+        NoData: "No data to show",
         DataColumnName: "Data column name",
         FixColumn: "Fix display column name and width",
         ShowMore: "Show more",
@@ -445,6 +465,8 @@ const MISAResouce = {
         Extend: "Extend",
         Collapse: "Collapse",
         AddNewAccount: "Add account",
+        EditNewAccount: "Edit account",
+        DuplicateNewAccount: "Duplicate account",
         AccountNumber: "Account number",
         AccountName: "Account name",
         Property: "Property",
@@ -472,6 +494,8 @@ const MISAResouce = {
         ForeignCurrencyPlan: "Have a foregin currency plan",
         Object: "Object",
         followDetail: "Track tracking details",
+        Account: "Account",
+        TransferAccountingAccounts: "Transfer accounting accounts",
 
         // checkbox
         SelectedCheckbox: "selected: ",

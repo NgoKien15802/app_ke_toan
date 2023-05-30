@@ -41,7 +41,10 @@
                     :key="index"
                     class="option__item-combobox"
                     @click="itemOnClick(department, index)"
-                    :class="selectedDepartment === index ? 'active' : ''"
+                    :class="[
+                        selectedDepartment === index ? 'active' : '',
+                        department.isActive ? 'active' : '',
+                    ]"
                 >
                     <a class="option__link-combobox">{{ department.name }}</a>
                 </li>
@@ -124,6 +127,7 @@ export default {
     created() {
         try {
             this.departments = this.data;
+
             this.oldDepartments = this.departments;
         } catch (error) {
             console.log(error);
@@ -218,6 +222,11 @@ export default {
                             this.$refs[
                                 "optionWrapperCombobox"
                             ].classList.remove("d-block");
+                            this.departments.forEach((el) => {
+                                if (el.isActive) {
+                                    el.isActive = false;
+                                }
+                            });
                             this.selectedDepartment = index;
                             if (this.kind === "property") {
                                 this.$emit(

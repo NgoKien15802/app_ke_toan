@@ -17,6 +17,11 @@ const MISAEnum = {
         y: 15,
     },
 
+    getboundingAccount: {
+        x: 182,
+        y: 20,
+    },
+
     // Trạng thái: ngừng sử dụng, đang sử dụng
     Status: {
         StopUsing: 0,
@@ -31,10 +36,22 @@ const MISAEnum = {
         Nobalance: 3,
     },
 
+    // đối tượng
+    Object_kind: {
+        Supplier: 0,
+        Customer: 1,
+        Employee: 2,
+    },
+
+    Account_dropdown: {
+        Warning_only: 0,
+        Require_type: 1,
+    },
+
     // khoảng cách với cha nó
     SpaceWithParent: {
         IsParent: 120,
-        IsNotParent: 130,
+        IsNotParent: 120,
     },
 
     // mode danh sách tài khoản

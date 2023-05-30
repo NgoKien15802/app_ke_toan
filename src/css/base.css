@@ -50,6 +50,7 @@
     --row-spacing: 8px;
     --footer-height: 42px;
     --footer-background-color: #38393d;
+    --input-height: 26px;
 
     /* icon dark */
     --i-normal-dark: #7b8798;
@@ -127,6 +128,15 @@ button {
     white-space: nowrap;
     overflow: hidden !important;
     text-overflow: ellipsis;
+}
+
+.no-data {
+    height: var(--input-height);
+    line-height: var(--input-height);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 400px;
 }
 
 .mr-7 {
@@ -280,8 +290,8 @@ button {
 }
 
 /* quay 90 deg */
-.rorate-90 {
-    transform: rotate(90deg);
+.rorate--90 {
+    transform: rotate(-90deg);
     transition: all 0.25s ease;
 }
 
@@ -452,6 +462,10 @@ div.disabled {
 
 .min-w200 {
     min-width: 200px;
+}
+
+.w200 {
+    width: 200px;
 }
 .min-w300 {
     min-width: 300px;

@@ -40,11 +40,13 @@
 </template>
 
 <script>
+import MISAEnum from "@/js/enum";
 export default {
     name: "TheDropdownAccount",
 
     data() {
         return {
+            MISAEnum,
             valueInput: "",
             optionItem: [
                 {
@@ -76,12 +78,29 @@ export default {
             type: Boolean,
             default: false,
         },
+        valueFromParent: {
+            type: String,
+            default: "",
+        },
     },
 
     watch: {
         diabledDropdown: function (newValue) {
             if (newValue) {
-                this.valueInput = this.$t("Warning_only");
+                if (this.valueFromParent) {
+                    this.valueInput = this.formatDropdownAccountDetail(
+                        this.valueFromParent
+                    );
+                    this.optionItem.forEach((el) => {
+                        if (el.text === this.valueInput) {
+                            el.isActive = true;
+                        } else {
+                            el.isActive = false;
+                        }
+                    });
+                } else {
+                    this.valueInput = this.$t("Warning_only");
+                }
             } else {
                 this.valueInput = "";
             }
@@ -130,6 +149,26 @@ export default {
                             );
                         }
                     }
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        /**
+         * handle format lại dropdown account detail
+         * Author: KienNT (29/05/2023)
+         */
+        formatDropdownAccountDetail(kind) {
+            try {
+                switch (kind) {
+                    case MISAEnum.Account_dropdown.Warning_only:
+                        return this.$t("Warning_only");
+                    case MISAEnum.Account_dropdown.Require_type:
+                        return this.$t("Require_type");
+
+                    default:
+                        console.log("Unknown kind value:", kind);
+                        return kind;
                 }
             } catch (error) {
                 console.log(error);

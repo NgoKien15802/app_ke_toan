@@ -64,7 +64,7 @@
                             :required="true"
                             ref="txtAccountNumber"
                             @blur="
-                                isEmpty(account.AccountNumber)
+                                isEmpty(account.account_number)
                                     ? (isTooltip.isTooltipAccountNumber = true)
                                     : (isTooltip.isTooltipAccountNumber = false)
                             "
@@ -72,7 +72,7 @@
                         <MTooltip
                             v-if="isTooltip.isTooltipAccountNumber"
                             :subtext="
-                                isEmpty(account.AccountNumber)
+                                isEmpty(account.account_number)
                                     ? $t('LabelAccountNumber') +
                                       $t('ErrorEmpty')
                                     : errorExistId
@@ -109,7 +109,7 @@
                                     :required="true"
                                     ref="txtAccountName"
                                     @blur="
-                                        isEmpty(account.AccountName)
+                                        isEmpty(account.account_name)
                                             ? (isTooltip.isTooltipAccountName = true)
                                             : (isTooltip.isTooltipAccountName = false)
                                     "
@@ -149,7 +149,7 @@
                                     :required="true"
                                     ref="txtEnglishName"
                                     @blur="
-                                        isEmpty(account.EnglishName)
+                                        isEmpty(account.account_name_english)
                                             ? (isTooltip.isTooltipEnglishName = true)
                                             : (isTooltip.isTooltipEnglishName = false)
                                     "
@@ -181,9 +181,10 @@
                             :optionWrapperCombobox="
                                 optionWrapperComboboxGeneralAccount
                             "
-                            @selectedDepartment="selectedParent"
+                            @selectedRecord="selectedParent"
                             kind="generalAccount"
-                            :departmentName="parent_id"
+                            :recordData="parent_id"
+                            :headersColumn="['account_number', 'account_name']"
                             :headersData="['account_number', 'account_name']"
                         ></MComboboxTable>
                         <MTooltip
@@ -210,7 +211,7 @@
                             :optionWrapperCombobox="
                                 optionWrapperComboboxProperty
                             "
-                            @selectedDepartment="selectedDepartment"
+                            @selectedDepartment="selectedProperty"
                             kind="property"
                             :iconCombobox="iconComboboxProperty"
                             tabindex="3"
@@ -254,7 +255,7 @@
                     <div d class="ms-collapse default">
                         <div class="ms-collapse-item primary-collapse">
                             <a
-                                class="ms-collapse-item--header"
+                                class="ms-collapse-item--header open-item"
                                 @click="handleShowFollowDetail"
                                 ref="linkShowFollowDetail"
                                 ><span
@@ -269,10 +270,7 @@
                                 </div></a
                             >
 
-                            <div
-                                class="ms-collapse-item--content"
-                                style="max-height: 0px"
-                            >
+                            <div class="ms-collapse-item--content">
                                 <div class="con-content--item">
                                     <div class="w-full">
                                         <div class="w-full row-input flex">
@@ -285,17 +283,17 @@
                                                     >
                                                         <MCheckbox
                                                             v-model="
-                                                                account.account_object_type
+                                                                account.detail_by_account_object
                                                             "
                                                             :initValue="
-                                                                account.account_object_type
+                                                                account.detail_by_account_object
                                                             "
                                                             @handleCheckbox="
                                                                 ($event) =>
                                                                     handleCheckboxAccount(
                                                                         event,
+                                                                        'detail_by_account_object',
                                                                         'account_object_type',
-                                                                        'valueInputAccount_object_type',
                                                                         $t(
                                                                             'CustomerCash'
                                                                         )
@@ -309,8 +307,8 @@
                                                                 () =>
                                                                     handleCheckboxAccount(
                                                                         event,
+                                                                        'detail_by_account_object',
                                                                         'account_object_type',
-                                                                        'valueInputAccount_object_type',
                                                                         $t(
                                                                             'CustomerCash'
                                                                         )
@@ -327,7 +325,7 @@
                                                             class="paging__record"
                                                             @click="
                                                                 () => {
-                                                                    account.account_object_type
+                                                                    account.detail_by_account_object
                                                                         ? handleAccount_object_type()
                                                                         : '';
                                                                 }
@@ -340,7 +338,7 @@
                                                             <div
                                                                 class="input__wrapper dropdown"
                                                                 :class="
-                                                                    !account.account_object_type
+                                                                    !account.detail_by_account_object
                                                                         ? 'disabledDopdown'
                                                                         : ''
                                                                 "
@@ -349,7 +347,7 @@
                                                                     class="input__icon dropdown-icon"
                                                                     fdprocessedid="jeq9qa"
                                                                     :class="
-                                                                        !account.account_object_type
+                                                                        !account.detail_by_account_object
                                                                             ? 'disabledDopdown'
                                                                             : ''
                                                                     "
@@ -367,10 +365,10 @@
                                                                     "
                                                                     class="input__type dropdown-input paging-input"
                                                                     v-model="
-                                                                        valueInput.valueInputAccount_object_type
+                                                                        account_object_type
                                                                     "
                                                                     :class="
-                                                                        !account.account_object_type
+                                                                        !account.detail_by_account_object
                                                                             ? 'disabledDopdown'
                                                                             : ''
                                                                     "
@@ -390,7 +388,7 @@
                                                                             v-for="(
                                                                                 item,
                                                                                 index
-                                                                            ) in account_object_type"
+                                                                            ) in account_object_type_Array"
                                                                             :key="
                                                                                 index
                                                                             "
@@ -518,11 +516,14 @@
                                                                 (value) =>
                                                                     handleReceiveValueInput(
                                                                         value,
-                                                                        'valueInputDetail_by_job'
+                                                                        'detail_by_job_kind'
                                                                     )
                                                             "
                                                             :diabledDropdown="
                                                                 account.detail_by_job
+                                                            "
+                                                            :valueFromParent="
+                                                                account.detail_by_job_kind
                                                             "
                                                         ></TheDropdownAccount>
                                                     </div>
@@ -592,11 +593,14 @@
                                                                 (value) =>
                                                                     handleReceiveValueInput(
                                                                         value,
-                                                                        'valueInputDetail_by_project_work'
+                                                                        'detail_by_project_work_kind'
                                                                     )
                                                             "
                                                             :diabledDropdown="
                                                                 account.detail_by_project_work
+                                                            "
+                                                            :valueFromParent="
+                                                                account.detail_by_project_work_kind
                                                             "
                                                         ></TheDropdownAccount>
                                                     </div>
@@ -668,11 +672,14 @@
                                                                 (value) =>
                                                                     handleReceiveValueInput(
                                                                         value,
-                                                                        'valueInputDetail_by_order'
+                                                                        'detail_by_order_kind'
                                                                     )
                                                             "
                                                             :diabledDropdown="
                                                                 account.detail_by_order
+                                                            "
+                                                            :valueFromParent="
+                                                                account.detail_by_order_kind
                                                             "
                                                         ></TheDropdownAccount>
                                                     </div>
@@ -742,11 +749,14 @@
                                                                 (value) =>
                                                                     handleReceiveValueInput(
                                                                         value,
-                                                                        'valueInputDetail_by_contract'
+                                                                        'detail_by_contract_kind'
                                                                     )
                                                             "
                                                             :diabledDropdown="
                                                                 account.detail_by_contract
+                                                            "
+                                                            :valueFromParent="
+                                                                account.detail_by_contract_kind
                                                             "
                                                         ></TheDropdownAccount>
                                                     </div>
@@ -818,11 +828,14 @@
                                                                 (value) =>
                                                                     handleReceiveValueInput(
                                                                         value,
-                                                                        'valueInputDetail_by_pu_contract'
+                                                                        'detail_by_pu_contract_kind'
                                                                     )
                                                             "
                                                             :diabledDropdown="
                                                                 account.detail_by_pu_contract
+                                                            "
+                                                            :valueFromParent="
+                                                                account.detail_by_pu_contract_kind
                                                             "
                                                         ></TheDropdownAccount>
                                                     </div>
@@ -892,11 +905,14 @@
                                                                 (value) =>
                                                                     handleReceiveValueInput(
                                                                         value,
-                                                                        'valueInputDetail_by_expense_item'
+                                                                        'detail_by_expense_item_kind'
                                                                     )
                                                             "
                                                             :diabledDropdown="
                                                                 account.detail_by_expense_item
+                                                            "
+                                                            :valueFromParent="
+                                                                account.detail_by_expense_item_kind
                                                             "
                                                         ></TheDropdownAccount>
                                                     </div>
@@ -969,11 +985,14 @@
                                                                 (value) =>
                                                                     handleReceiveValueInput(
                                                                         value,
-                                                                        'valueInputDetail_by_department'
+                                                                        'detail_by_department_kind'
                                                                     )
                                                             "
                                                             :diabledDropdown="
                                                                 account.detail_by_department
+                                                            "
+                                                            :valueFromParent="
+                                                                account.detail_by_department_kind
                                                             "
                                                         ></TheDropdownAccount>
                                                     </div>
@@ -1043,11 +1062,14 @@
                                                                 (value) =>
                                                                     handleReceiveValueInput(
                                                                         value,
-                                                                        'valueInputDetail_by_list_item'
+                                                                        'detail_by_list_item_kind'
                                                                     )
                                                             "
                                                             :diabledDropdown="
                                                                 account.detail_by_list_item
+                                                            "
+                                                            :valueFromParent="
+                                                                account.detail_by_list_item_kind
                                                             "
                                                         ></TheDropdownAccount>
                                                     </div>
@@ -1123,7 +1145,7 @@
 import MISAResouce from "@/js/resource";
 import MISAEnum from "@/js/enum";
 import TheDropdownAccount from "@/components/layout/TheDropdownAccount.vue";
-
+import axios from "axios";
 export default {
     components: { TheDropdownAccount },
     name: "AccountSystermDetail",
@@ -1134,15 +1156,23 @@ export default {
         formMode: {
             type: String,
         },
+        account_id_selected: {
+            type: String,
+        },
+        totalRecordRoot: {
+            type: String,
+        },
     },
     data() {
         return {
+            MISAEnum,
             MISAResouce,
             account_category_kind: "",
+            account_object_type: "",
             parent_id: "",
             dataAccountParent: [],
             account: {
-                account_object_type: false,
+                detail_by_account_object: false,
                 detail_by_job: false,
                 detail_by_project_work: false,
                 detail_by_order: false,
@@ -1151,17 +1181,15 @@ export default {
                 detail_by_expense_item: false,
                 detail_by_department: false,
                 detail_by_list_item: false,
-            },
-            valueInput: {
-                valueInputAccount_object_type: "",
-                valueInputDetail_by_job: "",
-                valueInputDetail_by_project_work: "",
-                valueInputDetail_by_order: "",
-                valueInputDetail_by_contract: "",
-                valueInputDetail_by_pu_contract: "",
-                valueInputDetail_by_expense_item: "",
-                valueInputDetail_by_department: "",
-                valueInputDetail_by_list_item: "",
+                account_object_type: null,
+                detail_by_job_kind: null,
+                detail_by_project_work_kind: null,
+                detail_by_order_kind: null,
+                detail_by_contract_kind: null,
+                detail_by_pu_contract_kind: null,
+                detail_by_expense_item_kind: null,
+                detail_by_department_kind: null,
+                detail_by_list_item_kind: null,
             },
 
             isOpen: {
@@ -1221,7 +1249,7 @@ export default {
 
             isForeignCurrencyPlan: false,
 
-            account_object_type: [
+            account_object_type_Array: [
                 {
                     text: this.$t("Provider"),
                     isActive: false,
@@ -1237,6 +1265,7 @@ export default {
             ],
 
             propertyList: [],
+            oldAccount: [],
         };
     },
     mounted() {
@@ -1293,53 +1322,295 @@ export default {
     },
 
     created() {
-        this.formModeAccount = this.formMode;
-        this.account_category_kind = null;
-        this.parent_id = null;
-        this.propertyList = [
-            {
-                name: this.$t("Debt"),
-            },
-            {
-                name: this.$t("ExcessYes"),
-            },
-            {
-                name: this.$t("Hermaphrodite"),
-            },
-            {
-                name: this.$t("Nobalance"),
-            },
-        ];
         try {
+            this.formModeAccount = this.formMode;
+
+            this.propertyList = [
+                {
+                    name: this.$t("Debt"),
+                    isActive: false,
+                },
+                {
+                    name: this.$t("ExcessYes"),
+                    isActive: false,
+                },
+                {
+                    name: this.$t("Hermaphrodite"),
+                    isActive: false,
+                },
+                {
+                    name: this.$t("Nobalance"),
+                    isActive: false,
+                },
+            ];
+
             /**
              * Call API lấy ra id bất kỳ khi click btn thêm mới
              * Author: KienNT (27/05/2023)
              */
             if (this.formModeAccount === MISAEnum.formMode.Add) {
                 this.setFocusInput("txtAccountNumber");
+                this.account_category_kind = null;
+                this.parent_id = null;
+            } else if (
+                /**
+                 * TH nhân bản
+                 *Author: KienNT (29/05/2023)
+                 */
+                !this.isEmpty(this.account_id_selected) &&
+                this.formModeAccount == MISAEnum.formMode.Duplicate
+            ) {
+                this.getDataByAccountId(MISAEnum.formMode.Duplicate);
+            } else if (this.formModeAccount === MISAEnum.formMode.Edit) {
+                /**
+                 * Call API lấy ra id bất kỳ khi có id để sửa
+                 *Author: KienNT (29/05/2023)
+                 */
+                this.getDataByAccountId();
             }
-            // else if (
-            // /**
-            //  * TH nhân bản
-            //  *Author: KienNT (27/05/2023)
-            //  */
-            //     !this.isEmpty(this.dataEmployeeIdSelected) &&
-            //     this.formModePopup == MISAEnum.formMode.Duplicate
-            // ) {
-            //     this.getDataByEmplyeeId(MISAEnum.formMode.Duplicate);
-            // } else {
-            //     /**
-            //      * Call API lấy ra id bất kỳ khi có id để sửa
-            //      *Author: KienNT (27/05/2023)
-            //      */
-            //     this.getDataByEmplyeeId();
-            // }
         } catch (error) {
             console.log(error);
         }
     },
 
     methods: {
+        /**
+         * Hàm lấy ra account theo id
+         * Author: KienNT (28/05/2023)
+         */
+        getDataByAccountId() {
+            try {
+                axios
+                    .get(
+                        `https://localhost:7153/api/v1/Accounts/${this.account_id_selected}`
+                    )
+                    .then(this.$emit("hideShowLoading", true))
+                    .then((res) => {
+                        this.account = res?.data?.Data;
+                        this.setFocusInput("txtAccountNumber");
+                        this.account_category_kind = this.formatProperty(
+                            this.account.account_category_kind
+                        );
+                        this.account_object_type = this.formatObjectKind(
+                            this.account.account_object_type
+                        );
+                        if (this.account_category_kind) {
+                            this.propertyList.forEach((el) => {
+                                if (el.name === this.account_category_kind) {
+                                    el.isActive = true;
+                                } else {
+                                    el.isActive = false;
+                                }
+                            });
+                        }
+                        this.account_object_type_Array.forEach((el) => {
+                            if (el.text === this.account_object_type) {
+                                el.isActive = true;
+                            } else {
+                                el.isActive = false;
+                            }
+                        });
+                        this.parent_id = this.account.parent_id;
+                        this.oldAccount = JSON.stringify(this.account);
+                        this.$emit("hideShowLoading", false);
+                    })
+                    .catch((res) => {
+                        console.log(res);
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        /**
+         * Hàm validate thành công thì cất data và đóng form, cất và thêm thì cất và data reset form
+         * Author: KienNT (28/05/2023)
+         *  @param (value): tham số 1: là true, false hiển thị popup
+         */
+        btnSaveAndClose(isCloseForm) {
+            try {
+                if (this.handleValidate()) {
+                    if (this.formModeAccount === MISAEnum.formMode.Add) {
+                        if (this.isEmpty(this.account.parent_id)) {
+                            this.account.grade = 1;
+                            this.account.misa_code_id = `/0000${this.totalRecordRoot}/`;
+                            this.account.state = MISAEnum.Status.Using;
+                        }
+                        this.postData(MISAEnum.formMode.Add, isCloseForm);
+                    } else if (
+                        !this.isEmpty(this.account_id_selected) &&
+                        this.formModeAccount === MISAEnum.formMode.Edit
+                    ) {
+                        // Sửa nhân viên theo id
+                        axios
+                            .put(
+                                `https://localhost:7153/api/v1/Accounts/${this.account_id_selected}`,
+                                this.account
+                            )
+
+                            .then(this.$emit("hideShowLoading", true))
+                            .then((res) => {
+                                console.log(res);
+                                if (isCloseForm === true) {
+                                    // reset và đóng form
+                                    this.destroyPopup();
+                                } else {
+                                    // reset nhưng ko đóng form
+                                    this.account = {};
+                                    this.$emit(
+                                        "handleChangeTitlePopup",
+                                        this.$t("AddNewAccount")
+                                    );
+                                    this.setFocusInput("txtAccountNumber");
+                                    this.parent_id = "";
+                                    this.account_category_kind = "";
+                                    this.account_object_type = "";
+                                    this.errorMessage = [];
+                                }
+                                this.$emit("hideShowLoading", false);
+
+                                this.$emit(
+                                    "hideShowToast",
+                                    "edit",
+                                    this.$t("Account")
+                                );
+                                this.$emit("handleReLoadData");
+                            })
+                            .catch((error) => {
+                                let response = error.response;
+                                let errorData = response?.data?.Data?.Data;
+                                this.$emit("hideShowLoading", false);
+                                this.handleCaseCatch(response, errorData);
+                            });
+                    }
+                    // đóng form
+                } else {
+                    this.hideShowDialogError(true);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
+         * handle validate trước khi cất
+         * Author: KienNT (28/05/2023)
+         */
+        handleValidate() {
+            return true;
+        },
+
+        /**
+         * Hàm đóng popup khi click btn hủy
+         * Author: KienNT nhân viên(01/03/2023)
+         */
+        destroyPopup() {
+            try {
+                this.account = {};
+                this.parent_id = "";
+                this.account_category_kind = "";
+                this.errorMessage = [];
+                this.$emit("closeAccountSysterm");
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
+         * Hàm post account với từng modeForm: Thêm và nhân bản
+         * Author: KienNT (28/05/2023)
+         */
+        postData(formMode, isCloseForm) {
+            try {
+                axios
+                    .post(
+                        "https://localhost:7153/api/v1/Accounts",
+                        this.account
+                    )
+                    .then(this.$emit("hideShowLoading", true))
+                    .then((res) => {
+                        console.log(res);
+                        console.log(this.account);
+                        if (isCloseForm === true) {
+                            // reset và đóng form
+                            this.destroyPopup();
+                        } else {
+                            // reset nhưng ko đóng form
+                            this.account = {};
+                            this.$emit(
+                                "handleChangeTitlePopup",
+                                this.$t("AddNewAccount")
+                            );
+                            this.setFocusInput("txtAccountNumber");
+                            this.parent_id = "";
+                            this.account_category_kind = "";
+                            this.account_object_type = "";
+                            this.errorMessage = [];
+                        }
+                        this.$emit("hideShowLoading", false);
+
+                        this.$emit("hideShowToast", "add", this.$t("Account"));
+                        this.$emit("handleReLoadData");
+                    })
+                    .catch((error) => {
+                        let response = error.response;
+                        let errorData = response?.data?.Data?.Data;
+                        console.log(errorData);
+                        this.$emit("hideShowLoading", false);
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        handleCaseCatch() {},
+
+        /**
+         * Hàm thực hiện format property
+         * Author: KienNT (26/05/2023)
+         *  @param (property): là số cần truyền convert sang text
+         */
+        formatProperty(property) {
+            try {
+                switch (property) {
+                    case MISAEnum.Property.Debt:
+                        return this.$t("Debt");
+                    case MISAEnum.Property.ExcessYes:
+                        return this.$t("ExcessYes");
+                    case MISAEnum.Property.Hermaphrodite:
+                        return this.$t("Hermaphrodite");
+                    case MISAEnum.Property.Nobalance:
+                        return this.$t("Nobalance");
+                    default:
+                        console.log("Unknown property value:", property);
+                        return property;
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
+         * handle format lại object kind
+         * Author: KienNT (29/05/2023)
+         */
+        formatObjectKind(objectKind) {
+            try {
+                switch (objectKind) {
+                    case MISAEnum.Object_kind.Supplier:
+                        return this.$t("Provider");
+                    case MISAEnum.Object_kind.Employee:
+                        return this.$t("Employee");
+                    case MISAEnum.Object_kind.Customer:
+                        return this.$t("CustomerCash");
+                    default:
+                        console.log("Unknown objectKind value:", objectKind);
+                        return objectKind;
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
         /**
          * handle thay đổi trạng thái checkbox
          * Author: KienNT (28/05/2023)
@@ -1353,7 +1624,10 @@ export default {
          * Author: KienNT (28/05/2023)
          */
         handleReceiveValueInput(value, kind) {
-            this.valueInput[kind] = value;
+            this.account[kind] =
+                value === this.$t("Warning_only")
+                    ? MISAEnum.Account_dropdown.Warning_only
+                    : MISAEnum.Account_dropdown.Require_type;
         },
 
         /**
@@ -1363,27 +1637,27 @@ export default {
          */
         handleClickItemAccount_object_type(event) {
             try {
-                this.account_object_type.forEach((option) => {
+                this.account_object_type_Array.forEach((option) => {
                     if (option.isActive === true) {
                         option.isActive = false;
                     }
                 });
-                this.account_object_type.forEach((option) => {
+                this.account_object_type_Array.forEach((option) => {
                     if (event.target.textContent.indexOf(option.text) !== -1) {
                         option.isActive = true;
-                        this.valueInput.valueInputAccount_object_type =
-                            event.target.textContent;
+                        this.account_object_type = event.target.textContent;
+                        this.account.account_object_type =
+                            this.account_object_type === this.$t("Provider")
+                                ? MISAEnum.Object_kind.Supplier
+                                : this.account_object_type ===
+                                  this.$t("CustomerCash")
+                                ? MISAEnum.Object_kind.Customer
+                                : this.account_object_type ===
+                                  this.$t("Employee")
+                                ? MISAEnum.Object_kind.Employee
+                                : "";
                     } else {
                         option.isActive = false;
-                    }
-                });
-                this.account_object_type.forEach((el) => {
-                    if (
-                        this.valueInput.valueInputAccount_object_type.includes(
-                            el.text
-                        )
-                    ) {
-                        alert(el.text);
                     }
                 });
             } catch (error) {
@@ -1457,7 +1731,16 @@ export default {
                     } else {
                         category.forEach((el) => {
                             if (el.name === this.account_category_kind) {
-                                this.account.account_category_kind = el.name;
+                                this.account.account_category_kind =
+                                    el.name === this.$t("Debt")
+                                        ? MISAEnum.Property.Debt
+                                        : el.name === this.$t("ExcessYes")
+                                        ? MISAEnum.Property.ExcessYes
+                                        : el.name === this.$t("Hermaphrodite")
+                                        ? MISAEnum.Property.Hermaphrodite
+                                        : el.name === this.$t("Nobalance")
+                                        ? MISAEnum.Property.Nobalance
+                                        : "";
                             }
                         });
                         this.isTooltip.isTooltipProperty = false;
@@ -1481,10 +1764,12 @@ export default {
             this.account[kind] = !this.account[kind];
 
             if (valueInput && valueDefault) {
-                if (this.account[kind]) {
-                    this.valueInput[valueInput] = valueDefault;
+                if (valueInput === "account_object_type") {
+                    this.account_object_type = valueDefault;
+                } else if (this.account[kind]) {
+                    this.account[valueInput] = valueDefault;
                 } else {
-                    this.valueInput[valueInput] = "";
+                    this.account[valueInput] = "";
                 }
             }
         },
@@ -1493,7 +1778,7 @@ export default {
          * Hàm lấy tính chất từ combobox
          * Author: KienNT (28/05/2023)
          */
-        selectedDepartment(name) {
+        selectedProperty(name) {
             try {
                 this.account.account_category_kind =
                     name === this.$t("Debt")
@@ -1505,7 +1790,6 @@ export default {
                         : name === this.$t("Nobalance")
                         ? MISAEnum.Property.Nobalance
                         : "";
-                alert(this.account.account_category_kind);
             } catch (error) {
                 console.log(error);
             }
@@ -1515,10 +1799,12 @@ export default {
          * Hàm lấy parent_id từ combobox
          * Author: KienNT (28/05/2023)
          */
-        selectedParent(account_id) {
+        selectedParent(account_id, grade, misa_code_id) {
             try {
                 this.account.parent_id = account_id;
-                alert(this.account.parent_id);
+                this.account.grade = grade + 1;
+                this.account.misa_code_id = misa_code_id;
+                this.account.state = MISAEnum.Status.Using;
             } catch (error) {
                 console.log(error);
             }
@@ -1557,7 +1843,7 @@ export default {
             const nextElement = linkElementFollowDteail.nextElementSibling;
 
             linkElementFollowDteail.firstChild.firstChild.firstChild.classList.toggle(
-                "rorate-90"
+                "rorate--90"
             );
 
             if (linkElementFollowDteail.classList.contains("open-item")) {
@@ -1602,7 +1888,7 @@ export default {
         handlePressKeyShort(event) {
             // khi nhấn phím esc thì đóng form
             if (event.key === "Escape" || event.keyCode === 27) {
-                this.$emit("closeAccountSystermDetail");
+                this.$emit("closeAccountSysterm");
             }
         },
 
