@@ -63,7 +63,9 @@
                             kind="link"
                             className="link-btn btn-link"
                             :text="$t('Fix')"
-                            :click="() => doubleClickEditText(account)"
+                            :click="
+                                () => doubleClickEditText(account, accounts)
+                            "
                         ></MButton>
                         <div
                             class="input__icon-box ml-8"
@@ -154,10 +156,14 @@
         @hideContextMenu="hideContextMenu"
         :employeeIdSelected="account_id_delete"
         :state="stateAccount"
+        :misaCodeId="misaCodeId"
+        :is_parent="is_parent"
         :refElement="this.$refs.iconContextMenu"
         kind="contextAccount"
         @hideShowLoading="hideShowLoading"
         @handleDeleteRow="handleDeleteRow"
+        @handleDuplicateAccount="handleDuplicateAccount"
+        @handleUpdateState="handleUpdateState"
     ></MContextmenu>
 
     <MDialog
@@ -170,23 +176,37 @@
         "
         :message="
             isDialogWarning
-                ? $t('MessageWarningAccount') +
-                  '<' +
-                  account_number_delete +
-                  '> ' +
-                  $t('TxtNo') +
-                  '?'
+                ? !isUpdateState
+                    ? $t('MessageWarningAccount') +
+                      '<' +
+                      account_number_delete +
+                      '> ' +
+                      $t('TxtNo') +
+                      '?'
+                    : $t('MessageUpdateAccount')
                 : isDialogError
-                ? $t('MessageErrorDeleteAccount')
+                ? !isToastWarningNoUpdateState
+                    ? $t('MessageErrorDeleteAccount')
+                    : '<' +
+                      parent_number +
+                      '> ' +
+                      $t('MessageErrorNoUpdateState') +
+                      '<' +
+                      account_number_delete +
+                      '> '
                 : $t('MessageWarningMul') + ' ' + $t('TxtNo') + '?'
         "
         :BtnWarningNo="!isDialogError && $t('BtnDestroyDialog')"
         :textButton="isDialogError ? $t('BtnClose') : $t('BtnYes')"
-        @onBtnWarningNo="onBtnWarningNo"
+        @onBtnWarningNo="onBtnWarningNo(isUpdateState)"
         @hideShowDialogError="hideShowDialogError"
         @onBtnWarningYes="
             onBtnWarningYes(
-                isDialogWarning ? 'isDialogWarning' : 'isDialogDeleteMul'
+                isDialogWarning
+                    ? !isUpdateState
+                        ? 'isDialogWarning'
+                        : 'isDialogUpdateState'
+                    : 'isDialogDeleteMul'
             )
         "
         :kind="isDialogError ? 'error' : 'warning'"
@@ -244,6 +264,7 @@ export default {
                 "feature",
             ],
             cloneAccounts: [],
+            isUpdateState: false,
             modeListAccount: "",
             isCallExpand: false,
             totalRecordParentInPage: 0,
@@ -252,11 +273,15 @@ export default {
             leftContextMenu: "",
             topContextMenu: "",
             stateAccount: 0,
+            misaCodeId: "",
             account_id_delete: "",
             is_parent: false,
             account_number_delete: "",
             isDialogWarning: false,
             isDialogError: false,
+            isToastWarningNoUpdateState: false,
+            parent_id: "",
+            parent_number: "",
         };
     },
 
@@ -468,7 +493,7 @@ export default {
                     !event.target.isEqualNode(arrIconContextMenu[index]) &&
                     !event.target.isEqualNode(iconContextMenu[index])
                 ) {
-                    this.$emit("onDoubleClick", account);
+                    this.$emit("onDoubleClick", account, this.accounts);
                 }
             }
         },
@@ -545,10 +570,13 @@ export default {
         handleDeleteRow() {
             try {
                 if (this.account_id_delete) {
+                    this.isContextMenu = false;
                     if (this.is_parent) {
+                        this.isToastWarningNoUpdateState = false;
                         this.isDialogError = true;
                     } else {
                         this.isDialogWarning = true;
+                        this.isUpdateState = false;
                         this.$emit("setIsDeleteOne");
                     }
                 }
@@ -669,6 +697,10 @@ export default {
                             console.log(error);
                             this.hideShowLoading(false);
                         });
+                } else if (isDialogValue === "isDialogUpdateState") {
+                    this.updateState(true, false);
+                    this.isDialogWarning = false;
+                    this.isUpdateState = false;
                 } else {
                     // Xóa nhiều nhân viên
                     axios
@@ -703,11 +735,109 @@ export default {
         },
 
         /**
+         * Hàm lấy được id của account chọn
+         * Author: KienNT (30/05/2023)
+         */
+        handleDuplicateAccount() {
+            try {
+                this.isContextMenu = false;
+                if (this.account_id_delete) {
+                    this.$emit(
+                        "showPopupDuplicate",
+                        MISAEnum.formMode.Duplicate,
+                        this.account_id_delete,
+                        this.accounts
+                    );
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
+         * Hàm lấy được id của account chọn
+         * Author: KienNT (30/05/2023)
+         */
+        handleUpdateState(state, is_parent) {
+            try {
+                this.isContextMenu = false;
+                // TH state ngừng sử dụng -> sử dụng
+                if (state === MISAEnum.Status.StopUsing) {
+                    if (this.parent_id) {
+                        const account_selected = this.accounts.find(
+                            (el) => el.account_id === this.parent_id
+                        );
+                        if (account_selected.state === this.$t("StopUsing")) {
+                            this.parent_number =
+                                account_selected.account_number;
+                            this.isToastWarningNoUpdateState = true;
+                            this.isDialogError = true;
+                        } else {
+                            if (is_parent) {
+                                this.isDialogWarning = true;
+                                this.isUpdateState = true;
+                            } else {
+                                this.updateState(false, false);
+                            }
+                        }
+                    } else {
+                        if (is_parent) {
+                            this.isDialogWarning = true;
+                            this.isUpdateState = true;
+                        } else {
+                            this.updateState(false, false);
+                        }
+                    }
+                } else {
+                    // TH state sử dụng => ngừng sử dụng
+                    if (is_parent) {
+                        this.updateState(true, true);
+                    } else {
+                        this.updateState(false, true);
+                    }
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
+         * Hàm cập nhật trạng thái account
+         * Author: KienNT (31/05/2023)
+         */
+        updateState(isChild, isActive) {
+            try {
+                axios
+                    .put(
+                        `https://localhost:7153/api/v1/Accounts/UpdateStateAccount?is_child=${isChild}&id_parent=${this.account_id_delete}&is_active=${isActive}`
+                    )
+                    .then(this.hideShowLoading(true))
+                    .then((res) => {
+                        console.log(res);
+                        this.hideShowLoading(false);
+                        this.$emit(
+                            "hideShowToast",
+                            "updateState",
+                            this.$t("Account"),
+                            !isActive
+                        );
+                        this.loadData();
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        this.hideShowLoading(false);
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
          * Hàm gửi emit lên cha để lấy id account, TH click btn sửa
          * Author: KienNT (04/03/2023)
          */
-        doubleClickEditText(account) {
-            this.$emit("onDoubleClick", account);
+        doubleClickEditText(account, accounts) {
+            this.$emit("onDoubleClick", account, accounts);
         },
 
         /**
@@ -717,11 +847,13 @@ export default {
          */
         handleClickOptionMenu(event, account) {
             try {
-                this.stateAccount = account.state;
+                this.stateAccount =
+                    account.state === this.$t("StopUsing") ? 0 : 1;
                 this.account_id_delete = account.account_id;
                 this.account_number_delete = account.account_number;
-                this.is_parent = account.is_parent;
+                this.is_parent = account.is_parent || false;
                 this.isContextMenu = !this.isContextMenu;
+                this.parent_id = account.parent_id;
                 this.leftContextMenu =
                     event.target.getBoundingClientRect().x -
                     MISAEnum.getboundingAccount.x;
@@ -749,17 +881,24 @@ export default {
          * Hàm xóa dilog đi nếu ko muốn xóa nhân viên
          * Author: KienNT (07/03/2023)
          */
-        onBtnWarningNo() {
+        onBtnWarningNo(isUpdateState) {
             try {
-                this.isDialogWarning
-                    ? (this.isDialogWarning = false)
-                    : this.isDialogError
-                    ? (this.isDialogError = false)
-                    : this.$emit("setIsDialogDeleteMul");
+                if (isUpdateState) {
+                    this.updateState(false, false);
+                    this.isDialogWarning = false;
+                    this.isUpdateState = false;
+                } else {
+                    this.isDialogWarning
+                        ? (this.isDialogWarning = false)
+                        : this.isDialogError
+                        ? (this.isDialogError = false)
+                        : this.$emit("setIsDialogDeleteMul");
+                }
             } catch (error) {
                 console.log(error);
             }
         },
+
         /**
          * Hàm ẩn contextmenu khi click ra ngoài element
          * Author: KienNT (29/05/2023)

@@ -80,6 +80,7 @@
                         @setCheckReLoad="setCheckReLoad"
                         @onDoubleClick="onDoubleClick"
                         @hideShowToast="hideShowToast"
+                        @showPopupDuplicate="showAccountSystermDuplicate"
                     ></TheTableAccount>
                 </div>
 
@@ -108,6 +109,8 @@
                     @handleReLoadData="handleReLoadData"
                     :account_id_selected="account_id_selected"
                     :totalRecordRoot="totalRecord"
+                    @setAccountIdSelected="setAccountIdSelected"
+                    :accounts="accounts"
                 ></AccountSystermDetail>
 
                 <!-- loading -->
@@ -119,7 +122,8 @@
                         isShowToastAdd ||
                         isShowToastEdit ||
                         isShowToastDelete ||
-                        isShowToastDuplicate
+                        isShowToastDuplicate ||
+                        isShowToastUpdateState
                     "
                     classIcon="toast__icon-success"
                     :kind="$t('ToastTitleSuccess')"
@@ -147,6 +151,12 @@
                                 ? $t('ToastDuplicateSuccess')
                                 : kindToast == $t('Account')
                                 ? $t('ToastDuplicateSuccessAccount')
+                                : '')) ||
+                        (isShowToastUpdateState &&
+                            (kindToast === $t('Employee')
+                                ? $t('ToastDuplicateSuccess')
+                                : kindToast == $t('Account')
+                                ? $t('ToastUpdateState') + `${stateText}`
                                 : ''))
                     "
                     classTitle="toast__title-success"
@@ -175,6 +185,8 @@ export default {
             isShowToastEdit: false,
             isShowToastDelete: false,
             isShowToastDuplicate: false,
+            isShowToastUpdateState: false,
+            stateText: "",
             kindToast: "",
             account_id_selected: null,
             formMode: "",
@@ -192,6 +204,8 @@ export default {
             isDisabledClickPrev: true,
             isDeleteOne: false,
             isAccountSysterm: false,
+            accountIdSelected: null,
+            accounts: [],
         };
     },
     components: {
@@ -255,6 +269,10 @@ export default {
             this.selectedCheckbox = selectedCheckbox;
         },
 
+        setAccountIdSelected() {
+            this.account_id_selected = null;
+        },
+
         /**
          * Hàm click icon Next trang
          * Author: KienNT (26/05/2023)
@@ -291,14 +309,15 @@ export default {
         },
 
         /**
-         * Hàm hiển thị popup và truyền formMode cho Popup, EmployeeId được chọn
+         * Hàm hiển thị popup và truyền formMode cho Popup, account được chọn
          * Author: KienNT (26/05/2023)
          */
-        showAccountSystermDuplicate(formMode, account_id_selected) {
+        showAccountSystermDuplicate(formMode, account_id_selected, accounts) {
             this.isAccountSysterm = true;
             this.formMode = formMode;
             this.textTitleAccountSysterm = this.$t("DuplicateEmployeeInfo");
             this.account_id_selected = account_id_selected;
+            this.accounts = accounts;
         },
 
         /**
@@ -339,6 +358,17 @@ export default {
          */
         setIsDeleteOne() {
             this.isDeleteOne = false;
+        },
+
+        /**
+         * Hàm hiển thị popup và truyền formMode cho Popup, accountid được chọn
+         * Author: KienNT (30/05/2023)
+         */
+        showPopupDuplicate(formMode, accountIdSelected) {
+            this.isAccountSysterm = true;
+            this.formMode = formMode;
+            this.textTitleAccountSysterm = this.$t("DuplicateNewAccount");
+            this.accountIdSelected = accountIdSelected;
         },
 
         /**
@@ -451,12 +481,13 @@ export default {
          * Author: KienNT (26/05/2023)
          *  @param (employee): tham số 1 là danh object chứa các thông tin nhân viên
          */
-        onDoubleClick(account) {
+        onDoubleClick(account, accounts) {
             try {
                 this.isAccountSysterm = true;
                 this.account_id_selected = account.account_id;
                 this.textTitleAccountSysterm = this.$t("EditNewAccount");
                 this.formMode = MISAEnum.formMode.Edit;
+                this.accounts = accounts;
             } catch (error) {
                 console.log(error);
             }
@@ -492,7 +523,7 @@ export default {
          * Author: KienNT (26/05/2023)
          * @param (isToast): tham số là true, false ẩn hiển
          */
-        hideShowToast(kind, kindToast) {
+        hideShowToast(kind, kindToast, isActive = false) {
             try {
                 this.kindToast = kindToast;
                 switch (kind) {
@@ -516,6 +547,17 @@ export default {
                         this.isShowToastDuplicate = true;
                         setTimeout(
                             () => (this.isShowToastDuplicate = false),
+                            3000
+                        );
+                        break;
+                    case "updateState":
+                        this.isShowToastUpdateState = true;
+                        this.stateText = isActive
+                            ? this.$t("Using").toLowerCase()
+                            : this.$t("StopUsing").toLowerCase();
+
+                        setTimeout(
+                            () => (this.isShowToastUpdateState = false),
                             3000
                         );
                         break;

@@ -74,7 +74,7 @@
             <a
                 href="#"
                 class="contextmenu__fun-link"
-                @click="handleDuplicateEmployee"
+                @click="handleDuplicateAccount"
                 >{{ $t("Duplicate") }}</a
             >
         </li>
@@ -97,9 +97,7 @@
                 href="#"
                 class="contextmenu__fun-link"
                 @click="handleUpdateState"
-                >{{
-                    state === $t("StopUsing") ? $t("Using") : $t("StopUsing")
-                }}</a
+                >{{ state === 0 ? $t("Use") : $t("StopUsing") }}</a
             >
         </li>
     </ul>
@@ -179,7 +177,6 @@ export default {
             default: "",
         },
 
-        // mảng danh sách li
         contextArray: {
             type: Array,
         },
@@ -189,6 +186,10 @@ export default {
         },
         state: {
             type: String,
+        },
+
+        is_parent: {
+            type: Boolean,
         },
     },
     data() {
@@ -204,11 +205,6 @@ export default {
         window.removeEventListener("click", this.handleOutsideContext);
     },
 
-    watch: {
-        state: function (newValue) {
-            alert(newValue);
-        },
-    },
     methods: {
         /**
          * Bắt sự kiện click vào option của ContextMenu
@@ -272,6 +268,24 @@ export default {
             if (this.employeeIdSelected) {
                 this.$emit("handleDuplicateEmployee");
             }
+        },
+
+        /**
+         * handle click vào text Nhân bản
+         * Author: KienNT (30/05/2023)
+         */
+        handleDuplicateAccount() {
+            if (this.employeeIdSelected) {
+                this.$emit("handleDuplicateAccount");
+            }
+        },
+
+        /**
+         * handle click vào text Nhân bản
+         * Author: KienNT (30/05/2023)
+         */
+        handleUpdateState() {
+            this.$emit("handleUpdateState", this.state, this.is_parent);
         },
     },
 };

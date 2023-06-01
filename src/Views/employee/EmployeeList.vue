@@ -370,7 +370,8 @@
                         isShowToastAdd ||
                         isShowToastEdit ||
                         isShowToastDelete ||
-                        isShowToastDuplicate
+                        isShowToastDuplicate ||
+                        isShowToastUpdateState
                     "
                     classIcon="toast__icon-success"
                     :kind="$t('ToastTitleSuccess')"
@@ -419,6 +420,7 @@ export default {
             isShowToastEdit: false,
             isShowToastDelete: false,
             isShowToastDuplicate: false,
+            stateText: "",
             employeeIdSelected: null,
             formMode: "",
             textTitlePopup: "",
@@ -840,6 +842,7 @@ export default {
                             3000
                         );
                         break;
+
                     default:
                         break;
                 }

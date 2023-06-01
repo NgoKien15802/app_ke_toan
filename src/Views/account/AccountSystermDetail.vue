@@ -99,7 +99,7 @@
                             >
                                 <MInput
                                     name="AccountName"
-                                    tabindex="1"
+                                    tabindex="2"
                                     autocomplete="off"
                                     v-model="account.account_name"
                                     kind="default"
@@ -131,38 +131,18 @@
                             <label class="form__label">{{
                                 $t("LabelEnglishName")
                             }}</label>
-                            <div
-                                :class="{
-                                    'tooltip-error':
-                                        isTooltip.isTooltipEnglishName,
-                                }"
-                            >
+                            <div>
                                 <MInput
                                     name="EnglishName"
-                                    tabindex="1"
+                                    tabindex="3"
                                     autocomplete="off"
                                     v-model="account.account_name_english"
                                     kind="default"
                                     :isShowTooltip="
                                         isTooltip.isTooltipEnglishName
                                     "
-                                    :required="true"
                                     ref="txtEnglishName"
-                                    @blur="
-                                        isEmpty(account.account_name_english)
-                                            ? (isTooltip.isTooltipEnglishName = true)
-                                            : (isTooltip.isTooltipEnglishName = false)
-                                    "
                                 />
-
-                                <MTooltip
-                                    v-if="isTooltip.isTooltipEnglishName"
-                                    :subtext="
-                                        $t('LabelEnglishName') +
-                                        $t('ErrorEmpty')
-                                    "
-                                    kind="error"
-                                ></MTooltip>
                             </div>
                         </div>
                     </div>
@@ -186,6 +166,11 @@
                             :recordData="parent_id"
                             :headersColumn="['account_number', 'account_name']"
                             :headersData="['account_number', 'account_name']"
+                            @setValueInputComboboxTable="
+                                setValueInputComboboxTable
+                            "
+                            :resetData="resetData"
+                            @setResetData="setResetData"
                         ></MComboboxTable>
                         <MTooltip
                             v-if="isTooltip.isTooltipGeneralAccount"
@@ -214,7 +199,7 @@
                             @selectedDepartment="selectedProperty"
                             kind="property"
                             :iconCombobox="iconComboboxProperty"
-                            tabindex="3"
+                            tabindex="5"
                             @setFocus="setFocus"
                             @handleMountOver="handleMountOver"
                             @handleMountOut="handleMountOut"
@@ -294,9 +279,11 @@
                                                                         event,
                                                                         'detail_by_account_object',
                                                                         'account_object_type',
-                                                                        $t(
-                                                                            'CustomerCash'
-                                                                        )
+                                                                        !account.detail_by_account_object
+                                                                            ? $t(
+                                                                                  'CustomerCash'
+                                                                              )
+                                                                            : ''
                                                                     )
                                                             "
                                                             styleElement="margin: none"
@@ -309,9 +296,11 @@
                                                                         event,
                                                                         'detail_by_account_object',
                                                                         'account_object_type',
-                                                                        $t(
-                                                                            'CustomerCash'
-                                                                        )
+                                                                        !account.detail_by_account_object
+                                                                            ? $t(
+                                                                                  'CustomerCash'
+                                                                              )
+                                                                            : ''
                                                                     )
                                                             "
                                                         >
@@ -1162,6 +1151,9 @@ export default {
         totalRecordRoot: {
             type: String,
         },
+        accounts: {
+            type: Array,
+        },
     },
     data() {
         return {
@@ -1171,6 +1163,7 @@ export default {
             account_object_type: "",
             parent_id: "",
             dataAccountParent: [],
+            resetData: false,
             account: {
                 detail_by_account_object: false,
                 detail_by_job: false,
@@ -1358,9 +1351,9 @@ export default {
                  *Author: KienNT (29/05/2023)
                  */
                 !this.isEmpty(this.account_id_selected) &&
-                this.formModeAccount == MISAEnum.formMode.Duplicate
+                this.formModeAccount === MISAEnum.formMode.Duplicate
             ) {
-                this.getDataByAccountId(MISAEnum.formMode.Duplicate);
+                this.getDataByAccountId();
             } else if (this.formModeAccount === MISAEnum.formMode.Edit) {
                 /**
                  * Call API lấy ra id bất kỳ khi có id để sửa
@@ -1410,7 +1403,11 @@ export default {
                                 el.isActive = false;
                             }
                         });
-                        this.parent_id = this.account.parent_id;
+
+                        this.parent_id = this.accounts.find(
+                            (el) => el.account_id === this.account.parent_id
+                        )?.account_number;
+
                         this.oldAccount = JSON.stringify(this.account);
                         this.$emit("hideShowLoading", false);
                     })
@@ -1430,12 +1427,21 @@ export default {
             try {
                 if (this.handleValidate()) {
                     if (this.formModeAccount === MISAEnum.formMode.Add) {
+                        if (this.isEmpty(this.parent_id)) {
+                            this.account.parent_id = null;
+                        }
                         if (this.isEmpty(this.account.parent_id)) {
                             this.account.grade = 1;
-                            this.account.misa_code_id = `/0000${this.totalRecordRoot}/`;
+                            this.account.misa_code_id = null;
                             this.account.state = MISAEnum.Status.Using;
                         }
+
                         this.postData(MISAEnum.formMode.Add, isCloseForm);
+                    } else if (
+                        !this.isEmpty(this.account_id_selected) &&
+                        this.formModeAccount === MISAEnum.formMode.Duplicate
+                    ) {
+                        this.postData(MISAEnum.formMode.Duplicate, isCloseForm);
                     } else if (
                         !this.isEmpty(this.account_id_selected) &&
                         this.formModeAccount === MISAEnum.formMode.Edit
@@ -1465,6 +1471,7 @@ export default {
                                     this.account_category_kind = "";
                                     this.account_object_type = "";
                                     this.errorMessage = [];
+                                    this.resetData = true;
                                 }
                                 this.$emit("hideShowLoading", false);
 
@@ -1496,6 +1503,9 @@ export default {
          * Author: KienNT (28/05/2023)
          */
         handleValidate() {
+            if (this.account.account_number.length <= 3) {
+                this.isTooltip.isTooltipAccountNumber = true;
+            }
             return true;
         },
 
@@ -1545,10 +1555,26 @@ export default {
                             this.account_category_kind = "";
                             this.account_object_type = "";
                             this.errorMessage = [];
+                            this.resetData = true;
+                        }
+
+                        if (formMode === MISAEnum.formMode.Duplicate) {
+                            this.$emit("setAccountIdSelected");
+                            this.formModeAccount = null;
+                            this.$emit(
+                                "hideShowToast",
+                                "duplicate",
+                                this.$t("Account")
+                            );
+                        } else {
+                            this.$emit(
+                                "hideShowToast",
+                                "add",
+                                this.$t("Account")
+                            );
                         }
                         this.$emit("hideShowLoading", false);
 
-                        this.$emit("hideShowToast", "add", this.$t("Account"));
                         this.$emit("handleReLoadData");
                     })
                     .catch((error) => {
@@ -1655,7 +1681,7 @@ export default {
                                 : this.account_object_type ===
                                   this.$t("Employee")
                                 ? MISAEnum.Object_kind.Employee
-                                : "";
+                                : null;
                     } else {
                         option.isActive = false;
                     }
@@ -1762,13 +1788,22 @@ export default {
          */
         handleCheckboxAccount(event, kind, valueInput = "", valueDefault = "") {
             this.account[kind] = !this.account[kind];
-
-            if (valueInput && valueDefault) {
+            if (valueInput) {
                 if (valueInput === "account_object_type") {
                     this.account_object_type = valueDefault;
+                    this.account[valueInput] =
+                        valueDefault === this.$t("Provider")
+                            ? MISAEnum.Object_kind.Supplier
+                            : this.account_object_type ===
+                              this.$t("CustomerCash")
+                            ? MISAEnum.Object_kind.Customer
+                            : this.account_object_type === this.$t("Employee")
+                            ? MISAEnum.Object_kind.Employee
+                            : null;
                 } else if (this.account[kind]) {
                     this.account[valueInput] = valueDefault;
                 } else {
+                    this.account_object_type = "";
                     this.account[valueInput] = "";
                 }
             }
@@ -1799,12 +1834,13 @@ export default {
          * Hàm lấy parent_id từ combobox
          * Author: KienNT (28/05/2023)
          */
-        selectedParent(account_id, grade, misa_code_id) {
+        selectedParent(account_id, grade, misa_code_id, account_number) {
             try {
                 this.account.parent_id = account_id;
                 this.account.grade = grade + 1;
                 this.account.misa_code_id = misa_code_id;
                 this.account.state = MISAEnum.Status.Using;
+                this.parent_id = account_number;
             } catch (error) {
                 console.log(error);
             }
@@ -1913,6 +1949,21 @@ export default {
             } catch (error) {
                 console.log(error);
             }
+        },
+        /**
+         * Hàm set lại cho parent_id khi nó được gửi lên
+         * Author: KienNT (27/05/2023)
+         */
+        setValueInputComboboxTable() {
+            this.parent_id = "";
+        },
+
+        /**
+         * Hàm set lại reset data
+         * Author: KienNT (01/06/2023)
+         */
+        setResetData() {
+            this.resetData = false;
         },
     },
 };

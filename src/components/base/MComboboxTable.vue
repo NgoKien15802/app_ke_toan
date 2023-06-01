@@ -177,6 +177,9 @@ export default {
         headersColumn: {
             type: Array,
         },
+        resetData: {
+            type: Boolean,
+        },
     },
     data() {
         return {
@@ -190,15 +193,24 @@ export default {
             isLoading: true,
             cloneAccounts: [],
             headers: [],
-            pageSize: 1,
+            pageSize: 3,
             pageNumber: 1,
             loadPageNumber: 1,
             totalRecordParent: 0,
+            accountIdSort: "",
         };
     },
 
     watch: {
         recordData: function (newValue) {
+            // if (newValue) {
+            //     newValue = newValue.trim();
+            //     this.accountIdSort = newValue;
+            //     this.dataTable = [];
+            //     this.loadData();
+            //     this.record =
+            //         this.dataTable && this.dataTable[0]?.account_number;
+            // }
             this.record = newValue;
         },
     },
@@ -227,11 +239,16 @@ export default {
     methods: {
         loadData() {
             try {
+                this.record = !this.isEmpty(this.record)
+                    ? this.record.trim()
+                    : "";
                 axios
                     .get(
-                        `https://localhost:7153/api/v1/Accounts/FilterTable?keyword=${this.record.trim()}&pageSize=${
-                            this.pageSize
-                        }&pageNumber=${this.pageNumber}&isExpand=${true}`
+                        `https://localhost:7153/api/v1/Accounts/FilterTable?keyword=${
+                            this.record
+                        }&pageSize=${this.pageSize}&pageNumber=${
+                            this.pageNumber
+                        }&isExpand=${true}&accountIdSort=${this.accountIdSort}`
                     )
                     .then(this.hideShowLoading(true))
                     .then((response) => {
@@ -269,11 +286,14 @@ export default {
                         if (this.dataTable.length <= 0) {
                             this.isLoading = true;
                         } else {
-                            this.dataTable.forEach((el) => {
-                                if (el.isActive) {
-                                    el.isActive = false;
-                                }
-                            });
+                            const trElement = this.$refs.trElementRef;
+                            if (trElement) {
+                                trElement.forEach((el) => {
+                                    if (el.classList.contains("active")) {
+                                        el.classList.remove("active");
+                                    }
+                                });
+                            }
                             if (this.record) {
                                 this.dataTable[0].isActive = true;
                             }
@@ -293,6 +313,23 @@ export default {
                 setTimeout(() => {
                     this.hideShowLoading(false);
                 }, 500);
+            }
+        },
+
+        /**
+         * Hàm kiểm tra input có rỗng không
+         * Author: KienNT (02/03/2023)
+         * @param (value): tham số là giá trị chuỗi từ input
+         */
+        isEmpty(value) {
+            try {
+                if (value === "" || value === null || value === undefined) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (error) {
+                console.log(error);
             }
         },
         /**
@@ -316,32 +353,44 @@ export default {
          * Author: KienNT (29/05/2023)
          */
         handleOnInput() {
+            this.pageNumber = 1;
+            if (this.record) {
+                this.record = this.record.trim();
+            }
+            if (this.isEmpty(this.record)) {
+                this.$emit("setValueInputComboboxTable");
+            }
+            if (this.resetData) {
+                this.pageNumber = 1;
+                this.$emit("setResetData");
+            }
+
             setTimeout(() => {
                 this.loadData();
             }, 500);
             this.$refs["optionWrapperCombobox"].classList.add("d-block");
-            this.scrollToBottom();
         },
 
+        /**
+         * Cuộn đến cuối
+         * Author: KienNT (29/05/2023)
+         */
         scrollToBottom() {
-            this.$nextTick(function () {
-                const scrollElement = this.$refs["scrollElement"];
-                const that = this;
-                if (scrollElement) {
-                    scrollElement.addEventListener("scroll", function () {
-                        if (
-                            scrollElement.scrollTop +
-                                scrollElement.clientHeight >=
-                            scrollElement.scrollHeight
-                        ) {
-                            that.pageNumber += 1;
-                            if (that.pageNumber < that.totalRecordParent) {
-                                that.loadData();
-                            }
+            const scrollElement = this.$refs["scrollElement"];
+            const that = this;
+            if (scrollElement) {
+                scrollElement.addEventListener("scroll", function () {
+                    if (
+                        scrollElement.scrollTop + scrollElement.clientHeight >=
+                        scrollElement.scrollHeight
+                    ) {
+                        that.pageNumber += 1;
+                        if (that.pageNumber < that.totalRecordParent) {
+                            that.loadData();
                         }
-                    });
-                }
-            });
+                    }
+                });
+            }
         },
 
         /**
@@ -350,13 +399,18 @@ export default {
          * @param {event}: là sự kiện của element hiện tại
          */
         handleClickIcon(event) {
+            // if (this.resetData) {
+            //     this.dataTable = [];
+            //     this.pageNumber = 1;
+            //     this.loadData();
+            //     this.$emit("setResetData");
+            // }
             if (event.target.firstChild) {
                 event.target.firstChild.classList.toggle("rorate-180");
             } else {
                 event.target.classList.toggle("rorate-180");
             }
             this.$refs["optionWrapperCombobox"].classList.toggle("d-block");
-            this.scrollToBottom();
         },
 
         /**
@@ -395,7 +449,8 @@ export default {
                                     "selectedRecord",
                                     this.dataTable[index].account_id,
                                     this.dataTable[index].grade,
-                                    this.dataTable[index].misa_code_id
+                                    this.dataTable[index].misa_code_id,
+                                    this.dataTable[index].account_number
                                 );
                             }
 
@@ -500,14 +555,21 @@ export default {
                                         });
                                     }
                                 } else {
-                                    optionItem[0].classList.add("active");
-                                    optionItem[
-                                        optionItem.length - 1
-                                    ].classList.remove("active");
-                                    if (index && optionItem) {
-                                        optionItem[0].scrollIntoView({
-                                            block: "nearest",
-                                        });
+                                    this.pageNumber += 1;
+                                    if (
+                                        this.pageNumber < this.totalRecordParent
+                                    ) {
+                                        this.loadData();
+                                    } else {
+                                        optionItem[0].classList.add("active");
+                                        optionItem[
+                                            optionItem.length - 1
+                                        ].classList.remove("active");
+                                        if (index && optionItem) {
+                                            optionItem[0].scrollIntoView({
+                                                block: "nearest",
+                                            });
+                                        }
                                     }
                                 }
 
@@ -557,7 +619,8 @@ export default {
                 "selectedRecord",
                 account.account_id,
                 account.grade,
-                account.misa_code_id
+                account.misa_code_id,
+                account.account_number
             );
         },
 
@@ -621,9 +684,11 @@ export default {
 
     mounted() {
         window.addEventListener("click", this.handleClickOutCombobox);
+        this.scrollToBottom();
     },
     beforeUnmount() {
         window.removeEventListener("click", this.handleClickOutCombobox);
+        this.scrollToBottom();
     },
 };
 </script>

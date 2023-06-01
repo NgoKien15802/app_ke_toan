@@ -22,6 +22,7 @@ const MISAResouce = {
         Duplicate: "Nhân bản",
         StopUsing: "Ngừng sử dụng",
         Using: "Đang sử dụng",
+        Use: "Sử dụng",
         Delete: "Xoá",
         Merge: "Gộp",
 
@@ -133,11 +134,16 @@ const MISAResouce = {
         MessageNotify: "Dữ liệu đã thay đổi. Bạn có muốn cất không?",
         MessageWarning: "Bạn có muốn xóa nhân viên ",
         MessageWarningAccount: "Bạn có muốn xóa tài khoản ",
+        MessageUpdateAccount:
+            'Bạn có muốn thiết lập trạng thái "Sử dụng" cho tất cả <Tài khoản> con không?',
         MessageWarningMul: "Bạn có muốn xóa tất cả nhân viên được chọn",
         TxtNo: "không",
         DialogNotifyErrorDelete: "Xoá không thành công",
         MessageErrorDeleteAccount:
             "Xóa không thành công. Không thể xóa danh mục cha nếu chưa xóa danh mục con.",
+
+        MessageErrorNoUpdateState:
+            ' cha đang ở trạng thái "Ngừng sử dụng". Bạn không thể thiết lập trạng thái "Sử dụng" cho con ',
 
         // toast
         ToastAddSuccess: "Nhân viên đã được thêm",
@@ -150,6 +156,9 @@ const MISAResouce = {
         ToastDeleteSuccessAccount: "Tài khoản đã bị xóa",
         ToastEditSuccessAccount: "Tài khoản đã được sửa",
         ToastDuplicateSuccessAccount: "Tài khoản đã được nhân bản",
+        ToastUpdateState: "Tài khoản đã được cập nhật sang ",
+        ToastUpdateStateForAll: " cho tất cả",
+        ToastUpdateStateOnlyParent: " chỉ cho cha",
 
         // checkbox
         SelectedCheckbox: "Đã chọn: ",
@@ -300,6 +309,7 @@ const MISAResouce = {
         Duplicate: "Duplicate",
         StopUsing: "Stop using",
         Using: "Using",
+        Use: "Use",
         Delete: "Delete",
         Merge: "Merge",
 
@@ -409,11 +419,17 @@ const MISAResouce = {
 
         MessageNotify: "Data has changed. Do you want to save it?",
         MessageWarning: "Do you want to delete an employee ",
+        MessageWarningAccount: "Do you want to delete account ",
+        MessageUpdateAccount:
+            'Do you want to set "Using" status for all <Account> children?',
         MessageWarningMul: "Do you want to delete all selected employees ",
         TxtNo: "no",
         DialogNotifyErrorDelete: "Delete failed",
         MessageErrorDeleteAccount:
             "Delete failed. The parent category cannot be deleted without deleting the child category.",
+
+        MessageErrorNoUpdateState:
+            'parent is in the "Discontinued" state. You cannot set the "Using" status for your child',
         // toast
         ToastAddSuccess: "Staff has been added",
         ToastDeleteSuccess: "Employee has been deleted",
@@ -425,6 +441,9 @@ const MISAResouce = {
         ToastDeleteSuccessAccount: "Account has been deleted",
         ToastEditSuccessAccount: "Account has been edited",
         ToastDuplicateSuccessAccount: "Account has been duplicated",
+        ToastUpdateState: "The account has been updated to ",
+        ToastUpdateStateForAll: " for all",
+        ToastUpdateStateOnlyParent: " only parent",
 
         NoData: "No data to show",
         DataColumnName: "Data column name",
