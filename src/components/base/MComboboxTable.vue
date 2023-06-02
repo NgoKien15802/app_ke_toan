@@ -16,8 +16,8 @@
         <input
             :tabindex="tabindex"
             type="text"
-            name="DepartmentName"
-            id="donvi"
+            name="generalAccount"
+            id="generalAccount"
             style="border: none"
             @keydown="
                 ($event) =>

@@ -8,6 +8,7 @@
             :id="id"
             type="checkbox"
             class="input__checkbox"
+            :tabindex="tabindex"
             v-model="valueCheckbox"
         />
         <span class="ms__checkbox select__all-checkbox">
@@ -37,6 +38,9 @@ export default {
             type: Boolean,
         },
         styleElement: {
+            type: String,
+        },
+        tabindex: {
             type: String,
         },
     },

@@ -42,7 +42,7 @@ export default {
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
     border: 3px solid transparent;
-    z-index: 9999;
+    z-index: 999;
 }
 
 .loading .effects {

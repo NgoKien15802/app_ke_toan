@@ -35,6 +35,8 @@ const MISAResouce = {
         ErrorEmpty: " không được để trống",
         ErrorInvalid: " không đúng định dạng",
         ErrorDate: " không được lớn hơn hiện tại!",
+        ErrorAccountNumber: " phải có độ dài >= 3 ký tự",
+        ErrorAccountNumberStartWith: " phải bắt đầu bằng tài khoản tổng hợp",
         ErrorEmail: " không đúng định dạng",
         ErrorNotNumber: " không phải là số, vui lòng nhập lại là số",
         ErrorNotText: " không phải là chữ, vui lòng nhập lại là chữ",
@@ -325,6 +327,8 @@ const MISAResouce = {
         ErrorNotNumber: " not a number, please re-enter",
         ErrorNotText: " not the word, please re-enter",
         ErrorEmail: " Incorrect format",
+        ErrorAccountNumber: " must be >= 3 characters in length!",
+        ErrorAccountNumberStartWith: " must start with a general account",
 
         // Paging
         Previous: "Previous",

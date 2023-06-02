@@ -1539,51 +1539,6 @@ export default {
         },
 
         /**
-         * Hàm kiểm tra input date có đúng là trước ngày hiện tại không
-         * Author: KienNT (02/03/2023)
-         * @param (value,kind): tham số 1 là giá trị chuỗi từ input và tham số 2 là loại: date,...
-         */
-        isInValid(value, kind) {
-            try {
-                if (!this.isEmpty(value)) {
-                    let timenow;
-                    let inputDate;
-                    let regex;
-                    switch (kind) {
-                        case "date":
-                            timenow = new Date();
-                            inputDate = new Date(value);
-                            if (timenow < inputDate) {
-                                return true;
-                            } else {
-                                return false;
-                            }
-
-                        case "number":
-                            if (isNaN(value)) {
-                                return true;
-                            } else {
-                                return false;
-                            }
-                        case "email":
-                            regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                            // nếu ko đúng địng dạng thì ...
-                            if (!regex.test(value)) {
-                                return true;
-                            } else {
-                                return false;
-                            }
-
-                        default:
-                            break;
-                    }
-                }
-            } catch (error) {
-                console.log(error);
-            }
-        },
-
-        /**
          * Hàm ẩn hiện tooltip
          * Author: KienNT (02/03/2023)
          * @param (isTooltip): tham số là true, false để hiển thị tooltip

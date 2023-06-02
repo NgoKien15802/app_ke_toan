@@ -343,6 +343,10 @@ div.disabled {
     background-color: #eff0f2;
 }
 
+.account__systerm-detail .disabledDopdown:hover {
+    background-color: #eff0f2;
+}
+
 .cursor-pointer {
     cursor: pointer;
 }

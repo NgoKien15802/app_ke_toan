@@ -54,7 +54,7 @@
                         }"
                     >
                         <MInput
-                            id="employeeId"
+                            id="AccountNumber"
                             name="AccountNumber"
                             tabindex="1"
                             autocomplete="off"
@@ -75,9 +75,11 @@
                                 isEmpty(account.account_number)
                                     ? $t('LabelAccountNumber') +
                                       $t('ErrorEmpty')
+                                    : isTooltip.isTooltipAccountNumber
+                                    ? errorMessage[1]
                                     : errorExistId
                                     ? errorExistId
-                                    : invalidEmployeeCode
+                                    : invalidAccount_number
                             "
                             kind="error"
                         ></MTooltip>
@@ -161,6 +163,7 @@
                             :optionWrapperCombobox="
                                 optionWrapperComboboxGeneralAccount
                             "
+                            tabindex="4"
                             @selectedRecord="selectedParent"
                             kind="generalAccount"
                             :recordData="parent_id"
@@ -186,30 +189,38 @@
                             >{{ $t("LabelProperty") }}
                             <span class="required">*</span>
                         </label>
-
-                        <MCombobox
-                            :isShowTooltip="isTooltip.isTooltipProperty"
-                            @handleCheckEmpty="handleCheckEmpty"
-                            :data="propertyList"
-                            :departmentName="account_category_kind"
-                            :btnIconCombobox="btnIconComboboxProperty"
-                            :optionWrapperCombobox="
-                                optionWrapperComboboxProperty
-                            "
-                            @selectedDepartment="selectedProperty"
-                            kind="property"
-                            :iconCombobox="iconComboboxProperty"
-                            tabindex="5"
-                            @setFocus="setFocus"
-                            @handleMountOver="handleMountOver"
-                            @handleMountOut="handleMountOut"
-                        ></MCombobox>
-                        <MTooltip
-                            v-if="isTooltip.isTooltipProperty"
-                            :subtext="$t('LabelProperty') + $t('ErrorEmpty')"
-                            kind="error"
-                            ref="tootipCombobox"
-                        ></MTooltip>
+                        <div
+                            :class="{
+                                'tooltip-error': isTooltip.isTooltipProperty,
+                            }"
+                        >
+                            <MCombobox
+                                :isShowTooltip="isTooltip.isTooltipProperty"
+                                @handleCheckEmpty="handleCheckEmpty"
+                                :data="propertyList"
+                                :departmentName="account_category_kind"
+                                :btnIconCombobox="btnIconComboboxProperty"
+                                :optionWrapperCombobox="
+                                    optionWrapperComboboxProperty
+                                "
+                                @selectedDepartment="selectedProperty"
+                                kind="property"
+                                :iconCombobox="iconComboboxProperty"
+                                tabindex="5"
+                                @setFocus="setFocus"
+                                @handleMountOver="handleMountOver"
+                                @handleMountOut="handleMountOut"
+                                ref="txtProperty"
+                            ></MCombobox>
+                            <MTooltip
+                                v-if="isTooltip.isTooltipProperty"
+                                :subtext="
+                                    $t('LabelProperty') + $t('ErrorEmpty')
+                                "
+                                kind="error"
+                                ref="tootipCombobox"
+                            ></MTooltip>
+                        </div>
                     </div>
                 </div>
 
@@ -221,6 +232,7 @@
                         maxlength="255"
                         v-model="account.description"
                         class="ms-textarea"
+                        tabindex="6"
                     ></textarea>
                 </div>
 
@@ -230,8 +242,12 @@
                         :initValue="account.is_postable_in_foreign_currency"
                         @handleCheckbox="handleCheckbox($event)"
                         ref="checkbox"
+                        tabindex="7"
                     ></MCheckbox>
-                    <span>
+                    <span
+                        @handleCheckbox="handleCheckbox($event)"
+                        style="cursor: pointer"
+                    >
                         {{ $t("ForeignCurrencyPlan") }}
                     </span>
                 </div>
@@ -463,6 +479,7 @@
                                                             "
                                                             styleElement="margin: none"
                                                             ref="checkbox"
+                                                            tabindex="8"
                                                         ></MCheckbox>
                                                         <span
                                                             @click="
@@ -538,6 +555,7 @@
                                                                     'detail_by_project_work'
                                                                 )
                                                             "
+                                                            tabindex="9"
                                                             styleElement="margin: none"
                                                             ref="checkbox"
                                                         ></MCheckbox>
@@ -617,6 +635,7 @@
                                                                     'detail_by_order'
                                                                 )
                                                             "
+                                                            tabindex="10"
                                                             styleElement="margin: none"
                                                             ref="checkbox"
                                                         ></MCheckbox>
@@ -688,6 +707,7 @@
                                                             :initValue="
                                                                 account.detail_by_contract
                                                             "
+                                                            tabindex="11"
                                                             @handleCheckbox="
                                                                 handleCheckboxAccount(
                                                                     event,
@@ -773,6 +793,7 @@
                                                                     'detail_by_pu_contract'
                                                                 )
                                                             "
+                                                            tabindex="12"
                                                             styleElement="margin: none"
                                                             ref="checkbox"
                                                         ></MCheckbox>
@@ -813,6 +834,7 @@
                                                                     );
                                                                 }
                                                             "
+                                                            tabindex="13"
                                                             @handleReceiveValue="
                                                                 (value) =>
                                                                     handleReceiveValueInput(
@@ -852,6 +874,7 @@
                                                             "
                                                             styleElement="margin: none"
                                                             ref="checkbox"
+                                                            tabindex="14"
                                                         ></MCheckbox>
                                                         <span
                                                             @click="
@@ -932,6 +955,7 @@
                                                             "
                                                             styleElement="margin: none"
                                                             ref="checkbox"
+                                                            tabindex="15"
                                                         ></MCheckbox>
                                                         <span
                                                             @click="
@@ -1127,6 +1151,17 @@
             </div>
             <div class="ms-popup--extend-part"></div>
         </div>
+        <!-- begin dialog -->
+        <!-- dialog hiển thị lỗi -->
+        <MDialog
+            v-if="isDialogError"
+            iconClass="dialog__icon-error"
+            :title="$t('DialogNotifyError')"
+            :message="message"
+            :textButton="$t('BtnClose')"
+            @hideShowDialogError="hideShowDialogError"
+            kind="error"
+        ></MDialog>
     </div>
 </template>
 
@@ -1153,6 +1188,30 @@ export default {
         },
         accounts: {
             type: Array,
+        },
+    },
+
+    watch: {
+        /**
+         * Theo dõi mảng errorMessage thay đổi thì check nếu có lỗi thì gán cho message
+         * Author: KienNT (01/06/2023)
+         */
+        errorMessage: {
+            handler: function (newValue) {
+                try {
+                    const refNames = Object.values(newValue);
+                    for (let index = 0; index < refNames.length; index++) {
+                        const element = refNames[index];
+                        if (element !== "space") {
+                            this.message = element;
+                            break;
+                        }
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
+            },
+            deep: true,
         },
     },
     data() {
@@ -1259,6 +1318,11 @@ export default {
 
             propertyList: [],
             oldAccount: [],
+            errorMessage: [],
+            message: "",
+            errorExistId: "",
+            invalidAccount_number: "",
+            isDialogError: false,
         };
     },
     mounted() {
@@ -1503,10 +1567,278 @@ export default {
          * Author: KienNT (28/05/2023)
          */
         handleValidate() {
-            if (this.account.account_number.length <= 3) {
-                this.isTooltip.isTooltipAccountNumber = true;
+            // check số
+            this.checkField(
+                "isTooltipAccountNumber",
+                this.account.account_number,
+                this.$t("LabelAccountNumber"),
+                "txtAccountNumber"
+            );
+
+            // check invalid số
+            this.checkFieldInvalid(
+                "isTooltipAccountNumber",
+                this.account.account_number,
+                this.$t("LabelAccountNumber"),
+                "character",
+                this.$t("ErrorAccountNumber"),
+                "txtAccountNumber"
+            );
+            // check invalid số bắt đầu = tài khoản tổng hợp
+            if (!this.isTooltip.isTooltipAccountNumber) {
+                this.checkFieldInvalid(
+                    "isTooltipAccountNumber",
+                    this.account.account_number,
+                    this.$t("LabelAccountNumber"),
+                    "characterStartWith",
+                    this.$t("ErrorAccountNumberStartWith"),
+                    "txtAccountNumber"
+                );
             }
-            return true;
+
+            // check tên
+            this.checkField(
+                "isTooltipAccountName",
+                this.account.account_name,
+                this.$t("LabelAccountName"),
+                "txtAccountName"
+            );
+
+            // check tính chất
+            this.checkField(
+                "isTooltipProperty",
+                this.account_category_kind,
+                this.$t("LabelProperty"),
+                "txtProperty"
+            );
+            // nếu ko có lỗi thì ẩn popup
+            let check = true;
+
+            const refNames = Object.values(this.errorMessage);
+            for (let index = 0; index < refNames.length; index++) {
+                const element = refNames[index];
+                if (
+                    element !== "space" &&
+                    element !== this.invalidAccount_number
+                ) {
+                    check = false;
+                }
+            }
+
+            if (check === false) {
+                return false;
+            } else {
+                return true;
+            }
+        },
+
+        checkField(fieldName, fieldValue, errorLabel, field) {
+            try {
+                if (this.isEmpty(fieldValue)) {
+                    // lỗi valid form thì xóa lỗi cùng mã
+                    if (this.errorMessage.includes(this.errorExistId)) {
+                        const index = this.errorMessage.indexOf(
+                            this.errorExistId
+                        );
+                        this.errorMessage.splice(index, 1);
+                        this.isTooltip.isTooltipAccountNumber = false;
+                    }
+                    if (
+                        this.errorMessage.includes(this.invalidAccount_number)
+                    ) {
+                        const index = this.errorMessage.indexOf(
+                            this.invalidAccount_number
+                        );
+                        this.errorMessage.splice(index, 1);
+                        this.isTooltip.isTooltipAccountNumber = false;
+                    }
+
+                    this.isTooltip[fieldName] = true;
+                    // nếu chưa có lỗi thì thêm ptu lỗi đó vào
+                    if (
+                        !this.errorMessage.includes(
+                            errorLabel + this.$t("ErrorEmpty")
+                        )
+                    ) {
+                        this.errorMessage[this.getTabIndex(field)] =
+                            errorLabel + this.$t("ErrorEmpty");
+                    }
+                } else {
+                    if (this.errorMessage.includes(this.errorExistId)) {
+                        const index = this.errorMessage.indexOf(
+                            this.errorExistId
+                        );
+                        this.errorMessage.splice(index, 1);
+                    }
+                    this.isTooltip[fieldName] = false;
+                    if (
+                        this.errorMessage.includes(
+                            errorLabel + this.$t("ErrorEmpty")
+                        )
+                    ) {
+                        this.errorMessage.splice(this.getTabIndex(field), 1);
+                        this.errorMessage.splice(
+                            this.getTabIndex(field),
+                            0,
+                            "space"
+                        );
+                    }
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
+         * Hàm check invalid
+         * Author: KienNT (01/06/2023)
+         *  @param (fieldName,fieldValue,errorLabel): tham số 1: true,false tooltip label, tham số 2 là giá trị ô input, tham số 3: label lỗi, tham số 4: loại (email,date,..), tham số 5 loại label lỗi
+         */
+        checkFieldInvalid(
+            fieldName,
+            fieldValue,
+            errorLabel,
+            kind,
+            errorText,
+            field
+        ) {
+            try {
+                if (!this.isEmpty(fieldValue)) {
+                    if (this.isInValid(fieldValue, kind)) {
+                        if (
+                            this.errorMessage.includes(
+                                this.invalidAccount_number
+                            )
+                        ) {
+                            const index = this.errorMessage.indexOf(
+                                this.invalidAccount_number
+                            );
+                            this.errorMessage.splice(index, 1);
+                            this.isTooltip.isTooltipAccountNumber = false;
+                        }
+
+                        this.isTooltip[fieldName] = true;
+                        // nếu chưa có lỗi thì thêm ptu lỗi đó vào
+                        if (
+                            !this.errorMessage.includes(errorLabel + errorText)
+                        ) {
+                            this.errorMessage[this.getTabIndex(field)] =
+                                errorLabel + errorText;
+                        }
+                    } else {
+                        this.isTooltip[fieldName] = false;
+                        if (
+                            this.errorMessage.includes(errorLabel + errorText)
+                        ) {
+                            this.errorMessage.splice(
+                                this.getTabIndex(field),
+                                1
+                            );
+                            this.errorMessage.splice(
+                                this.getTabIndex(field),
+                                0,
+                                "space"
+                            );
+                        }
+                    }
+                } else {
+                    this.isTooltip[fieldName] = false;
+                    if (this.errorMessage.includes(errorLabel + errorText)) {
+                        this.errorMessage.splice(this.getTabIndex(field), 1);
+                        this.errorMessage.splice(
+                            this.getTabIndex(field),
+                            0,
+                            "space"
+                        );
+                    }
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
+         * Hàm kiểm tra <= 3 ký tự
+         * Author: KienNT (02/03/2023)
+         * @param (value,kind): tham số 1 là giá trị chuỗi từ input và tham số 2 là loại: date,...
+         */
+        isInValid(value, kind) {
+            try {
+                if (!this.isEmpty(value)) {
+                    let timenow;
+                    let inputDate;
+                    let regex;
+                    switch (kind) {
+                        case "date":
+                            timenow = new Date();
+                            inputDate = new Date(value);
+                            if (timenow < inputDate) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+
+                        case "number":
+                            if (isNaN(value)) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        case "email":
+                            regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                            // nếu ko đúng địng dạng thì ...
+                            if (!regex.test(value)) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+
+                        case "character":
+                            if (value.length < 3) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        case "characterStartWith":
+                            if (value.length >= 3) {
+                                if (!this.isEmpty(this.parent_id)) {
+                                    if (!value.startsWith(this.parent_id)) {
+                                        return true;
+                                    } else {
+                                        return false;
+                                    }
+                                } else {
+                                    return false;
+                                }
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
+         * Hàm lấy tabindex của ptu đó để gán lỗi vào mảng ở STT đó để set focus vào ô đầu tiên
+         * Author: KienNT (01/0/2023)
+         * @param (fieldName): field cần lấy tabindex
+         */
+        getTabIndex(fieldName) {
+            try {
+                const refNames = Object.keys(this.$refs);
+                for (let index = 0; index < refNames.length; index++) {
+                    const elementRef = refNames[index];
+                    if (elementRef === fieldName) {
+                        const element = this.$refs[elementRef];
+                        return element.tabindex;
+                    }
+                }
+            } catch (error) {
+                console.log(error);
+            }
         },
 
         /**
@@ -1582,13 +1914,76 @@ export default {
                         let errorData = response?.data?.Data?.Data;
                         console.log(errorData);
                         this.$emit("hideShowLoading", false);
+                        this.handleCaseCatch(response, errorData);
                     });
             } catch (error) {
                 console.log(error);
             }
         },
 
-        handleCaseCatch() {},
+        handleCaseCatch(response, errorData) {
+            switch (response.status) {
+                case 400:
+                    if (errorData != null) {
+                        if (this.errorMessage.includes(this.errorExistId)) {
+                            const index = this.errorMessage.indexOf(
+                                this.errorExistId
+                            );
+                            this.errorMessage.splice(index, 1);
+                        }
+                        for (let key in errorData) {
+                            switch (key) {
+                                case "account_number":
+                                    this.isTooltip.isTooltipAccountNumber = true;
+                                    if (this.errorExistId) {
+                                        this.errorExistId = false;
+                                    }
+                                    this.invalidAccount_number = errorData[key];
+                                    this.handleValidateBE(
+                                        errorData,
+                                        errorData[key],
+                                        "txtEmployeeCode"
+                                    );
+
+                                    break;
+                                case "account_name":
+                                    this.isTooltip.isTooltipAccountName = true;
+                                    this.handleValidateBE(
+                                        errorData,
+                                        errorData[key],
+                                        "txtAccountName"
+                                    );
+
+                                    break;
+
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+
+                    this.isDialogError = true;
+                    break;
+
+                case 409:
+                case 500:
+                    if (this.errorMessage.length > 0) {
+                        this.errorMessage = [];
+                    }
+                    this.errorExistId =
+                        response?.data?.Data?.UserMsg ||
+                        response?.data?.UserMsg;
+                    this.errorMessage[1] = this.errorExistId;
+                    if (response?.data?.Data?.UserMsg) {
+                        this.isTooltip.isTooltipAccountNumber = true;
+                    }
+                    this.isDialogError = true;
+                    break;
+
+                default:
+                    break;
+            }
+        },
 
         /**
          * Hàm thực hiện format property
@@ -1631,6 +2026,30 @@ export default {
                     default:
                         console.log("Unknown objectKind value:", objectKind);
                         return objectKind;
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
+         *  focus vào ô input lỗi đầu tiên
+         * Author: KienNT (01/06/2023)
+         *
+         */
+        firstFocus() {
+            try {
+                // get all input ref sau đó duyệt nếu input nào có lỗi là isShowTooltip = true thì input đó focus và break
+                const refNames = Object.keys(this.$refs);
+                if (refNames) {
+                    for (let index = 0; index < refNames.length; index++) {
+                        const elementRef = refNames[index];
+                        const element = this.$refs[elementRef];
+                        if (element && element.isShowTooltip) {
+                            element.setFocus();
+                            return true;
+                        }
+                    }
                 }
             } catch (error) {
                 console.log(error);
@@ -1708,6 +2127,19 @@ export default {
             }
         },
         /**
+         * Hàm ẩn hiện dialog và focus vào ô input lỗi đầu tiên
+         * Author: KienNT (01/06/2023)
+         * @param (isDialogError): tham số là true, false để hiển thị dialog
+         */
+        hideShowDialogError(isDialogError) {
+            try {
+                this.isDialogError = isDialogError;
+                this.firstFocus();
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        /**
          * nghe sự kiện window. Nếu click ko phải là dropdown thì ẩn dropdown
          * Author: KienNT (27/05/2023)
          *   @param (event): là event
@@ -1766,7 +2198,7 @@ export default {
                                         ? MISAEnum.Property.Hermaphrodite
                                         : el.name === this.$t("Nobalance")
                                         ? MISAEnum.Property.Nobalance
-                                        : "";
+                                        : null;
                             }
                         });
                         this.isTooltip.isTooltipProperty = false;
