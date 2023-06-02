@@ -28,7 +28,7 @@
 
                     <div
                         class="wrap-icon confirm__close-popup"
-                        @click="closeAccountSysterm"
+                        @click="closeAccountSystermPopup"
                     >
                         <div class="icon-close tooltip">
                             <MTooltip
@@ -1162,6 +1162,21 @@
             @hideShowDialogError="hideShowDialogError"
             kind="error"
         ></MDialog>
+
+        <!-- dialog thông báo nếu dữ liệu thay đổi -->
+        <MDialog
+            v-if="isDialogNotify"
+            iconClass="dialog__icon-notify"
+            :title="$t('DialogNotify')"
+            :message="$t('MessageNotify')"
+            :btnNoNotify="$t('BtnNo')"
+            :textButton="$t('BtnYes')"
+            :btnDestroyNotify="$t('BtnDestroy')"
+            @onClickBtnDestroy="onClickBtnDestroy"
+            @destroyPopup="destroyPopup"
+            @onClickBtnYes="onClickBtnYes"
+            kind="notify"
+        ></MDialog>
     </div>
 </template>
 
@@ -1223,6 +1238,7 @@ export default {
             parent_id: "",
             dataAccountParent: [],
             resetData: false,
+            isDialogNotify: false,
             account: {
                 detail_by_account_object: false,
                 detail_by_job: false,
@@ -1317,7 +1333,7 @@ export default {
             ],
 
             propertyList: [],
-            oldAccount: [],
+            oldAccount: {},
             errorMessage: [],
             message: "",
             errorExistId: "",
@@ -1328,6 +1344,7 @@ export default {
     mounted() {
         window.addEventListener("keydown", this.handlePressKeyShort);
         window.addEventListener("click", this.handleOutsideClick);
+        this.oldAccount = JSON.stringify(this.account);
         this.dropdownDetail_by_job = this.$refs.dropdownDetail_by_job;
         this.iconDropdownDetail_by_job = this.$refs.iconDropdownDetail_by_job;
         this.dropdownDetail_by_project_work =
@@ -1822,6 +1839,37 @@ export default {
         },
 
         /**
+         * Hàm ẩn hiện dialog notify
+         * Author: KienNT (02/06/2023)
+         * @param (isDialogNotify): tham số là true, false để hiển thị dialog notify
+         */
+
+        onClickBtnDestroy(isDialogNotify) {
+            try {
+                this.isDialogNotify = isDialogNotify;
+                const isFocus = this.firstFocus();
+                if (!isFocus) {
+                    this.setFocusInput("txtAccountNumber");
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
+         * Hàm click vào btn có trong dialog
+         * Author: KienNT (02/06/2023)
+         */
+        onClickBtnYes() {
+            try {
+                this.btnSaveAndClose(true);
+                this.isDialogNotify = false;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
          * Hàm lấy tabindex của ptu đó để gán lỗi vào mảng ở STT đó để set focus vào ô đầu tiên
          * Author: KienNT (01/0/2023)
          * @param (fieldName): field cần lấy tabindex
@@ -1848,6 +1896,7 @@ export default {
         destroyPopup() {
             try {
                 this.account = {};
+                this.oldAccount = JSON.stringify(this.account);
                 this.parent_id = "";
                 this.account_category_kind = "";
                 this.errorMessage = [];
@@ -1878,6 +1927,7 @@ export default {
                         } else {
                             // reset nhưng ko đóng form
                             this.account = {};
+                            this.oldAccount = JSON.stringify(this.account);
                             this.$emit(
                                 "handleChangeTitlePopup",
                                 this.$t("AddNewAccount")
@@ -2297,8 +2347,20 @@ export default {
          *  handle ẩn popup Account
          * Author: KienNT (27/05/2023)
          */
-        closeAccountSysterm() {
-            this.$emit("closeAccountSysterm");
+        closeAccountSystermPopup() {
+            try {
+                if (this.isDialogError === false) {
+                    const newAccount = JSON.stringify(this.account);
+                    if (this.oldAccount !== newAccount) {
+                        this.isDialogNotify = true;
+                        return;
+                    } else {
+                        this.$emit("closeAccountSysterm");
+                    }
+                }
+            } catch (error) {
+                console.log(error);
+            }
         },
 
         /**
@@ -2356,16 +2418,27 @@ export default {
         handlePressKeyShort(event) {
             // khi nhấn phím esc thì đóng form
             if (event.key === "Escape" || event.keyCode === 27) {
-                this.$emit("closeAccountSysterm");
+                this.closeAccountSystermPopup();
+            }
+
+            if (event.ctrlKey && event.key === "s") {
+                // Ngăn chặn trình duyệt thực hiện hành động mặc định của phím "Ctrl + S" là lưu trang web
+                event.preventDefault();
+                this.btnSaveAndClose(true);
+            }
+
+            if (event.ctrlKey && event.shiftKey && event.key === "S") {
+                event.preventDefault();
+                this.btnSaveAndClose(false);
             }
         },
 
         /**
-         *  handle ẩn popup account
+         *  handle ẩn popup account khi nhấn btn hủy
          * Author: KienNT (27/05/2023)
          */
         closeAccountSystermDetail() {
-            this.$emit("closeAccountSystermDetail");
+            this.$emit("closeAccountSysterm");
         },
 
         /**
