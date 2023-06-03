@@ -23,7 +23,7 @@
                     </template>
                     <template v-else>
                         <span style="display: flex">
-                            <span class="text-align-left">{{
+                            <span class="text-align-left text-only-line">{{
                                 $t(header)
                             }}</span>
                             <div
@@ -241,6 +241,9 @@ export default {
         checkReload: {
             type: Boolean,
         },
+        isReloadAdd: {
+            type: Boolean,
+        },
     },
 
     data() {
@@ -248,7 +251,7 @@ export default {
             MISAResouce,
             accounts: [],
             isContextMenu: false,
-            pageSize: 2,
+            pageSize: 5,
             pageNumber: 1,
             totalRecord: 0,
             totalRecordParent: 0,
@@ -388,6 +391,15 @@ export default {
                 this.isCallExpand = false;
                 this.loadData();
                 this.$emit("setIsReLoad");
+            } else {
+                this.cloneAccountCollapse = [];
+            }
+        },
+
+        isReloadAdd: function (newValue) {
+            if (newValue) {
+                this.loadData();
+                this.$emit("setIsReLoadAdd");
             } else {
                 this.cloneAccountCollapse = [];
             }

@@ -242,10 +242,13 @@
                         :initValue="account.is_postable_in_foreign_currency"
                         @handleCheckbox="handleCheckbox($event)"
                         ref="checkbox"
-                        tabindex="7"
+                        :tabindex="7"
                     ></MCheckbox>
                     <span
-                        @handleCheckbox="handleCheckbox($event)"
+                        @click="
+                            account.is_postable_in_foreign_currency =
+                                !account.is_postable_in_foreign_currency
+                        "
                         style="cursor: pointer"
                     >
                         {{ $t("ForeignCurrencyPlan") }}
@@ -707,7 +710,9 @@
                                                             :initValue="
                                                                 account.detail_by_contract
                                                             "
-                                                            tabindex="11"
+                                                            :tabindex="
+                                                                tabIndexDetail_by_contract
+                                                            "
                                                             @handleCheckbox="
                                                                 handleCheckboxAccount(
                                                                     event,
@@ -1228,6 +1233,19 @@ export default {
             },
             deep: true,
         },
+
+        account: {
+            handler: function (newValue) {
+                try {
+                    this.cloneAccount = JSON.stringify(
+                        this.deleteAttrObject(newValue)
+                    );
+                } catch (error) {
+                    console.log(error);
+                }
+            },
+            deep: true,
+        },
     },
     data() {
         return {
@@ -1339,12 +1357,25 @@ export default {
             errorExistId: "",
             invalidAccount_number: "",
             isDialogError: false,
+            cloneAccount: {},
         };
     },
     mounted() {
         window.addEventListener("keydown", this.handlePressKeyShort);
         window.addEventListener("click", this.handleOutsideClick);
-        this.oldAccount = JSON.stringify(this.account);
+        this.account_category_kind = this.$t("Debt");
+        this.account.account_category_kind =
+            this.account_category_kind === this.$t("Debt")
+                ? MISAEnum.Property.Debt
+                : this.account_category_kind === this.$t("ExcessYes")
+                ? MISAEnum.Property.ExcessYes
+                : this.account_category_kind === this.$t("Hermaphrodite")
+                ? MISAEnum.Property.Hermaphrodite
+                : this.account_category_kind === this.$t("Nobalance")
+                ? MISAEnum.Property.Nobalance
+                : null;
+        this.cloneAccount = JSON.stringify(this.deleteAttrObject(this.account));
+        this.oldAccount = this.cloneAccount;
         this.dropdownDetail_by_job = this.$refs.dropdownDetail_by_job;
         this.iconDropdownDetail_by_job = this.$refs.iconDropdownDetail_by_job;
         this.dropdownDetail_by_project_work =
@@ -1402,7 +1433,7 @@ export default {
             this.propertyList = [
                 {
                     name: this.$t("Debt"),
-                    isActive: false,
+                    isActive: true,
                 },
                 {
                     name: this.$t("ExcessYes"),
@@ -1488,8 +1519,10 @@ export default {
                         this.parent_id = this.accounts.find(
                             (el) => el.account_id === this.account.parent_id
                         )?.account_number;
-
-                        this.oldAccount = JSON.stringify(this.account);
+                        this.cloneAccount = JSON.stringify(
+                            this.deleteAttrObject(this.account)
+                        );
+                        this.oldAccount = this.cloneAccount;
                         this.$emit("hideShowLoading", false);
                     })
                     .catch((res) => {
@@ -1500,20 +1533,22 @@ export default {
             }
         },
         /**
-         * Hàm validate thành công thì cất data và đóng form, cất và thêm thì cất và data reset form
+         * Hàm validate thành công thì cất data và đóng form, cất và thêdeleteAttrObjectm thì cất và data reset form
          * Author: KienNT (28/05/2023)
          *  @param (value): tham số 1: là true, false hiển thị popup
          */
         btnSaveAndClose(isCloseForm) {
             try {
                 if (this.handleValidate()) {
+                    if (this.isEmpty(this.parent_id)) {
+                        this.account.parent_id = null;
+                    }
+                    if (this.isEmpty(this.account.parent_id)) {
+                        this.account.grade = 1;
+                        this.account.misa_code_id = null;
+                    }
                     if (this.formModeAccount === MISAEnum.formMode.Add) {
-                        if (this.isEmpty(this.parent_id)) {
-                            this.account.parent_id = null;
-                        }
                         if (this.isEmpty(this.account.parent_id)) {
-                            this.account.grade = 1;
-                            this.account.misa_code_id = null;
                             this.account.state = MISAEnum.Status.Using;
                         }
 
@@ -1543,6 +1578,10 @@ export default {
                                 } else {
                                     // reset nhưng ko đóng form
                                     this.account = {};
+                                    this.cloneAccount = JSON.stringify(
+                                        this.deleteAttrObject(this.account)
+                                    );
+                                    this.oldAccount = this.cloneAccount;
                                     this.$emit(
                                         "handleChangeTitlePopup",
                                         this.$t("AddNewAccount")
@@ -1561,7 +1600,7 @@ export default {
                                     "edit",
                                     this.$t("Account")
                                 );
-                                this.$emit("handleReLoadData");
+                                this.$emit("handleReLoadDataAdd");
                             })
                             .catch((error) => {
                                 let response = error.response;
@@ -1896,7 +1935,10 @@ export default {
         destroyPopup() {
             try {
                 this.account = {};
-                this.oldAccount = JSON.stringify(this.account);
+                this.cloneAccount = JSON.stringify(
+                    this.deleteAttrObject(this.account)
+                );
+                this.oldAccount = this.cloneAccount;
                 this.parent_id = "";
                 this.account_category_kind = "";
                 this.errorMessage = [];
@@ -1927,7 +1969,10 @@ export default {
                         } else {
                             // reset nhưng ko đóng form
                             this.account = {};
-                            this.oldAccount = JSON.stringify(this.account);
+                            this.cloneAccount = JSON.stringify(
+                                this.deleteAttrObject(this.account)
+                            );
+                            this.oldAccount = this.cloneAccount;
                             this.$emit(
                                 "handleChangeTitlePopup",
                                 this.$t("AddNewAccount")
@@ -1957,7 +2002,7 @@ export default {
                         }
                         this.$emit("hideShowLoading", false);
 
-                        this.$emit("handleReLoadData");
+                        this.$emit("handleReLoadDataAdd");
                     })
                     .catch((error) => {
                         let response = error.response;
@@ -2225,44 +2270,44 @@ export default {
          * Author: KienNT (28/05/2023)
          * @param (valueInput): Giá trị của value được emit từ con
          */
-        handleCheckEmpty(valueInput, category) {
-            try {
-                this.account_category_kind = valueInput;
-                if (category && category.length > 0) {
-                    if (
-                        category.filter(
-                            (el) => el.name === this.account_category_kind
-                        ).length <= 0
-                    ) {
-                        this.isTooltip.isTooltipProperty = true;
-                        this.account.account_category_kind = "";
-                    } else {
-                        category.forEach((el) => {
-                            if (el.name === this.account_category_kind) {
-                                this.account.account_category_kind =
-                                    el.name === this.$t("Debt")
-                                        ? MISAEnum.Property.Debt
-                                        : el.name === this.$t("ExcessYes")
-                                        ? MISAEnum.Property.ExcessYes
-                                        : el.name === this.$t("Hermaphrodite")
-                                        ? MISAEnum.Property.Hermaphrodite
-                                        : el.name === this.$t("Nobalance")
-                                        ? MISAEnum.Property.Nobalance
-                                        : null;
-                            }
-                        });
-                        this.isTooltip.isTooltipProperty = false;
-                    }
-                }
-                if (this.isEmpty(this.account_category_kind)) {
-                    this.isTooltip.isTooltipProperty = true;
-                } else if (this.account.account_category_kind !== null) {
-                    this.isTooltip.isTooltipProperty = false;
-                }
-            } catch (error) {
-                console.log(error);
-            }
-        },
+        // handleCheckEmpty(valueInput, category) {
+        //     try {
+        //         this.account_category_kind = valueInput;
+        //         if (category && category.length > 0) {
+        //             if (
+        //                 category.filter(
+        //                     (el) => el.name === this.account_category_kind
+        //                 ).length <= 0
+        //             ) {
+        //                 this.isTooltip.isTooltipProperty = true;
+        //                 this.account.account_category_kind = "";
+        //             } else {
+        //                 category.forEach((el) => {
+        //                     if (el.name === this.account_category_kind) {
+        //                         this.account.account_category_kind =
+        //                             el.name === this.$t("Debt")
+        //                                 ? MISAEnum.Property.Debt
+        //                                 : el.name === this.$t("ExcessYes")
+        //                                 ? MISAEnum.Property.ExcessYes
+        //                                 : el.name === this.$t("Hermaphrodite")
+        //                                 ? MISAEnum.Property.Hermaphrodite
+        //                                 : el.name === this.$t("Nobalance")
+        //                                 ? MISAEnum.Property.Nobalance
+        //                                 : null;
+        //                     }
+        //                 });
+        //                 this.isTooltip.isTooltipProperty = false;
+        //             }
+        //         }
+        //         if (this.isEmpty(this.account_category_kind)) {
+        //             this.isTooltip.isTooltipProperty = true;
+        //         } else if (this.account.account_category_kind !== null) {
+        //             this.isTooltip.isTooltipProperty = false;
+        //         }
+        //     } catch (error) {
+        //         console.log(error);
+        //     }
+        // },
 
         /**
          * Click checkbox object type
@@ -2350,7 +2395,7 @@ export default {
         closeAccountSystermPopup() {
             try {
                 if (this.isDialogError === false) {
-                    const newAccount = JSON.stringify(this.account);
+                    const newAccount = this.cloneAccount;
                     if (this.oldAccount !== newAccount) {
                         this.isDialogNotify = true;
                         return;
@@ -2469,6 +2514,24 @@ export default {
          */
         setResetData() {
             this.resetData = false;
+        },
+
+        /**
+         * Hàm xóa đi tất cả attr = null, false, undefined
+         * Author: KienNT (02/06/2023)
+         */
+        deleteAttrObject(newValue) {
+            const clone = { ...newValue };
+            for (let key in clone) {
+                if (
+                    clone[key] === undefined ||
+                    clone[key] === false ||
+                    clone[key] === null
+                ) {
+                    delete clone[key];
+                }
+            }
+            return clone;
         },
     },
 };

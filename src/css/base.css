@@ -125,9 +125,12 @@ button {
 
 .text-only-line {
     display: inline-block;
-    white-space: nowrap;
     overflow: hidden !important;
     text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
 }
 
 .no-data {

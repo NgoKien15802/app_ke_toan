@@ -28,6 +28,7 @@
     font-weight: 400;
     align-items: center;
     transition: all 0.25s ease;
+    cursor: pointer;
 }
 .contextmenu__fun-list
     .contextmenu__fun-item:first-child

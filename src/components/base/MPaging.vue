@@ -66,7 +66,7 @@
                 </div> -->
                 <paginate
                     v-model="page"
-                    :page-count="Math.round(totalRecord / pageIndex)"
+                    :page-count="Math.ceil(totalRecord / pageIndex)"
                     :page-range="3"
                     :margin-pages="1"
                     :click-handler="handleClickPageIndex"
@@ -115,30 +115,30 @@ export default {
         return {
             MISAResouce,
             isOpenDropdown: false,
-            valueInput: `2 ${this.$t("RecordInPage")}`,
+            valueInput: `5 ${this.$t("RecordInPage")}`,
             optionItem: [
                 {
-                    text: 2,
-                    isActive: true,
-                },
-                {
-                    text: 3,
-                    isActive: false,
-                },
-                {
-                    text: 4,
-                    isActive: false,
-                },
-                {
                     text: 5,
-                    isActive: false,
+                    isActive: true,
                 },
                 {
                     text: 6,
                     isActive: false,
                 },
+                {
+                    text: 7,
+                    isActive: false,
+                },
+                {
+                    text: 8,
+                    isActive: false,
+                },
+                {
+                    text: 9,
+                    isActive: false,
+                },
             ],
-            pageIndex: 2,
+            pageIndex: 5,
             pageNumber: 1,
             offset: 0,
         };

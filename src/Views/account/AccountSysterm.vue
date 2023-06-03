@@ -73,9 +73,11 @@
                         :pageSizeNumber="pageSize"
                         :pageCurrent="pageNumber"
                         :isExpandAccount="isExpand"
+                        :isReloadAdd="isReloadAdd"
                         :isReload="isReload"
                         :checkReload="checkReload"
                         @setIsReLoad="setIsReLoad"
+                        @setIsReLoadAdd="setIsReLoadAdd"
                         @setModeAccountList="setModeAccountList"
                         @setCheckReLoad="setCheckReLoad"
                         @onDoubleClick="onDoubleClick"
@@ -106,7 +108,7 @@
                     @handleChangeTitlePopup="handleChangeTitlePopup"
                     @hideShowToast="hideShowToast"
                     @hideShowLoading="hideShowLoading"
-                    @handleReLoadData="handleReLoadData"
+                    @handleReLoadDataAdd="handleReLoadDataAdd"
                     :account_id_selected="account_id_selected"
                     :totalRecordRoot="totalRecord"
                     @setAccountIdSelected="setAccountIdSelected"
@@ -206,6 +208,7 @@ export default {
             isAccountSysterm: false,
             accountIdSelected: null,
             accounts: [],
+            isReloadAdd: false,
         };
     },
     components: {
@@ -237,12 +240,25 @@ export default {
             // this.isDisabledClickPrev = true;
         },
 
+        handleReLoadDataAdd() {
+            this.isReloadAdd = true;
+            this.checkReload = true;
+        },
+
         /**
          * Hàm emit từ con để set lại reload lần sau
          * Author: KienNT (26/05/2023)
          */
         setIsReLoad() {
             this.isReload = false;
+        },
+
+        /**
+         * Hàm emit từ con để set lại reload lần sau
+         * Author: KienNT (26/05/2023)
+         */
+        setIsReLoadAdd() {
+            this.isReloadAdd = false;
         },
 
         /**

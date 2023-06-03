@@ -8,10 +8,10 @@
             :id="id"
             type="checkbox"
             class="input__checkbox"
-            :tabindex="tabindex"
             v-model="valueCheckbox"
         />
-        <span class="ms__checkbox select__all-checkbox">
+
+        <span class="ms__checkbox select__all-checkbox" :tabindex="tabindex">
             <span class="ms__border-checkbox">
                 <div class="ms__checbox-icon"></div>
             </span>
@@ -41,7 +41,7 @@ export default {
             type: String,
         },
         tabindex: {
-            type: String,
+            type: Number,
         },
     },
 

@@ -400,10 +400,12 @@ export default {
          */
         handleClickIcon(event) {
             // if (this.resetData) {
-            //     this.dataTable = [];
+            //     this.record = "";
             //     this.pageNumber = 1;
+            //     this.dataTable = [];
             //     this.loadData();
             //     this.$emit("setResetData");
+            //     this.scrollToBottom();
             // }
             if (event.target.firstChild) {
                 event.target.firstChild.classList.toggle("rorate-180");
