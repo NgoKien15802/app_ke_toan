@@ -15,7 +15,7 @@
                                             <div class="recent-log-btn"></div>
                                         </div>
                                         <div class="title__popup-detail">
-                                            Phiếu chi xxx15
+                                            {{ $t("PaymentTitle") }} xxx15
                                         </div>
                                         <div class="header-detail-input">
                                             <div
@@ -650,7 +650,7 @@
 </template>
 
 <script>
-import TheTablePaymentDetail from "./TheTablePaymentDetail.vue";
+import TheTablePaymentDetail from "../../components/layout/TheTablePaymentDetail.vue";
 export default {
     name: "CashDetail",
     components: {

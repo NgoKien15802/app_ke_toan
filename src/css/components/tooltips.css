@@ -169,7 +169,7 @@
     position: absolute;
     z-index: 100;
     transform: translateX(-50%);
-    top: -100%;
+    top: -130%;
     left: 50%;
     height: 26px;
     display: flex;

@@ -7,21 +7,21 @@
                     :key="header"
                     :scope="header === 'Selected' ? 'col' : null"
                     :class="[
-                        header !== 'AccountingDate' &&
+                        header !== 'posted_date' &&
                         header !== 'Feature' &&
-                        header !== 'DayVouchers' &&
-                        header !== 'AmountOfMoney'
+                        header !== 'ref_date' &&
+                        header !== 'total_amount'
                             ? 'text-align-left'
                             : '',
-                        header === 'AmountOfMoney' ? 'text-align-right' : '',
-                        header === 'AccountingDate' ? 'min-w160' : '',
-                        header === 'DayVouchers' ? 'min-w160' : '',
-                        header === 'NumberVouchers' ? 'min-w160' : '',
-                        header === 'Interpret' ? 'min-w320' : '',
-                        header === 'AmountOfMoney' ? 'min-w160' : '',
-                        header === 'ObjectCode' ? 'min-w230' : '',
-                        header === 'Object' ? 'min-w160' : '',
-                        header === 'Address' ? 'min-w300' : '',
+                        header === 'total_amount' ? 'text-align-right' : '',
+                        header === 'posted_date' ? 'min-w160' : '',
+                        header === 'ref_date' ? 'min-w160' : '',
+                        header === 'refno_finance' ? 'min-w160' : '',
+                        header === 'journal_memo' ? 'min-w320' : '',
+                        header === 'total_amount' ? 'min-w160' : '',
+                        header === 'supplier_code' ? 'min-w230' : '',
+                        header === 'supplier_name' ? 'min-w160' : '',
+                        header === 'supplier_address' ? 'min-w300' : '',
                         header === 'Feature' ? 'min-w120' : '',
                         header === 'Selected' ? 'min-w40' : '',
                     ]"
@@ -37,8 +37,7 @@
 
                     <template
                         v-else-if="
-                            header === 'AccountingDate' ||
-                            header === 'DayVouchers'
+                            header === 'posted_date' || header === 'ref_date'
                         "
                     >
                         <span>
@@ -50,7 +49,7 @@
                         </span>
                     </template>
 
-                    <template v-else-if="header === 'AmountOfMoney'">
+                    <template v-else-if="header === 'total_amount'">
                         <span>
                             <span class="text-align-right">{{
                                 $t(header)
@@ -74,6 +73,7 @@
             <MSkeletonTable
                 v-if="isShowSkeleton"
                 :dataList="paymentList"
+                :columnCount="headers"
             ></MSkeletonTable>
 
             <tr
@@ -119,39 +119,39 @@
                     </td>
 
                     <MTooltip
-                        v-else-if="header === 'AccountingDate'"
+                        v-else-if="header === 'posted_date'"
                         kind="data"
                         :class="
                             payment?.Selected
                                 ? 'tr-hover text-align-center min-w160'
                                 : 'text-align-center min-w160'
                         "
-                        :text="formatDate(payment?.AccountingDate) || ''"
-                        :subtext="formatDate(payment?.AccountingDate) || ''"
+                        :text="formatDate(payment?.posted_date) || ''"
+                        :subtext="formatDate(payment?.posted_date) || ''"
                     ></MTooltip>
 
                     <MTooltip
-                        v-else-if="header === 'DayVouchers'"
+                        v-else-if="header === 'ref_date'"
                         kind="data"
                         :class="
                             payment?.Selected
                                 ? 'tr-hover text-align-center min-w160'
                                 : 'text-align-center min-w160'
                         "
-                        :text="formatDate(payment?.DayVouchers) || ''"
-                        :subtext="formatDate(payment?.DayVouchers) || ''"
+                        :text="formatDate(payment?.ref_date) || ''"
+                        :subtext="formatDate(payment?.ref_date) || ''"
                     ></MTooltip>
 
                     <MTooltip
-                        v-else-if="header === 'AmountOfMoney'"
+                        v-else-if="header === 'total_amount'"
                         kind="data"
                         :class="
                             payment?.Selected
                                 ? 'tr-hover text-align-right min-w160'
                                 : 'text-align-right min-w160'
                         "
-                        :text="payment?.AmountOfMoney || ''"
-                        :subtext="payment?.AmountOfMoney || ''"
+                        :text="payment?.total_amount || ''"
+                        :subtext="payment?.total_amount || ''"
                     ></MTooltip>
 
                     <MTooltip
@@ -159,13 +159,13 @@
                         kind="data"
                         :className="[
                             payment?.Selected ? 'tr-hover' : '',
-                            header === 'NumberVouchers'
+                            header === 'refno_finance'
                                 ? 'min-w160 drilldown'
                                 : '',
-                            header === 'Interpret' ? 'min-w320' : '',
-                            header === 'ObjectCode' ? 'min-w230' : '',
-                            header === 'Object' ? 'min-w160' : '',
-                            header === 'Address' ? 'min-w300' : '',
+                            header === 'journal_memo' ? 'min-w320' : '',
+                            header === 'supplier_code' ? 'min-w230' : '',
+                            header === 'supplier_name' ? 'min-w160' : '',
+                            header === 'supplier_address' ? 'min-w300' : '',
                         ]"
                         :text="payment[header] || ''"
                         :subtext="payment[header] || ''"
@@ -181,21 +181,21 @@
                     :key="header"
                     :scope="header === 'Selected' ? 'col' : null"
                     :class="[
-                        header !== 'AccountingDate' &&
+                        header !== 'posted_date' &&
                         header !== 'Feature' &&
-                        header !== 'DayVouchers' &&
-                        header !== 'AmountOfMoney'
+                        header !== 'ref_date' &&
+                        header !== 'total_amount'
                             ? 'text-align-left'
                             : '',
-                        header === 'AmountOfMoney' ? 'text-align-right' : '',
-                        header === 'AccountingDate' ? 'min-w160' : '',
-                        header === 'DayVouchers' ? 'min-w160' : '',
-                        header === 'NumberVouchers' ? 'min-w160' : '',
-                        header === 'Interpret' ? 'min-w320' : '',
-                        header === 'AmountOfMoney' ? 'min-w160' : '',
-                        header === 'ObjectCode' ? 'min-w230' : '',
-                        header === 'Object' ? 'min-w160' : '',
-                        header === 'Address' ? 'min-w300' : '',
+                        header === 'total_amount' ? 'text-align-right' : '',
+                        header === 'posted_date' ? 'min-w160' : '',
+                        header === 'ref_date' ? 'min-w160' : '',
+                        header === 'refno_finance' ? 'min-w160' : '',
+                        header === 'journal_memo' ? 'min-w320' : '',
+                        header === 'total_amount' ? 'min-w160' : '',
+                        header === 'supplier_code' ? 'min-w230' : '',
+                        header === 'supplier_name' ? 'min-w160' : '',
+                        header === 'supplier_address' ? 'min-w300' : '',
                         header === 'Feature' ? 'min-w120' : '',
                         header === 'Selected' ? 'min-w40' : '',
                     ]"
@@ -203,7 +203,7 @@
                 >
                     <template v-if="header === 'Selected'"> </template>
 
-                    <template v-else-if="header === 'AccountingDate'">
+                    <template v-else-if="header === 'posted_date'">
                         <span>
                             <span class="text-align-center">{{
                                 $t("Total")
@@ -211,7 +211,7 @@
                         </span>
                     </template>
 
-                    <template v-else-if="header === 'AmountOfMoney'">
+                    <template v-else-if="header === 'total_amount'">
                         <span>
                             <span class="text-align-right"> 2.502.302 </span>
                         </span>
@@ -239,6 +239,7 @@
 <script>
 import MISAResouce from "@/js/resource";
 import MISAEnum from "@/js/enum";
+import axios from "axios";
 import moment from "moment";
 import { VueDraggableNext } from "vue-draggable-next";
 export default {
@@ -248,548 +249,7 @@ export default {
     },
     data() {
         return {
-            paymentList: [
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-                {
-                    AccountingDate: "02/05/2023",
-                    DayVouchers: "02/05/2023",
-                    NumberVouchers: "PT0001",
-                    Interpret: "Chi tiền cho Nguyễn Văn Mạnh",
-                    AmountOfMoney: "1.500.000",
-                    ObjectCode: "KH00002",
-                    Object: "Nguyễn Văn Mạnh",
-                    Address: "139 Nguyễn Tuân - Cầu Giấy - Hà Nội",
-                },
-            ],
+            paymentList: [],
             MISAResouce,
             MISAEnum,
             pageSize: 20,
@@ -802,21 +262,64 @@ export default {
             keyWord: "",
             headers: [
                 "Selected",
-                "AccountingDate",
-                "DayVouchers",
-                "NumberVouchers",
-                "Interpret",
-                "AmountOfMoney",
-                "ObjectCode",
-                "Object",
-                "Address",
+                "posted_date",
+                "ref_date",
+                "refno_finance",
+                "journal_memo",
+                "total_amount",
+                "supplier_code",
+                "supplier_name",
+                "supplier_address",
                 "Feature",
             ],
             isShowSkeleton: false,
+            conditionFilters: "{}",
         };
     },
-
+    /**
+     * Thực hiện lấy dữ liệu khi chuẩn bị mounted vào DOM
+     * Author: KienNT (02/03/2023)
+     */
+    created() {
+        try {
+            this.paymentList = new Array(this.pageSize).fill(0);
+            this.loadData();
+        } catch (error) {
+            console.log(error);
+        }
+    },
     methods: {
+        /**
+         * Call API get data
+         * Author: KienNT (04/06/2023)
+         */
+        loadData() {
+            try {
+                axios
+                    .get(
+                        `https://localhost:7153/api/v1/Payments/Filter?keyword=${this.keyWord}&pageSize=${this.pageSize}&conditionFilters=${this.conditionFilters}&pageNumber=${this.pageNumber}`
+                    )
+                    .then((this.isShowSkeleton = true))
+                    .then((response) => {
+                        this.paymentList = response?.data?.Data.Data;
+                        this.totalRecord = response?.data?.Data.TotalRecord;
+                        this.$emit("getTotalRecord", this.totalRecord);
+                        this.paymentList = this.paymentList.map((x) => {
+                            x.Selected = false;
+                            return x;
+                        });
+
+                        this.isShowSkeleton = false;
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        this.isShowSkeleton = false;
+                    });
+            } catch (error) {
+                console.log(error);
+                this.isShowSkeleton = false;
+            }
+        },
         /**
          * Hàm lấy toại độ sau đó set tọa độ cho contextmenu để hiển thị
          * Author: KienNT (14/05/2023)

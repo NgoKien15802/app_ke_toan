@@ -4,7 +4,18 @@
         <div class="dialog__wrapper">
             <div class="dialog__body">
                 <div class="mi-48"><div :class="iconClass"></div></div>
-                <p class="dialog__text">{{ message }}</p>
+
+                <p
+                    class="dialog__text"
+                    v-if="errorKind === 'errorDelete'"
+                    style="display: flex; flex-direction: column; row-gap: 11px"
+                >
+                    <span style="font-weight: 700; font-family: notosansBold">{{
+                        this.$t("DialogNotifyErrorDelete")
+                    }}</span>
+                    <span>{{ message }}</span>
+                </p>
+                <p class="dialog__text" v-else>{{ message }}</p>
             </div>
             <div data-v-29af0734="" class="mess-line"></div>
             <div
@@ -103,6 +114,9 @@ export default {
         BtnWarningNo: {
             type: String,
             default: "",
+        },
+        errorKind: {
+            type: String,
         },
     },
     data() {

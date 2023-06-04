@@ -3,15 +3,18 @@
         class="input__checkbox-wrapper margin-0"
         @click="this.$emit('handleCheckbox', $event)"
         :style="styleElement"
+        :tabindex="tabindex"
+        ref="labelCheckbox"
     >
         <input
             :id="id"
             type="checkbox"
             class="input__checkbox"
             v-model="valueCheckbox"
+            ref="minput"
         />
 
-        <span class="ms__checkbox select__all-checkbox" :tabindex="tabindex">
+        <span class="ms__checkbox select__all-checkbox">
             <span class="ms__border-checkbox">
                 <div class="ms__checbox-icon"></div>
             </span>
@@ -60,12 +63,29 @@ export default {
     },
     updated() {
         this.valueCheckbox = this.initValue;
+        const labelCheckbox = this.$refs.labelCheckbox;
+        if (labelCheckbox) {
+            if (labelCheckbox.focus()) {
+                alert("d");
+            }
+        }
     },
 
     data() {
         return {
             valueCheckbox: false,
         };
+    },
+    methods: {
+        /**
+         * Set focus khi được mounted và có props isFocus = true
+         * Author: KienNT (03/03/2023)
+         */
+        setFocus() {
+            this.$nextTick(function () {
+                this.$refs["minput"] && this.$refs["minput"].focus();
+            });
+        },
     },
 };
 </script>

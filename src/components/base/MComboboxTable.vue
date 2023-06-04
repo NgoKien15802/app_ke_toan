@@ -244,11 +244,13 @@ export default {
                     : "";
                 axios
                     .get(
-                        `https://localhost:7153/api/v1/Accounts/FilterTable?keyword=${
-                            this.record
-                        }&pageSize=${this.pageSize}&pageNumber=${
-                            this.pageNumber
-                        }&isExpand=${true}&accountIdSort=${this.accountIdSort}`
+                        this.record === ""
+                            ? `https://localhost:7153/api/v1/Accounts/FilterTable?keyword=${
+                                  this.record
+                              }&pageSize=${this.pageSize}&pageNumber=${
+                                  this.pageNumber
+                              }&isExpand=${true}`
+                            : `https://localhost:7153/api/v1/Accounts/AccountSearchPaging?keyword=${this.record}&pageSize=${this.pageSize}&pageNumber=${this.pageNumber}`
                     )
                     .then(this.hideShowLoading(true))
                     .then((response) => {

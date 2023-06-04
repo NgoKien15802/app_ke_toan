@@ -241,7 +241,6 @@
                         v-model="account.is_postable_in_foreign_currency"
                         :initValue="account.is_postable_in_foreign_currency"
                         @handleCheckbox="handleCheckbox($event)"
-                        ref="checkbox"
                         :tabindex="7"
                     ></MCheckbox>
                     <span
@@ -484,7 +483,9 @@
                                                             ref="checkbox"
                                                             tabindex="8"
                                                         ></MCheckbox>
-                                                        <span
+
+                                                        <label
+                                                            for="detail_by_job"
                                                             @click="
                                                                 () =>
                                                                     handleCheckboxAccount(
@@ -492,13 +493,24 @@
                                                                         'detail_by_job'
                                                                     )
                                                             "
+                                                            style="
+                                                                cursor: pointer;
+                                                            "
                                                         >
-                                                            {{
-                                                                $t(
-                                                                    "Detail_by_job"
-                                                                )
-                                                            }}
-                                                        </span>
+                                                            <MTooltip
+                                                                :text="
+                                                                    $t(
+                                                                        'Detail_by_job'
+                                                                    )
+                                                                "
+                                                                :subtext="
+                                                                    $t(
+                                                                        'Detail_by_job_tooltip'
+                                                                    )
+                                                                "
+                                                                kind="title"
+                                                            ></MTooltip>
+                                                        </label>
                                                     </div>
                                                     <div
                                                         class="w-1/2 flex m-flex-row-gap-8"
@@ -881,7 +893,9 @@
                                                             ref="checkbox"
                                                             tabindex="14"
                                                         ></MCheckbox>
-                                                        <span
+
+                                                        <label
+                                                            for="detail_by_expense_item"
                                                             @click="
                                                                 () =>
                                                                     handleCheckboxAccount(
@@ -889,13 +903,24 @@
                                                                         'detail_by_expense_item'
                                                                     )
                                                             "
+                                                            style="
+                                                                cursor: pointer;
+                                                            "
                                                         >
-                                                            {{
-                                                                $t(
-                                                                    "Detail_by_expense_item"
-                                                                )
-                                                            }}
-                                                        </span>
+                                                            <MTooltip
+                                                                :text="
+                                                                    $t(
+                                                                        'Detail_by_expense_item'
+                                                                    )
+                                                                "
+                                                                :subtext="
+                                                                    $t(
+                                                                        'Detail_by_expense_item_tooltip'
+                                                                    )
+                                                                "
+                                                                kind="title"
+                                                            ></MTooltip>
+                                                        </label>
                                                     </div>
                                                     <div
                                                         class="w-1/2 flex m-flex-row-gap-8"

@@ -102,6 +102,7 @@
                                     }
                                 "
                                 class="mi-16 mr-7"
+                                ref="iconExpand"
                                 :class="
                                     account.is_parent
                                         ? account.isExpand
@@ -173,6 +174,9 @@
         "
         :title="
             isDialogError ? $t('DialogNotifyErrorDelete') : $t('DialogWarning')
+        "
+        :errorKind="
+            isDialogError && !isToastWarningNoUpdateState ? 'errorDelete' : ''
         "
         :message="
             isDialogWarning
@@ -320,10 +324,11 @@ export default {
             if (this.keyWord === "") {
                 this.isCallExpand = false;
                 this.cloneAccountCollapse = [];
+                this.loadData();
             } else {
                 this.isCallExpand = true;
+                this.loadData();
             }
-            this.loadData();
         },
 
         /**
@@ -415,7 +420,9 @@ export default {
             try {
                 axios
                     .get(
-                        `https://localhost:7153/api/v1/Accounts/FilterTable?keyword=${this.keyWord}&pageSize=${this.pageSize}&pageNumber=${this.pageNumber}&isExpand=${this.isCallExpand}`
+                        this.keyWord === ""
+                            ? `https://localhost:7153/api/v1/Accounts/FilterTable?keyword=${this.keyWord}&pageSize=${this.pageSize}&pageNumber=${this.pageNumber}&isExpand=${this.isCallExpand}`
+                            : `https://localhost:7153/api/v1/Accounts/AccountSearchPaging?keyword=${this.keyWord}&pageSize=${this.pageSize}&pageNumber=${this.pageNumber}`
                     )
                     // .then(this.hideShowLoading(true))
                     .then((this.isShowSkeleton = true))
@@ -500,11 +507,19 @@ export default {
             // Bỏ handleClickRow với icon ContextMenu khi db click
             const arrIconContextMenu = this.$refs["iconContextMenu"];
             const iconContextMenu = this.$refs["ContextMenu"];
+            const iconExpand = this.$refs["iconExpand"];
+            let check = false;
             for (let index = 0; index < arrIconContextMenu.length; index++) {
                 if (
-                    !event.target.isEqualNode(arrIconContextMenu[index]) &&
-                    !event.target.isEqualNode(iconContextMenu[index])
+                    event.target.isEqualNode(arrIconContextMenu[index]) ||
+                    event.target.isEqualNode(iconContextMenu[index])
                 ) {
+                    check = true;
+                }
+            }
+            for (let index = 0; index < iconExpand.length; index++) {
+                const element = iconExpand[index];
+                if (!event.target.isEqualNode(element) && !check) {
                     this.$emit("onDoubleClick", account, this.accounts);
                 }
             }

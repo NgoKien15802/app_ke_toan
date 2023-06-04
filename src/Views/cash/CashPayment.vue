@@ -110,7 +110,9 @@
                     ref="masterSection"
                 >
                     <div class="content__main-table">
-                        <TheTablePayment></TheTablePayment>
+                        <TheTablePayment
+                            @getTotalRecord="getTotalRecord"
+                        ></TheTablePayment>
                     </div>
                     <!--  paging -->
                     <ThePaging
@@ -170,7 +172,7 @@ import ThePaging from "@/components/base/MPaging.vue";
 import MISAEnum from "@/js/enum";
 import MISAResouce from "@/js/resource";
 import TheTablePaymentDetail from "@/components/layout/TheTablePaymentDetail.vue";
-import TheCashDetail from "../../components/layout/TheCashDetail.vue";
+import TheCashDetail from "../account/TheCashDetail.vue";
 export default {
     name: "CashPayment",
     components: {
@@ -204,6 +206,14 @@ export default {
     },
 
     methods: {
+        /**
+         * Hàm gán số bản ghi từ con emit lên
+         * Author: KienNT (04/06/2023)
+         *  @param (totalRecord): tham số 1 là số bản ghi
+         */
+        getTotalRecord(totalRecord) {
+            this.totalRecord = totalRecord;
+        },
         closeCashDetail() {
             this.isCashDetail = false;
         },
