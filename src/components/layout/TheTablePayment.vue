@@ -82,7 +82,7 @@
                 :key="index"
                 @dblclick="($event) => doubleClickRow($event, payment)"
                 :class="payment?.Selected ? 'tr-hover' : ''"
-                @click="handleActiveRow($event)"
+                @click="handleActiveRow($event, payment)"
                 ref="trElementRef"
             >
                 <template v-for="header in headers" :key="header">
@@ -94,7 +94,13 @@
                         <MCheckbox
                             v-model="payment.Selected"
                             :initValue="payment.Selected"
-                            @handleCheckbox="handleCheckbox($event)"
+                            @handleCheckbox="
+                                handleCheckbox(
+                                    $event,
+                                    payment.refid,
+                                    payment.refno_finance
+                                )
+                            "
                             ref="checkbox"
                         ></MCheckbox>
                     </td>
@@ -150,8 +156,16 @@
                                 ? 'tr-hover text-align-right min-w160'
                                 : 'text-align-right min-w160'
                         "
-                        :text="payment?.total_amount || ''"
-                        :subtext="payment?.total_amount || ''"
+                        :text="
+                            payment[header]
+                                ? numberWithCommas(Math.round(payment[header]))
+                                : 0
+                        "
+                        :subtext="
+                            payment[header]
+                                ? numberWithCommas(Math.round(payment[header]))
+                                : 0
+                        "
                     ></MTooltip>
 
                     <MTooltip
@@ -206,14 +220,20 @@
                     <template v-else-if="header === 'posted_date'">
                         <span>
                             <span class="text-align-center">{{
-                                $t("Total")
+                                !isShowSkeleton ? $t("Total") : ""
                             }}</span>
                         </span>
                     </template>
 
                     <template v-else-if="header === 'total_amount'">
                         <span>
-                            <span class="text-align-right"> 2.502.302 </span>
+                            <span class="text-align-right">
+                                {{
+                                    !isShowSkeleton
+                                        ? numberWithCommas(totalMoney)
+                                        : ""
+                                }}
+                            </span>
                         </span>
                     </template>
                     <template v-else-if="header === 'Feature'"> </template>
@@ -247,6 +267,20 @@ export default {
     components: {
         draggable: VueDraggableNext,
     },
+    props: {
+        pageSizeNumber: {
+            type: String,
+        },
+        pageCurrent: {
+            type: String,
+        },
+        selectedEmployeeIds: {
+            type: Array,
+        },
+        keyWordSearch: {
+            type: String,
+        },
+    },
     data() {
         return {
             paymentList: [],
@@ -274,11 +308,60 @@ export default {
             ],
             isShowSkeleton: false,
             conditionFilters: "{}",
+            totalMoney: 0,
+            oldCheckedArr: [],
         };
+    },
+    watch: {
+        /**
+         * Theo dõi sự thay đổi pageSizeNumber. nếu pagesize thay đổi
+         * Author: KienNT (04/06/2023)
+         */
+        pageSizeNumber: function () {
+            this.pageSize = this.pageSizeNumber;
+            if (this.pageNumber == 1) {
+                this.loadData();
+            }
+        },
+
+        /**
+         * Theo dõi sự thay đổi pageCurrent. khi click vào btn next
+         * Author: KienNT (04/06/2023)
+         */
+
+        pageCurrent: function () {
+            this.pageNumber = this.pageCurrent;
+            this.loadData();
+        },
+
+        /**
+         * Theo dõi sự thay đổi selectedCheckbox. nếu mảng rỗng thì cho các checkbox = false,...
+         * Author: KienNT (15/03/2023)
+         */
+        selectedCheckbox: function () {
+            if (this.selectedCheckbox <= 0) {
+                this.employees = this.employees.map((x) => {
+                    x.Selected = false;
+                    return x;
+                });
+                this.oldCheckedArr = [];
+                this.selectedAll = false;
+            }
+        },
+
+        /**
+         * Theo dõi sự thay đổi keyWordSearch. tìm kiếm thay đổi
+         * Author: KienNT (04/06/2023)
+         */
+        keyWordSearch: function () {
+            this.keyWord = this.keyWordSearch;
+            this.pageNumber = 1;
+            this.loadData();
+        },
     },
     /**
      * Thực hiện lấy dữ liệu khi chuẩn bị mounted vào DOM
-     * Author: KienNT (02/03/2023)
+     * Author: KienNT (04/06/2023)
      */
     created() {
         try {
@@ -308,6 +391,9 @@ export default {
                             x.Selected = false;
                             return x;
                         });
+                        this.totalMoney = this.paymentList.reduce((acc, el) => {
+                            return acc + Math.round(el?.total_amount);
+                        }, 0);
 
                         this.isShowSkeleton = false;
                     })
@@ -320,9 +406,97 @@ export default {
                 this.isShowSkeleton = false;
             }
         },
+
+        /**
+         * Xử lý khi click vào select all
+         * Author: KienNT (06/03/2023)
+         *  @param (event): là event
+         */
+        handleCheckboxAll(event) {
+            try {
+                if (event.target.checked) {
+                    this.paymentList.forEach((el) => {
+                        const index = this.oldCheckedArr.indexOf(el.refid);
+                        if (index === -1) {
+                            this.oldCheckedArr.push(el.refid);
+                        }
+                    });
+                } else {
+                    this.oldCheckedArr = [];
+                }
+                this.$emit("handleSelectChechbox", this.oldCheckedArr);
+                this.paymentList = this.paymentList.map((x) => {
+                    x.Selected = event.target.checked;
+                    return x;
+                });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
+         * Xử lý khi click vào select item
+         * Author: KienNT (06/03/2023)
+         *   @param (event): là event
+         */
+        handleCheckbox(event, refid) {
+            const index = this.oldCheckedArr.indexOf(refid);
+            if (!event.target.checked) {
+                this.selectedAll = event.target.checked;
+                if (index !== -1) {
+                    this.oldCheckedArr.splice(index, 1);
+                }
+            } else {
+                if (index === -1) {
+                    this.oldCheckedArr.push(refid);
+                    this.$emit("handleSelectChechbox", this.oldCheckedArr);
+                }
+            }
+            if (this.oldCheckedArr.length >= this.pageSize) {
+                this.selectedAll = true;
+            } else {
+                this.selectedAll = false;
+            }
+        },
+
+        /**
+         * Xử lý khi click vào hàng
+         * Author: KienNT (27/03/2023)
+
+         */
+        handleActiveRow(event, payment) {
+            const trElements = this.$refs["trElementRef"];
+            for (let index = 0; index < trElements.length; index++) {
+                const element = trElements[index];
+                const isChecked =
+                    element.firstElementChild.firstElementChild
+                        .firstElementChild.checked;
+                let children = element.childNodes;
+                for (const node of children) {
+                    if (node.tagName && node.tagName.toLowerCase() === "td") {
+                        if (node.classList.contains("tr-hover") && !isChecked) {
+                            node.classList.remove("tr-hover");
+                            element.classList.remove("tr-hover");
+                        }
+                    }
+                }
+            }
+            const trElement = event.target.parentNode;
+            if (trElement.hasChildNodes()) {
+                let children = trElement.childNodes;
+
+                for (const node of children) {
+                    if (node.tagName && node.tagName.toLowerCase() === "td") {
+                        node.classList.add("tr-hover");
+                    }
+                }
+            }
+            this.$emit("handleClickPayment", payment);
+        },
+
         /**
          * Hàm lấy toại độ sau đó set tọa độ cho contextmenu để hiển thị
-         * Author: KienNT (14/05/2023)
+         * Author: KienNT (04/06/2023)
          *  @param (event,employee): tham số 1 là event, tham số 2 là thông tin của 1 nhân viên
          */
         handleClickOptionMenu(event, payment) {
@@ -342,17 +516,24 @@ export default {
 
         /**
          * Hàm ẩn contextmenu khi click ra ngoài element
-         * Author: KienNT (14/05/2023)
+         * Author: KienNT (04/06/2023)
          */
         hideContextMenu() {
             this.isContextMenu = !this.isContextMenu;
+        },
+        /**
+         * format cho số lớn
+         * Author: KienNT (04/06/2023)
+         */
+        numberWithCommas(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         },
     },
 
     computed: {
         /**
          * Hàm thực hiện format date
-         * Author: KienNT (02/03/2023)
+         * Author: KienNT (04/06/2023)
          * @param (value): tham số là chuỗi date cần format
          */
         formatDate() {
@@ -372,4 +553,29 @@ export default {
 
 <style scoped>
 @import url(@/css/components/tablePayment.css);
+
+.employee thead tr th:first-child,
+.employee tbody tr td:first-child,
+.employee tfoot tr th:first-child {
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
+    border-right: 0;
+}
+
+.employee thead tr th:first-child,
+.employee tfoot tr th:first-child,
+.employee tbody tr td:first-child {
+    left: 0;
+}
+
+.employee tbody tr td:first-child::after {
+    content: "";
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 4;
+    border-right: 1px dotted #babec5;
+}
 </style>

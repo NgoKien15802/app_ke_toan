@@ -20,6 +20,8 @@ import MOptionItem from "./components/base/MOptionItem.vue";
 import MComboboxTable from "./components/base/MComboboxTable.vue";
 import MLoadingCombobox from "./components/base/MLoadingCombobox.vue";
 
+import MPaging from "./components/base/MPaging.vue";
+
 const i18n = createI18n({
     locale: localStorage.getItem("lang") || "vi",
     messages: MISAResouce,
@@ -53,6 +55,7 @@ app.component("MCombobox", MCombobox);
 app.component("MOptionItem", MOptionItem);
 app.component("MComboboxTable", MComboboxTable);
 app.component("MLoadingCombobox", MLoadingCombobox);
+app.component("MPaging", MPaging);
 
 app.use(i18n);
 

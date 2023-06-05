@@ -336,7 +336,7 @@
                 </div>
 
                 <!--  paging -->
-                <ThePaging
+                <MPaging
                     :totalRecord="totalRecord"
                     @handleClickOptionItem="handleClickOptionItem"
                     @handleClickPrev="handleClickPrev"
@@ -345,7 +345,7 @@
                     :isDisabledClickPrev="isDisabledClickPrev"
                     @setIsDisabledClickPrev="setIsDisabledClickPrev"
                     @handleClickPageIndex="handleClickPageIndex"
-                ></ThePaging>
+                ></MPaging>
 
                 <!--  popup -->
                 <ThePopup
@@ -401,7 +401,6 @@
 import MISAResouce from "@/js/resource";
 import axios from "axios";
 import TheTable from "@/components/layout/TheTable.vue";
-import ThePaging from "@/components/base/MPaging.vue";
 import Mloading from "@/components/base/Mloading.vue";
 import TheSettingUI from "@/components/layout/TheSettingUI.vue";
 
@@ -446,7 +445,6 @@ export default {
     },
     components: {
         TheTable,
-        ThePaging,
         ThePopup,
         Mloading,
         TheSettingUI,

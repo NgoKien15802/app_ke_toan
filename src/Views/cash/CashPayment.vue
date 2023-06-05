@@ -111,15 +111,26 @@
                 >
                     <div class="content__main-table">
                         <TheTablePayment
+                            :pageSizeNumber="pageSize"
+                            :pageCurrent="pageNumber"
                             @getTotalRecord="getTotalRecord"
+                            :selectedCheckbox="selectedCheckbox"
+                            @handleSelectChechbox="handleSelectChechbox"
+                            @handleClickPayment="handleClickPayment"
+                            :keyWordSearch="keyWordSearch"
                         ></TheTablePayment>
                     </div>
                     <!--  paging -->
-                    <ThePaging
+                    <MPaging
                         :totalRecord="totalRecord"
+                        @handleClickOptionItem="handleClickOptionItem"
+                        @handleClickPrev="handleClickPrev"
+                        @handleClickNext="handleClickNext"
+                        @handleClickPageIndex="handleClickPageIndex"
                         :pageCurrent="pageNumber"
                         :isDisabledClickPrev="isDisabledClickPrev"
-                    ></ThePaging>
+                        @setIsDisabledClickPrev="setIsDisabledClickPrev"
+                    ></MPaging>
                 </div>
 
                 <div class="detail-section minisize" ref="detailSection">
@@ -145,13 +156,15 @@
                                 min-width: calc(100% + 0px);
                             "
                         >
-                            <TheTablePaymentDetail></TheTablePaymentDetail>
+                            <TheTablePaymentDetail
+                                :paymentIdClick="paymentIdClick"
+                            ></TheTablePaymentDetail>
                             <!--  paging -->
-                            <ThePaging
+                            <!-- <MPaging
                                 :totalRecord="totalRecord"
                                 :pageCurrent="pageNumber"
                                 :isDisabledClickPrev="isDisabledClickPrev"
-                            ></ThePaging>
+                            ></MPaging> -->
                         </div>
                     </div>
                 </div>
@@ -168,7 +181,6 @@
 <script>
 import TheCash from "@/components/layout/sidebar/TheCash.vue";
 import TheTablePayment from "@/components/layout/TheTablePayment.vue";
-import ThePaging from "@/components/base/MPaging.vue";
 import MISAEnum from "@/js/enum";
 import MISAResouce from "@/js/resource";
 import TheTablePaymentDetail from "@/components/layout/TheTablePaymentDetail.vue";
@@ -178,7 +190,6 @@ export default {
     components: {
         TheCash,
         TheTablePayment,
-        ThePaging,
         TheTablePaymentDetail,
         TheCashDetail,
     },
@@ -202,9 +213,20 @@ export default {
             leftContextMenu: "",
             topContextMenu: "",
             isDetail: false,
+            paymentIdClick: "",
         };
     },
 
+    watch: {
+        /**
+         * Hàm khi thay đổi keyword thì quay lại trang đầu nếu là rỗng
+         * Author: KienNT (26/05/2023)
+         */
+        keyWordSearch: function () {
+            this.pageNumber = 1;
+            this.isDisabledClickPrev = true;
+        },
+    },
     methods: {
         /**
          * Hàm gán số bản ghi từ con emit lên
@@ -219,15 +241,93 @@ export default {
         },
         /**
          * Hàm show cash deatil khi click btn Chi tiền
-         * Author: KienNT (25/05/2023)
+         * Author: KienNT (04/06/2023)
          */
         showCashDetail() {
             this.isCashDetail = true;
         },
 
         /**
+         * Hàm click icon previous trang
+         * Author: KienNT (04/06/2023)
+         */
+        handleClickPrev() {
+            if (this.pageNumber > 1) {
+                this.pageNumber -= 1;
+                this.isDisabledClickPrev = false;
+            }
+            if (this.pageNumber == 1) {
+                this.isDisabledClickPrev = true;
+            }
+        },
+
+        /**
+         * Hàm gán giá trị mảng các checkbox được check
+         * Author: KienNT (04/06/2023)
+         *  @param (selectedCheckbox): tham số 1 là mảng checkbox được chọn
+         */
+        handleSelectChechbox(selectedCheckbox) {
+            this.selectedCheckbox = selectedCheckbox;
+        },
+
+        /**
+         * Hàm thực hiện cho các checkbox bỏ chọn
+         * Author: KienNT (04/06/2023)
+         */
+        handleUndoSeleted() {
+            this.selectedCheckbox = [];
+        },
+
+        handleClickPayment(payment) {
+            this.paymentIdClick = payment.refid;
+        },
+
+        /**
+         * Hàm click vào pageindex
+         * Author: KienNT (04/06/2023)
+         */
+        handleClickPageIndex(index) {
+            if (index > 1) {
+                this.isDisabledClickPrev = false;
+            }
+            if (index == 1) {
+                this.isDisabledClickPrev = true;
+            }
+            this.pageNumber = index;
+        },
+
+        /**
+         * Hàm thực hiện disabled div prev khi click vào chọn bản ghi trên 1 trang từ con emit lên
+         * Author: KienNT (04/06/2023)
+         */
+        setIsDisabledClickPrev() {
+            this.isDisabledClickPrev = true;
+        },
+
+        /**
+         * Hàm click option, lấy pageSize
+         *  Author: KienNT (04/06/2023)
+         *  @param (pageSize): tham số 1 là số bản ghi trên 1 trang
+         */
+        handleClickOptionItem(pageSize) {
+            this.pageSize = pageSize;
+            this.pageNumber = 1;
+        },
+
+        /**
+         * Hàm click icon Next trang
+         * Author: KienNT (04/06/2023)
+         */
+        handleClickNext() {
+            this.pageNumber += 1;
+            if (this.pageNumber > 1) {
+                this.isDisabledClickPrev = false;
+            }
+        },
+
+        /**
          * Hàm show detail
-         * Author: KienNT (25/05/2023)
+         * Author: KienNT (04/06/2023)
          */
         handleShowDetailSection() {
             const masterSection = this.$refs["masterSection"];
@@ -242,7 +342,7 @@ export default {
         },
         /**
          * Hàm ẩn contextmenu khi click ra ngoài element
-         * Author: KienNT (25/05/2023)
+         * Author: KienNT (04/06/2023)
          */
         hideContextMenu() {
             this.isContextMenu = !this.isContextMenu;

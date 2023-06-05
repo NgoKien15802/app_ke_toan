@@ -87,7 +87,7 @@
                 </div>
 
                 <!--  paging -->
-                <ThePaging
+                <MPaging
                     :totalRecord="totalRecord"
                     :countRecord="countRecord"
                     @handleClickOptionItem="handleClickOptionItem"
@@ -97,7 +97,7 @@
                     :pageCurrent="pageNumber"
                     :isDisabledClickPrev="isDisabledClickPrev"
                     @setIsDisabledClickPrev="setIsDisabledClickPrev"
-                ></ThePaging>
+                ></MPaging>
 
                 <!--  AccountSystermDetail -->
                 <AccountSystermDetail
@@ -171,7 +171,6 @@
 import MISAResouce from "@/js/resource";
 import axios from "axios";
 // import TheTableAccount from "@/components/layout/TheTableAccount.vue";
-import ThePaging from "@/components/base/MPaging.vue";
 import Mloading from "@/components/base/Mloading.vue";
 import AccountSystermDetail from "./AccountSystermDetail.vue";
 import MISAEnum from "@/js/enum";
@@ -212,7 +211,6 @@ export default {
         };
     },
     components: {
-        ThePaging,
         Mloading,
         AccountSystermDetail,
         TheTableAccount,

@@ -1,7 +1,8 @@
 <template>
     <div class="content__main-paging">
         <p class="content__main-paging-left">
-            {{ $t("TotalNumber") }}: <strong>{{ countRecord }}</strong>
+            {{ $t("TotalNumber") }}:
+            <strong>{{ countRecord || numberWithCommas(totalRecord) }}</strong>
             {{ $t("Record") }}
         </p>
         <div class="content__main-paging-right">
@@ -66,7 +67,9 @@
                 </div> -->
                 <paginate
                     v-model="page"
-                    :page-count="Math.ceil(totalRecord / pageIndex)"
+                    :page-count="
+                        numberWithCommas(Math.ceil(totalRecord / pageIndex))
+                    "
                     :page-range="3"
                     :margin-pages="1"
                     :click-handler="handleClickPageIndex"
@@ -95,7 +98,7 @@
 import MISAResouce from "../../js/resource";
 import Paginate from "vuejs-paginate-next";
 export default {
-    name: "ThePaging",
+    name: "MPaging",
 
     props: {
         totalRecord: {
@@ -115,30 +118,26 @@ export default {
         return {
             MISAResouce,
             isOpenDropdown: false,
-            valueInput: `5 ${this.$t("RecordInPage")}`,
+            valueInput: `20 ${this.$t("RecordInPage")}`,
             optionItem: [
                 {
-                    text: 5,
+                    text: 10,
+                    isActive: false,
+                },
+                {
+                    text: 20,
                     isActive: true,
                 },
                 {
-                    text: 6,
+                    text: 50,
                     isActive: false,
                 },
                 {
-                    text: 7,
-                    isActive: false,
-                },
-                {
-                    text: 8,
-                    isActive: false,
-                },
-                {
-                    text: 9,
+                    text: 100,
                     isActive: false,
                 },
             ],
-            pageIndex: 5,
+            pageIndex: 20,
             pageNumber: 1,
             offset: 0,
         };
@@ -150,10 +149,6 @@ export default {
         pageCurrent: function () {
             this.pageNumber = this.pageCurrent;
             this.offset = (this.pageNumber - 1) * this.pageIndex;
-        },
-
-        countRecord: function () {
-            console.log(this.totalRecord);
         },
     },
 
@@ -263,6 +258,14 @@ export default {
          */
         handleClickPageIndex(index) {
             this.$emit("handleClickPageIndex", index);
+        },
+
+        /**
+         * format cho số lớn
+         * Author: KienNT (04/06/2023)
+         */
+        numberWithCommas(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         },
     },
 };
