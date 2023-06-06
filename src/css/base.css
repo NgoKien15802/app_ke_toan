@@ -440,6 +440,18 @@ div.disabled {
     min-height: 8px;
 }
 
+.w-400 {
+    width: 400px;
+}
+
+.w-1000 {
+    width: 1000px;
+}
+
+.w-711 {
+    width: 711px;
+}
+
 .min-w40 {
     min-width: 40px;
 }
@@ -448,12 +460,28 @@ div.disabled {
     min-width: 160px;
 }
 
+.min-w150 {
+    min-width: 150px;
+}
+
+.min_height-row {
+    line-height: 28px;
+}
+
 .min-w320 {
     min-width: 320px;
 }
 
+.min-w240 {
+    min-width: 240px;
+}
+
 .min-w250 {
     min-width: 250px;
+}
+
+.min-w190 {
+    min-width: 190px;
 }
 
 .min-w350 {

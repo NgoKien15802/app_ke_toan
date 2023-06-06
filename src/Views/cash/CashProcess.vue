@@ -46,11 +46,11 @@
                         </ul>
                     </div>
                 </div>
-                <div class="cash__report">
+                <!-- <div class="cash__report">
                     <div class="cash__report-title">
                         {{ $t("Report") }}
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </TheCash>
@@ -83,4 +83,8 @@ export default {
 
 <style scoped>
 @import url(@/css/layout/sidebar/cash.css);
+svg#Layer_1 {
+    width: 100%;
+    height: 100%;
+}
 </style>

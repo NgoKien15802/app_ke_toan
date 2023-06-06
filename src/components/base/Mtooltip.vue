@@ -12,7 +12,11 @@
         v-else-if="kind === 'data'"
         :class="[className != '' && className, subtext !== '' ? 'tooltip' : '']"
     >
-        <span class="text-only-line">{{ text }}</span>
+        <span
+            class="text-only-line"
+            :class="kindData === 'supplierCode' ? 'min_height-row' : ''"
+            >{{ text }}</span
+        >
         <span class="tooltipData account">{{ subtext }}</span>
     </td>
 
@@ -62,7 +66,9 @@ export default {
         kind: {
             type: String,
             default: "title",
-            required: true,
+        },
+        kindData: {
+            type: String,
         },
 
         // Style css
@@ -89,6 +95,9 @@ export default {
 
         grade: {
             type: Number,
+        },
+        kindOf: {
+            type: String,
         },
     },
 };

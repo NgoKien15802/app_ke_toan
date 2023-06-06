@@ -68,7 +68,11 @@
                 <paginate
                     v-model="page"
                     :page-count="
-                        numberWithCommas(Math.ceil(totalRecord / pageIndex))
+                        countRecord
+                            ? Math.ceil(totalRecord / pageIndex)
+                            : numberWithCommas(
+                                  Math.ceil(totalRecord / pageIndex)
+                              )
                     "
                     :page-range="3"
                     :margin-pages="1"

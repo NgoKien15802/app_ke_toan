@@ -129,7 +129,7 @@
 /* 
 .paymentList thead tr th:nth-child(3),
 .paymentList thead tr th:nth-child(2), */
-.paymentList thead tr th:first-child {
+.paymentList thead tr.popup__payment-detail-row th:first-child {
     background-color: #eeeeee;
 }
 
@@ -182,17 +182,23 @@
     line-height: 2rem;
 }
 
-.paymentList tr:hover td:nth-child(2),
-.paymentList tr:hover td:nth-child(3),
-.paymentList tr:hover td:last-child,
-.paymentList tr:hover td:first-child,
-.paymentList tr:hover {
+/* .paymentList .popup__payment-detail-row:hover td:nth-child(2),
+.paymentList .popup__payment-detail-row:hover td:nth-child(3),
+.paymentList .popup__payment-detail-row:hover td:last-child,
+.paymentList .popup__payment-detail-row:hover td:first-child, */
+
+tr.popup__payment-detail-row:hover .hover-row,
+tr.popup__payment-detail-row:hover {
     background-color: #e5f3ff;
 }
 
-.tr-hover {
+.tr-hover_editable {
     background-color: #e5f3ff !important;
 }
+
+/* .tr-hover {
+    background-color: #e5f3ff !important;
+} */
 
 .paymentList__checkbox {
     width: 24px;

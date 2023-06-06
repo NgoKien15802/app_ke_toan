@@ -254,6 +254,22 @@
         @hideContextMenu="hideContextMenu"
         :refElement="this.$refs.iconContextMenu"
     ></MContextmenu>
+
+    <MDialog
+        v-if="isDialogWarning || isDialogDeleteMul"
+        iconClass="dialog__icon-warning"
+        :title="$t('DialogWarning')"
+        :message="$t('MessageWarning')"
+        :BtnWarningNo="$t('BtnDestroyDialog')"
+        :textButton="$t('BtnYes')"
+        @onBtnWarningNo="onBtnWarningNo"
+        @onBtnWarningYes="
+            onBtnWarningYes(
+                isDialogWarning ? 'isDialogWarning' : 'isDialogDeleteMul'
+            )
+        "
+        kind="warning"
+    ></MDialog>
 </template>
 
 <script>
@@ -294,6 +310,8 @@ export default {
             topContextMenu: "",
             totalRecord: 0,
             keyWord: "",
+            isDialogDeleteMul: false,
+            isDialogWarning: false,
             headers: [
                 "Selected",
                 "posted_date",

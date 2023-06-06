@@ -13,6 +13,10 @@ const MISAResouce = {
         BankAccount: "Số tài khoản",
         BankName: "Tên ngân hàng",
         BankBranch: "Chi nhánh TK ngân hàng",
+        phone_number: "Số điện thoại",
+        fullname: "Tên nhân viên",
+        employee_code: "Mã nhân viên",
+        department_name: "Tên đơn vị",
 
         // Feature
         Feature: "Chức năng",
@@ -135,6 +139,8 @@ const MISAResouce = {
         DialogWarning: "Cảnh báo",
         MessageNotify: "Dữ liệu đã thay đổi. Bạn có muốn cất không?",
         MessageWarning: "Bạn có muốn xóa nhân viên ",
+        MessageWarningDeleteLine:
+            "Bạn có thực sự muốn xóa tất cả các dòng đã nhập không?",
         MessageWarningAccount: "Bạn có muốn xóa tài khoản ",
         MessageUpdateAccount:
             'Bạn có muốn thiết lập trạng thái "Sử dụng" cho tất cả <Tài khoản> con không?',
@@ -178,6 +184,7 @@ const MISAResouce = {
         //navbar cash
         Process: "Quy trình",
         Payment: "Chi tiền",
+        PaymentFor: "Chi tiền cho",
         ReceiveMoney: "Thu tiền",
         Stocktaking: "Kiểm kê",
         CashFlowForecast: "Dự báo dòng tiền",
@@ -269,7 +276,9 @@ const MISAResouce = {
         supplier_name: "Đối tượng",
         Detail: "Chi tiết",
         debit_account: "TK nợ",
+        debit_accountTooltip: "Tài khoản nợ",
         credit_account: "TK có",
+        credit_accountTooltip: "Tài khoản có",
         ObjectName: "Tên đối tượng",
         PaymentTitle: "Phiếu chi",
         supplier_address: "Địa chỉ",
@@ -290,6 +299,9 @@ const MISAResouce = {
         LabelAccounting: "Hạch toán",
         AddLine: "Thêm dòng",
         DeleteAllLine: "Xóa hết dòng",
+        OtherExpenses: "7. Chi khác",
+        supplier_tax_code: "Mã số thuế",
+        supplier_phone_number: "Điện thoại",
 
         //other
         Username: "Ngô Trung Kiên",
@@ -309,6 +321,11 @@ const MISAResouce = {
         BankAccount: "Bank account",
         BankName: "Bank name",
         BankBranch: "Bank branch",
+
+        phone_number: "Phone number",
+        fullname: "Employee name",
+        employee_code: "Employee code",
+        department_name: "Department name",
 
         // Feature
         Feature: "Feature",
@@ -430,6 +447,8 @@ const MISAResouce = {
 
         MessageNotify: "Data has changed. Do you want to save it?",
         MessageWarning: "Do you want to delete an employee ",
+        MessageWarningDeleteLine:
+            "Do you really want to delete all entered lines?",
         MessageWarningAccount: "Do you want to delete account ",
         MessageUpdateAccount:
             'Do you want to set "Using" status for all <Account> children?',
@@ -467,6 +486,7 @@ const MISAResouce = {
         //navbar cash
         Process: "Progress",
         Payment: "Payment",
+        PaymentFor: "Payment for",
         ReceiveMoney: "Receive money",
         Stocktaking: "StockTaking",
         CashFlowForecast: "Cash flow forecast",
@@ -580,6 +600,9 @@ const MISAResouce = {
         LabelAccounting: "Accounting",
         AddLine: "Add line",
         DeleteAllLine: "Delete all lines",
+        OtherExpenses: "7. Other expenses",
+        supplier_tax_code: "Tax code",
+        supplier_phone_number: "Phone number",
 
         //other
         Username: "Kien Ngo Trung",

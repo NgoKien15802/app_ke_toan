@@ -55,11 +55,12 @@
                 @dblclick="($event) => doubleClickRow($event, paymentDetail)"
                 @click="handleActiveRow($event)"
                 ref="trElementRef"
+                class="popup__payment-detail-row"
             >
                 <template v-for="header in headers" :key="header">
                     <td
                         v-if="header === 'Selected'"
-                        class="text-align-center min-w40"
+                        class="text-align-center min-w40 hover-row"
                     >
                         <span class="block-center">{{ index + 1 }}</span>
                     </td>
@@ -92,7 +93,9 @@
                             header === 'debit_account' ? 'min-w160' : '',
                             header === 'credit_account' ? 'min-w160' : '',
                             header === 'supplier_code' ? 'min-w160' : '',
-                            header === 'supplier_name' ? 'min-w630' : '',
+                            header === 'supplier_name'
+                                ? 'min-w630 hover-row'
+                                : '',
                         ]"
                         :text="paymentDetail[header] || ''"
                         :subtext="paymentDetail[header] || ''"
@@ -102,7 +105,7 @@
         </tbody>
 
         <tfoot>
-            <tr class="table__payment-field">
+            <tr class="table__payment-field popup__payment-detail-row">
                 <th
                     v-for="header in headers"
                     :key="header"

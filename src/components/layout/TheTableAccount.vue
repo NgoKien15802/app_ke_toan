@@ -255,7 +255,7 @@ export default {
             MISAResouce,
             accounts: [],
             isContextMenu: false,
-            pageSize: 5,
+            pageSize: 20,
             pageNumber: 1,
             totalRecord: 0,
             totalRecordParent: 0,

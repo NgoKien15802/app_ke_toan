@@ -184,7 +184,7 @@ import TheTablePayment from "@/components/layout/TheTablePayment.vue";
 import MISAEnum from "@/js/enum";
 import MISAResouce from "@/js/resource";
 import TheTablePaymentDetail from "@/components/layout/TheTablePaymentDetail.vue";
-import TheCashDetail from "../account/TheCashDetail.vue";
+import TheCashDetail from "./PaymentDetail.vue";
 export default {
     name: "CashPayment",
     components: {

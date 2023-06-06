@@ -153,6 +153,13 @@
     z-index: 2;
 }
 
+.employee tfoot tr th:last-child {
+    position: sticky;
+    top: 0;
+    right: -1px;
+    z-index: 2;
+}
+
 /* .employee thead tr th:last-child {
     background-color: #eeeeee;
 } */
@@ -178,6 +185,30 @@
 }
 
 .employee tbody tr td:last-child {
+    background-color: #ffff;
+}
+
+.employee tfoot tr td:last-child::after {
+    content: "";
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 4;
+    border-right: 1px dotted var(--boder-primary);
+}
+
+.employee tfoot tr th:last-child::after {
+    content: "";
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 4;
+    border-right: 1px solid var(--boder-primary);
+}
+
+.employee tfoot tr td:last-child {
     background-color: #ffff;
 }
 
