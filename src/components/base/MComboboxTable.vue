@@ -378,6 +378,9 @@ export default {
         styleTranX: {
             type: String,
         },
+        kindAccount:{
+            type:String
+        }
     },
     data() {
         return {
@@ -413,6 +416,7 @@ export default {
             //         this.dataTable && this.dataTable[0]?.account_number;
             // }
             this.record = newValue;
+
         },
     },
 
@@ -1058,6 +1062,13 @@ export default {
         this.scrollToBottomEmployee();
         window.addEventListener("click", this.handleClickOutCombobox);
         this.scrollToBottom();
+        if (this.kind === "supplierCode") {
+            this.record = this.recordData;
+            this.loadData();
+        }
+        if(this.kindAccount==="accountPaymentDetail"){
+            this.record = this.recordData;
+        }
     },
     beforeUnmount() {
         this.scrollToBottomEmployee();

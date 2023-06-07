@@ -94,5 +94,9 @@
 
 .kindNumber {
     text-align: right;
+}
+
+.kindNumber::placeholder{
     font-style: italic;
+
 }

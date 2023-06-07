@@ -15,7 +15,8 @@
                                             <div class="recent-log-btn"></div>
                                         </div>
                                         <div class="title__popup-detail">
-                                            {{ $t("PaymentTitle") }} xxx15
+                                            {{ $t("PaymentTitle") }}
+                                            {{ payment.refno_finance }}
                                         </div>
                                         <div class="header-detail-input">
                                             <div
@@ -202,14 +203,14 @@
                                                                         "
                                                                         tabindex="4"
                                                                         @selectedRecord="
-                                                                            selectedRecord
+                                                                            selectedSupplierPayment
                                                                         "
                                                                         :scrollElement="
                                                                             scrollElementSupplier
                                                                         "
                                                                         kind="supplierCode"
                                                                         :recordData="
-                                                                            supplierCode
+                                                                            supplierCodePayment
                                                                         "
                                                                         :headersColumn="[
                                                                             'supplier_code',
@@ -242,7 +243,7 @@
                                                                         kind="default"
                                                                         ref="txtObjectName"
                                                                         v-model="
-                                                                            payment.ObjectName
+                                                                            payment.payment_supplier_name
                                                                         "
                                                                     />
                                                                 </div>
@@ -268,7 +269,7 @@
                                                                         kind="default"
                                                                         ref="txtReceiver"
                                                                         v-model="
-                                                                            payment.Receiver
+                                                                            payment.payment_receiver
                                                                         "
                                                                     />
                                                                 </div>
@@ -290,7 +291,7 @@
                                                                         kind="default"
                                                                         ref="txtAddress"
                                                                         v-model="
-                                                                            payment.Address
+                                                                            payment.payment_supplier_address
                                                                         "
                                                                     />
                                                                 </div>
@@ -384,7 +385,10 @@
                                                                         kind="default"
                                                                         ref="txtAttach"
                                                                         v-model="
-                                                                            payment.Attach
+                                                                            payment.document_included
+                                                                        "
+                                                                        @filterNonNumeric="
+                                                                            filterNonNumeric
                                                                         "
                                                                         className="kindNumber"
                                                                         :placeHolder="
@@ -555,7 +559,7 @@
                                                                     kind="default"
                                                                     ref="txtPaymentNumber"
                                                                     v-model="
-                                                                        payment.PaymentNumber
+                                                                        payment.refno_finance
                                                                     "
                                                                 />
                                                             </div>
@@ -575,7 +579,7 @@
                                                     <h1
                                                         class="summary-info-number"
                                                     >
-                                                        0
+                                                        {{ numberWithCommas(totalMoney)}}
                                                     </h1>
                                                 </div>
                                             </div>
@@ -770,15 +774,15 @@
                                                                         rowPaymentDetail.isEditAble
                                                                     "
                                                                     tabindex="4"
-                                                                    id="journal_memo_detail"
+                                                                    id="description"
                                                                     kind="default"
-                                                                    ref="txtjournal_memo_detail"
+                                                                    ref="txtdescription"
                                                                     v-model="
-                                                                        rowPaymentDetail.journal_memo_detail
+                                                                        rowPaymentDetail.description
                                                                     "
                                                                 />
                                                                 <span v-else>{{
-                                                                    rowPaymentDetail.journal_memo_detail
+                                                                    rowPaymentDetail.description
                                                                 }}</span>
                                                             </td>
                                                             <td
@@ -802,7 +806,19 @@
                                                                     "
                                                                     tabindex="4"
                                                                     @selectedRecord="
-                                                                        selectedDebitAccount
+                                                                        (
+                                                                            account_id,
+                                                                            grade,
+                                                                            misa_code_id,
+                                                                            account_number
+                                                                        ) =>
+                                                                            selectedDebitAccount(
+                                                                                account_id,
+                                                                                grade,
+                                                                                misa_code_id,
+                                                                                account_number,
+                                                                                index
+                                                                            )
                                                                     "
                                                                     style="
                                                                         width: 100px;
@@ -811,8 +827,9 @@
                                                                     "
                                                                     kind="generalAccount"
                                                                     :recordData="
-                                                                        debit_account_id
+                                                                        rowPaymentDetail.debit_account_name
                                                                     "
+                                                                     kindAccount="accountPaymentDetail"
                                                                     :headersColumn="[
                                                                         'account_number',
                                                                         'account_name',
@@ -822,10 +839,13 @@
                                                                         'account_name',
                                                                     ]"
                                                                     @setValueInputComboboxTable="
-                                                                        setValueInputComboboxTableDebitAccount
+                                                                        setValueInputComboboxTableDebitAccount(index)
                                                                     "
                                                                     kindOf="debitAccount"
                                                                 ></MComboboxTable>
+                                                                <span v-else>{{
+                                                                    rowPaymentDetail.debit_account_name
+                                                                }}</span>
                                                             </td>
                                                             <td
                                                                 class="min-w100"
@@ -850,11 +870,24 @@
                                                                     "
                                                                     tabindex="4"
                                                                     @selectedRecord="
-                                                                        selectedCreditAccount
+                                                                        (
+                                                                            account_id,
+                                                                            grade,
+                                                                            misa_code_id,
+                                                                            account_number
+                                                                        ) =>
+                                                                            selectedCreditAccount(
+                                                                                account_id,
+                                                                                grade,
+                                                                                misa_code_id,
+                                                                                account_number,
+                                                                                index
+                                                                            )
                                                                     "
                                                                     kind="generalAccount"
+                                                                    kindAccount="accountPaymentDetail"
                                                                     :recordData="
-                                                                        credit_account_id
+                                                                        rowPaymentDetail.credit_account_name
                                                                     "
                                                                     :headersColumn="[
                                                                         'account_number',
@@ -865,10 +898,13 @@
                                                                         'account_name',
                                                                     ]"
                                                                     @setValueInputComboboxTable="
-                                                                        setValueInputComboboxTableCreditAccount
+                                                                        setValueInputComboboxTableCreditAccount(index)
                                                                     "
                                                                     kindOf="debitAccount"
                                                                 ></MComboboxTable>
+                                                                <span v-else>{{
+                                                                    rowPaymentDetail.credit_account_name
+                                                                }}</span>
                                                             </td>
                                                             <td
                                                                 class="text-align-right min-w120"
@@ -887,6 +923,9 @@
                                                                     v-model="
                                                                         rowPaymentDetail.amount
                                                                     "
+                                                                     @filterNonNumeric="
+                                                                            filterNonNumericAmount
+                                                                        "
                                                                 />
                                                                 <span v-else>{{
                                                                     rowPaymentDetail.amount
@@ -910,11 +949,11 @@
                                                                     "
                                                                     tabindex="4"
                                                                     @selectedRecord="
-                                                                        selectedRecordDetail
+                                                                        (supplier)=> selectedRecordDetail(supplier,index)
                                                                     "
                                                                     kind="supplierCode"
                                                                     :recordData="
-                                                                        supplierCodeDetail
+                                                                        rowPaymentDetail.supplierCodeDetail
                                                                     "
                                                                     :headersColumn="[
                                                                         'supplier_code',
@@ -923,11 +962,16 @@
                                                                         'supplier_address',
                                                                         'supplier_phone_number',
                                                                     ]"
+                                                                    kindAccount="accountPaymentDetail"
                                                                     @setValueInputComboboxTable="
                                                                         setValueInputComboboxTableDetail
                                                                     "
                                                                     styleTranX="transform: translateX(-293px)"
                                                                 ></MComboboxTable>
+
+                                                                <span v-else>{{
+                                                                    rowPaymentDetail.supplierCodeDetail
+                                                                }}</span>
                                                             </td>
                                                             <td
                                                                 class="min-w350"
@@ -935,7 +979,7 @@
                                                                 <span
                                                                     class="text-only-line"
                                                                     >{{
-                                                                        rowPaymentDetail.supplier_name_detail
+                                                                        supplier_name_detail
                                                                     }}</span
                                                                 >
                                                             </td>
@@ -1002,7 +1046,7 @@
                                                                     ><span
                                                                         class="text-align-right"
                                                                         >{{
-                                                                            totalMoney
+                                                                            numberWithCommas(totalMoney)
                                                                         }}</span
                                                                     ></span
                                                                 >
@@ -1159,19 +1203,34 @@
 
 <script>
 import moment from "moment";
+import MISAEnum from "@/js/enum";
+import axios from "axios";
 export default {
     name: "CashDetail",
 
+    props: {
+        formMode: {
+            type: String,
+        },
+    },
+
     data() {
         return {
+            MISAEnum,
             payment: {
                 journal_memo: this.$t("PaymentFor"),
                 posted_date: moment(Date.now()).format("YYYY-MM-DD"),
                 ref_date: moment(Date.now()).format("YYYY-MM-DD"),
+                payment_supplier_name: "",
+                payment_receiver: "",
+                payment_supplier_address: "",
+                employee_id: "",
+                refno_finance: "",
             },
             otherExpenses: this.$t("OtherExpenses"),
             isOpenOtherExpenses: false,
-            supplierCode: "",
+            supplierCodePayment: "",
+            supplier_name_detail_fake : "",
             employeeId: "",
             optionItem: [
                 {
@@ -1181,9 +1240,8 @@ export default {
             ],
 
             totalMoney: 0,
-            debit_account_id: "",
-            credit_account_id: "",
-            supplierCodeDetail: "",
+           
+            supplier_name_detail: "",
             isTooltip: {
                 isTooltipAccountingDate: false,
                 isTooltipPaymentDate: false,
@@ -1191,15 +1249,21 @@ export default {
             rowPaymentDetails: [
                 {
                     isEditAble: false,
-                    journal_memo_detail: this.$t("PaymentFor"),
+                    description: this.$t("PaymentFor"),
+                    debit_account_id: "",
+                    credit_account_id: "",
                     amount: 0,
-                    supplier_name_detail: "",
+                    debit_account_name: "",
+                    credit_account_name: "",
+                    supplierCodeDetail: "",
+
                 },
             ],
             cloneRowPaymentDetails: [],
             deleteOne: false,
             isDialogNotify: false,
             isDialogWarning: false,
+            formModePayment: "",
             iconComboboxSupplierCode: null,
             iconComboboxEmployeeId: null,
             btnIconComboboxSupplierCode: null,
@@ -1267,25 +1331,223 @@ export default {
         window.addEventListener("click", this.handleOutsideClick);
     },
 
+    watch: {
+        "payment.journal_memo": function (newValue, oldValue) {
+            this.rowPaymentDetails = this.rowPaymentDetails.map((el) => {
+                if (el.description === oldValue) {
+                    el.description = newValue;
+                }
+                return el;
+            });
+        },
+
+        supplierCodePayment: function (newValue, oldValue) {
+            this.rowPaymentDetails = this.rowPaymentDetails.map((el) => {
+                if (el.supplierCodeDetail === oldValue) {
+                    el.supplierCodeDetail = newValue;
+                }
+                return el;
+            });
+
+        },
+        
+       
+         rowPaymentDetails: {
+            handler: function (newValue) {
+                try {
+                    newValue.forEach((el)=>{
+                        if(el.supplierCodeDetail === this.supplierCodePayment){
+                            this.supplier_name_detail = this.supplier_name_detail_fake;
+                        }
+                    })
+                    this.totalMoney = newValue.reduce((acc, el) => {
+                            return acc + Math.round(el?.amount);
+                        }, 0);
+                } catch (error) {
+                    console.log(error);
+                }
+            },
+            deep: true,
+        },
+
+
+
+
+        "payment.payment_supplier_name": function (newValue, oldValue) {
+            if (
+                this.payment.journal_memo ===
+                this.$t("PaymentFor") + " " + oldValue
+            ) {
+                this.payment.journal_memo =
+                    this.$t("PaymentFor") + " " + newValue;
+            }
+        },
+        "payment.posted_date": function (newValue, oldValue) {
+            if (this.formMode === MISAEnum.formMode.Add) {
+                if (this.payment.ref_date === oldValue) {
+                    this.payment.ref_date = newValue;
+                    console.log(this.payment.ref_date, newValue);
+                }
+            }
+        },
+    },
+
+    created() {
+        this.formModePayment = this.formMode;
+        /**
+         * Call API lấy ra id bất kỳ khi click btn thêm mới
+         * Author: KienNT (06/06/2023)
+         */
+        if (this.formModePayment === MISAEnum.formMode.Add) {
+            // gọi hàm lấy số chứng từ mới
+            this.getNewPaymentCode();
+            this.account_category_kind = null;
+            this.parent_id = null;
+        } else if (
+            /**
+                 * TH nhân bản
+                 Author: KienNT (06/06/2023)
+                 */
+            !this.isEmpty(this.account_id_selected) &&
+            this.formModePayment === MISAEnum.formMode.Duplicate
+        ) {
+            this.getDataByAccountId();
+        } else if (this.formModePayment === MISAEnum.formMode.Edit) {
+            /**
+                 * Call API lấy ra id bất kỳ khi có id để sửa
+                 Author: KienNT (06/06/2023)
+                 */
+            this.getDataByAccountId();
+        }
+    },
+
     methods: {
-        selectedRecord(supplier) {
-            console.log(supplier);
+        /**
+         * Hàm lấy employee code mới
+         * Author: KienNT (01/03/2023)
+         */
+        getNewPaymentCode() {
+            try {
+                axios
+                    .get("https://localhost:7153/api/v1/Payments/NewRecordCode")
+                    .then(this.$emit("hideShowLoading", true))
+                    .then((response) => {
+                        this.payment.refno_finance = response.data?.Data;
+                        // this.newEmployee.Gender = MISAEnum.Gender.Male;
+                        // if (this.isEmpty(this.departmentName)) {
+                        //     this.newEmployee.DepartmentId = EMPTY_GUID;
+                        // }
+                        this.oldEmployee = JSON.stringify(this.newEmployee);
+                        /**
+                         * Gọi hàm set focus bên input
+                         * Author: KienNT (06/06/2023)
+                         */
+                        // this.setFocusInput("txtEmployeeCode");
+                        this.$emit("hideShowLoading", false);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            } catch (error) {
+                console.log(error);
+            }
         },
-
+        /**
+         * Hàm handle click combobox item trong employee
+         * Author: KienNT (06/06/2023)
+         */
         selectedRecordEmployee(employee) {
-            console.log(employee);
+            this.payment.employee_id = employee.employee_id;
+            this.employeeId = employee.fullname;
         },
 
-        setValueInputComboboxTableDebitAccount() {
-            this.debit_account_id = "";
+        setValueInputComboboxTableDebitAccount(index) {
+            this.rowPaymentDetails[index].debit_account_name = "";
+            this.rowPaymentDetails[index].debit_account_id = "";
         },
 
-        setValueInputComboboxTableCreditAccount() {
-            this.credit_account_id = "";
+        setValueInputComboboxTableCreditAccount(index) {
+            this.rowPaymentDetails[index].credit_account_name = "";
+            this.rowPaymentDetails[index].credit_account_id = "";
         },
 
-        setValueInputComboboxTableDetail() {
-            this.supplierCodeDetail = "";
+        setValueInputComboboxTableDetail(index) {
+            this.rowPaymentDetails[index].supplierCodeDetail = "";
+        },
+
+        /**
+         * Hàm handle click combobox item trong supplier payment master
+         * Author: KienNT (06/06/2023)
+         */
+        selectedSupplierPayment(supplier) {
+            this.payment.payment_supplier_name = supplier.supplier_name;
+            this.payment.payment_receiver = supplier.supplier_name;
+            this.payment.payment_supplier_address = supplier.supplier_address;
+
+          
+            this.rowPaymentDetails = this.rowPaymentDetails.map((el) => {
+                if (this.isEmpty(el.supplierCodeDetail)) {
+                    el.supplierCodeDetail =  supplier.supplier_code;
+                }
+                return el;
+            });
+
+            this.supplierCodePayment = supplier.supplier_code;
+
+          
+            this.supplier_name_detail_fake = supplier.supplier_name;
+
+            if (this.payment.journal_memo === this.$t("PaymentFor")) {
+                this.payment.journal_memo =
+                    this.$t("PaymentFor") + " " + supplier.supplier_name;
+            }
+
+            this.rowPaymentDetails = this.rowPaymentDetails.map((el) => {
+                if (el.description === this.$t("PaymentFor")) {
+                    el.description =
+                        this.$t("PaymentFor") + " " + supplier.supplier_name;
+                }
+                return el;
+            });
+        },
+
+        /**
+         * Hàm handle click combobox item trong supplier detail
+         * Author: KienNT (06/06/2023)
+         */
+        selectedRecordDetail(supplier,index) {
+            this.supplier_name_detail = supplier.supplier_name;
+            this.rowPaymentDetails[index].supplierCodeDetail = supplier.supplier_code;
+        },
+
+        /**
+         * Hàm handle click combobox item trong debit account
+         * Author: KienNT (06/06/2023)
+         */
+        selectedDebitAccount(
+            account_id,
+            grade,
+            misa_code_id,
+            account_number,
+            index
+        ) {
+            this.rowPaymentDetails[index].debit_account_name = account_number;
+            this.rowPaymentDetails[index].debit_account_id = account_id;
+        },
+
+        /**
+         * Hàm handle click combobox item trong credit account
+         * Author: KienNT (06/06/2023)
+         */
+        selectedCreditAccount(
+            account_id,
+            grade,
+            misa_code_id,
+            account_number,
+            index
+        ) {
+            this.rowPaymentDetails[index].credit_account_name = account_number;
+            this.rowPaymentDetails[index].credit_account_id = account_id;
         },
 
         /**
@@ -1312,9 +1574,13 @@ export default {
                 this.rowPaymentDetails = [
                     {
                         isEditAble: true,
-                        journal_memo_detail: this.$t("PaymentFor"),
+                        description: this.$t("PaymentFor"),
+                        debit_account_id: "",
+                        credit_account_id: "",
                         amount: 0,
-                        supplier_name_detail: "",
+                        debit_account_name: "",
+                        credit_account_name: "",
+                        supplierCodeDetail: "",
                     },
                 ];
                 return;
@@ -1352,11 +1618,17 @@ export default {
             this.rowPaymentDetails = [
                 {
                     isEditAble: true,
-                    journal_memo_detail: this.$t("PaymentFor"),
-                    amount: 0,
-                    supplier_name_detail: "",
+                    description: this.$t("PaymentFor"),
+                    
+                    debit_account_id: "",
+                        credit_account_id: "",
+                        amount: 0,
+                        debit_account_name: "",
+                        credit_account_name: "",
+                        supplierCodeDetail: "",
                 },
             ];
+            this.supplier_name_detail = "";
             this.isDialogWarning = false;
         },
 
@@ -1367,6 +1639,29 @@ export default {
         onBtnWarningNo() {
             this.isDialogWarning = false;
         },
+
+
+         /**
+         *  handle ngăn chặn nhập chữ
+         * Author: KienNT (07/06/2023)
+         */
+        filterNonNumeric() {
+            this.payment.document_included =
+                this.payment.document_included.replace(/[^0-9]/g, "");
+        },
+
+ /**
+         *  handle ngăn chặn nhập chữ
+         * Author: KienNT (07/06/2023)
+         */
+        filterNonNumericAmount(){
+            this.rowPaymentDetails.forEach((el)=>{
+                el.amount =
+                el.amount.replace(/[^0-9]/g, "");
+            })
+            
+           
+        },  
 
         /**
          *  handle khi mở dropdown
@@ -1512,6 +1807,30 @@ export default {
                 }
             };
         },
+        /**
+         * Hàm kiểm tra input có rỗng không
+         * Author: KienNT (06/06/2023)
+         * @param (value): tham số là giá trị chuỗi từ input
+         */
+        isEmpty(value) {
+            try {
+                if (value === "" || value === null || value === undefined) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
+         * format cho số lớn
+         * Author: KienNT (07/06/2023)
+         */
+         numberWithCommas(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        },
     },
 };
 </script>
@@ -1650,5 +1969,19 @@ export default {
 
 .employee tr td:not(:last-child):not(:nth-last-child(2)):not(:first-child) {
     border: none;
+}
+
+.paymentList tr td span {
+    display: inline-block;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+
+.paymentList tr td:nth-child(2) span {
+    width: 200px;
 }
 </style>

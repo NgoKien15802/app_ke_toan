@@ -170,11 +170,15 @@
                 </div>
             </div>
         </div>
+        <!-- loading -->
+        <Mloading v-if="isLoading"></Mloading>
     </TheCash>
 
     <TheCashDetail
         v-if="isCashDetail"
         @closeCashDetail="closeCashDetail"
+        :formMode="formMode"
+        @hideShowLoading="hideShowLoading"
     ></TheCashDetail>
 </template>
 
@@ -204,6 +208,7 @@ export default {
             textTitlePayment: "",
             selectedCheckbox: [],
             totalRecord: 0,
+            paymentSelected: "",
             pageSize: 0,
             pageNumber: 1,
             keyWordSearch: "",
@@ -244,7 +249,13 @@ export default {
          * Author: KienNT (04/06/2023)
          */
         showCashDetail() {
-            this.isCashDetail = true;
+            try {
+                this.paymentSelected = "";
+                this.isCashDetail = true;
+                this.formMode = MISAEnum.formMode.Add;
+            } catch (error) {
+                console.log(error);
+            }
         },
 
         /**
@@ -268,6 +279,19 @@ export default {
          */
         handleSelectChechbox(selectedCheckbox) {
             this.selectedCheckbox = selectedCheckbox;
+        },
+
+        /**
+         * Hàm hiện thị và ẩn loading khi load dữ liệu
+         * Author: KienNT (06/06/2023)
+         * @param (isLoading): tham số là true, false ẩn hiển
+         */
+        hideShowLoading(isLoading) {
+            try {
+                this.isLoading = isLoading;
+            } catch (error) {
+                console.log(error);
+            }
         },
 
         /**

@@ -6318,6 +6318,11 @@
   dependencies:
     "vue" "^2.5.22"
 
+"vue-currency-filter@^5.2.0":
+  "integrity" "sha512-31XXEtXLDf3A7mdIAoyEkZTwpti22omp4MjoVKv0ksIC8Gk9RqW5xzeqvubeIlrxACvCPjKNTwqTmUrxFplDHw=="
+  "resolved" "https://registry.npmjs.org/vue-currency-filter/-/vue-currency-filter-5.2.0.tgz"
+  "version" "5.2.0"
+
 "vue-draggable-next@^2.1.1":
   "integrity" "sha512-f5lmA7t6LMaL4viR7dU30zzvqJzaKQs0ymL0Jy9UDT9uiZ2tXF3MzPzEvpTH2UODXZJkT+SnjeV1fXHMsgXLYA=="
   "resolved" "https://registry.npmjs.org/vue-draggable-next/-/vue-draggable-next-2.1.1.tgz"

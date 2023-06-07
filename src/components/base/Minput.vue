@@ -18,6 +18,7 @@
             isShowTooltip ? 'input-required' : '',
         ]"
         v-model="value"
+        @input="()=> this.$emit('filterNonNumeric')"
     />
     <!-- @input="$emit('update:modelValue', $event.target.value)" -->
 </template>
