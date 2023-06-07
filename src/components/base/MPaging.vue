@@ -70,9 +70,9 @@
                     :page-count="
                         countRecord
                             ? Math.ceil(totalRecord / pageIndex)
-                            : numberWithCommas(
+                            : (totalRecord > 1000) ?  numberWithCommas(
                                   Math.ceil(totalRecord / pageIndex)
-                              )
+                              ):  Math.ceil(totalRecord / pageIndex)
                     "
                     :page-range="3"
                     :margin-pages="1"
@@ -226,6 +226,12 @@ export default {
                         option.isActive = false;
                     }
                 });
+
+                const count = this.optionItem.filter((el)=> el.isActive === true).length;
+                if(count === 2){
+                    var firstActiveElement = this.optionItem.find((el)=>el.isActive === true);
+                    firstActiveElement.isActive = false;
+                }
                 this.optionItem.forEach((el) => {
                     if (this.valueInput.includes(el.text)) {
                         this.pageIndex = el.text;

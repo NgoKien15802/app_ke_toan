@@ -10,12 +10,12 @@
                         header !== 'amount' ? 'text-align-left' : '',
                         header === 'amount' ? 'text-align-right' : '',
                         header === 'Selected' ? 'min-w40' : '',
-                        header === 'journal_memo' ? 'min-w160' : '',
+                        header === 'description' ? 'min-w160' : '',
                         header === 'debit_account' ? 'min-w160' : '',
                         header === 'credit_account' ? 'min-w160' : '',
                         header === 'amount' ? 'min-w160' : '',
-                        header === 'supplier_code' ? 'min-w160' : '',
-                        header === 'supplier_name' ? 'min-w630' : '',
+                        header === 'payment_detail_supplier_code' ? 'min-w160' : '',
+                        header === 'payment_detail_supplier_name' ? 'min-w630' : '',
                     ]"
                     ref="thElement"
                 >
@@ -44,7 +44,7 @@
         <tbody>
             <MSkeletonTable
                 v-if="isShowSkeleton"
-                :dataList="paymentList"
+                :dataList="paymentDetailList"
                 :columnCount="headers"
             ></MSkeletonTable>
 
@@ -89,11 +89,11 @@
                         v-else
                         kind="data"
                         :className="[
-                            header === 'journal_memo' ? 'min-w160' : '',
+                            header === 'description' ? 'min-w160' : '',
                             header === 'debit_account' ? 'min-w160' : '',
                             header === 'credit_account' ? 'min-w160' : '',
-                            header === 'supplier_code' ? 'min-w160' : '',
-                            header === 'supplier_name'
+                            header === 'payment_detail_supplier_code' ? 'min-w160' : '',
+                            header === 'payment_detail_supplier_name'
                                 ? 'min-w630 hover-row'
                                 : '',
                         ]"
@@ -115,18 +115,18 @@
                         header === 'amount' ? 'text-align-right' : '',
                         header === 'AccountingDate' ? 'min-w160' : '',
                         header === 'Selected' ? 'min-w40' : '',
-                        header === 'journal_memo' ? 'min-w160' : '',
+                        header === 'description' ? 'min-w160' : '',
                         header === 'debit_account' ? 'min-w160' : '',
                         header === 'credit_account' ? 'min-w160' : '',
                         header === 'amount' ? 'min-w160' : '',
-                        header === 'supplier_code' ? 'min-w160' : '',
-                        header === 'supplier_name' ? 'min-w630' : '',
+                        header === 'payment_detail_supplier_code' ? 'min-w160' : '',
+                        header === 'payment_detail_supplier_name' ? 'min-w630' : '',
                     ]"
                     ref="thElement"
                 >
                     <template v-if="header === 'Selected'"> </template>
 
-                    <template v-else-if="header === 'journal_memo'">
+                    <template v-else-if="header === 'description'">
                         <span>
                             <span class="text-align-center">{{
                                 !isShowSkeleton ? $t("Total") : ""
@@ -171,6 +171,12 @@ export default {
         paymentIdClick: {
             type: String,
         },
+        pageSizeNumber: {
+            type: String,
+        },
+        pageCurrent: {
+            type: String,
+        },
     },
 
     data() {
@@ -184,16 +190,16 @@ export default {
             isContextMenu: false,
             leftContextMenu: "",
             topContextMenu: "",
-            totalRecord: 0,
+            totalRecordPaymentDetail: 0,
             refidSelected: "",
             headers: [
                 "Selected",
-                "journal_memo",
+                "description",
                 "debit_account",
                 "credit_account",
                 "amount",
-                "supplier_code",
-                "supplier_name",
+                "payment_detail_supplier_code",
+                "payment_detail_supplier_name",
             ],
             isShowSkeleton: false,
             totalMoney: 0,
@@ -204,6 +210,28 @@ export default {
         paymentIdClick: function (newValue) {
             this.paymentDetailList = new Array(2).fill(0);
             this.refidSelected = newValue;
+            this.loadData();
+        },
+
+        /**
+         * Theo dõi sự thay đổi pageSizeNumber. nếu pagesize thay đổi
+         * Author: KienNT (07/06/2023)
+         */
+         pageSizeNumber: function () {
+            this.pageSize = this.pageSizeNumber;
+            if (this.pageNumber == 1) {
+                this.loadData();
+            }
+        },
+
+        
+        /**
+         * Theo dõi sự thay đổi pageCurrent. khi click vào btn next
+         * Author: KienNT (07/06/2023)
+         */
+
+         pageCurrent: function () {
+            this.pageNumber = this.pageCurrent;
             this.loadData();
         },
     },
@@ -222,8 +250,8 @@ export default {
                     .then((this.isShowSkeleton = true))
                     .then((response) => {
                         this.paymentDetailList = response?.data?.Data.Data;
-                        this.totalRecord = response?.data?.Data.TotalRecord;
-                        this.$emit("getTotalRecord", this.totalRecord);
+                        this.totalRecordPaymentDetail = response?.data?.Data.TotalRecord;
+                        this.$emit("getTotalRecord", this.totalRecordPaymentDetail);
 
                         if (this.paymentDetailList.length > 0) {
                             this.totalMoney = this.paymentDetailList.reduce(
@@ -280,4 +308,11 @@ export default {
 <style scoped>
 @import url(@/css/components/tablePayment.css);
 @import url(@/css/layout/paymentDetail.css);
+.paymentList tbody tr td:last-child::after{
+    display: none;
+}
+
+.paymentList tr td:nth-last-child(2){
+    border-right: 1px dotted #babec5;
+}
 </style>

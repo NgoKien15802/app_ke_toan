@@ -383,7 +383,7 @@ export default {
      */
     created() {
         try {
-            this.paymentList = new Array(this.pageSize).fill(0);
+            this.paymentList = new Array(3).fill(0);
             this.loadData();
         } catch (error) {
             console.log(error);

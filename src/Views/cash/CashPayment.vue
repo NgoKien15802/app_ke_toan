@@ -158,13 +158,22 @@
                         >
                             <TheTablePaymentDetail
                                 :paymentIdClick="paymentIdClick"
+                                @getTotalRecord="getTotalRecordPaymentDetail"
+                                :pageSizeNumber="pageSizePaymentDetail"
+                                :pageCurrent="pageNumberPaymentDetail"
                             ></TheTablePaymentDetail>
+
                             <!--  paging -->
-                            <!-- <MPaging
-                                :totalRecord="totalRecord"
-                                :pageCurrent="pageNumber"
-                                :isDisabledClickPrev="isDisabledClickPrev"
-                            ></MPaging> -->
+                            <MPaging
+                                :totalRecord="totalRecordPaymentDetail"
+                                :pageCurrent="pageNumberPaymentDetail"
+                                :isDisabledClickPrev="isDisabledClickPrevPaymentDetail"
+                                @handleClickOptionItem="handleClickOptionItemPaymentDetail"
+                                @handleClickPrev="handleClickPrevPaymentDetail"
+                                @handleClickNext="handleClickNextPaymentDetail"
+                                @handleClickPageIndex="handleClickPageIndexPaymentDetail"
+                                @setIsDisabledClickPrev="setIsDisabledClickPrevPaymentDetail"
+                            ></MPaging>
                         </div>
                     </div>
                 </div>
@@ -208,12 +217,16 @@ export default {
             textTitlePayment: "",
             selectedCheckbox: [],
             totalRecord: 0,
+            totalRecordPaymentDetail:0,
             paymentSelected: "",
             pageSize: 0,
+            pageSizePaymentDetail: 0,
             pageNumber: 1,
+            pageNumberPaymentDetail:1,
             keyWordSearch: "",
             isReload: false,
             isDisabledClickPrev: true,
+            isDisabledClickPrevPaymentDetail:true,
             isDeleteOne: false,
             leftContextMenu: "",
             topContextMenu: "",
@@ -241,6 +254,18 @@ export default {
         getTotalRecord(totalRecord) {
             this.totalRecord = totalRecord;
         },
+
+
+         /**
+         * Hàm gán số bản ghi từ con emit lên
+         * Author: KienNT (07/06/2023)
+         *  @param (totalRecord): tham số 1 là số bản ghi
+         */
+        getTotalRecordPaymentDetail(totalRecord){
+            this.totalRecordPaymentDetail = totalRecord;
+        },
+
+
         closeCashDetail() {
             this.isCashDetail = false;
         },
@@ -269,6 +294,21 @@ export default {
             }
             if (this.pageNumber == 1) {
                 this.isDisabledClickPrev = true;
+            }
+        },
+
+
+        /**
+         * Hàm click icon previous trang detail
+         * Author: KienNT (07/06/2023)
+         */
+        handleClickPrevPaymentDetail(){
+            if (this.pageNumberPaymentDetail > 1) {
+                this.pageNumberPaymentDetail -= 1;
+                this.isDisabledClickPrevPaymentDetail = false;
+            }
+            if (this.pageNumberPaymentDetail == 1) {
+                this.isDisabledClickPrevPaymentDetail = true;
             }
         },
 
@@ -320,12 +360,31 @@ export default {
             this.pageNumber = index;
         },
 
+
+        handleClickPageIndexPaymentDetail(index){
+            if (index > 1) {
+                this.isDisabledClickPrevPaymentDetail = false;
+            }
+            if (index == 1) {
+                this.isDisabledClickPrevPaymentDetail = true;
+            }
+            this.pageNumberPaymentDetail = index;
+        },
+
         /**
          * Hàm thực hiện disabled div prev khi click vào chọn bản ghi trên 1 trang từ con emit lên
          * Author: KienNT (04/06/2023)
          */
         setIsDisabledClickPrev() {
             this.isDisabledClickPrev = true;
+        },
+
+         /**
+         * Hàm thực hiện disabled div prev khi click vào chọn bản ghi trên 1 trang từ con emit lên
+         * Author: KienNT (07/06/2023)
+         */
+        setIsDisabledClickPrevPaymentDetail(){
+            this.isDisabledClickPrevPaymentDetail = true;
         },
 
         /**
@@ -338,6 +397,11 @@ export default {
             this.pageNumber = 1;
         },
 
+        handleClickOptionItemPaymentDetail(pageSize){
+            this.pageSizePaymentDetail = pageSize;
+            this.pageNumberPaymentDetail = 1;
+        },
+
         /**
          * Hàm click icon Next trang
          * Author: KienNT (04/06/2023)
@@ -346,6 +410,18 @@ export default {
             this.pageNumber += 1;
             if (this.pageNumber > 1) {
                 this.isDisabledClickPrev = false;
+            }
+        },
+
+
+        /**
+         * Hàm click icon Next trang
+         * Author: KienNT (07/06/2023)
+         */
+        handleClickNextPaymentDetail(){
+            this.pageNumberPaymentDetail += 1;
+            if (this.pageNumberPaymentDetail > 1) {
+                this.isDisabledClickPrevPaymentDetail = false;
             }
         },
 
