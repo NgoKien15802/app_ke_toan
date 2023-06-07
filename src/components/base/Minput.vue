@@ -19,6 +19,7 @@
         ]"
         v-model="value"
         @input="()=> this.$emit('filterNonNumeric')"
+        @keyup="() => this.$emit('handleKeyUp')"
     />
     <!-- @input="$emit('update:modelValue', $event.target.value)" -->
 </template>

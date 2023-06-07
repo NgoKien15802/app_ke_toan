@@ -396,6 +396,7 @@
                                                                                 'Quantity'
                                                                             )
                                                                         "
+                                                                        @handleKeyUp="handleKeyUpDocumentIncluded"
                                                                     />
                                                                 </div>
                                                                 <div
@@ -926,6 +927,7 @@
                                                                      @filterNonNumeric="
                                                                             filterNonNumericAmount
                                                                         "
+                                                                         @handleKeyUp="()=> handleKeyUpAmount(index)"
                                                                 />
                                                                 <span v-else>{{
                                                                     rowPaymentDetail.amount
@@ -1361,8 +1363,8 @@ export default {
                         }
                     })
                     this.totalMoney = newValue.reduce((acc, el) => {
-                            return acc + Math.round(el?.amount);
-                        }, 0);
+                        return acc + Math.round(this.currencyToNumber(el?.amount));
+                    }, 0);
                 } catch (error) {
                     console.log(error);
                 }
@@ -1748,6 +1750,23 @@ export default {
         },
 
         /**
+         * Hàm handle khi nhấn phím tại input kèm theo
+         * Author: KienNT (07/06/2023)
+         */
+         handleKeyUpDocumentIncluded(){
+            this.payment.document_included = this.numberWithCommas(this.payment.document_included);
+        },
+
+
+        /**
+         * Hàm handle khi nhấn phím tại input số tiền
+         * Author: KienNT (07/06/2023)
+         */
+        handleKeyUpAmount(index){
+            this.rowPaymentDetails[index].amount = this.numberWithCommas(this.rowPaymentDetails[index].amount)
+        },
+
+        /**
          * Hàm click trasj row thì xóa
          * Author: KienNT (06/06/2023)
          */
@@ -1831,6 +1850,12 @@ export default {
          numberWithCommas(x) {
             return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         },
+
+         currencyToNumber(currency) {
+            var number = currency.replace(/\./g, '');
+
+            return parseFloat(number);
+            }
     },
 };
 </script>
