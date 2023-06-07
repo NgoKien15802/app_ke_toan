@@ -20,8 +20,8 @@
                         header === 'journal_memo' ? 'min-w320' : '',
                         header === 'total_amount' ? 'min-w160' : '',
                         header === 'supplier_code' ? 'min-w230' : '',
-                        header === 'supplier_name' ? 'min-w160' : '',
-                        header === 'supplier_address' ? 'min-w300' : '',
+                        header === 'payment_supplier_name' ? 'min-w160' : '',
+                        header === 'payment_supplier_address' ? 'min-w300' : '',
                         header === 'Feature' ? 'min-w120' : '',
                         header === 'Selected' ? 'min-w40' : '',
                     ]"
@@ -178,8 +178,8 @@
                                 : '',
                             header === 'journal_memo' ? 'min-w320' : '',
                             header === 'supplier_code' ? 'min-w230' : '',
-                            header === 'supplier_name' ? 'min-w160' : '',
-                            header === 'supplier_address' ? 'min-w300' : '',
+                            header === 'payment_supplier_name' ? 'min-w160' : '',
+                            header === 'payment_supplier_address' ? 'min-w300' : '',
                         ]"
                         :text="payment[header] || ''"
                         :subtext="payment[header] || ''"
@@ -208,8 +208,8 @@
                         header === 'journal_memo' ? 'min-w320' : '',
                         header === 'total_amount' ? 'min-w160' : '',
                         header === 'supplier_code' ? 'min-w230' : '',
-                        header === 'supplier_name' ? 'min-w160' : '',
-                        header === 'supplier_address' ? 'min-w300' : '',
+                        header === 'payment_supplier_name' ? 'min-w160' : '',
+                        header === 'payment_supplier_address' ? 'min-w300' : '',
                         header === 'Feature' ? 'min-w120' : '',
                         header === 'Selected' ? 'min-w40' : '',
                     ]"
@@ -244,6 +244,7 @@
             </tr>
         </tfoot>
     </table>
+
 
     <MNotData v-if="paymentList.length <= 0 && !isShowSkeleton"></MNotData>
     <MContextmenu
@@ -320,8 +321,8 @@ export default {
                 "journal_memo",
                 "total_amount",
                 "supplier_code",
-                "supplier_name",
-                "supplier_address",
+                "payment_supplier_name",
+                "payment_supplier_address",
                 "Feature",
             ],
             isShowSkeleton: false,

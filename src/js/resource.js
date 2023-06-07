@@ -276,6 +276,7 @@ const MISAResouce = {
         Address: "Địa chỉ",
         supplier_name: "Đối tượng",
         payment_detail_supplier_name: "Đối tượng",
+        payment_supplier_name: "Đối tượng",
         Detail: "Chi tiết",
         debit_account: "TK nợ",
         debit_accountTooltip: "Tài khoản nợ",
@@ -284,6 +285,7 @@ const MISAResouce = {
         ObjectName: "Tên đối tượng",
         PaymentTitle: "Phiếu chi",
         supplier_address: "Địa chỉ",
+        payment_supplier_address: "Địa chỉ",
 
         // payment detail // chưa có english
         Labelsupplier_code: "Mã đối tượng",
@@ -548,6 +550,7 @@ const MISAResouce = {
         followDetail: "Track tracking details",
         supplier_name: "Object",
         payment_detail_supplier_name: "Object",
+        payment_supplier_name:"Object",
         Account: "Account",
         TransferAccountingAccounts: "Transfer accounting accounts",
 
@@ -586,6 +589,7 @@ const MISAResouce = {
         ObjectName: "Object name",
         PaymentTitle: "Payment",
         supplier_address: "Address",
+        payment_supplier_address:"Address",
 
         // payment detail
         Tutorial: "Tutorial",

@@ -580,7 +580,7 @@
                                                     <h1
                                                         class="summary-info-number"
                                                     >
-                                                        {{ numberWithCommas(totalMoney)}}
+                                                        {{ numberWithCommas(totalMoney) || 0}}
                                                     </h1>
                                                 </div>
                                             </div>
@@ -981,7 +981,7 @@
                                                                 <span
                                                                     class="text-only-line"
                                                                     >{{
-                                                                        supplier_name_detail
+                                                                        rowPaymentDetail.supplier_name_detail
                                                                     }}</span
                                                                 >
                                                             </td>
@@ -1048,7 +1048,7 @@
                                                                     ><span
                                                                         class="text-align-right"
                                                                         >{{
-                                                                            numberWithCommas(totalMoney)
+                                                                            numberWithCommas(totalMoney) || 0
                                                                         }}</span
                                                                     ></span
                                                                 >
@@ -1243,7 +1243,6 @@ export default {
 
             totalMoney: 0,
            
-            supplier_name_detail: "",
             isTooltip: {
                 isTooltipAccountingDate: false,
                 isTooltipPaymentDate: false,
@@ -1258,6 +1257,7 @@ export default {
                     debit_account_name: "",
                     credit_account_name: "",
                     supplierCodeDetail: "",
+                    supplier_name_detail:""
 
                 },
             ],
@@ -1357,9 +1357,9 @@ export default {
          rowPaymentDetails: {
             handler: function (newValue) {
                 try {
-                    newValue.forEach((el)=>{
+                    newValue.forEach((el,index)=>{
                         if(el.supplierCodeDetail === this.supplierCodePayment){
-                            this.supplier_name_detail = this.supplier_name_detail_fake;
+                            this.rowPaymentDetails[index].supplier_name_detail = this.supplier_name_detail_fake;
                         }
                     })
                     this.totalMoney = newValue.reduce((acc, el) => {
@@ -1518,7 +1518,7 @@ export default {
          * Author: KienNT (06/06/2023)
          */
         selectedRecordDetail(supplier,index) {
-            this.supplier_name_detail = supplier.supplier_name;
+            this.rowPaymentDetails[index].supplier_name_detail = supplier.supplier_name;
             this.rowPaymentDetails[index].supplierCodeDetail = supplier.supplier_code;
         },
 
@@ -1583,6 +1583,7 @@ export default {
                         debit_account_name: "",
                         credit_account_name: "",
                         supplierCodeDetail: "",
+                        supplier_name_detail:""
                     },
                 ];
                 return;
@@ -1628,9 +1629,10 @@ export default {
                         debit_account_name: "",
                         credit_account_name: "",
                         supplierCodeDetail: "",
+                        supplier_name_detail:"",
                 },
             ];
-            this.supplier_name_detail = "";
+            this.totalMoney = 0;
             this.isDialogWarning = false;
         },
 

@@ -153,6 +153,7 @@
             </tr>
         </tfoot>
     </table>
+    <MNotData v-if="paymentDetailList.length <= 0 && !isShowSkeleton"></MNotData>
 </template>
 
 <script>
