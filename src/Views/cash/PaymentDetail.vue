@@ -31,11 +31,13 @@
                                                     <button
                                                         class="input__icon dropdown-icon"
                                                         fdprocessedid="jeq9qa"
+                                                          :class="formModePayment===MISAEnum.formMode.Show ? 'disabledDopdown' : ''"
                                                     >
                                                         <div
                                                             class="input__icon-dropdown"
                                                             ref="iconDropdownOtherExpenses"
                                                         ></div>
+                                                        
                                                     </button>
                                                     <input
                                                         readonly="true"
@@ -44,9 +46,10 @@
                                                         class="input__type dropdown-input paging-input input__lang"
                                                         v-model="otherExpenses"
                                                         fdprocessedid="epqss"
+                                                          :class="formModePayment===MISAEnum.formMode.Show ? 'disabledDopdown' : ''"
                                                     />
 
-                                                    <div
+                                                    <!-- <div
                                                         v-if="
                                                             isOpenOtherExpenses
                                                         "
@@ -76,7 +79,7 @@
                                                                 "
                                                             ></MOptionItem>
                                                         </ul>
-                                                    </div>
+                                                    </div> -->
                                                 </div>
                                             </div>
                                         </div>
@@ -222,6 +225,7 @@
                                                                         @setValueInputComboboxTable="
                                                                             setValueInputComboboxTable
                                                                         "
+                                                                         :isDisabled="formModePayment===MISAEnum.formMode.Show"
                                                                     ></MComboboxTable>
                                                                 </div>
                                                                 <div
@@ -245,6 +249,7 @@
                                                                         v-model="
                                                                             payment.payment_supplier_name
                                                                         "
+                                                                        :isDisabled="formModePayment===MISAEnum.formMode.Show"
                                                                     />
                                                                 </div>
                                                             </div>
@@ -271,6 +276,7 @@
                                                                         v-model="
                                                                             payment.payment_receiver
                                                                         "
+                                                                         :isDisabled="formModePayment===MISAEnum.formMode.Show"
                                                                     />
                                                                 </div>
                                                                 <div
@@ -293,6 +299,7 @@
                                                                         v-model="
                                                                             payment.payment_supplier_address
                                                                         "
+                                                                         :isDisabled="formModePayment===MISAEnum.formMode.Show"
                                                                     />
                                                                 </div>
                                                             </div>
@@ -318,6 +325,7 @@
                                                                         v-model="
                                                                             payment.journal_memo
                                                                         "
+                                                                         :isDisabled="formModePayment===MISAEnum.formMode.Show"
                                                                     />
                                                                 </div>
                                                             </div>
@@ -364,6 +372,7 @@
                                                                         @setValueInputComboboxTable="
                                                                             setValueInputComboboxTableEmployee
                                                                         "
+                                                                         :isDisabled="formModePayment===MISAEnum.formMode.Show"
                                                                     ></MComboboxTable>
                                                                 </div>
                                                                 <div
@@ -396,6 +405,7 @@
                                                                                 'Quantity'
                                                                             )
                                                                         "
+                                                                         :isDisabled="formModePayment===MISAEnum.formMode.Show"
                                                                         @handleKeyUp="handleKeyUpDocumentIncluded"
                                                                     />
                                                                 </div>
@@ -461,14 +471,7 @@
                                                                         :isShowTooltip="
                                                                             isTooltip.isTooltipAccountingDate
                                                                         "
-                                                                        @blur="
-                                                                            isInValid(
-                                                                                payment.AccountingDate,
-                                                                                'date'
-                                                                            )
-                                                                                ? (isTooltip.isTooltipAccountingDate = true)
-                                                                                : (isTooltip.isTooltipAccountingDate = false)
-                                                                        "
+                                                                        :isDisabled="formModePayment===MISAEnum.formMode.Show"
                                                                     />
                                                                     <MTooltip
                                                                         v-if="
@@ -517,14 +520,7 @@
                                                                         :isShowTooltip="
                                                                             isTooltip.isTooltipPaymentDate
                                                                         "
-                                                                        @blur="
-                                                                            isInValid(
-                                                                                payment.PaymentDate,
-                                                                                'date'
-                                                                            )
-                                                                                ? (isTooltip.isTooltipPaymentDate = true)
-                                                                                : (isTooltip.isTooltipPaymentDate = false)
-                                                                        "
+                                                                        :isDisabled="formModePayment===MISAEnum.formMode.Show"
                                                                     />
                                                                     <MTooltip
                                                                         v-if="
@@ -562,6 +558,7 @@
                                                                     v-model="
                                                                         payment.refno_finance
                                                                     "
+                                                                     :isDisabled="formModePayment===MISAEnum.formMode.Show"
                                                                 />
                                                             </div>
                                                         </div>
@@ -580,7 +577,7 @@
                                                     <h1
                                                         class="summary-info-number"
                                                     >
-                                                        {{ numberWithCommas(totalMoney) || 0}}
+                                                        {{ isNaN(totalMoney ) ?  0 : numberWithCommas(totalMoney) }}
                                                     </h1>
                                                 </div>
                                             </div>
@@ -602,7 +599,7 @@
                                                     >
                                                 </div>
                                             </div>
-                                            <div class="wrap__table">
+                                            <div class="wrap__table scrollbar_customize">
                                                 <table
                                                     id="tbEmployeeList"
                                                     class="paymentList popup__payment-detail"
@@ -733,6 +730,7 @@
                                                     <tbody>
                                                         <tr
                                                             class="popup__payment-detail-row"
+                                                            
                                                             v-for="(
                                                                 rowPaymentDetail,
                                                                 index
@@ -745,17 +743,20 @@
                                                                 )
                                                             "
                                                             :class="
-                                                                rowPaymentDetail.isEditAble
+                                                                [rowPaymentDetail.isEditAble
                                                                     ? 'tr-hover_editable'
-                                                                    : ''
+                                                                    : '',
+                                                                formModePayment===MISAEnum.formMode.Show ? 'disabledDopdown' : '']
                                                             "
                                                         >
                                                             <td
                                                                 class="text-align-center min-w40 hover-row"
                                                                 :class="
-                                                                    rowPaymentDetail.isEditAble
+                                                                    [rowPaymentDetail.isEditAble
                                                                         ? 'tr-hover_editable'
-                                                                        : ''
+                                                                        : '',
+                                                                    formModePayment===MISAEnum.formMode.Show ? 'disabledDopdown' : ''
+                                                                    ]
                                                                 "
                                                             >
                                                                 <span
@@ -925,7 +926,7 @@
                                                                         rowPaymentDetail.amount
                                                                     "
                                                                      @filterNonNumeric="
-                                                                            filterNonNumericAmount
+                                                                            filterNonNumericAmount(index)
                                                                         "
                                                                          @handleKeyUp="()=> handleKeyUpAmount(index)"
                                                                 />
@@ -966,7 +967,7 @@
                                                                     ]"
                                                                     kindAccount="accountPaymentDetail"
                                                                     @setValueInputComboboxTable="
-                                                                        setValueInputComboboxTableDetail
+                                                                        setValueInputComboboxTableDetail(index)
                                                                     "
                                                                     styleTranX="transform: translateX(-293px)"
                                                                 ></MComboboxTable>
@@ -988,9 +989,10 @@
                                                             <td
                                                                 class="min-w40 hover-row"
                                                                 :class="
-                                                                    rowPaymentDetail.isEditAble
+                                                                    [rowPaymentDetail.isEditAble
                                                                         ? 'tr-hover_editable'
-                                                                        : ''
+                                                                        : '',
+                                                                    formModePayment===MISAEnum.formMode.Show ? 'disabledDopdown' : '']
                                                                 "
                                                             >
                                                                 <div
@@ -999,6 +1001,7 @@
                                                                         margin: 0
                                                                             auto;
                                                                     "
+                                                                   
                                                                     class="trash"
                                                                     @click="
                                                                         handleClickTrash(
@@ -1009,7 +1012,7 @@
                                                             </td>
                                                         </tr>
                                                     </tbody>
-                                                    <tfoot>
+                                                    <tfoot >
                                                         <tr
                                                             class="table__payment-field"
                                                         >
@@ -1048,7 +1051,7 @@
                                                                     ><span
                                                                         class="text-align-right"
                                                                         >{{
-                                                                            numberWithCommas(totalMoney) || 0
+                                                                            isNaN(totalMoney ) ?  0 : numberWithCommas(totalMoney) 
                                                                         }}</span
                                                                     ></span
                                                                 >
@@ -1087,6 +1090,7 @@
                                             :text="$t('AddLine')"
                                             :click="() => AddLineAndClose()"
                                             ref="AddLine"
+                                            :class=" formModePayment===MISAEnum.formMode.Show ? 'disabledDopdown' : ''"
                                         >
                                         </MButton
                                         ><MButton
@@ -1095,6 +1099,7 @@
                                             :text="$t('DeleteAllLine')"
                                             :click="DeleteAllLineAndClose"
                                             ref="DeleteAllLine"
+                                            :class=" formModePayment===MISAEnum.formMode.Show ? 'disabledDopdown' : ''"
                                         >
                                         </MButton>
                                     </div>
@@ -1112,9 +1117,7 @@
                                                         :text="$t('BtnSave')"
                                                         :click="
                                                             () =>
-                                                                btnSaveAndClose(
-                                                                    true
-                                                                )
+                                                                btnSaveAndClose('')
                                                         "
                                                         ref="btnSave"
                                                     >
@@ -1129,7 +1132,7 @@
                                                     </MButton>
                                                 </div>
                                                 <div>
-                                                    <MButton
+                                                    <!-- <MButton
                                                         class="btn btn-primary close__add-employee tooltip"
                                                         tabindex="18"
                                                         :text="
@@ -1151,7 +1154,20 @@
                                                                 )
                                                             "
                                                         ></MTooltip>
-                                                    </MButton>
+                                                    </MButton> -->
+                                                <button
+                                                    class="btn combox-btn"
+                                                    :tabindex="tabindex"
+                                                    style="border-radius: 3px;"
+                                                    @click="btnSaveAndClose(textBtn === this.$t('BtnSaveEndAdd') ? MISAEnum.ModeBtn.SaveAndAdd : MISAEnum.ModeBtn.SaveAndClose)"
+                                                >
+                                                
+                                                    <span class="combox-btn-text combox-btn-left">{{ textBtn }}</span>
+                                                    <span class="combox-btn-mark"></span>
+
+                                                    <div class="wrap-icon-combox wrap-icon-right" ref="iconContextMenu"  @click="clickBtnRight($event)"><div class="icon__combox-btn"></div></div>
+                                                </button>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -1201,6 +1217,17 @@
         @onBtnWarningYes="onBtnWarningYes"
         kind="warning"
     ></MDialog>
+
+      <MContextmenu
+        v-if="isContextMenu"
+        :left="leftContextMenu"
+        :top="topContextMenu"
+        kind="btnContextPopup"
+        @hideContextMenu="hideContextMenu"
+        :refElement="this.$refs.iconContextMenu"
+        @handleBtnSaveEndAdd="handleBtnSaveEndAdd"
+        @handleBtnSaveEndClose="handleBtnSaveEndClose"
+    ></MContextmenu>
 </template>
 
 <script>
@@ -1228,11 +1255,15 @@ export default {
                 payment_supplier_address: "",
                 employee_id: "",
                 refno_finance: "",
+                document_included: "",
+                supplier_id: null, 
+                total_amount:0
             },
             otherExpenses: this.$t("OtherExpenses"),
             isOpenOtherExpenses: false,
             supplierCodePayment: "",
             supplier_name_detail_fake : "",
+            supplier_id_detail_fake : "",
             employeeId: "",
             optionItem: [
                 {
@@ -1257,15 +1288,18 @@ export default {
                     debit_account_name: "",
                     credit_account_name: "",
                     supplierCodeDetail: "",
+                    supplier_id:null,
                     supplier_name_detail:""
-
                 },
             ],
             cloneRowPaymentDetails: [],
+            clonePaymentDetail:[],
             deleteOne: false,
+            isContextMenu: false,
             isDialogNotify: false,
             isDialogWarning: false,
             formModePayment: "",
+            textBtn: this.$t('BtnSaveEndClose'),
             iconComboboxSupplierCode: null,
             iconComboboxEmployeeId: null,
             btnIconComboboxSupplierCode: null,
@@ -1274,7 +1308,9 @@ export default {
             optionWrapperComboboxEmployeeId: null,
             scrollElementEmployee: null,
             scrollElementSupplier: null,
-
+            leftContextMenu: 0,
+            topContextMenu: 0,
+            modeBtn:MISAEnum.ModeBtn.SaveAndClose,
             iconComboboxDebitAccount: null,
             btnIconComboboxDebitAccount: null,
             optionWrapperComboboxDebitAccount: null,
@@ -1352,6 +1388,15 @@ export default {
             });
 
         },
+
+        "payment.supplier_id": function (newValue, oldValue) {
+            this.rowPaymentDetails = this.rowPaymentDetails.map((el) => {
+                if (el.supplier_id === oldValue) {
+                    el.supplier_id = newValue;
+                }
+                return el;
+            });
+        },
         
        
          rowPaymentDetails: {
@@ -1360,6 +1405,7 @@ export default {
                     newValue.forEach((el,index)=>{
                         if(el.supplierCodeDetail === this.supplierCodePayment){
                             this.rowPaymentDetails[index].supplier_name_detail = this.supplier_name_detail_fake;
+                            this.rowPaymentDetails[index].supplier_id = this.supplier_id_detail_fake;
                         }
                     })
                     this.totalMoney = newValue.reduce((acc, el) => {
@@ -1396,6 +1442,8 @@ export default {
 
     created() {
         this.formModePayment = this.formMode;
+        this.modeBtn = localStorage.getItem("modeBtn") || this.modeBtn;
+         this.textBtn =  this.modeBtn === MISAEnum.ModeBtn.SaveAndAdd.toString() ? this.$t('BtnSaveEndAdd') : this.$t('BtnSaveEndClose');
         /**
          * Call API lấy ra id bất kỳ khi click btn thêm mới
          * Author: KienNT (06/06/2023)
@@ -1454,6 +1502,121 @@ export default {
                 console.log(error);
             }
         },
+
+         /**
+         * Hàm click btn right
+         * Author: KienNT (08/06/2023)
+         */
+        
+        clickBtnRight(event) {
+            this.isContextMenu = !this.isContextMenu;
+            this.leftContextMenu =
+                event.target.getBoundingClientRect().x - 70 ;
+            this.topContextMenu =
+                event.target.getBoundingClientRect().y - 60;
+        },
+
+         /**
+         * Hàm click contextmenu cất và thêm
+         * Author: KienNT (08/06/2023)
+         */
+        handleBtnSaveEndAdd() {
+            this.isContextMenu = !this.isContextMenu;
+            this.textBtn = this.$t('BtnSaveEndAdd')
+            this.modeBtn = MISAEnum.ModeBtn.SaveAndAdd;
+            localStorage.setItem("modeBtn", MISAEnum.ModeBtn.SaveAndAdd);
+        },
+
+
+          /**
+         * Hàm click contextmenu cất và đóng
+         * Author: KienNT (08/06/2023)
+         */
+        handleBtnSaveEndClose() {
+            this.isContextMenu = !this.isContextMenu;
+            this.textBtn = this.$t('BtnSaveEndClose')
+            this.modeBtn = MISAEnum.ModeBtn.SaveAndClose;
+             localStorage.setItem("modeBtn", MISAEnum.ModeBtn.SaveAndClose);
+        },
+
+         handleValidate() {
+            return true;
+        },
+
+          /**
+         * Hàm validate thành công thì cất data và đóng form, cất và thêm thì cất và data reset form
+         * Author: KienNT (08/06/2023)
+         *  @param (value): tham số 1: là true, false hiển thị popup
+         */
+         btnSaveAndClose(modeBtn="") {
+            try {
+                if (this.handleValidate()) {
+                    if (this.formModePayment === MISAEnum.formMode.Add) {
+                        // this.postData(MISAEnum.formMode.Add, isCloseForm);
+                        this.payment.total_amount = this.totalMoney;
+                        this.payment.employee_id = this.payment.employee_id || null;
+                        this.clonePaymentDetail = JSON.stringify(this.rowPaymentDetails);
+                        this.clonePaymentDetail = JSON.parse(this.clonePaymentDetail);
+                        this.clonePaymentDetail = this.clonePaymentDetail.map((el) => {
+                            return {
+                                debit_account_id: el.debit_account_id || null,
+                                credit_account_id: el.credit_account_id || null,
+                                amount: this.currencyToNumber(el.amount || '0.0'),
+                                description: el.description,
+                                supplier_id:el.supplier_id || null,
+                            };
+                        });
+                        this.postData(MISAEnum.formMode.Add, modeBtn);
+                    }
+                    // đóng form
+                } else {
+                    this.hideShowDialogError(true);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+          /**
+         * Hàm post account với từng modeForm: Thêm và nhân bản
+         * Author: KienNT (28/05/2023)
+         */
+        postData(formMode, modeBtn) {
+            try {
+                const requestData = {
+                    Master: this.payment,
+                    Details: this.clonePaymentDetail,
+                };
+                axios
+                    .post(
+                        "https://localhost:7153/api/v1/Payments/InsertMasterDetail",
+                        requestData
+                    )
+                    .then(this.$emit("hideShowLoading", true))
+                    .then((res) => {
+                        console.log(res);
+                        if (this.isEmpty(modeBtn)) {
+                            // chuyển form về mode show
+                            this.formModePayment = MISAEnum.formMode.Show;
+                            this.$emit("setFormMode", MISAEnum.formMode.Show);
+                        } 
+                        this.$emit("hideShowLoading", false);
+                        this.$emit("handleReLoadData");
+                    })
+                    .catch((error) => {
+                        let response = error.response;
+                        let errorData = response?.data?.Data?.Data;
+                        console.log(errorData);
+                        this.$emit("hideShowLoading", false);
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+
+       
+
         /**
          * Hàm handle click combobox item trong employee
          * Author: KienNT (06/06/2023)
@@ -1475,6 +1638,7 @@ export default {
 
         setValueInputComboboxTableDetail(index) {
             this.rowPaymentDetails[index].supplierCodeDetail = "";
+            this.rowPaymentDetails[index].supplier_id = null;
         },
 
         /**
@@ -1483,21 +1647,25 @@ export default {
          */
         selectedSupplierPayment(supplier) {
             this.payment.payment_supplier_name = supplier.supplier_name;
+            this.payment.supplier_id = supplier.supplier_id;
             this.payment.payment_receiver = supplier.supplier_name;
             this.payment.payment_supplier_address = supplier.supplier_address;
 
           
             this.rowPaymentDetails = this.rowPaymentDetails.map((el) => {
                 if (this.isEmpty(el.supplierCodeDetail)) {
-                    el.supplierCodeDetail =  supplier.supplier_code;
+                    el.supplierCodeDetail = supplier.supplier_code;
+                    el.supplier_id = supplier.supplier_id;
                 }
                 return el;
             });
+            
 
             this.supplierCodePayment = supplier.supplier_code;
 
           
             this.supplier_name_detail_fake = supplier.supplier_name;
+            this.supplier_id_detail_fake = supplier.supplier_id;
 
             if (this.payment.journal_memo === this.$t("PaymentFor")) {
                 this.payment.journal_memo =
@@ -1513,6 +1681,14 @@ export default {
             });
         },
 
+          /**
+         * Hàm ẩn contextmenu khi click ra ngoài element
+         * Author: KienNT (08/06/2023)
+         */
+        hideContextMenu() {
+            this.isContextMenu = !this.isContextMenu;
+        },
+
         /**
          * Hàm handle click combobox item trong supplier detail
          * Author: KienNT (06/06/2023)
@@ -1520,6 +1696,7 @@ export default {
         selectedRecordDetail(supplier,index) {
             this.rowPaymentDetails[index].supplier_name_detail = supplier.supplier_name;
             this.rowPaymentDetails[index].supplierCodeDetail = supplier.supplier_code;
+            this.rowPaymentDetails[index].supplier_id = supplier.supplier_id;
         },
 
         /**
@@ -1583,7 +1760,8 @@ export default {
                         debit_account_name: "",
                         credit_account_name: "",
                         supplierCodeDetail: "",
-                        supplier_name_detail:""
+                        supplier_name_detail: "",
+                        supplier_id:null, 
                     },
                 ];
                 return;
@@ -1629,7 +1807,8 @@ export default {
                         debit_account_name: "",
                         credit_account_name: "",
                         supplierCodeDetail: "",
-                        supplier_name_detail:"",
+                    supplier_name_detail: "",
+                         supplier_id:null, 
                 },
             ];
             this.totalMoney = 0;
@@ -1658,29 +1837,24 @@ export default {
          *  handle ngăn chặn nhập chữ
          * Author: KienNT (07/06/2023)
          */
-        filterNonNumericAmount(){
-            this.rowPaymentDetails.forEach((el)=>{
-                el.amount =
-                el.amount.replace(/[^0-9]/g, "");
-            })
-            
-           
+        filterNonNumericAmount(index){
+            this.rowPaymentDetails[index].amount =  this.rowPaymentDetails[index].amount.replace(/[^0-9]/g, "");
         },  
 
         /**
          *  handle khi mở dropdown
          * Author: KienNT (05/06/2023)
          */
-        handleOpenDropdown() {
-            try {
-                this.$refs["iconDropdownOtherExpenses"].classList.toggle(
-                    "rorate-180"
-                );
-                this.isOpenOtherExpenses = !this.isOpenOtherExpenses;
-            } catch (error) {
-                console.log(error);
-            }
-        },
+        // handleOpenDropdown() {
+        //     try {
+        //         this.$refs["iconDropdownOtherExpenses"].classList.toggle(
+        //             "rorate-180"
+        //         );
+        //         this.isOpenOtherExpenses = !this.isOpenOtherExpenses;
+        //     } catch (error) {
+        //         console.log(error);
+        //     }
+        // },
 
         /**
          *  handle khi đóng popup
@@ -1716,6 +1890,7 @@ export default {
          */
         setValueInputComboboxTable() {
             this.supplierCode = "";
+            this.payment.supplier_id = null;
         },
 
         /**
@@ -1850,12 +2025,12 @@ export default {
          * Author: KienNT (07/06/2023)
          */
          numberWithCommas(x) {
-            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            return  x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") ;
         },
 
-         currencyToNumber(currency) {
+        currencyToNumber(currency) {
+            
             var number = currency.replace(/\./g, '');
-
             return parseFloat(number);
             }
     },

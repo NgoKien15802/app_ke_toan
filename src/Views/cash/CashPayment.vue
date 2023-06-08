@@ -118,6 +118,8 @@
                             @handleSelectChechbox="handleSelectChechbox"
                             @handleClickPayment="handleClickPayment"
                             :keyWordSearch="keyWordSearch"
+                            :isReload="isReload"
+                            @setIsReLoad="setIsReLoad"
                         ></TheTablePayment>
                     </div>
                     <!--  paging -->
@@ -188,6 +190,8 @@
         @closeCashDetail="closeCashDetail"
         :formMode="formMode"
         @hideShowLoading="hideShowLoading"
+        @setFormMode="setFormMode"
+        @handleReLoadData="handleReLoadData"
     ></TheCashDetail>
 </template>
 
@@ -312,6 +316,14 @@ export default {
             }
         },
 
+         /**
+         * Hàm thực hiện reload lại trang
+         * Author: KienNT (08/06/2023)
+         */
+        handleReLoadData() {
+            this.isReload = true;
+        },
+
         /**
          * Hàm gán giá trị mảng các checkbox được check
          * Author: KienNT (04/06/2023)
@@ -332,6 +344,22 @@ export default {
             } catch (error) {
                 console.log(error);
             }
+        },
+
+         /**
+         * Hàm emit từ con để set lại reload lần sau
+         * Author: KienNT (08/06/2023)
+         */
+        setIsReLoad() {
+            this.isReload = false;
+        },
+
+         /**
+         * Hàm thực hiện set lại cho formMode
+         * Author: KienNT (08/06/2023)
+         */
+        setFormMode(formMode) {
+            this.formMode = formMode;
         },
 
         /**

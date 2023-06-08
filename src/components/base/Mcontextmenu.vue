@@ -102,6 +102,30 @@
         </li>
     </ul>
 
+     <ul
+        v-else-if="kind === 'btnContextPopup'"
+        class="contextmenu__fun-list d-block"
+        :style="`left: ${left}px ; top: ${top}px`"
+        ref="contextmenu"
+    >
+        <li class="contextmenu__fun-item">
+            <a
+                href="#"
+                class="contextmenu__fun-link"
+                @click="this.$emit('handleBtnSaveEndAdd')"
+                >{{ $t("BtnSaveEndAdd") }}</a
+            >
+        </li>
+        <li class="contextmenu__fun-item">
+            <a
+                href="#"
+                class="contextmenu__fun-link"
+                 @click="this.$emit('handleBtnSaveEndClose')"
+                >{{ $t("BtnSaveEndClose") }}</a
+            >
+        </li>
+    </ul>
+
     <ul
         v-else
         class="contextmenu__fun-list d-block"

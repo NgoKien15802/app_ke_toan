@@ -297,6 +297,9 @@ export default {
         keyWordSearch: {
             type: String,
         },
+         isReload: {
+            type: String,
+        },
     },
     data() {
         return {
@@ -377,6 +380,17 @@ export default {
             this.pageNumber = 1;
             this.loadData();
         },
+
+          /**
+         * Theo dõi sự thay đổi isReload: nếu thay đổi là true thì reload lại trang
+         * Author: KienNT (08/06/2023)
+         */
+        isReload: function (newValue) {
+            if (newValue) {
+                this.loadData();
+                this.$emit("setIsReLoad");
+            }
+        },
     },
     /**
      * Thực hiện lấy dữ liệu khi chuẩn bị mounted vào DOM
@@ -401,18 +415,17 @@ export default {
                     .get(
                         `https://localhost:7153/api/v1/Payments/Filter?keyword=${this.keyWord}&pageSize=${this.pageSize}&conditionFilters=${this.conditionFilters}&pageNumber=${this.pageNumber}`
                     )
-                    .then((this.isShowSkeleton = true))
+                    .then(( this.paymentList = new Array(3).fill(0),this.isShowSkeleton = true))
                     .then((response) => {
                         this.paymentList = response?.data?.Data.Data;
                         this.totalRecord = response?.data?.Data.TotalRecord;
+                        this.totalMoney = Math.round(response?.data?.Data.TotalRecordPrice) || 0;
                         this.$emit("getTotalRecord", this.totalRecord);
                         this.paymentList = this.paymentList.map((x) => {
                             x.Selected = false;
                             return x;
                         });
-                        this.totalMoney = this.paymentList.reduce((acc, el) => {
-                            return acc + Math.round(el?.total_amount);
-                        }, 0);
+                       
 
                         this.isShowSkeleton = false;
                     })

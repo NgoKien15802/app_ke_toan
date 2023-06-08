@@ -78,9 +78,9 @@
     border: none;
 }
 
-.input__wrapper:hover .input__icon {
+/* .input__wrapper:hover .input__icon {
     background-color: #e0e0e0;
-}
+} */
 
 .input__icon:active + .input__type {
     background-color: var(--white-color);

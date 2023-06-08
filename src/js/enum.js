@@ -10,6 +10,7 @@ const MISAEnum = {
         Add: 0,
         Edit: 1,
         Duplicate: 2,
+        Show:3
     },
     // cộng thêm cho tọa đô x,y khi hiển thị contextmenu
     getbounding: {
@@ -59,6 +60,12 @@ const MISAEnum = {
         Collapse: 0,
         Expand: 1,
     },
+
+    // mode btn popup payment
+    ModeBtn: {
+        SaveAndAdd: 0,
+        SaveAndClose: 1
+    }
 };
 
 export default MISAEnum;

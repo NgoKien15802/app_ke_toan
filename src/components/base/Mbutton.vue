@@ -5,11 +5,13 @@
         :tabindex="tabindex"
         :id="id"
         :disabled="disabled"
+        :style="style"
     >
-        <span class="combox-btn-text" @click="click">{{ text }}</span>
+       
+        <span class="combox-btn-text"  :class="className"  @click="click">{{ text }}</span>
         <span class="combox-btn-mark"></span>
 
-        <div class="wrap-icon-combox"><div class="icon__combox-btn"></div></div>
+        <div class="wrap-icon-combox" ref="iconContextMenu" :class="classStyle" @click="($event) => this.$emit('clickBtnRight',$event)"><div class="icon__combox-btn"></div></div>
     </button>
 
     <button
@@ -23,6 +25,8 @@
         {{ text }}
         <slot></slot>
     </button>
+
+
 </template>
 <script>
 export default {
@@ -43,6 +47,9 @@ export default {
         className: {
             type: String,
             default: "btn-primary",
+        },
+        classStyle: {
+            type:String
         },
         // id cho button
         id: {
@@ -67,6 +74,16 @@ export default {
         mode: {
             type: String,
         },
+
+        // css button inline
+        style:{
+            type:String
+        },
+        iconContextMenu: {
+            type: Object,
+            
+        }
+        
     },
 };
 </script>

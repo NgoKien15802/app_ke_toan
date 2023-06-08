@@ -3,7 +3,7 @@
     height: auto;
     border: 1px solid var(--boder-primary);
     padding: 3px 0;
-    z-index: 4;
+    z-index: 999;
     position: fixed;
     background-color: var(--white-color);
 }

@@ -11,6 +11,7 @@
             class="input__icon btn-combobox popup__combobox-icon"
             ref="btnIconCombobox"
             @click="($event) => handleClickIcon($event)"
+            :class="isDisabled ? 'disabledDopdown' : ''"
         >
             <div class="input__icon-dropdown" ref="iconCombobox"></div>
         </button>
@@ -31,6 +32,7 @@
             class="input__type combobox-input input--required reset-input"
             autocomplete="off"
             ref="departmentInput"
+             :class="isDisabled ? 'disabledDopdown' : ''"
         />
 
         <div
@@ -380,6 +382,10 @@ export default {
         },
         kindAccount:{
             type:String
+        },
+        isDisabled: {
+            type:Boolean,
+            default: false,
         }
     },
     data() {

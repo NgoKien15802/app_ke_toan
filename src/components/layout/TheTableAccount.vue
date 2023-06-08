@@ -425,7 +425,7 @@ export default {
                             : `https://localhost:7153/api/v1/Accounts/AccountSearchPaging?keyword=${this.keyWord}&pageSize=${this.pageSize}&pageNumber=${this.pageNumber}`
                     )
                     // .then(this.hideShowLoading(true))
-                    .then((this.isShowSkeleton = true))
+                    .then((this.accounts = new Array(this.pageSize).fill(0),this.isShowSkeleton = true))
                     .then((response) => {
                         this.accounts = response?.data?.Data?.Data;
                         if (this.isCallExpand) {

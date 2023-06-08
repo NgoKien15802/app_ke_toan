@@ -254,16 +254,8 @@ export default {
                         this.totalRecordPaymentDetail = response?.data?.Data.TotalRecord;
                         this.$emit("getTotalRecord", this.totalRecordPaymentDetail);
 
-                        if (this.paymentDetailList.length > 0) {
-                            this.totalMoney = this.paymentDetailList.reduce(
-                                (acc, el) => {
-                                    return acc + Math.round(el?.amount);
-                                },
-                                0
-                            );
-                        } else {
-                            this.totalMoney = 0;
-                        }
+                            this.totalMoney = Math.round(response?.data?.Data.TotalRecordPrice);
+                      
 
                         this.isShowSkeleton = false;
                     })
