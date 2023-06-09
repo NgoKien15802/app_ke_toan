@@ -254,6 +254,8 @@
         :top="topContextMenu"
         @hideContextMenu="hideContextMenu"
         :refElement="this.$refs.iconContextMenu"
+        :paymentSelected="paymentSelected"
+        @handleEdit="handleEdit"
     ></MContextmenu>
 
     <MDialog
@@ -332,6 +334,7 @@ export default {
             conditionFilters: "{}",
             totalMoney: 0,
             oldCheckedArr: [],
+            paymentSelected:""
         };
     },
     watch: {
@@ -533,7 +536,7 @@ export default {
          */
         handleClickOptionMenu(event, payment) {
             try {
-                console.log(payment);
+                this.paymentSelected = payment.refid;
                 this.isContextMenu = !this.isContextMenu;
                 this.leftContextMenu =
                     event.target.getBoundingClientRect().x -
@@ -569,6 +572,25 @@ export default {
         numberWithCommas(x) {
             return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         },
+
+        /**
+         * handle click btn edit
+         * Author: KienNT (09/06/2023)
+         */
+        handleEdit(paymentSelected) {
+            try {
+                if (paymentSelected) {
+                    this.isContextMenu = !this.isContextMenu;
+                    this.$emit(
+                        "showPopupEdit",
+                        MISAEnum.formMode.Edit,
+                        paymentSelected
+                    );
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
     },
 
     computed: {

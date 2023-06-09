@@ -121,6 +121,7 @@
                             :isReload="isReload"
                             @setIsReLoad="setIsReLoad"
                             @handleClickShow="handleClickShow"
+                            @showPopupEdit="showPopupEdit"
                         ></TheTablePayment>
                     </div>
                     <!--  paging -->
@@ -451,6 +452,16 @@ export default {
             this.isCashDetail = true;
             this.payment_id_selected = payment.refid;
             this.formMode = MISAEnum.formMode.Show;
+        },
+
+          /**
+         * Hàm hiển thị popup và truyền formMode cho Popup, payment được chọn
+         * Author: KienNT (09/06/2023)
+         */
+        showPopupEdit(formMode, paymentSelected) {
+            this.isCashDetail = true;
+            this.formMode = formMode;
+            this.payment_id_selected = paymentSelected;
         },
 
         /**

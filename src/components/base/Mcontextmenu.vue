@@ -41,7 +41,7 @@
         ref="contextmenu"
     >
         <li class="contextmenu__fun-item">
-            <a href="#" class="contextmenu__fun-link" @click="handleEdit">{{
+            <a href="#" class="contextmenu__fun-link" @click="()=>this.$emit('handleEdit',paymentSelected)">{{
                 $t("Fix")
             }}</a>
         </li>
@@ -215,6 +215,9 @@ export default {
         is_parent: {
             type: Boolean,
         },
+        paymentSelected: {
+            type:String
+        }
     },
     data() {
         return {
