@@ -169,6 +169,11 @@ const MISAResouce = {
         ToastUpdateStateForAll: " cho tất cả",
         ToastUpdateStateOnlyParent: " chỉ cho cha",
 
+        ToastAddSuccessPayment: "Phiếu chi đã được thêm",
+        ToastDeleteSuccessPayment: "Phiếu chi đã bị xóa",
+        ToastEditSuccessPayment: "Phiếu chi đã được sửa",
+        ToastDuplicateSuccessPayment: "Phiếu đã được nhân bản",
+
         // checkbox
         SelectedCheckbox: "Đã chọn: ",
         UndoSelected: "Bỏ chọn",
@@ -472,6 +477,12 @@ const MISAResouce = {
         ToastEditSuccess: "Staff has been edited",
         ToastDuplicateSuccess: "Staff has been duplicated",
         ToastTitleSuccess: "Success",
+
+         ToastAddSuccessPayment: "Payment has been added",
+        ToastDeleteSuccessPayment: "Payment has been deleted",
+        ToastEditSuccessPayment: "Payment has been edited",
+        ToastDuplicateSuccessPayment: "Payment has been duplicated",
+        
 
         ToastAddSuccessAccount: "Account has been added",
         ToastDeleteSuccessAccount: "Account has been deleted",

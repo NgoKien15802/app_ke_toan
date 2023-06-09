@@ -181,10 +181,9 @@
                 </div>
             </div>
         </div>
-        <!-- loading -->
-        <Mloading v-if="isLoading"></Mloading>
     </TheCash>
-
+    <!-- loading -->
+    <Mloading v-if="isLoading"></Mloading>
     <TheCashDetail
         v-if="isCashDetail"
         @closeCashDetail="closeCashDetail"
@@ -192,7 +191,28 @@
         @hideShowLoading="hideShowLoading"
         @setFormMode="setFormMode"
         @handleReLoadData="handleReLoadData"
+        @hideShowToast="hideShowToast"
     ></TheCashDetail>
+
+      <!-- Toast -->
+                <MToast
+                    v-if="
+                        isShowToastAdd ||
+                        isShowToastEdit ||
+                        isShowToastDelete ||
+                        isShowToastDuplicate 
+                    "
+                    classIcon="toast__icon-success"
+                    :kind="$t('ToastTitleSuccess')"
+                    :text="
+                        (isShowToastAdd && $t('ToastAddSuccessPayment')) ||
+                        (isShowToastEdit && $t('ToastEditSuccessPayment')) ||
+                        (isShowToastDelete && $t('ToastDeleteSuccessPayment')) ||
+                        (isShowToastDuplicate && $t('ToastDuplicateSuccessPayment'))
+                    "
+                    classTitle="toast__title-success"
+                ></MToast>
+
 </template>
 
 <script>
@@ -236,6 +256,10 @@ export default {
             topContextMenu: "",
             isDetail: false,
             paymentIdClick: "",
+            isShowToastAdd: false,
+            isShowToastEdit: false,
+            isShowToastDelete: false,
+            isShowToastDuplicate:false
         };
     },
 
@@ -474,6 +498,46 @@ export default {
          */
         hideContextMenu() {
             this.isContextMenu = !this.isContextMenu;
+        },
+
+          /**
+         * Hàm hiện thị toast khi thực hiện thêm, sửa, xóa thành công
+         * Author: KienNT (09/06/2023)
+         * @param (isToast): tham số là true, false ẩn hiển
+         */
+        hideShowToast(kind) {
+            try {
+                switch (kind) {
+                    case "add":
+                        this.isShowToastAdd = true;
+                        setTimeout(() => (this.isShowToastAdd = false), 3000);
+                        break;
+                    case "edit":
+                        this.isShowToastEdit = true;
+                        setTimeout(() => (this.isShowToastEdit = false), 3000);
+                        break;
+                    case "delete":
+                        this.isShowToastDelete = true;
+                        setTimeout(
+                            () => (this.isShowToastDelete = false),
+                            3000
+                        );
+                        break;
+
+                    case "duplicate":
+                        this.isShowToastDuplicate = true;
+                        setTimeout(
+                            () => (this.isShowToastDuplicate = false),
+                            3000
+                        );
+                        break;
+
+                    default:
+                        break;
+                }
+            } catch (error) {
+                console.log(error);
+            }
         },
     },
 };

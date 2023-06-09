@@ -7,7 +7,7 @@
     right: 0;
     left: 0;
     bottom: 0;
-    z-index: 99;
+    z-index: 9999;
     background: rgba(0, 0, 0, 0.12);
 }
 
@@ -41,7 +41,7 @@
     box-sizing: border-box;
     background: transparent url(/src/assets/loading.svg) no-repeat center;
     background-size: 100%;
-    z-index: 11;
+      z-index: 9999;
 }
 
 .loading .effect-1 {
@@ -110,5 +110,5 @@
     right: 0;
     bottom: 0;
     max-height: 302px;
-    z-index: 12;
+    z-index: 9999;
 }

@@ -18,6 +18,7 @@ import MNotData from "./components/base/MNotData.vue";
 import MCombobox from "./components/base/Mcombobox.vue";
 import MOptionItem from "./components/base/MOptionItem.vue";
 import MComboboxTable from "./components/base/MComboboxTable.vue";
+import Mloading from "./components/base/Mloading.vue";
 
 import MLoadingCombobox from "./components/base/MLoadingCombobox.vue";
 
@@ -57,6 +58,7 @@ app.component("MOptionItem", MOptionItem);
 app.component("MComboboxTable", MComboboxTable);
 app.component("MLoadingCombobox", MLoadingCombobox);
 app.component("MPaging", MPaging);
+app.component("Mloading", Mloading);
 
 app.use(i18n);
 

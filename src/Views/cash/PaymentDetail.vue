@@ -1114,7 +1114,7 @@
                                                     <MButton
                                                         class="btn btn-default close__add-employee tooltip"
                                                         tabindex="17"
-                                                        :text="$t('BtnSave')"
+                                                        :text="formModePayment===MISAEnum.formMode.Show ?$t('Fix') : $t('BtnSave')"
                                                         :click="
                                                             () =>
                                                                 btnSaveAndClose('')
@@ -1122,6 +1122,7 @@
                                                         ref="btnSave"
                                                     >
                                                         <MTooltip
+                                                            v-if="!formModePayment===MISAEnum.formMode.Show"
                                                             kind="AccountSysterm"
                                                             :subtext="
                                                                 $t(
@@ -1592,15 +1593,19 @@ export default {
                         "https://localhost:7153/api/v1/Payments/InsertMasterDetail",
                         requestData
                     )
-                    .then(this.$emit("hideShowLoading", true))
+                    .then(this.$emit("hideShowLoading", true),)
                     .then((res) => {
                         console.log(res);
                         if (this.isEmpty(modeBtn)) {
                             // chuyển form về mode show
                             this.formModePayment = MISAEnum.formMode.Show;
+                            this.rowPaymentDetails.forEach((el) => {
+                                el.isEditAble = false; 
+                            })
                             this.$emit("setFormMode", MISAEnum.formMode.Show);
                         } 
                         this.$emit("hideShowLoading", false);
+                        this.$emit("hideShowToast", "add");
                         this.$emit("handleReLoadData");
                     })
                     .catch((error) => {
