@@ -1090,7 +1090,7 @@
                                             :text="$t('AddLine')"
                                             :click="() => AddLineAndClose()"
                                             ref="AddLine"
-                                            :class=" formModePayment===MISAEnum.formMode.Show ? 'disabledDopdown' : ''"
+                                            :class=" formModePayment===MISAEnum.formMode.Show || formModePayment === MISAEnum.formMode.Edit ? 'disabledDopdown' : ''"
                                         >
                                         </MButton
                                         ><MButton
@@ -1099,7 +1099,7 @@
                                             :text="$t('DeleteAllLine')"
                                             :click="DeleteAllLineAndClose"
                                             ref="DeleteAllLine"
-                                            :class=" formModePayment===MISAEnum.formMode.Show ? 'disabledDopdown' : ''"
+                                            :class=" formModePayment===MISAEnum.formMode.Show || formModePayment === MISAEnum.formMode.Edit ? 'disabledDopdown' : ''"
                                         >
                                         </MButton>
                                     </div>
@@ -1242,6 +1242,9 @@ export default {
         formMode: {
             type: String,
         },
+        payment_id_selected: {
+            type: String,
+        }
     },
 
     data() {
@@ -1294,7 +1297,8 @@ export default {
                 },
             ],
             cloneRowPaymentDetails: [],
-            clonePaymentDetail:[],
+            clonePaymentDetail: [],
+            clonePayment:{}, 
             deleteOne: false,
             isContextMenu: false,
             isDialogNotify: false,
@@ -1404,7 +1408,7 @@ export default {
             handler: function (newValue) {
                 try {
                     newValue.forEach((el,index)=>{
-                        if(el.supplierCodeDetail === this.supplierCodePayment){
+                        if(el.supplierCodeDetail === this.supplierCodePayment && this.isEmpty(this.rowPaymentDetails[index].supplier_name_detail)){
                             this.rowPaymentDetails[index].supplier_name_detail = this.supplier_name_detail_fake;
                             this.rowPaymentDetails[index].supplier_id = this.supplier_id_detail_fake;
                         }
@@ -1452,27 +1456,84 @@ export default {
         if (this.formModePayment === MISAEnum.formMode.Add) {
             // gọi hàm lấy số chứng từ mới
             this.getNewPaymentCode();
-            this.account_category_kind = null;
-            this.parent_id = null;
         } else if (
             /**
                  * TH nhân bản
-                 Author: KienNT (06/06/2023)
+                 Author: KienNT (08/06/2023)
                  */
             !this.isEmpty(this.account_id_selected) &&
             this.formModePayment === MISAEnum.formMode.Duplicate
         ) {
-            this.getDataByAccountId();
+            this.getMasterDetailById();
         } else if (this.formModePayment === MISAEnum.formMode.Edit) {
-            /**
-                 * Call API lấy ra id bất kỳ khi có id để sửa
-                 Author: KienNT (06/06/2023)
+                /**
+                 * Call API lấy ra id để sửa
+                 Author: KienNT (08/06/2023)
                  */
-            this.getDataByAccountId();
+           
+            this.getMasterDetailById();
+        } else if (this.formModePayment === MISAEnum.formMode.Show) {
+             /**
+                 * Call API lấy ra id để xem
+                 Author: KienNT (08/06/2023)
+                 */
+             this.getMasterDetailById();
         }
     },
 
     methods: {
+
+         /**
+         * Hàm lấy ra payment master detail theo id
+         * Author: KienNT (09/06/2023)
+         */
+        getMasterDetailById() {
+            try {
+                    axios.get('https://localhost:7153/api/v1/Payments/masterdetail', {
+                    headers: {
+                        'refid': this.payment_id_selected
+                    }
+                    })
+                    .then(this.$emit("hideShowLoading", true))
+                    .then((res) => {
+                        const master = res.data.Data.Master;
+                        const details = res.data.Data.Details;
+                        
+                        this.payment = master;
+                        this.employeeId = master?.fullname;
+                        this.supplierCodePayment = master?.supplier_code;
+                        this.payment.posted_date = this.formatDate(
+                            master?.posted_date
+                        );
+                        this.payment.ref_date = this.formatDate(
+                            master?.ref_date
+                        );
+                        this.payment.total_amount = this.numberWithCommas(master?.total_amount)
+                        details.forEach((el, index) => {
+                            this.rowPaymentDetails[index] = {
+                                ref_detail_id:el?.ref_detail_id,
+                                ...this.rowPaymentDetails[index],
+                                description: el?.description,
+                                credit_account_name: el?.credit_account,
+                                credit_account_id: el?.credit_account_id,
+                                debit_account_name: el?.debit_account,
+                                debit_account_id: el?.debit_account_id,
+                                amount: this.numberWithCommas(el?.amount),
+                                supplier_id: el?.supplier_id,
+                                supplierCodeDetail: el?.payment_detail_supplier_code,
+                                supplier_name_detail: el?.payment_detail_supplier_name
+                            };
+                        });
+
+                        this.$emit("hideShowLoading", false);
+                    })
+                    .catch((res) => {
+                        console.log(res);
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        },
         /**
          * Hàm lấy employee code mới
          * Author: KienNT (01/03/2023)
@@ -1550,12 +1611,22 @@ export default {
          *  @param (value): tham số 1: là true, false hiển thị popup
          */
          btnSaveAndClose(modeBtn="") {
-            try {
+             try {
+                 let checkState = false;
+                 if (this.formModePayment===MISAEnum.formMode.Show) {
+                     this.formModePayment = MISAEnum.formMode.Edit;
+                     checkState = false;
+                 } else if (this.formModePayment === MISAEnum.formMode.Edit) {
+                     checkState = true;
+                }    
                 if (this.handleValidate()) {
                     if (this.formModePayment === MISAEnum.formMode.Add) {
                         // this.postData(MISAEnum.formMode.Add, isCloseForm);
+
                         this.payment.total_amount = this.totalMoney;
                         this.payment.employee_id = this.payment.employee_id || null;
+
+
                         this.clonePaymentDetail = JSON.stringify(this.rowPaymentDetails);
                         this.clonePaymentDetail = JSON.parse(this.clonePaymentDetail);
                         this.clonePaymentDetail = this.clonePaymentDetail.map((el) => {
@@ -1564,12 +1635,93 @@ export default {
                                 credit_account_id: el.credit_account_id || null,
                                 amount: this.currencyToNumber(el.amount || '0.0'),
                                 description: el.description,
-                                supplier_id:el.supplier_id || null,
+                                supplier_id: el.supplier_id || null,
                             };
                         });
                         this.postData(MISAEnum.formMode.Add, modeBtn);
                     }
                     // đóng form
+
+                    else if (this.formModePayment === MISAEnum.formMode.Edit && !this.isEmpty(this.payment_id_selected) && checkState) {
+                        this.payment.total_amount = this.totalMoney;
+                        this.payment.employee_id = this.payment.employee_id || null;
+                        this.clonePayment = JSON.stringify(this.payment);
+                        this.clonePayment = JSON.parse(this.clonePayment);
+                        const {
+                            refid,
+                            journal_memo,
+                            posted_date,
+                            ref_date,
+                            payment_supplier_name,
+                            payment_receiver,
+                            payment_supplier_address,
+                            employee_id,
+                            refno_finance,
+                            document_included,
+                            supplier_id,
+                            total_amount,
+                            ...cast
+                        } = this.clonePayment;
+                        this.clonePayment = {
+                            refid,
+                            journal_memo,
+                            posted_date,
+                            ref_date,
+                            payment_supplier_name,
+                            payment_receiver,
+                            payment_supplier_address,
+                            employee_id,
+                            refno_finance,
+                            document_included,
+                            supplier_id,
+                            total_amount
+                        }
+                        console.log(cast);
+                        this.clonePaymentDetail = JSON.stringify(this.rowPaymentDetails);
+                        this.clonePaymentDetail = JSON.parse(this.clonePaymentDetail);
+                        this.clonePaymentDetail = this.clonePaymentDetail.map((el) => {
+                            return {
+                                ref_detail_id: el?.ref_detail_id,
+                                debit_account_id: el.debit_account_id || null,
+                                credit_account_id: el.credit_account_id || null,
+                                amount: this.currencyToNumber(el.amount || '0.0'),
+                                description: el.description,
+                                supplier_id: el.supplier_id || null,
+                            };
+                        });
+                        // Sửa nhân viên theo id
+                        const requestData = {
+                            Master: this.clonePayment,
+                            Details: this.clonePaymentDetail,
+                        };
+                        axios
+                            .put(
+                                `https://localhost:7153/api/v1/Payments/updateMasterDetail`,
+                                requestData
+                            )
+
+                            .then(this.$emit("hideShowLoading", true))
+                            .then((res) => {
+                                console.log(res);
+                             if (this.isEmpty(modeBtn)) {
+                                // chuyển form về mode show
+                                this.formModePayment = MISAEnum.formMode.Show;
+                                this.rowPaymentDetails.forEach((el) => {
+                                    el.isEditAble = false; 
+                                })
+                                this.$emit("setFormMode", MISAEnum.formMode.Show);
+                            } 
+                            this.$emit("hideShowLoading", false);
+                            this.$emit("hideShowToast", "edit");
+                            this.$emit("handleReLoadData");
+                            })
+                            .catch((error) => {
+                                let response = error.response;
+                                let errorData = response?.data?.Data?.Data;
+                                console.log(errorData);
+                                this.$emit("hideShowLoading", false);
+                            });
+                     }
                 } else {
                     this.hideShowDialogError(true);
                 }
@@ -1992,22 +2144,7 @@ export default {
                 console.log(error);
             }
         },
-        /**
-         *  Hàm convert sang ngày, tháng, năm để hiển thị lên input date
-         *  Author:KienNT(06/06/2023)
-         */
-        formatDate() {
-            return (inputString = "") => {
-                try {
-                    if (inputString !== null) {
-                        let date = new Date(inputString);
-                        return moment(date).format("YYYY-MM-DD");
-                    }
-                } catch (error) {
-                    console.log(error);
-                }
-            };
-        },
+       
         /**
          * Hàm kiểm tra input có rỗng không
          * Author: KienNT (06/06/2023)
@@ -2039,6 +2176,25 @@ export default {
             return parseFloat(number);
             }
     },
+
+    computed: {
+        /**
+         *  Hàm convert sang ngày, tháng, năm để hiển thị lên input date
+         *  Author:KienNT(06/06/2023)
+         */
+        formatDate() {
+            return (inputString = "") => {
+                try {
+                    if (inputString !== null) {
+                        let date = new Date(inputString);
+                        return moment(date).format("YYYY-MM-DD");
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
+            };
+        }, 
+    }
 };
 </script>
 

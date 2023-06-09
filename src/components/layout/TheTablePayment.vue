@@ -80,7 +80,7 @@
                 v-else
                 v-for="(payment, index) in paymentList"
                 :key="index"
-                @dblclick="($event) => doubleClickRow($event, payment)"
+                @dblclick="($event) => handleClickShow(payment)"
                 :class="payment?.Selected ? 'tr-hover' : ''"
                 @click="handleActiveRow($event, payment)"
                 ref="trElementRef"
@@ -113,7 +113,7 @@
                             kind="link"
                             className="link-btn btn-link"
                             :text="$t('Show')"
-                            :click="() => doubleClickEditText(payment)"
+                            :click="() => handleClickShow(payment)"
                         ></MButton>
                         <div
                             class="input__icon-box ml-8"
@@ -544,6 +544,15 @@ export default {
             } catch (error) {
                 console.log(error);
             }
+        },
+
+
+         /**
+         * Hàm ẩn cclick btn xem
+         * Author: KienNT (09/06/2023)
+         */
+        handleClickShow(payment) {
+             this.$emit("handleClickShow", payment);
         },
 
         /**

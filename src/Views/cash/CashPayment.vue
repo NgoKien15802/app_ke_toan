@@ -120,6 +120,7 @@
                             :keyWordSearch="keyWordSearch"
                             :isReload="isReload"
                             @setIsReLoad="setIsReLoad"
+                            @handleClickShow="handleClickShow"
                         ></TheTablePayment>
                     </div>
                     <!--  paging -->
@@ -192,6 +193,7 @@
         @setFormMode="setFormMode"
         @handleReLoadData="handleReLoadData"
         @hideShowToast="hideShowToast"
+        :payment_id_selected="payment_id_selected"
     ></TheCashDetail>
 
       <!-- Toast -->
@@ -259,7 +261,8 @@ export default {
             isShowToastAdd: false,
             isShowToastEdit: false,
             isShowToastDelete: false,
-            isShowToastDuplicate:false
+            isShowToastDuplicate: false,
+            payment_id_selected:null,
         };
     },
 
@@ -437,6 +440,17 @@ export default {
          */
         setIsDisabledClickPrevPaymentDetail(){
             this.isDisabledClickPrevPaymentDetail = true;
+        },
+
+
+          /**
+         * Hàm ẩn cclick btn xem
+         * Author: KienNT (09/06/2023)
+         */
+        handleClickShow(payment) {
+            this.isCashDetail = true;
+            this.payment_id_selected = payment.refid;
+            this.formMode = MISAEnum.formMode.Show;
         },
 
         /**

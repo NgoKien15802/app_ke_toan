@@ -344,8 +344,13 @@ div.disabled {
 
 .disabledDopdown {
        pointer-events: none;
-    background-color: #eff0f2 !important;
+        background-color: #eff0f2 !important;
 }
+
+button.disabledDopdown {
+    color: #afafaf !important;
+}
+
 
 .account__systerm-detail .disabledDopdown {
     pointer-events: none;
