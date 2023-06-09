@@ -58,7 +58,7 @@
             <a
                 href="#"
                 class="contextmenu__fun-link"
-                @click="handleDuplicateEmployee"
+                @click="()=>this.$emit('handleDuplicatePayment',paymentSelected)"
                 >{{ $t("Duplicate") }}</a
             >
         </li>

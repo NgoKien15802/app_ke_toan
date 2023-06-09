@@ -1461,10 +1461,10 @@ export default {
                  * TH nhân bản
                  Author: KienNT (08/06/2023)
                  */
-            !this.isEmpty(this.account_id_selected) &&
+            !this.isEmpty(this.payment_id_selected) &&
             this.formModePayment === MISAEnum.formMode.Duplicate
         ) {
-            this.getMasterDetailById();
+            this.getMasterDetailById(MISAEnum.formMode.Duplicate);
         } else if (this.formModePayment === MISAEnum.formMode.Edit) {
                 /**
                  * Call API lấy ra id để sửa
@@ -1487,7 +1487,7 @@ export default {
          * Hàm lấy ra payment master detail theo id
          * Author: KienNT (09/06/2023)
          */
-        getMasterDetailById() {
+        getMasterDetailById(formMode = "") {
             try {
                     axios.get('https://localhost:7153/api/v1/Payments/masterdetail', {
                     headers: {
@@ -1498,7 +1498,9 @@ export default {
                     .then((res) => {
                         const master = res.data.Data.Master;
                         const details = res.data.Data.Details;
-                        
+                        if (formMode === MISAEnum.formMode.Duplicate) {
+                            this.getNewPaymentCode();
+                        } 
                         this.payment = master;
                         this.employeeId = master?.fullname;
                         this.supplierCodePayment = master?.supplier_code;
@@ -1721,8 +1723,27 @@ export default {
                                 console.log(errorData);
                                 this.$emit("hideShowLoading", false);
                             });
-                     }
-                } else {
+                     }else if (
+                        !this.isEmpty(this.payment_id_selected) &&
+                        this.formModePayment === MISAEnum.formMode.Duplicate
+                    ) {
+                        this.payment.total_amount = this.totalMoney;
+                        this.payment.employee_id = this.payment.employee_id || null;
+
+                        this.clonePaymentDetail = JSON.stringify(this.rowPaymentDetails);
+                        this.clonePaymentDetail = JSON.parse(this.clonePaymentDetail);
+                        this.clonePaymentDetail = this.clonePaymentDetail.map((el) => {
+                            return {
+                                debit_account_id: el.debit_account_id || null,
+                                credit_account_id: el.credit_account_id || null,
+                                amount: this.currencyToNumber(el.amount || '0.0'),
+                                description: el.description,
+                                supplier_id: el.supplier_id || null,
+                            };
+                        });
+                        this.postData(MISAEnum.formMode.Duplicate, modeBtn);
+                    } 
+                }else {
                     this.hideShowDialogError(true);
                 }
             } catch (error) {
@@ -1755,9 +1776,13 @@ export default {
                                 el.isEditAble = false; 
                             })
                             this.$emit("setFormMode", MISAEnum.formMode.Show);
-                        } 
+                        } if (formMode === MISAEnum.formMode.Duplicate) {
+                            this.$emit("setPaymentSelected")
+                            this.$emit("hideShowToast", "duplicate");
+                        } else {
+                            this.$emit("hideShowToast", "add");
+                        }
                         this.$emit("hideShowLoading", false);
-                        this.$emit("hideShowToast", "add");
                         this.$emit("handleReLoadData");
                     })
                     .catch((error) => {

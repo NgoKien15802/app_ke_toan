@@ -124,6 +124,7 @@
                             @showPopupEdit="showPopupEdit"
                             @hideShowLoading="hideShowLoading"
                             @hideShowToast="hideShowToast"
+                            @showPopupDuplicate="showPopupDuplicate"
                         ></TheTablePayment>
                     </div>
                     <!--  paging -->
@@ -197,6 +198,7 @@
         @handleReLoadData="handleReLoadData"
         @hideShowToast="hideShowToast"
         :payment_id_selected="payment_id_selected"
+        @setPaymentSelected="setPaymentSelected"
     ></TheCashDetail>
 
       <!-- Toast -->
@@ -376,6 +378,14 @@ export default {
             }
         },
 
+          /**
+         * Hàm emit từ con để set lại payment_id_selected
+         * Author: KienNT (09/06/2023)
+         */
+        setPaymentSelected() {
+            this.payment_id_selected = null;      
+        },
+
          /**
          * Hàm emit từ con để set lại reload lần sau
          * Author: KienNT (08/06/2023)
@@ -502,6 +512,16 @@ export default {
             if (this.pageNumberPaymentDetail > 1) {
                 this.isDisabledClickPrevPaymentDetail = false;
             }
+        },
+
+         /**
+         * Hàm hiển thị popup và truyền formMode cho Popup, payment được chọn
+         * Author: KienNT (09/06/2023)
+         */
+        showPopupDuplicate(formMode, paymentSelected) {
+            this.isCashDetail = true;
+            this.formMode = formMode;
+            this.payment_id_selected = paymentSelected;
         },
 
         /**

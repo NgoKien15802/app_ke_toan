@@ -257,6 +257,7 @@
         :paymentSelected="paymentSelected"
         @handleEdit="handleEdit"
         @handleDeleteRow="handleDeleteRow"
+        @handleDuplicatePayment="handleDuplicatePayment"
     ></MContextmenu>
 
     <MDialog
@@ -704,6 +705,26 @@ export default {
                     this.paymentSelected = paymentSelected;
                     this.isDialogWarning = true;
                     this.$emit("setIsDeleteOne");
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+         /**
+         * Hàm lấy được id của payment chọn để nhân bản
+         * Author: KienNT (09/06/2023)
+         */
+        handleDuplicatePayment(paymentSelected) {
+            try {
+                if (paymentSelected) {
+                    this.isContextMenu = !this.isContextMenu;
+                    this.paymentSelected = paymentSelected;
+                    this.$emit(
+                        "showPopupDuplicate",
+                        MISAEnum.formMode.Duplicate,
+                        paymentSelected
+                    );
                 }
             } catch (error) {
                 console.log(error);
