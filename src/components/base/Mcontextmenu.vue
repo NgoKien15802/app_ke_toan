@@ -50,7 +50,7 @@
             <a
                 href="#"
                 class="contextmenu__fun-link"
-                @click="handleDeleteRow"
+                @click="()=>this.$emit('handleDeleteRow',paymentSelected)"
                 >{{ $t("Delete") }}</a
             >
         </li>

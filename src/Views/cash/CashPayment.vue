@@ -122,6 +122,8 @@
                             @setIsReLoad="setIsReLoad"
                             @handleClickShow="handleClickShow"
                             @showPopupEdit="showPopupEdit"
+                            @hideShowLoading="hideShowLoading"
+                            @hideShowToast="hideShowToast"
                         ></TheTablePayment>
                     </div>
                     <!--  paging -->

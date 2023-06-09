@@ -140,6 +140,7 @@ const MISAResouce = {
         DialogWarning: "Cảnh báo",
         MessageNotify: "Dữ liệu đã thay đổi. Bạn có muốn cất không?",
         MessageWarning: "Bạn có muốn xóa nhân viên ",
+        MessageWarningPayment: "Bạn có muốn chứng từ ",
         MessageWarningDeleteLine:
             "Bạn có thực sự muốn xóa tất cả các dòng đã nhập không?",
         MessageWarningAccount: "Bạn có muốn xóa tài khoản ",
@@ -169,10 +170,10 @@ const MISAResouce = {
         ToastUpdateStateForAll: " cho tất cả",
         ToastUpdateStateOnlyParent: " chỉ cho cha",
 
-        ToastAddSuccessPayment: "Phiếu chi đã được thêm",
-        ToastDeleteSuccessPayment: "Phiếu chi đã bị xóa",
-        ToastEditSuccessPayment: "Phiếu chi đã được sửa",
-        ToastDuplicateSuccessPayment: "Phiếu đã được nhân bản",
+        ToastAddSuccessPayment: "Chứng từ đã được thêm",
+        ToastDeleteSuccessPayment: "Chứng từ đã bị xóa",
+        ToastEditSuccessPayment: "Chứng từ đã được sửa",
+        ToastDuplicateSuccessPayment: "Chứng từ đã được nhân bản",
 
         // checkbox
         SelectedCheckbox: "Đã chọn: ",
@@ -458,6 +459,8 @@ const MISAResouce = {
 
         MessageNotify: "Data has changed. Do you want to save it?",
         MessageWarning: "Do you want to delete an employee ",
+        MessageWarningPayment: "Do you want to delete paymen ",
+        
         MessageWarningDeleteLine:
             "Do you really want to delete all entered lines?",
         MessageWarningAccount: "Do you want to delete account ",

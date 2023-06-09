@@ -80,7 +80,7 @@
                 v-else
                 v-for="(payment, index) in paymentList"
                 :key="index"
-                @dblclick="($event) => handleClickShow(payment)"
+                @dblclick="($event) => handleClickShow($event,payment)"
                 :class="payment?.Selected ? 'tr-hover' : ''"
                 @click="handleActiveRow($event, payment)"
                 ref="trElementRef"
@@ -113,7 +113,7 @@
                             kind="link"
                             className="link-btn btn-link"
                             :text="$t('Show')"
-                            :click="() => handleClickShow(payment)"
+                            :click="($event) => handleClickShow($event,payment)"
                         ></MButton>
                         <div
                             class="input__icon-box ml-8"
@@ -256,13 +256,21 @@
         :refElement="this.$refs.iconContextMenu"
         :paymentSelected="paymentSelected"
         @handleEdit="handleEdit"
+        @handleDeleteRow="handleDeleteRow"
     ></MContextmenu>
 
     <MDialog
         v-if="isDialogWarning || isDialogDeleteMul"
         iconClass="dialog__icon-warning"
         :title="$t('DialogWarning')"
-        :message="$t('MessageWarning')"
+        :message="isDialogWarning
+                ? $t('MessageWarningPayment') +
+                  ' <' +
+                    paymentCodeSelected +
+                  '> ' +
+                  $t('TxtNo') +
+                  '?'
+                : $t('MessageWarningMul') + ' ' + $t('TxtNo') + '?'"
         :BtnWarningNo="$t('BtnDestroyDialog')"
         :textButton="$t('BtnYes')"
         @onBtnWarningNo="onBtnWarningNo"
@@ -334,7 +342,8 @@ export default {
             conditionFilters: "{}",
             totalMoney: 0,
             oldCheckedArr: [],
-            paymentSelected:""
+            paymentSelected: "",
+            paymentCodeSelected:""
         };
     },
     watch: {
@@ -529,6 +538,72 @@ export default {
             this.$emit("handleClickPayment", payment);
         },
 
+         /**
+         * Hàm xóa nhân viên khi click có xóa
+         * Author: KienNT (07/03/2023)
+         */
+        onBtnWarningYes(isDialogValue) {
+            try {
+                // TH xoá 1 nhân viên
+                if (isDialogValue === "isDialogWarning") {
+                    axios
+                        .delete(
+                            `https://localhost:7153/api/v1/Payments/${this.paymentSelected}`
+                        )
+                        .then(this.hideShowLoading(true))
+                        .then((res) => {
+                            console.log(res);
+                            this.isDialogWarning = false;
+                            this.hideShowLoading(false);
+                            this.$emit("hideShowToast", "delete");
+                            this.loadData();
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                            this.hideShowLoading(false);
+                        });
+                } else {
+                    // Xóa nhiều nhân viên
+                    axios
+                        .delete(
+                            "https://localhost:7153/api/v1/Employees/DeleteMultiple",
+                            {
+                                data: this.selectedEmployeeIds,
+                            }
+                        )
+                        .then(this.hideShowLoading(true))
+                        .then((res) => {
+                            console.log(res);
+                            this.isDialogDeleteMul = false;
+                            this.oldCheckedArr = [];
+                            this.$emit(
+                                "handleSelectChechbox",
+                                this.oldCheckedArr
+                            );
+                            this.$emit("setIsDialogDeleteMuliple");
+                            this.hideShowLoading(false);
+                            this.$emit("hideShowToast", "delete");
+                            this.loadData();
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                            this.hideShowLoading(false);
+                        });
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+           /**
+         * Xử lý loading gửi emit lên cha
+         * Author: KienNT (09/06/2023)
+         * @param (isLoading): tham số là giá trị boolean loading có hay không
+         */
+        hideShowLoading(isLoading) {
+            this.$emit("hideShowLoading", isLoading);
+        },
+
         /**
          * Hàm lấy toại độ sau đó set tọa độ cho contextmenu để hiển thị
          * Author: KienNT (04/06/2023)
@@ -537,6 +612,7 @@ export default {
         handleClickOptionMenu(event, payment) {
             try {
                 this.paymentSelected = payment.refid;
+                this.paymentCodeSelected = payment.refno_finance;
                 this.isContextMenu = !this.isContextMenu;
                 this.leftContextMenu =
                     event.target.getBoundingClientRect().x -
@@ -549,13 +625,39 @@ export default {
             }
         },
 
+           /**
+         * Hàm xóa dilog đi nếu ko muốn xóa chứng từ
+         * Author: KienNT (09/06/2023)
+         */
+        onBtnWarningNo() {
+            try {
+                this.isDialogWarning
+                    ? (this.isDialogWarning = false)
+                    : this.$emit("setIsDialogDeleteMul");
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
 
          /**
          * Hàm ẩn cclick btn xem
          * Author: KienNT (09/06/2023)
          */
-        handleClickShow(payment) {
-             this.$emit("handleClickShow", payment);
+        handleClickShow(event, payment) {
+            // Bỏ handleClickRow với icon ContextMenu và checkbox khi db click
+            const arrIconContextMenu = this.$refs["iconContextMenu"];
+            const iconContextMenu = this.$refs["ContextMenu"];
+            const checkboxs = this.$refs["checkbox"];
+            for (let index = 0; index < arrIconContextMenu.length; index++) {
+                if (
+                    !event.target.isEqualNode(arrIconContextMenu[index]) &&
+                    !event.target.isEqualNode(iconContextMenu[index]) &&
+                    !event.target.isEqualNode(checkboxs[index].$el.firstChild)
+                ) {
+                        this.$emit("handleClickShow", payment);
+                }
+            }
         },
 
         /**
@@ -590,7 +692,23 @@ export default {
             } catch (error) {
                 console.log(error);
             }
-        }
+        },
+
+         /**
+         * Hàm hiển thị dialog có muốn xóa chứng từ không?
+         * Author: KienNT (07/03/2023)
+         */
+        handleDeleteRow(paymentSelected) {
+            try {
+                if (paymentSelected) {
+                    this.paymentSelected = paymentSelected;
+                    this.isDialogWarning = true;
+                    this.$emit("setIsDeleteOne");
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
     },
 
     computed: {
