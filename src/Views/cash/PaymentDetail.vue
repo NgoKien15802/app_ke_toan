@@ -1000,7 +1000,9 @@
                                                                         cursor: pointer;
                                                                         margin: 0
                                                                             auto;
+                                                                            
                                                                     "
+                                                                     :class=" formModePayment===MISAEnum.formMode.Show || formModePayment === MISAEnum.formMode.Edit ? 'disabledDopdown' : ''"
                                                                    
                                                                     class="trash"
                                                                     @click="
@@ -1160,10 +1162,10 @@
                                                     class="btn combox-btn"
                                                     :tabindex="tabindex"
                                                     style="border-radius: 3px;"
-                                                    @click="btnSaveAndClose(textBtn === this.$t('BtnSaveEndAdd') ? MISAEnum.ModeBtn.SaveAndAdd : MISAEnum.ModeBtn.SaveAndClose)"
+                                                    v-if="formModePayment!==MISAEnum.formMode.Show"
                                                 >
                                                 
-                                                    <span class="combox-btn-text combox-btn-left">{{ textBtn }}</span>
+                                                    <span class="combox-btn-text combox-btn-left"   @click="btnSaveAndClose(textBtn === this.$t('BtnSaveEndAdd') ? MISAEnum.ModeBtn.SaveAndAdd : MISAEnum.ModeBtn.SaveAndClose)">{{ textBtn }}</span>
                                                     <span class="combox-btn-mark"></span>
 
                                                     <div class="wrap-icon-combox wrap-icon-right" ref="iconContextMenu"  @click="clickBtnRight($event)"><div class="icon__combox-btn"></div></div>
@@ -1179,7 +1181,7 @@
                                                 class="btn btn-default close__add-employee"
                                                 tabindex="19"
                                                 :text="$t('BtnDestroy')"
-                                                :click="destroyPopup"
+                                                :click="() =>destroyPopup(true)"
                                                 ref="btnDestroy"
                                             >
                                             </MButton>
@@ -1233,6 +1235,7 @@
 
 <script>
 import moment from "moment";
+import { v4 as uuidv4 } from 'uuid';
 import MISAEnum from "@/js/enum";
 import axios from "axios";
 export default {
@@ -1298,7 +1301,8 @@ export default {
             ],
             cloneRowPaymentDetails: [],
             clonePaymentDetail: [],
-            clonePayment:{}, 
+            clonePayment: {}, 
+            errorMessage:[],
             deleteOne: false,
             isContextMenu: false,
             isDialogNotify: false,
@@ -1377,15 +1381,18 @@ export default {
     watch: {
         "payment.journal_memo": function (newValue, oldValue) {
             this.rowPaymentDetails = this.rowPaymentDetails.map((el) => {
+
                 if (el.description === oldValue) {
                     el.description = newValue;
                 }
+
                 return el;
             });
         },
 
         supplierCodePayment: function (newValue, oldValue) {
             this.rowPaymentDetails = this.rowPaymentDetails.map((el) => {
+
                 if (el.supplierCodeDetail === oldValue) {
                     el.supplierCodeDetail = newValue;
                 }
@@ -1396,6 +1403,7 @@ export default {
 
         "payment.supplier_id": function (newValue, oldValue) {
             this.rowPaymentDetails = this.rowPaymentDetails.map((el) => {
+
                 if (el.supplier_id === oldValue) {
                     el.supplier_id = newValue;
                 }
@@ -1427,6 +1435,7 @@ export default {
 
 
         "payment.payment_supplier_name": function (newValue, oldValue) {
+
             if (
                 this.payment.journal_memo ===
                 this.$t("PaymentFor") + " " + oldValue
@@ -1436,6 +1445,7 @@ export default {
             }
         },
         "payment.posted_date": function (newValue, oldValue) {
+
             if (this.formMode === MISAEnum.formMode.Add) {
                 if (this.payment.ref_date === oldValue) {
                     this.payment.ref_date = newValue;
@@ -1453,6 +1463,7 @@ export default {
          * Call API lấy ra id bất kỳ khi click btn thêm mới
          * Author: KienNT (06/06/2023)
          */
+
         if (this.formModePayment === MISAEnum.formMode.Add) {
             // gọi hàm lấy số chứng từ mới
             this.getNewPaymentCode();
@@ -1551,7 +1562,7 @@ export default {
                         // if (this.isEmpty(this.departmentName)) {
                         //     this.newEmployee.DepartmentId = EMPTY_GUID;
                         // }
-                        this.oldEmployee = JSON.stringify(this.newEmployee);
+                        // this.oldEmployee = JSON.stringify(this.newEmployee);
                         /**
                          * Gọi hàm set focus bên input
                          * Author: KienNT (06/06/2023)
@@ -1584,11 +1595,12 @@ export default {
          * Hàm click contextmenu cất và thêm
          * Author: KienNT (08/06/2023)
          */
-        handleBtnSaveEndAdd() {
+        handleBtnSaveEndAdd() {                                                                                                                                             
             this.isContextMenu = !this.isContextMenu;
             this.textBtn = this.$t('BtnSaveEndAdd')
             this.modeBtn = MISAEnum.ModeBtn.SaveAndAdd;
             localStorage.setItem("modeBtn", MISAEnum.ModeBtn.SaveAndAdd);
+            this.btnSaveAndClose(MISAEnum.ModeBtn.SaveAndAdd);
         },
 
 
@@ -1598,9 +1610,10 @@ export default {
          */
         handleBtnSaveEndClose() {
             this.isContextMenu = !this.isContextMenu;
-            this.textBtn = this.$t('BtnSaveEndClose')
+            this.textBtn = this.$t('BtnSaveEndClose')                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
             this.modeBtn = MISAEnum.ModeBtn.SaveAndClose;
-             localStorage.setItem("modeBtn", MISAEnum.ModeBtn.SaveAndClose);
+            localStorage.setItem("modeBtn", MISAEnum.ModeBtn.SaveAndClose);
+            this.btnSaveAndClose(MISAEnum.ModeBtn.SaveAndClose);
         },
 
          handleValidate() {
@@ -1627,12 +1640,15 @@ export default {
 
                         this.payment.total_amount = this.totalMoney;
                         this.payment.employee_id = this.payment.employee_id || null;
-
-
+                        this.payment.refid = uuidv4();
+                        this.rowPaymentDetails.forEach((el) => {
+                            el.ref_detail_id = uuidv4();
+                        })
                         this.clonePaymentDetail = JSON.stringify(this.rowPaymentDetails);
                         this.clonePaymentDetail = JSON.parse(this.clonePaymentDetail);
                         this.clonePaymentDetail = this.clonePaymentDetail.map((el) => {
                             return {
+                                ref_detail_id: el.ref_detail_id,
                                 debit_account_id: el.debit_account_id || null,
                                 credit_account_id: el.credit_account_id || null,
                                 amount: this.currencyToNumber(el.amount || '0.0'),
@@ -1644,7 +1660,7 @@ export default {
                     }
                     // đóng form
 
-                    else if (this.formModePayment === MISAEnum.formMode.Edit && !this.isEmpty(this.payment_id_selected) && checkState) {
+                    else if (this.formModePayment === MISAEnum.formMode.Edit  && checkState) {
                         this.payment.total_amount = this.totalMoney;
                         this.payment.employee_id = this.payment.employee_id || null;
                         this.clonePayment = JSON.stringify(this.payment);
@@ -1712,7 +1728,18 @@ export default {
                                     el.isEditAble = false; 
                                 })
                                 this.$emit("setFormMode", MISAEnum.formMode.Show);
+                            } else  if (modeBtn === MISAEnum.ModeBtn.SaveAndClose) {
+                                // reset và đóng form
+                                this.destroyPopup(true);
+                            } else if (modeBtn === MISAEnum.ModeBtn.SaveAndAdd) {
+                                // reset nhưng ko đóng form
+                                this.destroyPopup(false);
+                                this.formModePayment = MISAEnum.formMode.Add;
+                                // lấy 1 id mới
+                                this.getNewPaymentCode();
+                                this.errorMessage = [];
                             } 
+                            
                             this.$emit("hideShowLoading", false);
                             this.$emit("hideShowToast", "edit");
                             this.$emit("handleReLoadData");
@@ -1728,12 +1755,17 @@ export default {
                         this.formModePayment === MISAEnum.formMode.Duplicate
                     ) {
                         this.payment.total_amount = this.totalMoney;
+                        
                         this.payment.employee_id = this.payment.employee_id || null;
-
+                        this.payment.refid = uuidv4();
+                        this.rowPaymentDetails.forEach((el) => {
+                            el.ref_detail_id = uuidv4();
+                        })
                         this.clonePaymentDetail = JSON.stringify(this.rowPaymentDetails);
                         this.clonePaymentDetail = JSON.parse(this.clonePaymentDetail);
                         this.clonePaymentDetail = this.clonePaymentDetail.map((el) => {
                             return {
+                                ref_detail_id: el.ref_detail_id,
                                 debit_account_id: el.debit_account_id || null,
                                 credit_account_id: el.credit_account_id || null,
                                 amount: this.currencyToNumber(el.amount || '0.0'),
@@ -1776,7 +1808,18 @@ export default {
                                 el.isEditAble = false; 
                             })
                             this.$emit("setFormMode", MISAEnum.formMode.Show);
-                        } if (formMode === MISAEnum.formMode.Duplicate) {
+                        } else  if (modeBtn === MISAEnum.ModeBtn.SaveAndClose) {
+                            // reset và đóng form
+                            this.destroyPopup(true);
+                        } else if (modeBtn === MISAEnum.ModeBtn.SaveAndAdd) {
+                            // reset nhưng ko đóng form
+                            this.destroyPopup(false);
+                            this.formModePayment = MISAEnum.formMode.Add;
+                            // lấy 1 id mới
+                            this.getNewPaymentCode();
+                            this.errorMessage = [];
+                        }
+                        if (formMode === MISAEnum.formMode.Duplicate) {
                             this.$emit("setPaymentSelected")
                             this.$emit("hideShowToast", "duplicate");
                         } else {
@@ -1797,7 +1840,54 @@ export default {
         },
 
 
-       
+       /**
+         * Hàm đóng popup khi click btn hủy
+         * Author: KienNT nhân viên(09/06/2023)
+         */
+        destroyPopup(isClose) {
+            try {
+                this.payment = {
+                    journal_memo: this.$t("PaymentFor"),
+                    posted_date: moment(Date.now()).format("YYYY-MM-DD"),
+                    ref_date: moment(Date.now()).format("YYYY-MM-DD"),
+                    payment_supplier_name: "",
+                    payment_receiver: "",
+                    payment_supplier_address: "",
+                    employee_id: "",
+                    refno_finance: "",
+                    document_included: "",
+                    supplier_id: null, 
+                    total_amount:0
+                }
+                this.rowPaymentDetails = [
+                    {
+                    isEditAble: false,
+                    description: this.$t("PaymentFor"),
+                    debit_account_id: "",
+                    credit_account_id: "",
+                    amount: 0,
+                    debit_account_name: "",
+                    credit_account_name: "",
+                    supplierCodeDetail: "",
+                    supplier_id:null,
+                    supplier_name_detail:""
+                 }
+                ]
+                this.supplierCodePayment = "";
+                this.supplier_name_detail_fake = "";
+                this.supplier_id_detail_fake = "";
+                this.employeeId = "";
+                this.totalMoney = 0;
+                this.errorMessage = [];
+                this.formModePayment = "";
+
+                if (isClose) {
+                  this.closeCashDetail();  
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
 
         /**
          * Hàm handle click combobox item trong employee
