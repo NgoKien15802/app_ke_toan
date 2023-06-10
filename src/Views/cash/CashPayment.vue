@@ -255,6 +255,7 @@ import MISAEnum from "@/js/enum";
 import MISAResouce from "@/js/resource";
 import TheTablePaymentDetail from "@/components/layout/TheTablePaymentDetail.vue";
 import TheCashDetail from "./PaymentDetail.vue";
+import axios from "axios";
 export default {
     name: "CashPayment",
     components: {
@@ -572,7 +573,67 @@ export default {
             this.isContextMenu = true;
         },
 
+        /**
+         * Hàm thực hiện CALL API Export cho 2 TH. TH1: Có selected và TH2: Không có selected
+         * Author: KienNT (10/06/2023)
+         */
+        handleExport() {
+            try {
+                if (this.selectedCheckbox.length >= 1) {
+                    const queryParameters = this.selectedCheckbox.map(
+                        (recordId) => `listRecordId=${recordId}`
+                    );
+                    this.apiExport(
+                        `https://localhost:7153/api/v1/Payments/ExportToExcelSelected?${queryParameters.join(
+                            "&"
+                        )}`
+                    );
+                } else {
+                    this.apiExport(
+                        `https://localhost:7153/api/v1/Payments/ExportToExcel?keyword=${this.keyWordSearch}`
+                    );
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
 
+        
+        /**
+         * Hàm thực hiện CALL API Export
+         * Author: KienNT (10/06/2023)
+         */
+        apiExport(url) {
+            //Loại dữ liệu trả về từ API, ở đây là blob (binary large object) để tải xuống tệp Excel.
+            axios({
+                url: url,
+                method: "GET",
+                responseType: "blob",
+            })
+                .then((this.isLoading = true))
+                .then((response) => {
+                    // Tạo một URL tạm thời để tải xuống tệp Excel.
+                    const url = window.URL.createObjectURL(
+                        new Blob([response.data])
+                    );
+                    // Tạo một thẻ <a> ẩn và cấu hình các thuộc tính để tải xuống tệp Excel, bao gồm tên tệp và đường dẫn đến tệp trên URL tạm thời.
+                    const link = document.createElement("a");
+                    link.href = url;
+                    //  Thuộc tính download được thiết lập để chỉ định tên tệp tin sẽ được tải xuống.
+                    link.setAttribute(
+                        "download",
+                        `Thu_chi_tien_mat_${Date.now()}.xlsx`
+                    );
+                    // chèn thẻ a vào body của trang và kích hoạt sự kiện click của thẻ a để bắt đầu tải xuống tệp tin.
+                    document.body.appendChild(link);
+                    link.click();
+                    this.isLoading = false;
+                })
+                .catch((res) => {
+                    console.log(res);
+                    this.isLoading = false;
+                });
+        },
 
         /**
          * Hàm click icon Next trang

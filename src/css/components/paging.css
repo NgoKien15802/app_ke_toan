@@ -76,5 +76,6 @@
 
 .page-item.disabled {
     pointer-events: none;
+    cursor: no-drop;
     opacity: 0.5;
 }

@@ -226,4 +226,5 @@ button {
 button:disabled {
     opacity: var(--btn-opa-primary-disable);
     pointer-events: none;
+    cursor: no-drop;
 }

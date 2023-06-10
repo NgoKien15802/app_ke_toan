@@ -337,6 +337,7 @@ input[type="date"]::placeholder {
 /* disabled div */
 div.disabled {
     pointer-events: none;
+    cursor: no-drop;
     opacity: 0.5;
     background: #ccc;
 }
@@ -344,6 +345,7 @@ div.disabled {
 
 .disabledDopdown {
        pointer-events: none;
+       cursor: no-drop;
         background-color: #eff0f2 !important;
 }
 
@@ -354,6 +356,7 @@ button.disabledDopdown {
 
 .account__systerm-detail .disabledDopdown {
     pointer-events: none;
+    cursor: no-drop;
     background-color: #eff0f2;
 }
 
@@ -434,6 +437,7 @@ button.disabledDopdown {
 }
 .ms-con-dropdown {
     pointer-events: none;
+    cursor: no-drop;
 }
 .mi-arrow-up--black {
     background-position: -560px -359px;

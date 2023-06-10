@@ -23,6 +23,7 @@
     color: #afafaf;
     cursor: default;
     pointer-events: none;
+    cursor: no-drop;
 }
 
 .batchExecution.active {
