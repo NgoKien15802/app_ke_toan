@@ -928,7 +928,7 @@
                                                                      @filterNonNumeric="
                                                                             filterNonNumericAmount(index)
                                                                         "
-                                                                         @handleKeyUp="()=> handleKeyUpAmount(index)"
+                                                                    @handleKeyUp="()=> handleKeyUpAmount(index)"
                                                                 />
                                                                 <span v-else>{{
                                                                     rowPaymentDetail.amount
@@ -1204,7 +1204,7 @@
         :textButton="$t('BtnYes')"
         :btnDestroyNotify="$t('BtnDestroy')"
         @onClickBtnDestroy="onClickBtnDestroy"
-        @destroyPopup="destroyPopup"
+        @destroyPopup="()=>destroyPopup(true)"
         @onClickBtnYes="onClickBtnYes"
         kind="notify"
     ></MDialog>
@@ -1291,7 +1291,7 @@ export default {
                     description: this.$t("PaymentFor"),
                     debit_account_id: "",
                     credit_account_id: "",
-                    amount: 0,
+                    amount: "0",
                     debit_account_name: "",
                     credit_account_name: "",
                     supplierCodeDetail: "",
@@ -1307,7 +1307,10 @@ export default {
             isContextMenu: false,
             isDialogNotify: false,
             isDialogWarning: false,
+            oldPayment: [],
+            oldRowPaymentDetails:[],
             formModePayment: "",
+            isDialogError:false,
             textBtn: this.$t('BtnSaveEndClose'),
             iconComboboxSupplierCode: null,
             iconComboboxEmployeeId: null,
@@ -1537,7 +1540,8 @@ export default {
                                 supplier_name_detail: el?.payment_detail_supplier_name
                             };
                         });
-
+                        this.oldPayment = JSON.stringify(this.deleteAttrObject(this.payment));
+                        this.oldRowPaymentDetails = JSON.stringify(this.deleteEmptyAttributes(this.rowPaymentDetails));
                         this.$emit("hideShowLoading", false);
                     })
                     .catch((res) => {
@@ -1568,6 +1572,9 @@ export default {
                          * Author: KienNT (06/06/2023)
                          */
                         // this.setFocusInput("txtEmployeeCode");
+                        this.oldPayment = JSON.stringify(this.deleteAttrObject(this.payment));
+
+                        this.oldRowPaymentDetails = JSON.stringify(this.deleteEmptyAttributes(this.rowPaymentDetails));
                         this.$emit("hideShowLoading", false);
                     })
                     .catch((error) => {
@@ -1739,7 +1746,8 @@ export default {
                                 this.getNewPaymentCode();
                                 this.errorMessage = [];
                             } 
-                            
+                            this.oldPayment = JSON.stringify(this.deleteAttrObject(this.payment));
+                            this.oldRowPaymentDetails = JSON.stringify(this.deleteEmptyAttributes(this.rowPaymentDetails));    
                             this.$emit("hideShowLoading", false);
                             this.$emit("hideShowToast", "edit");
                             this.$emit("handleReLoadData");
@@ -1825,6 +1833,8 @@ export default {
                         } else {
                             this.$emit("hideShowToast", "add");
                         }
+                        this.oldPayment = JSON.stringify(this.deleteAttrObject(this.payment));
+                        this.oldRowPaymentDetails = JSON.stringify(this.deleteEmptyAttributes(this.rowPaymentDetails)); 
                         this.$emit("hideShowLoading", false);
                         this.$emit("handleReLoadData");
                     })
@@ -1865,7 +1875,7 @@ export default {
                     description: this.$t("PaymentFor"),
                     debit_account_id: "",
                     credit_account_id: "",
-                    amount: 0,
+                    amount: "0",
                     debit_account_name: "",
                     credit_account_name: "",
                     supplierCodeDetail: "",
@@ -1882,7 +1892,7 @@ export default {
                 this.formModePayment = "";
 
                 if (isClose) {
-                  this.closeCashDetail();  
+                   this.$emit("closeCashDetail");
                 }
             } catch (error) {
                 console.log(error);
@@ -2028,7 +2038,7 @@ export default {
                         description: this.$t("PaymentFor"),
                         debit_account_id: "",
                         credit_account_id: "",
-                        amount: 0,
+                        amount: "0",
                         debit_account_name: "",
                         credit_account_name: "",
                         supplierCodeDetail: "",
@@ -2074,7 +2084,7 @@ export default {
                     description: this.$t("PaymentFor"),
                     debit_account_id: "",
                     credit_account_id: "",
-                    amount: 0,
+                    amount: "0",
                     debit_account_name: "",
                     credit_account_name: "",
                     supplierCodeDetail: "",
@@ -2084,6 +2094,19 @@ export default {
             ];
             this.totalMoney = 0;
             this.isDialogWarning = false;
+        },
+
+        /**
+         * Hàm click vào btn có trong dialog
+         * Author: KienNT (10/06/2023)
+         */
+        onClickBtnYes() {
+            try {
+                this.btnSaveAndClose("");
+                this.isDialogNotify = false;
+            } catch (error) {
+                console.log(error);
+            }
         },
 
         /**
@@ -2127,12 +2150,37 @@ export default {
         //     }
         // },
 
+           /**
+         * Hàm ẩn hiện dialog notify
+         * Author: KienNT (10/06/2023)
+         * @param (isDialogNotify): tham số là true, false để hiển thị dialog notify
+         */
+
+        onClickBtnDestroy(isDialogNotify) {
+            try {
+                this.isDialogNotify = isDialogNotify;
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+
         /**
          *  handle khi đóng popup
          * Author: KienNT (05/06/2023)
          */
         closeCashDetail() {
-            this.$emit("closeCashDetail");
+            if (this.isDialogError === false) {
+                    // kiểm tra dữ liệu đã thay đổi chưa
+                const newPaymentData = JSON.stringify(this.deleteAttrObject(this.payment));
+                const newPaymentDetailData = JSON.stringify(this.deleteEmptyAttributes(this.rowPaymentDetails));
+                if (this.oldPayment !== newPaymentData || this.oldRowPaymentDetails !== newPaymentDetailData) {
+                    this.isDialogNotify = true;
+                    return;
+                } else {
+                     this.$emit("closeCashDetail");
+                }
+             }
         },
 
         /**
@@ -2151,7 +2199,7 @@ export default {
         handlePressKeyShort(event) {
             // khi nhấn phím esc thì đóng form
             if (event.key === "Escape" || event.keyCode === 27) {
-                this.$emit("closeCashDetail");
+                this.closeCashDetail();
             }
         },
 
@@ -2210,7 +2258,7 @@ export default {
          * Hàm handle khi nhấn phím tại input số tiền
          * Author: KienNT (07/06/2023)
          */
-        handleKeyUpAmount(index){
+        handleKeyUpAmount(index) {
             this.rowPaymentDetails[index].amount = this.numberWithCommas(this.rowPaymentDetails[index].amount)
         },
 
@@ -2229,6 +2277,49 @@ export default {
         setValueInputComboboxTableEmployee() {
             this.employeeId = "";
         },
+
+          /**
+         * Hàm xóa đi tất cả attr = null, false, undefined
+         * Author: KienNT (10/06/2023)
+         */
+        deleteAttrObject(newValue) {
+            const clone = { ...newValue };
+            for (let key in clone) {
+                if (
+                    clone[key] === undefined ||
+                    clone[key] === false ||
+                    clone[key] === null || clone[key]===''
+                ) {
+                    delete clone[key];
+                }
+            }
+            return clone;
+        },
+
+        /**
+         * Hàm xóa đi tất cả attr = null, false, undefined trong mảng các đối tượng
+         * Author: KienNT (10/06/2023)
+         */
+        deleteEmptyAttributes(objects) {
+            const result = [];
+
+            for (let i = 0; i < objects.length; i++) {
+                const clone = { ...objects[i] };
+                for (let key in clone) {
+                    if (
+                        clone[key] === undefined ||
+                        clone[key] === false ||
+                        clone[key] === null || clone[key]==='' || clone[key] === true
+                    ) {
+                        delete clone[key];
+                    }
+                }
+                result.push(clone);
+            }
+
+            return result;
+        },
+
 
         /**
          * nghe sự kiện window. Nếu click ko phải là dropdown thì ẩn dropdown
