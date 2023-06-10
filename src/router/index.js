@@ -6,6 +6,7 @@ import TheCashDetail from "@/Views/cash/PaymentDetail.vue";
 import AccountSysterm from "@/Views/account/AccountSysterm";
 import CashPayment from "@/Views/cash/CashPayment";
 import CashProcess from "@/Views/cash/CashProcess";
+import MISAEnum from "@/js/enum";
 
 /**
  * Định nghĩa route
@@ -15,7 +16,7 @@ const routes = [
     { path: "/", component: EmployeeList },
     { path: "/cash/employee", component: EmployeeList },
     { path: "/cash/customer", component: CustomerList },
-    { path: "/cash/cashDetail", component: TheCashDetail },
+    { path: "/cash/cashDetail", component: TheCashDetail, props: { formMode:MISAEnum.formMode.Add, isRouter:true }},
     { path: "/cash/accountSysterm", component: AccountSysterm },
     { path: "/cash/payment", component: CashPayment },
     { path: "/cash/process", component: CashProcess },

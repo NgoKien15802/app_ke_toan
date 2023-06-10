@@ -1221,6 +1221,9 @@
         kind="warning"
     ></MDialog>
 
+      <!-- loading -->
+    <Mloading v-if="isLoading"></Mloading>
+
       <MContextmenu
         v-if="isContextMenu"
         :left="leftContextMenu"
@@ -1231,6 +1234,17 @@
         @handleBtnSaveEndAdd="handleBtnSaveEndAdd"
         @handleBtnSaveEndClose="handleBtnSaveEndClose"
     ></MContextmenu>
+
+      <MToast
+        v-if="isShowToastAdd || isShowToastEdit"
+        classIcon="toast__icon-success"
+        :kind="$t('ToastTitleSuccess')"
+        :text="
+           (isShowToastAdd && $t('ToastAddSuccessPayment')) ||
+                        (isShowToastEdit && $t('ToastEditSuccessPayment'))
+        "
+        classTitle="toast__title-success"
+    ></MToast>
 </template>
 
 <script>
@@ -1247,6 +1261,9 @@ export default {
         },
         payment_id_selected: {
             type: String,
+        },
+        isRouter: {
+           type:Boolean 
         }
     },
 
@@ -1270,7 +1287,8 @@ export default {
             isOpenOtherExpenses: false,
             supplierCodePayment: "",
             supplier_name_detail_fake : "",
-            supplier_id_detail_fake : "",
+            supplier_id_detail_fake: "",
+            isShowToastEdit:false,
             employeeId: "",
             optionItem: [
                 {
@@ -1304,6 +1322,7 @@ export default {
             clonePayment: {}, 
             errorMessage:[],
             deleteOne: false,
+            isShowToastAdd:false,
             isContextMenu: false,
             isDialogNotify: false,
             isDialogWarning: false,
@@ -1312,6 +1331,7 @@ export default {
             formModePayment: "",
             isDialogError:false,
             textBtn: this.$t('BtnSaveEndClose'),
+            isLoading: false,
             iconComboboxSupplierCode: null,
             iconComboboxEmployeeId: null,
             btnIconComboboxSupplierCode: null,
@@ -1559,7 +1579,7 @@ export default {
             try {
                 axios
                     .get("https://localhost:7153/api/v1/Payments/NewRecordCode")
-                    .then(this.$emit("hideShowLoading", true))
+                    .then(this.isRouter?this.isLoading=true :this.$emit("hideShowLoading", true) )
                     .then((response) => {
                         this.payment.refno_finance = response.data?.Data;
                         // this.newEmployee.Gender = MISAEnum.Gender.Male;
@@ -1575,7 +1595,11 @@ export default {
                         this.oldPayment = JSON.stringify(this.deleteAttrObject(this.payment));
 
                         this.oldRowPaymentDetails = JSON.stringify(this.deleteEmptyAttributes(this.rowPaymentDetails));
-                        this.$emit("hideShowLoading", false);
+                        if (this.isRouter) {
+                            this.isLoading = false;                            
+                        } else {
+                             this.$emit("hideShowLoading", false);
+                        }
                     })
                     .catch((error) => {
                         console.log(error);
@@ -1714,7 +1738,7 @@ export default {
                                 supplier_id: el.supplier_id || null,
                             };
                         });
-                        // Sửa nhân viên theo id
+                        // Sửa chứng từ theo id
                         const requestData = {
                             Master: this.clonePayment,
                             Details: this.clonePaymentDetail,
@@ -1725,9 +1749,15 @@ export default {
                                 requestData
                             )
 
-                            .then(this.$emit("hideShowLoading", true))
+                            .then(this.isRouter?this.isLoading=true :this.$emit("hideShowLoading", true) )
                             .then((res) => {
                                 console.log(res);
+                                if (this.isRouter) {
+                                       this.isShowToastEdit = true;
+                                       setTimeout(() => (this.isShowToastEdit = false), 3000);
+                                } else {
+                                    this.$emit("hideShowToast", "edit");
+                                }
                              if (this.isEmpty(modeBtn)) {
                                 // chuyển form về mode show
                                 this.formModePayment = MISAEnum.formMode.Show;
@@ -1747,10 +1777,13 @@ export default {
                                 this.errorMessage = [];
                             } 
                             this.oldPayment = JSON.stringify(this.deleteAttrObject(this.payment));
-                            this.oldRowPaymentDetails = JSON.stringify(this.deleteEmptyAttributes(this.rowPaymentDetails));    
-                            this.$emit("hideShowLoading", false);
-                            this.$emit("hideShowToast", "edit");
-                            this.$emit("handleReLoadData");
+                                this.oldRowPaymentDetails = JSON.stringify(this.deleteEmptyAttributes(this.rowPaymentDetails));    
+                                 if (this.isRouter) {
+                                    this.isLoading = false;
+                                } else {
+                                    this.$emit("hideShowLoading", false);
+                                }
+                                  this.$emit("handleReLoadData");
                             })
                             .catch((error) => {
                                 let response = error.response;
@@ -1806,7 +1839,7 @@ export default {
                         "https://localhost:7153/api/v1/Payments/InsertMasterDetail",
                         requestData
                     )
-                    .then(this.$emit("hideShowLoading", true),)
+                    .then(this.isRouter?this.isLoading=true :this.$emit("hideShowLoading", true) )
                     .then((res) => {
                         console.log(res);
                         if (this.isEmpty(modeBtn)) {
@@ -1816,7 +1849,8 @@ export default {
                                 el.isEditAble = false; 
                             })
                             this.$emit("setFormMode", MISAEnum.formMode.Show);
-                        } else  if (modeBtn === MISAEnum.ModeBtn.SaveAndClose) {
+                        } else if (modeBtn === MISAEnum.ModeBtn.SaveAndClose) {
+                            
                             // reset và đóng form
                             this.destroyPopup(true);
                         } else if (modeBtn === MISAEnum.ModeBtn.SaveAndAdd) {
@@ -1831,11 +1865,16 @@ export default {
                             this.$emit("setPaymentSelected")
                             this.$emit("hideShowToast", "duplicate");
                         } else {
-                            this.$emit("hideShowToast", "add");
+                            this.isShowToastAdd = true;
+                            setTimeout(() => (this.isShowToastAdd = false), 3000);
                         }
                         this.oldPayment = JSON.stringify(this.deleteAttrObject(this.payment));
                         this.oldRowPaymentDetails = JSON.stringify(this.deleteEmptyAttributes(this.rowPaymentDetails)); 
-                        this.$emit("hideShowLoading", false);
+                        if (this.isRouter) {
+                            this.isLoading = false;  
+                        } else {
+                            this.$emit("hideShowLoading", false);
+                        }
                         this.$emit("handleReLoadData");
                     })
                     .catch((error) => {
@@ -1892,7 +1931,10 @@ export default {
                 this.formModePayment = "";
 
                 if (isClose) {
-                   this.$emit("closeCashDetail");
+                    this.$emit("closeCashDetail");
+                    if (this.isRouter) {
+                        this.$router.push('/cash/process')
+                    }
                 }
             } catch (error) {
                 console.log(error);
@@ -2178,7 +2220,10 @@ export default {
                     this.isDialogNotify = true;
                     return;
                 } else {
-                     this.$emit("closeCashDetail");
+                    this.$emit("closeCashDetail");
+                    if (this.isRouter) {
+                        this.$router.push('/cash/process')
+                    }
                 }
              }
         },
