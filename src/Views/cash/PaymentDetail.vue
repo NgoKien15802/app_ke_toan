@@ -2072,15 +2072,14 @@ export default {
                 {
                     isEditAble: true,
                     description: this.$t("PaymentFor"),
-                    
                     debit_account_id: "",
-                        credit_account_id: "",
-                        amount: 0,
-                        debit_account_name: "",
-                        credit_account_name: "",
-                        supplierCodeDetail: "",
+                    credit_account_id: "",
+                    amount: 0,
+                    debit_account_name: "",
+                    credit_account_name: "",
+                    supplierCodeDetail: "",
                     supplier_name_detail: "",
-                         supplier_id:null, 
+                    supplier_id:null, 
                 },
             ];
             this.totalMoney = 0;

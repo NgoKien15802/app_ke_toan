@@ -147,6 +147,7 @@ const MISAResouce = {
         MessageUpdateAccount:
             'Bạn có muốn thiết lập trạng thái "Sử dụng" cho tất cả <Tài khoản> con không?',
         MessageWarningMul: "Bạn có muốn xóa tất cả nhân viên được chọn",
+        MessageWarningMulPayment: "Bạn có muốn xóa những chứng từ này ",
         TxtNo: "không",
         DialogNotifyErrorDelete: "Xoá không thành công",
         MessageErrorDeleteAccount:
@@ -467,6 +468,7 @@ const MISAResouce = {
         MessageUpdateAccount:
             'Do you want to set "Using" status for all <Account> children?',
         MessageWarningMul: "Do you want to delete all selected employees ",
+        MessageWarningMulPayment:"Do you want to delete all payment ",
         TxtNo: "no",
         DialogNotifyErrorDelete: "Delete failed",
         MessageErrorDeleteAccount:

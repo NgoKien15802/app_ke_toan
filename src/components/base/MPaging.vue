@@ -70,9 +70,9 @@
                     :page-count="
                         countRecord
                             ? Math.ceil(totalRecord / pageIndex)
-                            : (totalRecord > 1000) ?  numberWithCommas(
+                            : (totalRecord > 1000) ? 
                                   Math.ceil(totalRecord / pageIndex)
-                              ):  Math.ceil(totalRecord / pageIndex)
+                              :  Math.ceil(totalRecord / pageIndex)
                     "
                     :page-range="3"
                     :margin-pages="1"

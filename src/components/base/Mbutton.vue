@@ -21,6 +21,7 @@
         :id="id"
         @click="click"
         :disabled="disabled"
+         :style="style"
     >
         {{ text }}
         <slot></slot>

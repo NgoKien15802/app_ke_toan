@@ -4,6 +4,7 @@
             <!-- header main -->
             <div class="content__main-header">
                 <div class="content__main-left">
+                    
                     <div class="check-all-arrow">
                         <div class="mi-24 block-center">
                             <div class="mi-arrow-check-all"></div>
@@ -39,8 +40,25 @@
                             kind="batchExecution"
                             @hideContextMenu="hideContextMenu"
                             :refElement="this.$refs.iconContextMenu"
+                              @handleRemove="handleDeleteAll"
                         ></MContextmenu>
                     </button>
+                    <div
+                        v-if="selectedCheckbox.length >= 1"
+                        style="display: flex; align-items: center; column-gap: 8px; margin-left: 8px;"
+                    >
+                        <p>
+                            {{ $t("SelectedCheckbox") }}
+                            <strong>{{ selectedCheckbox.length }}</strong>
+                        </p>
+                        <MButton
+                            kind="link"
+                            className="link-btn btn-link-delete"
+                            :click="handleUndoSeleted"
+                            :text="$t('UndoSelected')"
+                            style="line-height: 0;"
+                        ></MButton>
+                    </div>
                 </div>
                 <div class="content__main-right">
                     <div class="content__main-filter">
@@ -125,6 +143,14 @@
                             @hideShowLoading="hideShowLoading"
                             @hideShowToast="hideShowToast"
                             @showPopupDuplicate="showPopupDuplicate"
+                            :selectedpaymentIds="selectedpaymentIds"
+                            :isDeleteOne="isDeleteOne"
+                            @setIsDeleteOne="setIsDeleteOne"
+                            @setIsDialogDeleteMul="setIsDialogDeleteMul"
+                            :isDialogDeleteMultiple="isDialogDeleteMultiple"
+                            @setIsDialogDeleteMuliple="
+                                () => (isDialogDeleteMultiple = false)
+                            "
                         ></TheTablePayment>
                     </div>
                     <!--  paging -->
@@ -267,7 +293,9 @@ export default {
             isShowToastEdit: false,
             isShowToastDelete: false,
             isShowToastDuplicate: false,
-            payment_id_selected:null,
+            payment_id_selected: null,
+            selectedpaymentIds: [],
+            isDialogDeleteMultiple: false,
         };
     },
 
@@ -366,6 +394,31 @@ export default {
         },
 
         /**
+         * Hàm thực hiện xóa tất cả những checkbox được check, xóa bên table khi có dialog delete multiple
+         * Author: KienNT (20/03/2023)
+         */
+        handleDeleteAll() {
+            if (this.selectedCheckbox.length > 1) {
+                this.isDeleteOne = false;
+                const selectDeleteMultiple = [...this.selectedCheckbox];
+                this.selectedpaymentIds = selectDeleteMultiple;
+                this.isDialogDeleteMultiple = true;
+            } else {
+                this.isDeleteOne = true;
+                const selectDeleteMultiple = [...this.selectedCheckbox];
+                this.selectedpaymentIds = selectDeleteMultiple;
+            }
+        },
+
+         /**
+         * Hàm ẩn dialog đi khi xóa nhiều bản ghi emit từ con
+         * Author: KienNT (09/06/2023)
+         */
+        setIsDialogDeleteMul() {
+            this.isDialogDeleteMultiple = false;
+        },
+
+        /**
          * Hàm hiện thị và ẩn loading khi load dữ liệu
          * Author: KienNT (06/06/2023)
          * @param (isLoading): tham số là true, false ẩn hiển
@@ -401,6 +454,15 @@ export default {
         setFormMode(formMode) {
             this.formMode = formMode;
         },
+
+          /**
+         * Hàm set lại isDeleteOne của component con gửi lên
+         * Author: KienNT (09/06/2023)
+         */
+        setIsDeleteOne() {
+            this.isDeleteOne = false;
+        },
+
 
         /**
          * Hàm thực hiện cho các checkbox bỏ chọn
@@ -501,6 +563,15 @@ export default {
                 this.isDisabledClickPrev = false;
             }
         },
+
+        /**
+         * Hàm thực hiện hành động hàng loạt
+         * Author: KienNT 10/06/2023
+         */
+        handleBatchExecution() {
+            this.isContextMenu = true;
+        },
+
 
 
         /**

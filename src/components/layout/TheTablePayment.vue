@@ -82,7 +82,7 @@
                 :key="index"
                 @dblclick="($event) => handleClickShow($event,payment)"
                 :class="payment?.Selected ? 'tr-hover' : ''"
-                @click="handleActiveRow($event, payment)"
+                @click="handleActiveRow($event,payment)"
                 ref="trElementRef"
             >
                 <template v-for="header in headers" :key="header">
@@ -271,7 +271,7 @@
                   '> ' +
                   $t('TxtNo') +
                   '?'
-                : $t('MessageWarningMul') + ' ' + $t('TxtNo') + '?'"
+                : $t('MessageWarningMulPayment') + ' ' + $t('TxtNo') + '?'"
         :BtnWarningNo="$t('BtnDestroyDialog')"
         :textButton="$t('BtnYes')"
         @onBtnWarningNo="onBtnWarningNo"
@@ -302,7 +302,7 @@ export default {
         pageCurrent: {
             type: String,
         },
-        selectedEmployeeIds: {
+        selectedpaymentIds: {
             type: Array,
         },
         keyWordSearch: {
@@ -310,6 +310,15 @@ export default {
         },
          isReload: {
             type: String,
+        },
+         selectedCheckbox: {
+            type: Array,
+        },
+           isDeleteOne: {
+            type: Boolean,
+        },
+        isDialogDeleteMultiple: {
+            type: Boolean,
         },
     },
     data() {
@@ -348,6 +357,13 @@ export default {
         };
     },
     watch: {
+         /**
+         * Theo dõi sự thay đổi isDialogDeleteMultiple. khi click vào xóa nhiều
+         * Author: KienNT (10/06/2023)
+         */
+        isDialogDeleteMultiple: function () {
+            this.isDialogDeleteMul = this.isDialogDeleteMultiple;
+        },
         /**
          * Theo dõi sự thay đổi pageSizeNumber. nếu pagesize thay đổi
          * Author: KienNT (04/06/2023)
@@ -374,8 +390,8 @@ export default {
          * Author: KienNT (15/03/2023)
          */
         selectedCheckbox: function () {
-            if (this.selectedCheckbox <= 0) {
-                this.employees = this.employees.map((x) => {
+            if (this.selectedCheckbox.length <= 0) {
+                this.paymentList = this.paymentList.map((x) => {
                     x.Selected = false;
                     return x;
                 });
@@ -392,6 +408,13 @@ export default {
             this.keyWord = this.keyWordSearch;
             this.pageNumber = 1;
             this.loadData();
+        },
+
+         isDeleteOne: function () {
+            if (this.isDeleteOne === true) {
+                this.paymentSelected = this.selectedCheckbox[0];
+                this.handleDeleteRow();
+            }
         },
 
           /**
@@ -428,7 +451,7 @@ export default {
                     .get(
                         `https://localhost:7153/api/v1/Payments/Filter?keyword=${this.keyWord}&pageSize=${this.pageSize}&conditionFilters=${this.conditionFilters}&pageNumber=${this.pageNumber}`
                     )
-                    .then(( this.paymentList = new Array(3).fill(0),this.isShowSkeleton = true))
+                    .then((this.isShowSkeleton = true))
                     .then((response) => {
                         this.paymentList = response?.data?.Data.Data;
                         this.totalRecord = response?.data?.Data.TotalRecord;
@@ -438,7 +461,34 @@ export default {
                             x.Selected = false;
                             return x;
                         });
-                       
+                       if (this.oldCheckedArr.length > 0) {
+                            this.paymentList.forEach((el) => {
+                                for (
+                                    let index = 0;
+                                    index < this.oldCheckedArr.length;
+                                    index++
+                                ) {
+                                    const oldElement =
+                                        this.oldCheckedArr[index];
+                                    if (
+                                        el.refid === oldElement &&
+                                        el.Selected === false
+                                    ) {
+                                        el.Selected = true;
+                                        break;
+                                    }
+                                }
+                            });
+                        }
+
+                        if (
+                            this.paymentList.length > 0 &&
+                            this.paymentList.every((el) => el.Selected === true)
+                        ) {
+                            this.selectedAll = true;
+                        } else {
+                            this.selectedAll = false;
+                        }
 
                         this.isShowSkeleton = false;
                     })
@@ -467,7 +517,15 @@ export default {
                         }
                     });
                 } else {
-                    this.oldCheckedArr = [];
+                    const filterSelected = this.paymentList.filter(
+                        (el) => el.Selected === true
+                    );
+                    const cloneFilterSelected = filterSelected.map(
+                        (el) => el.refid
+                    );
+                    this.oldCheckedArr = this.oldCheckedArr.filter(
+                        (item) => !cloneFilterSelected.includes(item)
+                    );
                 }
                 this.$emit("handleSelectChechbox", this.oldCheckedArr);
                 this.paymentList = this.paymentList.map((x) => {
@@ -484,7 +542,8 @@ export default {
          * Author: KienNT (06/03/2023)
          *   @param (event): là event
          */
-        handleCheckbox(event, refid) {
+        handleCheckbox(event, refid, refno_finance="") {
+            this.paymentCodeSelected = refno_finance;
             const index = this.oldCheckedArr.indexOf(refid);
             if (!event.target.checked) {
                 this.selectedAll = event.target.checked;
@@ -494,10 +553,13 @@ export default {
             } else {
                 if (index === -1) {
                     this.oldCheckedArr.push(refid);
-                    this.$emit("handleSelectChechbox", this.oldCheckedArr);
                 }
             }
-            if (this.oldCheckedArr.length >= this.pageSize) {
+             this.$emit("handleSelectChechbox", this.oldCheckedArr);
+            const filterSelected = this.paymentList.filter((item) =>
+                this.oldCheckedArr.includes(item.refid)
+            );
+            if (filterSelected.length >= this.paymentList.length) {
                 this.selectedAll = true;
             } else {
                 this.selectedAll = false;
@@ -509,7 +571,7 @@ export default {
          * Author: KienNT (27/03/2023)
 
          */
-        handleActiveRow(event, payment) {
+        handleActiveRow(event,payment) {
             const trElements = this.$refs["trElementRef"];
             for (let index = 0; index < trElements.length; index++) {
                 const element = trElements[index];
@@ -536,7 +598,7 @@ export default {
                     }
                 }
             }
-            this.$emit("handleClickPayment", payment);
+              this.$emit("handleClickPayment", payment);
         },
 
          /**
@@ -555,6 +617,16 @@ export default {
                         .then((res) => {
                             console.log(res);
                             this.isDialogWarning = false;
+                            const index = this.oldCheckedArr.indexOf(
+                                this.paymentSelected
+                            );
+                            if (index !== -1) {
+                                this.oldCheckedArr.splice(index, 1);
+                            }
+                            this.$emit(
+                                "handleSelectChechbox",
+                                this.oldCheckedArr
+                            );
                             this.hideShowLoading(false);
                             this.$emit("hideShowToast", "delete");
                             this.loadData();
@@ -567,15 +639,14 @@ export default {
                     // Xóa nhiều nhân viên
                     axios
                         .delete(
-                            "https://localhost:7153/api/v1/Employees/DeleteMultiple",
+                            "https://localhost:7153/api/v1/Payments/DeleteMultiple",
                             {
-                                data: this.selectedEmployeeIds,
+                                data: this.selectedpaymentIds,
                             }
                         )
                         .then(this.hideShowLoading(true))
                         .then((res) => {
                             console.log(res);
-                            this.isDialogDeleteMul = false;
                             this.oldCheckedArr = [];
                             this.$emit(
                                 "handleSelectChechbox",
@@ -699,10 +770,9 @@ export default {
          * Hàm hiển thị dialog có muốn xóa chứng từ không?
          * Author: KienNT (07/03/2023)
          */
-        handleDeleteRow(paymentSelected) {
+        handleDeleteRow() {
             try {
-                if (paymentSelected) {
-                    this.paymentSelected = paymentSelected;
+                if (this.paymentSelected) {
                     this.isDialogWarning = true;
                     this.$emit("setIsDeleteOne");
                 }
