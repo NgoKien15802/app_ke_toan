@@ -39,7 +39,9 @@ const MISAResouce = {
         ErrorEmpty: " không được để trống",
         ErrorInvalid: " không đúng định dạng",
         ErrorDate: " không được lớn hơn hiện tại!",
+        ErrorDatePayment: " không được lớn hơn ",
         ErrorAccountNumber: " phải có độ dài >= 3 ký tự",
+        ErrorPaymentNumber: " không đúng định dạng (xx0000)",
         ErrorAccountNumberStartWith: " phải bắt đầu bằng tài khoản tổng hợp",
         ErrorEmail: " không đúng định dạng",
         ErrorNotNumber: " không phải là số, vui lòng nhập lại là số",
@@ -143,6 +145,9 @@ const MISAResouce = {
         MessageWarningPayment: "Bạn có muốn chứng từ ",
         MessageWarningDeleteLine:
             "Bạn có thực sự muốn xóa tất cả các dòng đã nhập không?",
+        
+        MessageWarningDuplicate:
+            ". Bạn có muốn chương trình tự động tăng số chứng từ không?",
         MessageWarningAccount: "Bạn có muốn xóa tài khoản ",
         MessageUpdateAccount:
             'Bạn có muốn thiết lập trạng thái "Sử dụng" cho tất cả <Tài khoản> con không?',
@@ -364,6 +369,7 @@ const MISAResouce = {
         ErrorNotNumber: " not a number, please re-enter",
         ErrorNotText: " not the word, please re-enter",
         ErrorEmail: " Incorrect format",
+        ErrorPaymentNumber:" invalid (xx0000)",
         ErrorAccountNumber: " must be >= 3 characters in length!",
         ErrorAccountNumberStartWith: " must start with a general account",
 
@@ -464,6 +470,7 @@ const MISAResouce = {
         
         MessageWarningDeleteLine:
             "Do you really want to delete all entered lines?",
+        MessageWarningDuplicate:". Do you want the program to automatically increase the number of vouchers?",
         MessageWarningAccount: "Do you want to delete account ",
         MessageUpdateAccount:
             'Do you want to set "Using" status for all <Account> children?',

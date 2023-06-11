@@ -461,6 +461,7 @@ export default {
                             x.Selected = false;
                             return x;
                         });
+                        this.$emit("handleClickPayment", this.paymentList[0]);
                        if (this.oldCheckedArr.length > 0) {
                             this.paymentList.forEach((el) => {
                                 for (

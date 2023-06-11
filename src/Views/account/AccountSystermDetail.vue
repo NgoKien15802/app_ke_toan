@@ -1713,6 +1713,11 @@ export default {
             }
         },
 
+
+        /**
+         * Hàm check có rỗng ko?
+         * Author: KienNT (01/06/2023)
+         */
         checkField(fieldName, fieldValue, errorLabel, field) {
             try {
                 if (this.isEmpty(fieldValue)) {

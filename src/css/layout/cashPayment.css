@@ -29,6 +29,14 @@
     flex-direction: column;
 }
 
+.master-detail-section .master-section{
+        display: flex;
+    flex-direction: column;
+    overflow-x: auto;
+    overflow-y: auto;
+    position: relative;
+}
+
 .detail-section {
     height: 0;
     flex: 1;
@@ -90,6 +98,10 @@
     box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.16);
     font-weight: 700;
     z-index: 5;
+}
+
+.detail-section .divider-section{
+    cursor: row-resize;
 }
 
 .grid-model-control {

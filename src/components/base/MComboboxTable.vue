@@ -1006,6 +1006,8 @@ export default {
             refIconCombobox.classList.remove("rorate-180");
         },
 
+        
+
         /**
          * nghe sự kiện window. Nếu click ko phải là combobox
          * Author: KienNT (07/03/2023)

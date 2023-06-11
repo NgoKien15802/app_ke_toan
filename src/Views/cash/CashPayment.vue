@@ -124,7 +124,8 @@
 
             <div class="master-detail-section">
                 <div
-                    class="content__main-body scrollbar_customize master-section full-size"
+                    class="scrollbar_customize master-section h-60"
+                    :style="{ height: masterHeight + '%' }"
                     ref="masterSection"
                 >
                     <div class="content__main-table">
@@ -166,14 +167,14 @@
                     ></MPaging>
                 </div>
 
-                <div class="detail-section minisize" ref="detailSection">
-                    <div class="divider-section">
+                <div class="detail-section" ref="detailSection">
+                    <div class="divider-section"  @drag="onDragDivider" draggable="true">
                         <div
                             class="collapse-btn"
                             @click="handleShowDetailSection"
                         >
                             <div class="mi-8 block-center">
-                                <div class="mi-arrow-dropdown rorate-180"></div>
+                                <div class="mi-arrow-dropdown"></div>
                             </div>
                         </div>
                     </div>
@@ -288,7 +289,7 @@ export default {
             isDeleteOne: false,
             leftContextMenu: "",
             topContextMenu: "",
-            isDetail: false,
+            isDetail: true,
             paymentIdClick: "",
             isShowToastAdd: false,
             isShowToastEdit: false,
@@ -297,6 +298,7 @@ export default {
             payment_id_selected: null,
             selectedpaymentIds: [],
             isDialogDeleteMultiple: false,
+            masterHeight:60
         };
     },
 
@@ -565,6 +567,19 @@ export default {
             }
         },
 
+        // onDragDivider(event) {
+        //     const masterSection = this.$refs.masterSection;
+        //     const detailSection = this.$refs.detailSection;
+        //     // Tính toán sự thay đổi của chiều cao
+        //     const heightDiff = event.clientY;
+        //     console.log(heightDiff);
+        //     // Cập nhật chiều cao của detail section
+        //     detailSection.style.height = `calc(100% - ${heightDiff}px)`;
+            
+        //     // Cập nhật chiều cao của master section
+        //     // this.masterHeight = (heightDiff / this.$el.clientHeight) * 100;
+        // },
+
         /**
          * Hàm thực hiện hành động hàng loạt
          * Author: KienNT 10/06/2023
@@ -669,6 +684,11 @@ export default {
             masterSection.classList.toggle("full-size");
             detailSection.classList.toggle("minisize");
             masterSection.classList.toggle("h-60");
+            if (masterSection.classList.contains('h-60')) {
+                this.masterHeight = 60;
+            } else {
+                this.masterHeight = 100;
+            }
             this.isDetail = !this.isDetail;
         },
         /**

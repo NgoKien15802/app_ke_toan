@@ -204,10 +204,11 @@
                                                                         :optionWrapperCombobox="
                                                                             optionWrapperComboboxSupplierCode
                                                                         "
-                                                                        tabindex="4"
+                                                                        tabindex="1"
                                                                         @selectedRecord="
                                                                             selectedSupplierPayment
                                                                         "
+
                                                                         :scrollElement="
                                                                             scrollElementSupplier
                                                                         "
@@ -215,6 +216,8 @@
                                                                         :recordData="
                                                                             supplierCodePayment
                                                                         "
+                                                                        @setFocus="setFocus"
+                                                                        ref="txtSupplierMaster"
                                                                         :headersColumn="[
                                                                             'supplier_code',
                                                                             'supplier_name',
@@ -241,7 +244,7 @@
                                                                         }}</label
                                                                     >
                                                                     <MInput
-                                                                        tabindex="4"
+                                                                        tabindex="2"
                                                                         id="ObjectName"
                                                                         name="MartialStatusName"
                                                                         kind="default"
@@ -269,7 +272,7 @@
                                                                         }}</label
                                                                     >
                                                                     <MInput
-                                                                        tabindex="4"
+                                                                        tabindex="3"
                                                                         id="Receiver"
                                                                         kind="default"
                                                                         ref="txtReceiver"
@@ -318,7 +321,7 @@
                                                                         }}</label
                                                                     >
                                                                     <MInput
-                                                                        tabindex="4"
+                                                                        tabindex="5"
                                                                         id="journal_memo"
                                                                         kind="default"
                                                                         ref="txtJournal_memo"
@@ -355,7 +358,7 @@
                                                                         :optionWrapperCombobox="
                                                                             optionWrapperComboboxEmployeeId
                                                                         "
-                                                                        tabindex="4"
+                                                                        tabindex="6"
                                                                         @selectedRecord="
                                                                             selectedRecordEmployee
                                                                         "
@@ -388,7 +391,7 @@
                                                                         }}</label
                                                                     >
                                                                     <MInput
-                                                                        tabindex="4"
+                                                                        tabindex="7"
                                                                         id="Attach"
                                                                         name="MartialStatusName"
                                                                         kind="default"
@@ -452,15 +455,10 @@
                                                                         )
                                                                     }}
                                                                 </label>
-                                                                <div
-                                                                    :class="{
-                                                                        'tooltip-error':
-                                                                            isTooltip.isTooltipAccountingDate,
-                                                                    }"
-                                                                >
+                                                                
                                                                     <MInput
                                                                         type="date"
-                                                                        tabindex="5"
+                                                                        tabindex="8"
                                                                         name="AccountingDate"
                                                                         id="AccountingDate"
                                                                         kind="default"
@@ -468,26 +466,10 @@
                                                                         v-model="
                                                                             payment.posted_date
                                                                         "
-                                                                        :isShowTooltip="
-                                                                            isTooltip.isTooltipAccountingDate
-                                                                        "
+                                                                        
                                                                         :isDisabled="formModePayment===MISAEnum.formMode.Show"
                                                                     />
-                                                                    <MTooltip
-                                                                        v-if="
-                                                                            isTooltip.isTooltipAccountingDate
-                                                                        "
-                                                                        :subtext="
-                                                                            $t(
-                                                                                'LabelAccountingDate'
-                                                                            ) +
-                                                                            $t(
-                                                                                'ErrorDate'
-                                                                            )
-                                                                        "
-                                                                        kind="error"
-                                                                    ></MTooltip>
-                                                                </div>
+                                                                    
                                                             </div>
                                                             <div
                                                                 class="left-separate m-row-padding"
@@ -509,11 +491,20 @@
                                                                 >
                                                                     <MInput
                                                                         type="date"
-                                                                        tabindex="5"
+                                                                        tabindex="9"
                                                                         name="PaymentDate"
                                                                         id="PaymentDate"
                                                                         kind="default"
                                                                         ref="txtPaymentDate"
+                                                                        @blur="
+                                                                            isInValid(
+                                                                                payment.ref_date,
+                                                                                payment.posted_date,
+                                                                                'date'
+                                                                            )
+                                                                                ? (isTooltip.isTooltipPaymentDate = true)
+                                                                                : (isTooltip.isTooltipPaymentDate = false)
+                                                                        "
                                                                         v-model="
                                                                             payment.ref_date
                                                                         "
@@ -531,8 +522,12 @@
                                                                                 'LabelPaymentDate'
                                                                             ) +
                                                                             $t(
-                                                                                'ErrorDate'
+                                                                                'ErrorDatePayment'
                                                                             )
+                                                                            +
+                                                                            $t(
+                                                                                'Labelposted_date'
+                                                                            ).toLocaleLowerCase()
                                                                         "
                                                                         kind="error"
                                                                     ></MTooltip>
@@ -548,18 +543,49 @@
                                                                         $t(
                                                                             "LabelPaymentNumber"
                                                                         )
-                                                                    }}</label
+                                                                        
+                                                                    }} <span class="required">*</span></label
                                                                 >
-                                                                <MInput
-                                                                    tabindex="4"
-                                                                    id="PaymentNumber"
-                                                                    kind="default"
-                                                                    ref="txtPaymentNumber"
-                                                                    v-model="
-                                                                        payment.refno_finance
-                                                                    "
-                                                                     :isDisabled="formModePayment===MISAEnum.formMode.Show"
-                                                                />
+                                                                    <div :class="{
+                                                                        'tooltip-error':
+                                                                            isTooltip.isTooltipPaymentNumber,
+                                                                    }">
+                                                                    <MInput
+                                                                        tabindex="10"
+                                                                        id="PaymentNumber"
+                                                                        kind="default"
+                                                                        ref="txtPaymentNumber"
+                                                                        @setFocus="setFocus"
+                                                                        v-model="
+                                                                            payment.refno_finance
+                                                                        "
+                                                                        :isDisabled="formModePayment===MISAEnum.formMode.Show"
+                                                                        :isShowTooltip="
+                                                                            isTooltip.isTooltipPaymentNumber
+                                                                        "
+                                                                        :required="true"
+                                                                        @blur="
+                                                                            isEmpty(payment.refno_finance)
+                                                                                ? (isTooltip.isTooltipPaymentNumber = true)
+                                                                                : (isTooltip.isTooltipPaymentNumber = false)
+                                                                        "
+                                                                    />
+                                                                    <MTooltip
+                                                                        v-if="isTooltip.isTooltipPaymentNumber"
+                                                                      
+                                                                        :subtext="
+                                                                                isEmpty(
+                                                                                     payment.refno_finance
+                                                                                )
+                                                                                    ?  $t('LabelPaymentNumber') +
+                                                                                    $t('ErrorEmpty') 
+                                                                                    : errorExistId
+                                                                                    ? errorExistId
+                                                                                    : message
+                                                                            "
+                                                                        kind="error"
+                                                                    ></MTooltip>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -779,6 +805,7 @@
                                                                     id="description"
                                                                     kind="default"
                                                                     ref="txtdescription"
+                                                                    @setFocus="setFocus"
                                                                     v-model="
                                                                         rowPaymentDetail.description
                                                                     "
@@ -1124,7 +1151,7 @@
                                                         ref="btnSave"
                                                     >
                                                         <MTooltip
-                                                            v-if="!formModePayment===MISAEnum.formMode.Show"
+                                                            v-if="formModePayment!==MISAEnum.formMode.Show"
                                                             kind="AccountSysterm"
                                                             :subtext="
                                                                 $t(
@@ -1159,7 +1186,7 @@
                                                         ></MTooltip>
                                                     </MButton> -->
                                                 <button
-                                                    class="btn combox-btn"
+                                                    class="btn combox-btn tooltip"
                                                     :tabindex="tabindex"
                                                     style="border-radius: 3px;"
                                                     v-if="formModePayment!==MISAEnum.formMode.Show"
@@ -1169,6 +1196,10 @@
                                                     <span class="combox-btn-mark"></span>
 
                                                     <div class="wrap-icon-combox wrap-icon-right" ref="iconContextMenu"  @click="clickBtnRight($event)"><div class="icon__combox-btn"></div></div>
+                                                    <MTooltip
+                                                        kind="AccountSysterm"
+                                                        :subtext="$t('TooltipSaveAndAdd')"
+                                                    ></MTooltip>
                                                 </button>
 
                                                 </div>
@@ -1210,16 +1241,26 @@
     ></MDialog>
 
     <MDialog
-        v-if="isDialogWarning"
+        v-if="isDialogWarning || isDialogWarningDuplicate"
         iconClass="dialog__icon-warning"
         :title="$t('DialogWarning')"
-        :message="$t('MessageWarningDeleteLine')"
+        :message="isDialogWarning ? $t('MessageWarningDeleteLine') : (isDialogWarningDuplicate ? errorExistId   + $t('MessageWarningDuplicate') : '') "
         :BtnWarningNo="$t('BtnDestroyDialog')"
         :textButton="$t('BtnYes')"
         @onBtnWarningNo="onBtnWarningNo"
-        @onBtnWarningYes="onBtnWarningYes"
+        @onBtnWarningYes="()=>onBtnWarningYes(isDialogWarning ? 'isDialogWarning' : (isDialogWarningDuplicate ? 'isDialogWarningDuplicate':''))"
         kind="warning"
     ></MDialog>
+
+    <MDialog
+            v-if="isDialogError"
+            iconClass="dialog__icon-error"
+            :title="$t('DialogNotifyError')"
+            :message="message"
+            :textButton="$t('BtnClose')"
+            @hideShowDialogError="hideShowDialogError"
+            kind="error"
+        ></MDialog>
 
       <!-- loading -->
     <Mloading v-if="isLoading"></Mloading>
@@ -1296,12 +1337,13 @@ export default {
                     isActive: true,
                 },
             ],
-
+            invalidPaymentNumber:"",
             totalMoney: 0,
            
             isTooltip: {
                 isTooltipAccountingDate: false,
                 isTooltipPaymentDate: false,
+                isTooltipPaymentNumber:false
             },
             rowPaymentDetails: [
                 {
@@ -1317,12 +1359,15 @@ export default {
                     supplier_name_detail:""
                 },
             ],
+            isDialogWarningDuplicate:false,
             cloneRowPaymentDetails: [],
             clonePaymentDetail: [],
             clonePayment: {}, 
             errorMessage:[],
+            message:"",
             deleteOne: false,
-            isShowToastAdd:false,
+            isShowToastAdd: false,
+            errorExistId:"", 
             isContextMenu: false,
             isDialogNotify: false,
             isDialogWarning: false,
@@ -1395,6 +1440,7 @@ export default {
             ...this.cloneRowPaymentDetails,
             isEditAble: true,
         };
+
     },
     beforeUnmount() {
         window.removeEventListener("keydown", this.handlePressKeyShort);
@@ -1476,6 +1522,29 @@ export default {
                 }
             }
         },
+
+         /**
+         * Theo dõi mảng errorMessage thay đổi thì check nếu có lỗi thì gán cho message
+         * Author: KienNT (10/06/2023)
+         */
+        errorMessage: {
+            handler: function (newValue) {
+                console.log(newValue);
+                try {
+                    const refNames = Object.values(newValue);
+                    for (let index = 0; index < refNames.length; index++) {
+                        const element = refNames[index];
+                        if (element !== "space") {
+                            this.message = element;
+                            break;
+                        }
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
+            },
+            deep: true,
+        },
     },
 
     created() {
@@ -1534,7 +1603,9 @@ export default {
                         const details = res.data.Data.Details;
                         if (formMode === MISAEnum.formMode.Duplicate) {
                             this.getNewPaymentCode();
-                        } 
+                        } else if(this.formModePayment===MISAEnum.formMode.Edit) {
+                           this.setFocusInput("txtSupplierMaster"); 
+                        }
                         this.payment = master;
                         this.employeeId = master?.fullname;
                         this.supplierCodePayment = master?.supplier_code;
@@ -1575,7 +1646,7 @@ export default {
          * Hàm lấy employee code mới
          * Author: KienNT (01/03/2023)
          */
-        getNewPaymentCode() {
+        getNewPaymentCode(isSave=false) {
             try {
                 axios
                     .get("https://localhost:7153/api/v1/Payments/NewRecordCode")
@@ -1591,7 +1662,7 @@ export default {
                          * Gọi hàm set focus bên input
                          * Author: KienNT (06/06/2023)
                          */
-                        // this.setFocusInput("txtEmployeeCode");
+                       
                         this.oldPayment = JSON.stringify(this.deleteAttrObject(this.payment));
 
                         this.oldRowPaymentDetails = JSON.stringify(this.deleteEmptyAttributes(this.rowPaymentDetails));
@@ -1599,6 +1670,11 @@ export default {
                             this.isLoading = false;                            
                         } else {
                              this.$emit("hideShowLoading", false);
+                        }
+                         if (isSave) {
+                           this.btnSaveAndClose('');  
+                        } else {
+                            this.setFocusInput("txtSupplierMaster");
                         }
                     })
                     .catch((error) => {
@@ -1647,9 +1723,6 @@ export default {
             this.btnSaveAndClose(MISAEnum.ModeBtn.SaveAndClose);
         },
 
-         handleValidate() {
-            return true;
-        },
 
           /**
          * Hàm validate thành công thì cất data và đóng form, cất và thêm thì cất và data reset form
@@ -1789,7 +1862,13 @@ export default {
                                 let response = error.response;
                                 let errorData = response?.data?.Data?.Data;
                                 console.log(errorData);
-                                this.$emit("hideShowLoading", false);
+
+                                if (this.isRouter) {
+                                    this.isLoading = false;
+                                } else {
+                                    this.$emit("hideShowLoading", false);
+                                }
+                                  this.handleCaseCatch(response, errorData);
                             });
                      }else if (
                         !this.isEmpty(this.payment_id_selected) &&
@@ -1818,6 +1897,253 @@ export default {
                     } 
                 }else {
                     this.hideShowDialogError(true);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+         /**
+         * Hàm ẩn hiện dialog và focus vào ô input lỗi đầu tiên
+         * Author: KienNT (11/06/2023)
+         * @param (isDialogError): tham số là true, false để hiển thị dialog
+         */
+        hideShowDialogError(isDialogError) {
+            try {
+                this.isDialogError = isDialogError;
+                this.firstFocus();
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+
+        /**
+         *  focus vào ô input lỗi đầu tiên
+         * Author: KienNT (10/06/2023)
+         *
+         */
+        firstFocus() {
+            try {
+                // get all input ref sau đó duyệt nếu input nào có lỗi là isShowTooltip = true thì input đó focus và break
+                const refNames = Object.keys(this.$refs);
+                if (refNames) {
+                    for (let index = 0; index < refNames.length; index++) {
+                        const elementRef = refNames[index];
+                        const element = this.$refs[elementRef];
+                        if (element && element.isShowTooltip) {
+                            element.setFocus();
+                            return true;
+                        }
+                    }
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        
+        /**
+         * validate 
+         * Author: KienNT (10/06/2023)
+         *
+         */
+        handleValidate() {
+             // check mã
+                this.checkField(
+                    "isTooltipPaymentNumber",
+                    this.payment.refno_finance,
+                    this.$t("LabelPaymentNumber"),
+                    "txtPaymentNumber"
+                );
+
+                
+                 // check invalid số chứng từ
+                this.checkFieldInvalid(
+                    "isTooltipPaymentNumber",
+                    this.payment.refno_finance,
+                    this.$t("LabelPaymentNumber"),
+                    "invalid",
+                    this.$t("ErrorPaymentNumber"),
+                    "txtPaymentNumber"
+                );
+
+                // check invalid
+                // nếu có value thì mới check input date
+                this.checkFieldInvalid(
+                    "isTooltipPaymentDate",
+                    this.payment.ref_date,
+                    this.$t("LabelPaymentDate"),
+                    "date",
+                    this.$t("ErrorDatePayment") + this.$t('Labelposted_date').toLocaleLowerCase(),
+                    "txtPaymentDate",
+                    this.payment.posted_date
+                );
+             // nếu ko có lỗi thì ẩn popup
+                let check = true;
+
+                const refNames = Object.values(this.errorMessage);
+                for (let index = 0; index < refNames.length; index++) {
+                    const element = refNames[index];
+                    if (
+                        element !== "space" &&
+                        element !== this.invalidPaymentNumber 
+                    ) {
+                        check = false;
+                    }
+                }
+
+                if (check === false) {
+                    return false;
+                } else {
+                    return true;
+                }
+        },
+
+
+
+        /**
+         * Hàm check isEmpty
+         * Author: KienNT (11/06/2023)
+         *  @param (fieldName,fieldValue,errorLabel): tham số 1: tooltip the label, tham số 2 là giá trị ô input, tham số 3: label lỗi, tham số 4 là ref
+         */
+        checkField(fieldName, fieldValue, errorLabel, field) {
+            try {
+                if (this.isEmpty(fieldValue)) {
+                    // lỗi valid form thì xóa lỗi cùng mã
+                    if (this.errorMessage.includes(this.errorExistId)) {
+                        const index = this.errorMessage.indexOf(
+                            this.errorExistId
+                        );
+                        this.errorMessage.splice(index, 1);
+                        this.isTooltip.isTooltipPaymentNumber = false;
+                    }
+                    if (this.errorMessage.includes(this.invalidPaymentNumber)) {
+                        const index = this.errorMessage.indexOf(
+                            this.invalidPaymentNumber
+                        );
+                        this.errorMessage.splice(index, 1);
+                        this.isTooltip.isTooltipPaymentNumber = false;
+                    }
+                   
+                    this.isTooltip[fieldName] = true;
+                    // nếu chưa có lỗi thì thêm ptu lỗi đó vào
+                    if (
+                        !this.errorMessage.includes(
+                            errorLabel + this.$t("ErrorEmpty")
+                        )
+                    ) {
+                        this.errorMessage[this.getTabIndex(field)] =
+                            errorLabel + this.$t("ErrorEmpty");
+                    }
+                } else {
+                    if (this.errorMessage.includes(this.errorExistId)) {
+                        const index = this.errorMessage.indexOf(
+                            this.errorExistId
+                        );
+                        this.errorMessage.splice(index, 1);
+                    }
+                    this.isTooltip[fieldName] = false;
+                    if (
+                        this.errorMessage.includes(
+                            errorLabel + this.$t("ErrorEmpty")
+                        )
+                    ) {
+                        this.errorMessage.splice(this.getTabIndex(field), 1);
+                        this.errorMessage.splice(
+                            this.getTabIndex(field),
+                            0,
+                            "space"
+                        );
+                    }
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
+         * Hàm check invalid
+         * Author: KienNT (10/06/2023)
+         *  @param (fieldName,fieldValue,errorLabel): tham số 1: true,false tooltip label, tham số 2 là giá trị ô input, tham số 3: label lỗi, tham số 4: loại (email,date,..), tham số 5 loại label lỗi
+         */
+        checkFieldInvalid(
+            fieldName,
+            fieldValue,
+            errorLabel,
+            kind,
+            errorText,
+            field,
+            fieldValue1=""
+        ) {
+            try {
+                if (!this.isEmpty(fieldValue)) {
+                    // check input phải là số
+                    if (this.isInValid(fieldValue,fieldValue1, kind)) {
+                        if (
+                            this.errorMessage.includes(this.invalidPaymentNumber)
+                        ) {
+                            const index = this.errorMessage.indexOf(
+                                this.invalidPaymentNumber
+                            );
+                            this.errorMessage.splice(index, 1);
+                            this.isTooltip.isTooltipPaymentNumber = false;
+                        }
+                      
+                        this.isTooltip[fieldName] = true;
+                        // nếu chưa có lỗi thì thêm ptu lỗi đó vào
+                        if (
+                            !this.errorMessage.includes(errorLabel + errorText)
+                        ) {
+                            this.errorMessage[this.getTabIndex(field)] =
+                                errorLabel + errorText;
+                        }
+                    } else {
+                        this.isTooltip[fieldName] = false;
+                        if (
+                            this.errorMessage.includes(errorLabel + errorText)
+                        ) {
+                            this.errorMessage.splice(
+                                this.getTabIndex(field),
+                                1
+                            );
+                            this.errorMessage.splice(
+                                this.getTabIndex(field),
+                                0,
+                                "space"
+                            );
+                        }
+                    }
+                } else {
+                    this.isTooltip[fieldName] = false;
+                    if (this.errorMessage.includes(errorLabel + errorText)) {
+                        this.errorMessage.splice(this.getTabIndex(field), 1);
+                        this.errorMessage.splice(
+                            this.getTabIndex(field),
+                            0,
+                            "space"
+                        );
+                    }
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
+         * Hàm lấy tabindex của ptu đó để gán lỗi vào mảng ở STT đó để set focus vào ô đầu tiên
+         * Author: KienNT (11/06/2023)
+         * @param (fieldName): field cần lấy tabindex
+         */
+        getTabIndex(fieldName) {
+            try {
+                const refNames = Object.keys(this.$refs);
+                for (let index = 0; index < refNames.length; index++) {
+                    const elementRef = refNames[index];
+                    if (elementRef === fieldName) {
+                        const element = this.$refs[elementRef];
+                        return element.tabindex;
+                    }
                 }
             } catch (error) {
                 console.log(error);
@@ -1881,10 +2207,64 @@ export default {
                         let response = error.response;
                         let errorData = response?.data?.Data?.Data;
                         console.log(errorData);
-                        this.$emit("hideShowLoading", false);
+                        if (this.isRouter) {
+                            this.isLoading = false;  
+                        } else {
+                            this.$emit("hideShowLoading", false);
+                        }
+                        this.handleCaseCatch(response, errorData);
                     });
             } catch (error) {
                 console.log(error);
+            }
+        },
+
+        handleCaseCatch(response, errorData) {
+            switch (response.status) {
+                case 400:
+                    if (errorData != null) {
+                        if (this.errorMessage.includes(this.errorExistId)) {
+                            const index = this.errorMessage.indexOf(
+                                this.errorExistId
+                            );
+                            this.errorMessage.splice(index, 1);
+                        }
+                        for (let key in errorData) {
+                            switch (key) {
+                                case "refno_finance":
+                                    this.isTooltip.isTooltipPaymentNumber = true;
+                                    if (this.errorExistId) {
+                                        this.errorExistId = false;
+                                    }
+                                    this.invalidPaymentNumber = errorData[key];
+                                    break;
+                                
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+
+                    this.isDialogError = true;
+                    break;
+
+                case 409:
+                case 500:
+                    if (this.errorMessage.length > 0) {
+                        this.errorMessage = [];
+                    }
+                    this.errorExistId =
+                        response?.data?.Data?.UserMsg ||
+                        response?.data?.UserMsg;
+                    this.errorMessage[10] = this.errorExistId;
+                    if (response?.data?.Data?.UserMsg) {
+                        this.isTooltip.isTooltipPaymentNumber = true;
+                    }
+                    this.isDialogWarningDuplicate = true;
+                    break;
+
+                default:
+                    break;
             }
         },
 
@@ -2113,29 +2493,36 @@ export default {
                 ...this.cloneRowPaymentDetails,
                 isEditAble: true,
             };
+          
         },
 
         /**
          *  handle xoá hết các dòng
          * Author: KienNT (06/06/2023)
          */
-        onBtnWarningYes() {
-            this.rowPaymentDetails = [
+        onBtnWarningYes(text) {
+            if (text === 'isDialogWarning') {
+                this.rowPaymentDetails = [
                 {
-                    isEditAble: true,
-                    description: this.$t("PaymentFor"),
-                    debit_account_id: "",
-                    credit_account_id: "",
-                    amount: "0",
-                    debit_account_name: "",
-                    credit_account_name: "",
-                    supplierCodeDetail: "",
-                    supplier_name_detail: "",
-                    supplier_id:null, 
-                },
-            ];
-            this.totalMoney = 0;
-            this.isDialogWarning = false;
+                        isEditAble: true,
+                        description: this.$t("PaymentFor"),
+                        debit_account_id: "",
+                        credit_account_id: "",
+                        amount: "0",
+                        debit_account_name: "",
+                        credit_account_name: "",
+                        supplierCodeDetail: "",
+                        supplier_name_detail: "",
+                        supplier_id:null, 
+                    },
+                ];
+                this.totalMoney = 0;
+                this.isDialogWarning = false;
+            } else {
+                this.isDialogWarningDuplicate = false;
+                this.getNewPaymentCode(true);
+            }
+            
         },
 
         /**
@@ -2156,7 +2543,7 @@ export default {
          * Author: KienNT (06/06/2023)
          */
         onBtnWarningNo() {
-            this.isDialogWarning = false;
+            this.isDialogWarning ? this.isDialogWarning = false : this.isDialogWarningDuplicate = false;
         },
 
 
@@ -2245,6 +2632,22 @@ export default {
             // khi nhấn phím esc thì đóng form
             if (event.key === "Escape" || event.keyCode === 27) {
                 this.closeCashDetail();
+            }
+
+            if (event.ctrlKey && event.key === "s") {
+                // Ngăn chặn trình duyệt thực hiện hành động mặc định của phím "Ctrl + S" là lưu trang web
+                event.preventDefault();
+                 if (this.formModePayment !== MISAEnum.formMode.Show) {
+                   this.btnSaveAndClose("");
+                }
+                
+            }
+
+            if (event.ctrlKey && event.shiftKey && event.key === "S") {
+                event.preventDefault();
+                if (this.formModePayment !== MISAEnum.formMode.Show) {
+                    this.btnSaveAndClose(this.textBtn === this.$t('BtnSaveEndAdd') ? MISAEnum.ModeBtn.SaveAndAdd : MISAEnum.ModeBtn.SaveAndClose);
+                }
             }
         },
 
@@ -2363,6 +2766,78 @@ export default {
             }
 
             return result;
+        },
+
+
+        /**
+         * Hàm kiểm tra ngày chứng từ <= ngày hạch toán ko?
+         * Author: KienNT (02/03/2023)
+         * @param (value,kind): tham số 1 là giá trị chuỗi từ input và tham số 2 là loại: date,...
+         */
+        isInValid(value,value1="", kind) {
+            try {
+                if (!this.isEmpty(value)) {
+                    let timenow;
+                    let inputDate;
+                    let regex;
+                    switch (kind) {
+                        case "date":
+                            timenow = new Date(value1);
+                            inputDate = new Date(value);
+                            if (timenow < inputDate) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+
+                        case "number":
+                            if (isNaN(value)) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        case "email":
+                            regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                            // nếu ko đúng địng dạng thì ...
+                            if (!regex.test(value)) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+
+                        case "character":
+                            if (value.length < 3) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        case "characterStartWith":
+                            if (value.length >= 3) {
+                                if (!this.isEmpty(this.parent_id)) {
+                                    if (!value.startsWith(this.parent_id)) {
+                                        return true;
+                                    } else {
+                                        return false;
+                                    }
+                                } else {
+                                    return false;
+                                }
+                            }
+                            break;
+                        case "invalid":
+                            regex = /^xx[0-9]{1,}$/g;
+                            if (!regex.test(value)) {
+                                return true;
+                            } else {
+                                return false;  
+                            }
+                        default:
+                            break;
+                    }
+                }
+            } catch (error) {
+                console.log(error);
+            }
         },
 
 
