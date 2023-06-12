@@ -40,30 +40,51 @@
                             header === 'posted_date' || header === 'ref_date'
                         "
                     >
-                        <span>
+                        <span style="display: flex">
                             <span
                                 style="margin: 0 auto"
                                 class="text-align-center"
                                 >{{ $t(header) }}</span
                             >
+                            <div
+                                class="mi-16 icon-head mi-header-option"
+                                @click="
+                                    handleShowConditionFilter($event, header)
+                                "
+                                ref="iconConditionFilter"
+                            ></div>
                         </span>
                     </template>
 
                     <template v-else-if="header === 'total_amount'">
-                        <span>
+                        <span  style="display: flex">
                             <span class="text-align-right">{{
                                 $t(header)
                             }}</span>
+                            <div
+                                class="mi-16 icon-head mi-header-option"
+                                @click="
+                                    handleShowConditionFilter($event, header)
+                                "
+                                ref="iconConditionFilter"
+                            ></div>
                         </span>
                     </template>
                     <template v-else-if="header === 'Feature'">
                         <span class="text-align-center">{{ $t(header) }} </span>
                     </template>
                     <template v-else>
-                        <span>
+                        <span style="display: flex">
                             <span class="text-align-left">{{
                                 $t(header)
                             }}</span>
+                            <div
+                                class="mi-16 icon-head mi-header-option"
+                                @click="
+                                    handleShowConditionFilter($event, header)
+                                "
+                                ref="iconConditionFilter"
+                            ></div>
                         </span>
                     </template>
                 </th>
@@ -282,6 +303,19 @@
         "
         kind="warning"
     ></MDialog>
+
+
+     <MconditionFilter
+        v-if="isConditionFilter"
+        :top="topConditionFilter"
+        :left="leftConditionFilter"
+        :filterConditon="filterConditon"
+        :header="header"
+        :refElement="this.$refs.iconConditionFilter"
+        @handleHideConditionFilter="handleHideConditionFilter"
+        @handleClickFilter="handleClickFilter"
+        :filterConditonArrs="filterConditonArr"
+    ></MconditionFilter>
 </template>
 
 <script>
@@ -320,6 +354,9 @@ export default {
         isDialogDeleteMultiple: {
             type: Boolean,
         },
+         filterConditonArr: {
+            type: Array,
+        },
     },
     data() {
         return {
@@ -349,11 +386,17 @@ export default {
                 "Feature",
             ],
             isShowSkeleton: false,
-            conditionFilters: "{}",
+            conditionFilters: "",
             totalMoney: 0,
+            header: "",
             oldCheckedArr: [],
             paymentSelected: "",
-            paymentCodeSelected:""
+            isConditionFilter: false,
+             filterConditon: "",
+             topConditionFilter: 0,
+            leftConditionFilter: 0,
+            paymentCodeSelected: "",
+            conditionFilterArr: [],
         };
     },
     watch: {
@@ -427,6 +470,34 @@ export default {
                 this.$emit("setIsReLoad");
             }
         },
+
+        conditionFilterArr: {
+            handler(newValue) {
+                let filterObject = newValue.reduce((acc, el) => {
+                    return { ...acc, ...el[Object.keys(el)[0]] };
+                }, {});
+                
+                for (const [key, value] of Object.entries(filterObject)) {
+                    if (key === 'total_amount') {
+                        filterObject[key] = this.currencyToNumber(value)
+                    }
+                }
+
+                filterObject = `'${JSON.stringify(filterObject)}'`;
+                this.conditionFilters = filterObject || "";
+
+                this.loadData();
+            },
+            deep: true,
+        },
+
+        filterConditonArr: {
+            handler(newValue) {
+                this.conditionFilterArr = newValue;
+            },
+            deep: true,
+        },
+
     },
     /**
      * Thực hiện lấy dữ liệu khi chuẩn bị mounted vào DOM
@@ -668,6 +739,28 @@ export default {
             }
         },
 
+        /**
+         * xử lý hiển thị Condition filter
+         * Author: KienNT (11/06/2023)
+         * @param (event): là event
+         */
+        handleShowConditionFilter(event, header) {
+            this.header = header;
+            this.filterConditon = this.$t(header).toLocaleLowerCase();
+            this.isConditionFilter = !this.isConditionFilter;
+            this.leftConditionFilter =
+                event.target.getBoundingClientRect().left;
+            this.topConditionFilter = event.target.getBoundingClientRect().top;
+        },
+
+        /**
+         * Bắt sự kiện ẩn condition Filter
+         * Author: KienNT (11/06/2023)
+         */
+        handleHideConditionFilter() {
+            this.isConditionFilter = false;
+        },
+
            /**
          * Xử lý loading gửi emit lên cha
          * Author: KienNT (09/06/2023)
@@ -712,6 +805,16 @@ export default {
             }
         },
 
+        /**
+         * Xử lý gửi mảng filter condition lên cha
+         * Author: KienNT (09/06/2023)
+         * @param (filterConditonArr): tham số là mảng text condition filter
+         */
+        handleClickFilter(filterConditonArr) {
+            this.conditionFilterArr = filterConditonArr;
+            this.$emit("handleClickFilter", filterConditonArr);
+        },
+
 
          /**
          * Hàm ẩn cclick btn xem
@@ -732,6 +835,17 @@ export default {
                 }
             }
         },
+
+
+         /**
+         * Hàm chuyển tiền sang số
+         * Author: KienNT (12/06/2023)
+         */
+         currencyToNumber(currency) {
+            
+            var number = currency.replace(/\./g, '');
+            return parseFloat(number);
+            },
 
         /**
          * Hàm ẩn contextmenu khi click ra ngoài element
@@ -852,3 +966,4 @@ export default {
     border-right: 1px dotted #babec5;
 }
 </style>
+

@@ -406,7 +406,7 @@ export default {
             totalRecordParent: 0,
             totalRecord: 0,
             accountIdSort: "",
-            conditionFilters: "{}",
+            conditionFilters: "",
             dataRecords: [],
         };
     },

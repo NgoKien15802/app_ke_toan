@@ -342,7 +342,7 @@ export default {
             header: "",
             selectedArrToSettingUI: [],
             cloneHeader: [],
-            conditionFilters: "{}",
+            conditionFilters: "",
             conditionFilterArr: [],
         };
     },
@@ -508,7 +508,7 @@ export default {
                     return { ...acc, ...el[Object.keys(el)[0]] };
                 }, {});
                 filterObject = `'${JSON.stringify(filterObject)}'`;
-                this.conditionFilters = filterObject || "{}";
+                this.conditionFilters = filterObject || "";
                 this.loadData();
             },
             deep: true,

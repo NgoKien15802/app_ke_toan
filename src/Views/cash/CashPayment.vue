@@ -59,6 +59,169 @@
                             style="line-height: 0;"
                         ></MButton>
                     </div>
+                    <div
+                        class="filter-conditions"
+                        v-if="filterConditonArr.length >= 1"
+                    >
+                        <div
+                            class="filter-item"
+                            v-for="(
+                                filterCondition, index
+                            ) in filterConditonArr"
+                            :key="index"
+                        >
+                            {{
+                                Object.keys(filterCondition)[index]
+                                    ? $t(Object.keys(filterCondition)[index]) +
+                                      " " +
+                                      $t(
+                                          filterCondition[
+                                              Object.keys(filterCondition)[
+                                                  index
+                                              ]
+                                          ][
+                                              `${
+                                                  Object.keys(filterCondition)[
+                                                      index
+                                                  ]
+                                              }Option`
+                                          ]
+                                      ).toLocaleLowerCase() +
+                                      ( 
+                                      filterCondition[
+                                          Object.keys(filterCondition)[index]
+                                      ][Object.keys(filterCondition)[index]] ||
+                                      
+                                      filterCondition[
+                                          Object.keys(filterCondition)[index]
+                                      ][Object.keys(filterCondition)[index]] ===
+                                          0
+                                          ? ` "${
+                                                filterCondition[
+                                                    Object.keys(
+                                                        filterCondition
+                                                    )[index]
+                                                ][
+                                                    Object.keys(
+                                                        filterCondition
+                                                    )[index]
+                                                ] === MISAEnum.Gender.Male
+                                                    ? this.$t("LabelMale")
+                                                    : filterCondition[
+                                                          Object.keys(
+                                                              filterCondition
+                                                          )[index]
+                                                      ][
+                                                          Object.keys(
+                                                              filterCondition
+                                                          )[index]
+                                                      ] ===
+                                                      MISAEnum.Gender.Female
+                                                    ? this.$t("LabelFemale")
+                                                    : filterCondition[
+                                                          Object.keys(
+                                                              filterCondition
+                                                          )[index]
+                                                      ][
+                                                          Object.keys(
+                                                              filterCondition
+                                                          )[index]
+                                                      ] ===
+                                                      MISAEnum.Gender.Other
+                                                    ? this.$t("LabelOther")
+                                                    : filterCondition[
+                                                          Object.keys(
+                                                              filterCondition
+                                                          )[index]
+                                                      ][
+                                                          Object.keys(
+                                                              filterCondition
+                                                          )[index]
+                                                      ]
+                                            }"`
+                                          : '')
+                                    : $t(Object.keys(filterCondition)[0]) +
+                                      " " +
+                                      $t(
+                                          filterCondition[
+                                              Object.keys(filterCondition)[0]
+                                          ][
+                                              `${
+                                                  Object.keys(
+                                                      filterCondition
+                                                  )[0]
+                                              }Option`
+                                          ]
+                                      ).toLocaleLowerCase() +
+                                      (filterCondition[
+                                          Object.keys(filterCondition)[0]
+                                      ][Object.keys(filterCondition)[0]] ||
+                                      filterCondition[
+                                          Object.keys(filterCondition)[0]
+                                      ][Object.keys(filterCondition)[0]] === 0
+                                          ? ` "${
+                                                filterCondition[
+                                                    Object.keys(
+                                                        filterCondition
+                                                    )[0]
+                                                ][
+                                                    Object.keys(
+                                                        filterCondition
+                                                    )[0]
+                                                ] === MISAEnum.Gender.Male
+                                                    ? this.$t("LabelMale")
+                                                    : filterCondition[
+                                                          Object.keys(
+                                                              filterCondition
+                                                          )[0]
+                                                      ][
+                                                          Object.keys(
+                                                              filterCondition
+                                                          )[0]
+                                                      ] ===
+                                                      MISAEnum.Gender.Female
+                                                    ? this.$t("LabelFemale")
+                                                    : filterCondition[
+                                                          Object.keys(
+                                                              filterCondition
+                                                          )[0]
+                                                      ][
+                                                          Object.keys(
+                                                              filterCondition
+                                                          )[0]
+                                                      ] ===
+                                                      MISAEnum.Gender.Other
+                                                    ? this.$t("LabelOther")
+                                                    : filterCondition[
+                                                          Object.keys(
+                                                              filterCondition
+                                                          )[0]
+                                                      ][
+                                                          Object.keys(
+                                                              filterCondition
+                                                          )[0]
+                                                      ]
+                                            }"`
+                                          : "")
+                            }}
+                            <div
+                                class="mi-16 delete-filter-icon"
+                                @click="
+                                    () => handleDeleteFilter(filterCondition)
+                                "
+                            >
+                                <div class="mi-close--small"></div>
+                            </div>
+                        </div>
+
+                        <div
+                            class="delete-all-filter"
+                            @click="handleDeleteAllFilter"
+                        >
+                            {{ $t("DeleteConditionFilter") }}
+                        </div>
+                    </div>
+
                 </div>
                 <div class="content__main-right">
                     <div class="content__main-filter">
@@ -152,6 +315,8 @@
                             @setIsDialogDeleteMuliple="
                                 () => (isDialogDeleteMultiple = false)
                             "
+                             @handleClickFilter="handleClickFilter"
+                            :filterConditonArr="filterConditonArr"
                         ></TheTablePayment>
                     </div>
                     <!--  paging -->
@@ -207,6 +372,7 @@
                                 @handleClickNext="handleClickNextPaymentDetail"
                                 @handleClickPageIndex="handleClickPageIndexPaymentDetail"
                                 @setIsDisabledClickPrev="setIsDisabledClickPrevPaymentDetail"
+                                :style="totalRecordPaymentDetail > 0 ? 'margin-top: 26px;' : ''"
                             ></MPaging>
                         </div>
                     </div>
@@ -298,7 +464,8 @@ export default {
             payment_id_selected: null,
             selectedpaymentIds: [],
             isDialogDeleteMultiple: false,
-            masterHeight:60
+            masterHeight: 54,
+            filterConditonArr:[]
         };
     },
 
@@ -394,6 +561,34 @@ export default {
          */
         handleSelectChechbox(selectedCheckbox) {
             this.selectedCheckbox = selectedCheckbox;
+        },
+
+        /**
+         * Nhận mảng filter condition text
+         * Author: KienNT (11/06/2023)
+         * @param (filterConditonArr): tham số là mảng text condition filter
+         */
+        handleClickFilter(filterConditonArr) {
+            this.filterConditonArr = filterConditonArr;
+        },
+
+             /**
+         * Hàm xoá 1 điều kiện lọc
+         * Author: KienNT (11/06/2023)
+         */
+        handleDeleteFilter(filterCondition) {
+            const index = this.filterConditonArr.indexOf(filterCondition);
+            if (index !== -1) {
+                this.filterConditonArr.splice(index, 1);
+            }
+        },
+
+        /**
+         * Hàm xoá tất cả điều kiện lọc
+         *  Author: KienNT (11/06/2023)
+         */
+        handleDeleteAllFilter() {
+            this.filterConditonArr = [];
         },
 
         /**
@@ -698,6 +893,15 @@ export default {
         hideContextMenu() {
             this.isContextMenu = !this.isContextMenu;
         },
+
+        /**
+         * format cho số lớn
+         * Author: KienNT (07/06/2023)
+         */
+        numberWithCommas(x) {
+            return  x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") ;
+        },
+
 
           /**
          * Hàm hiện thị toast khi thực hiện thêm, sửa, xóa thành công

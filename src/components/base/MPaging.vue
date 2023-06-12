@@ -1,5 +1,5 @@
 <template>
-    <div class="content__main-paging">
+    <div class="content__main-paging" :style="style">
         <p class="content__main-paging-left">
             {{ $t("TotalNumber") }}:
             <strong>{{ countRecord || numberWithCommas(totalRecord) }}</strong>
@@ -117,6 +117,9 @@ export default {
         countRecord: {
             type: Number,
         },
+        style: {
+            type:String
+        }
     },
     data() {
         return {

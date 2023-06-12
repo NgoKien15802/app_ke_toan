@@ -62,7 +62,7 @@
                 </div>
             </div>
 
-            <div class="view-fitler-text" v-else-if="header === 'DateOfBirth'">
+            <div class="view-fitler-text" v-else-if="header === 'DateOfBirth' || header === 'posted_date' || header === 'ref_date' || header === 'total_amount'">
                 <div class="column-filter">
                     {{ $t("Filter") }} {{ filterConditon }}
                 </div>
@@ -91,9 +91,12 @@
 
                 <div class="filter-value">
                     <input
-                        type="date"
+                        :type="header!=='total_amount' ? 'date':'text'"
                         class="input__type input__condition"
+                        :class="header==='total_amount' ? 'kindNumber':''"
                         v-model="keyWordSearch"
+                        @input="()=>header==='total_amount' && filterNonNumeric()"
+                        @keyup="()=> header==='total_amount' && handleKeyUp()"
                         ref="minput"
                         :disabled="
                             $t(textBtnLink) === $t('Empty') ||
@@ -293,7 +296,7 @@ export default {
         this.$nextTick(function () {
             this.$refs["minput"] && this.$refs["minput"].focus();
         });
-        if (this.header === "DateOfBirth") {
+        if (this.header === "DateOfBirth" || this.header === 'posted_date' || this.header === 'ref_date' || this.header === 'total_amount') {
             this.textBtnLink = "Equal";
         }
         if (this.filterConditonArrs.length > 0) {
@@ -304,31 +307,41 @@ export default {
                     if (Object.keys(el)[0] === this.header) {
                         this.keyWordSearch =
                             el[Object.keys(el)[0]][Object.keys(el)[0]] ===
-                            MISAEnum.Gender.Male
+                                MISAEnum.Gender.Male
                                 ? this.$t("LabelMale")
                                 : el[Object.keys(el)[0]][Object.keys(el)[0]] ===
-                                  MISAEnum.Gender.Female
-                                ? this.$t("LabelFemale")
-                                : el[Object.keys(el)[0]][Object.keys(el)[0]] ===
-                                  MISAEnum.Gender.Other
-                                ? this.$t("LabelOther")
-                                : el[Object.keys(el)[0]][Object.keys(el)[0]];
+                                    MISAEnum.Gender.Female
+                                    ? this.$t("LabelFemale")
+                                    : el[Object.keys(el)[0]][Object.keys(el)[0]] ===
+                                        MISAEnum.Gender.Other
+                                        ? this.$t("LabelOther")
+                                        : el[Object.keys(el)[0]][Object.keys(el)[0]];
                         this.textBtnLink =
                             el[Object.keys(el)[0]][
-                                `${Object.keys(el)[0]}Option`
+                            `${Object.keys(el)[0]}Option`
                             ];
                     }
-                } else if (this.header === "DateOfBirth") {
+                } else if (this.header === "DateOfBirth" || this.header === 'posted_date' || this.header === 'ref_date') {
                     if (Object.keys(el)[0] === this.header) {
                         this.keyWordSearch =
                             el[Object.keys(el)[0]][Object.keys(el)[0]];
                         this.textBtnLink =
                             el[Object.keys(el)[0]][
-                                `${Object.keys(el)[0]}Option`
+                            `${Object.keys(el)[0]}Option`
                             ];
                     }
                     let date = new Date(this.keyWordSearch);
                     this.keyWordSearch = moment(date).format("YYYY-DD-MM");
+                } else if (this.header === 'total_amount') {
+                     if (Object.keys(el)[0] === this.header) {
+                        this.keyWordSearch =
+                            el[Object.keys(el)[0]][Object.keys(el)[0]];
+                        this.textBtnLink =
+                            el[Object.keys(el)[0]][
+                            `${Object.keys(el)[0]}Option`
+                            ];
+                    }
+                    this.keyWordSearch = this.numberWithCommas(this.keyWordSearch);
                 } else {
                     if (Object.keys(el)[0] === this.header) {
                         this.keyWordSearch =
@@ -410,7 +423,7 @@ export default {
                             ? MISAEnum.Gender.Other
                             : keyWordSearch || "";
                 }
-            } else if (this.header === "DateOfBirth") {
+            } else if (this.header === "DateOfBirth" || this.header === 'posted_date' || this.header === 'ref_date') {
                 if (index === -1) {
                     this.filterConditonArr.push({
                         [this.header]: {
@@ -429,6 +442,25 @@ export default {
                     this.filterConditonArr[index][this.header][this.header] =
                         this.keyWordSearch
                             ? moment(this.keyWordSearch).format("DD/MM/YYYY")
+                            : "";
+                }
+            } else if (this.header === 'total_amount') {
+                 if (index === -1) {
+                    this.filterConditonArr.push({
+                        [this.header]: {
+                            [`${this.header}Option`]: textBtnLink,
+                            [this.header]: this.keyWordSearch
+                                ? this.keyWordSearch
+                                : "",
+                        },
+                    });
+                } else {
+                    this.filterConditonArr[index][this.header][
+                        `${this.header}Option`
+                    ] = textBtnLink;
+                    this.filterConditonArr[index][this.header][this.header] =
+                        this.keyWordSearch
+                            ? this.keyWordSearch
                             : "";
                 }
             } else {
@@ -478,6 +510,31 @@ export default {
                 this.filterConditonArr.splice(index, 1);
             }
             this.$emit("handleClickFilter", this.filterConditonArr);
+        },
+
+        /**
+         * format từ tiền sang số
+         * Author: KienNT (12/06/2023)
+         */
+        currencyToNumber(currency) {
+            var number = currency.replace(/\./g, '');
+            return parseFloat(number);
+        },
+
+        /**
+         * format cho số lớn
+         * Author: KienNT (12/06/2023)
+         */
+        handleKeyUp() {
+             this.keyWordSearch = this.numberWithCommas(this.keyWordSearch);
+        },
+
+        /**
+         * format cho số lớn
+         * Author: KienNT (12/06/2023)
+         */
+         numberWithCommas(x) {
+            return  x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") ;
         },
 
         /**
@@ -573,6 +630,16 @@ export default {
                 console.log(error);
             }
         },
+
+         /**
+         *  handle ngăn chặn nhập chữ
+         * Author: KienNT (12/06/2023)
+         */
+        filterNonNumeric() {
+            this.keyWordSearch =
+                this.keyWordSearch.replace(/[^0-9]/g, "");
+        },
+
 
         /**
          * handle khi click option item
