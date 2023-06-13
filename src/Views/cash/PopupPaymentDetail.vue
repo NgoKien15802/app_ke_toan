@@ -293,7 +293,7 @@ export default {
 
 .employee tbody tr.active td {
     background-color: #2ca01c !important;
-    color: white;
+    color: white !important;
 }
 
 .employee tbody .scroller {

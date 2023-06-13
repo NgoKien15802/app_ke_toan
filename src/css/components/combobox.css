@@ -90,6 +90,6 @@
 }
 
 .option__item-combobox.active .option__link-combobox {
-    background-color: var(--color-primary);
-    color: var(--white-color);
+    background-color: var(--color-primary) !important;
+    color: var(--white-color) !important;
 }
