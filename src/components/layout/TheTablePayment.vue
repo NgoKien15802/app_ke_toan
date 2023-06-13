@@ -670,7 +670,14 @@ export default {
                     }
                 }
             }
-              this.$emit("handleClickPayment", payment);
+            const checkboxs = this.$refs["checkbox"];
+             for (let index = 0; index < checkboxs.length; index++) {
+                if (
+                    !event.target.isEqualNode(checkboxs[index].$el.firstChild)
+                ) {
+                    this.$emit("handleClickPayment", payment);
+                }
+            }
         },
 
          /**

@@ -145,6 +145,7 @@ const MISAResouce = {
         MessageWarningPayment: "Bạn có muốn chứng từ ",
         MessageWarningDeleteLine:
             "Bạn có thực sự muốn xóa tất cả các dòng đã nhập không?",
+        MesssgaeErrorLenthDetail:"Bạn phải nhập chứng từ chi tiết.",
         
         MessageWarningDuplicate:
             ". Bạn có muốn chương trình tự động tăng số chứng từ không?",
@@ -470,6 +471,8 @@ const MISAResouce = {
         
         MessageWarningDeleteLine:
             "Do you really want to delete all entered lines?",
+        MesssgaeErrorLenthDetail:"You must enter detailed voucher.",
+        
         MessageWarningDuplicate:". Do you want the program to automatically increase the number of vouchers?",
         MessageWarningAccount: "Do you want to delete account ",
         MessageUpdateAccount:

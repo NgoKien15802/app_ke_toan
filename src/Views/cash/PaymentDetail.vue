@@ -956,6 +956,7 @@
                                                                             filterNonNumericAmount(index)
                                                                         "
                                                                     @handleKeyUp="()=> handleKeyUpAmount(index)"
+                                                                    @blur="() => handleBlurAmount(index)"
                                                                 />
                                                                 <span v-else>{{
                                                                     rowPaymentDetail.amount
@@ -1029,12 +1030,13 @@
                                                                             auto;
                                                                             
                                                                     "
-                                                                     :class=" formModePayment===MISAEnum.formMode.Show || formModePayment === MISAEnum.formMode.Edit ? 'disabledDopdown' : ''"
+                                                                     :class=" formModePayment===MISAEnum.formMode.Show  ? 'disabledDopdown' : ''"
                                                                    
                                                                     class="trash"
                                                                     @click="
                                                                         handleClickTrash(
-                                                                            index
+                                                                            index,
+                                                                            rowPaymentDetail.ref_detail_id
                                                                         )
                                                                     "
                                                                 ></div>
@@ -1119,7 +1121,7 @@
                                             :text="$t('AddLine')"
                                             :click="() => AddLineAndClose()"
                                             ref="AddLine"
-                                            :class=" formModePayment===MISAEnum.formMode.Show || formModePayment === MISAEnum.formMode.Edit ? 'disabledDopdown' : ''"
+                                            :class=" formModePayment===MISAEnum.formMode.Show ? 'disabledDopdown' : ''"
                                         >
                                         </MButton
                                         ><MButton
@@ -1128,7 +1130,7 @@
                                             :text="$t('DeleteAllLine')"
                                             :click="DeleteAllLineAndClose"
                                             ref="DeleteAllLine"
-                                            :class=" formModePayment===MISAEnum.formMode.Show || formModePayment === MISAEnum.formMode.Edit ? 'disabledDopdown' : ''"
+                                            :class=" formModePayment===MISAEnum.formMode.Show ? 'disabledDopdown' : ''"
                                         >
                                         </MButton>
                                     </div>
@@ -1363,6 +1365,8 @@ export default {
             cloneRowPaymentDetails: [],
             clonePaymentDetail: [],
             clonePayment: {}, 
+            cloneDetail: [],
+            changePaymentDetail:[], 
             errorMessage:[],
             message:"",
             deleteOne: false,
@@ -1491,7 +1495,7 @@ export default {
                         }
                     })
                     this.totalMoney = newValue.reduce((acc, el) => {
-                        return acc + Math.round(this.currencyToNumber(el?.amount));
+                        return acc + Math.round(this.currencyToNumber(el?.amount || 0.0));
                     }, 0);
                 } catch (error) {
                     console.log(error);
@@ -1545,6 +1549,8 @@ export default {
             },
             deep: true,
         },
+
+       
     },
 
     created() {
@@ -1629,6 +1635,15 @@ export default {
                                 supplier_id: el?.supplier_id,
                                 supplierCodeDetail: el?.payment_detail_supplier_code,
                                 supplier_name_detail: el?.payment_detail_supplier_name
+                            };
+                        });
+                    
+                        this.changePaymentDetail = JSON.stringify(this.rowPaymentDetails);
+                        this.changePaymentDetail = JSON.parse(this.changePaymentDetail);
+                        this.changePaymentDetail = this.changePaymentDetail.map((el) => {
+                            return {
+                                ref_detail_id: el?.ref_detail_id,
+                                mode:"edit"
                             };
                         });
                         this.oldPayment = JSON.stringify(this.deleteAttrObject(this.payment));
@@ -1729,175 +1744,212 @@ export default {
          * Author: KienNT (08/06/2023)
          *  @param (value): tham số 1: là true, false hiển thị popup
          */
-         btnSaveAndClose(modeBtn="") {
+        btnSaveAndClose(modeBtn = "") {
              try {
                  let checkState = false;
                  if (this.formModePayment===MISAEnum.formMode.Show) {
                      this.formModePayment = MISAEnum.formMode.Edit;
                      checkState = false;
-                 } else if (this.formModePayment === MISAEnum.formMode.Edit) {
+                 } else if (this.formModePayment === MISAEnum.formMode.Edit||this.formModePayment === MISAEnum.formMode.Add||this.formModePayment === MISAEnum.formMode.Duplicate) {
                      checkState = true;
-                }    
-                if (this.handleValidate()) {
-                    if (this.formModePayment === MISAEnum.formMode.Add) {
-                        // this.postData(MISAEnum.formMode.Add, isCloseForm);
+                 }
+                 if (checkState) {
+                     if (this.handleValidate() && this.rowPaymentDetails.length > 0) {
+                         if (this.formModePayment === MISAEnum.formMode.Add) {
+                             // this.postData(MISAEnum.formMode.Add, isCloseForm);
+     
+                             this.payment.total_amount = this.totalMoney;
+                             this.payment.employee_id = this.payment.employee_id || null;
+                             this.payment.refid = uuidv4();
+                             this.rowPaymentDetails.forEach((el) => {
+                                 el.ref_detail_id = uuidv4();
+                             })
+                             this.clonePaymentDetail = JSON.stringify(this.rowPaymentDetails);
+                             this.clonePaymentDetail = JSON.parse(this.clonePaymentDetail);
+                             this.clonePaymentDetail = this.clonePaymentDetail.map((el) => {
+                                 return {
+                                     ref_detail_id: el.ref_detail_id,
+                                     debit_account_id: el.debit_account_id || null,
+                                     credit_account_id: el.credit_account_id || null,
+                                     amount: this.currencyToNumber(el.amount || '0.0'),
+                                     description: el.description,
+                                     supplier_id: el.supplier_id || null,
+                                 };
+                             });
+                             this.postData(MISAEnum.formMode.Add, modeBtn);
+                         }
+                         // đóng form
+     
+                         else if (this.formModePayment === MISAEnum.formMode.Edit  && checkState) {
+                             this.payment.total_amount = this.totalMoney;
+                             this.payment.employee_id = this.payment.employee_id || null;
+                             this.clonePayment = JSON.stringify(this.payment);
+                             this.clonePayment = JSON.parse(this.clonePayment);
+                             const {
+                                 refid,
+                                 journal_memo,
+                                 posted_date,
+                                 ref_date,
+                                 payment_supplier_name,
+                                 payment_receiver,
+                                 payment_supplier_address,
+                                 employee_id,
+                                 refno_finance,
+                                 document_included,
+                                 supplier_id,
+                                 total_amount,
+                                 ...cast
+                             } = this.clonePayment;
+                             this.clonePayment = {
+                                 refid,
+                                 journal_memo,
+                                 posted_date,
+                                 ref_date,
+                                 payment_supplier_name,
+                                 payment_receiver,
+                                 payment_supplier_address,
+                                 employee_id,
+                                 refno_finance,
+                                 document_included,
+                                 supplier_id,
+                                 total_amount
+                             }
+                             console.log(cast);
+                             this.rowPaymentDetails.forEach((el) => {
+                                if (this.isEmpty(el.ref_detail_id)) {
+                                    el.ref_detail_id = uuidv4();
+                                    this.changePaymentDetail.push({
+                                        ref_detail_id: el.ref_detail_id,
+                                        mode: "add"
+                                    })
+                                }  
+                             })
 
-                        this.payment.total_amount = this.totalMoney;
-                        this.payment.employee_id = this.payment.employee_id || null;
-                        this.payment.refid = uuidv4();
-                        this.rowPaymentDetails.forEach((el) => {
-                            el.ref_detail_id = uuidv4();
-                        })
-                        this.clonePaymentDetail = JSON.stringify(this.rowPaymentDetails);
-                        this.clonePaymentDetail = JSON.parse(this.clonePaymentDetail);
-                        this.clonePaymentDetail = this.clonePaymentDetail.map((el) => {
-                            return {
-                                ref_detail_id: el.ref_detail_id,
-                                debit_account_id: el.debit_account_id || null,
-                                credit_account_id: el.credit_account_id || null,
-                                amount: this.currencyToNumber(el.amount || '0.0'),
-                                description: el.description,
-                                supplier_id: el.supplier_id || null,
-                            };
-                        });
-                        this.postData(MISAEnum.formMode.Add, modeBtn);
-                    }
-                    // đóng form
-
-                    else if (this.formModePayment === MISAEnum.formMode.Edit  && checkState) {
-                        this.payment.total_amount = this.totalMoney;
-                        this.payment.employee_id = this.payment.employee_id || null;
-                        this.clonePayment = JSON.stringify(this.payment);
-                        this.clonePayment = JSON.parse(this.clonePayment);
-                        const {
-                            refid,
-                            journal_memo,
-                            posted_date,
-                            ref_date,
-                            payment_supplier_name,
-                            payment_receiver,
-                            payment_supplier_address,
-                            employee_id,
-                            refno_finance,
-                            document_included,
-                            supplier_id,
-                            total_amount,
-                            ...cast
-                        } = this.clonePayment;
-                        this.clonePayment = {
-                            refid,
-                            journal_memo,
-                            posted_date,
-                            ref_date,
-                            payment_supplier_name,
-                            payment_receiver,
-                            payment_supplier_address,
-                            employee_id,
-                            refno_finance,
-                            document_included,
-                            supplier_id,
-                            total_amount
-                        }
-                        console.log(cast);
-                        this.clonePaymentDetail = JSON.stringify(this.rowPaymentDetails);
-                        this.clonePaymentDetail = JSON.parse(this.clonePaymentDetail);
-                        this.clonePaymentDetail = this.clonePaymentDetail.map((el) => {
-                            return {
-                                ref_detail_id: el?.ref_detail_id,
-                                debit_account_id: el.debit_account_id || null,
-                                credit_account_id: el.credit_account_id || null,
-                                amount: this.currencyToNumber(el.amount || '0.0'),
-                                description: el.description,
-                                supplier_id: el.supplier_id || null,
-                            };
-                        });
-                        // Sửa chứng từ theo id
-                        const requestData = {
-                            Master: this.clonePayment,
-                            Details: this.clonePaymentDetail,
-                        };
-                        axios
-                            .put(
-                                `https://localhost:7153/api/v1/Payments/updateMasterDetail`,
-                                requestData
-                            )
-
-                            .then(this.isRouter?this.isLoading=true :this.$emit("hideShowLoading", true) )
-                            .then((res) => {
-                                console.log(res);
-                                if (this.isRouter) {
-                                       this.isShowToastEdit = true;
-                                       setTimeout(() => (this.isShowToastEdit = false), 3000);
-                                } else {
-                                    this.$emit("hideShowToast", "edit");
+                             this.clonePaymentDetail = JSON.stringify(this.rowPaymentDetails);
+                             this.clonePaymentDetail = JSON.parse(this.clonePaymentDetail);
+                             this.clonePaymentDetail = this.clonePaymentDetail.map((el) => {
+                                 return {
+                                     ref_detail_id: el?.ref_detail_id,
+                                     debit_account_id: el.debit_account_id || null,
+                                     credit_account_id: el.credit_account_id || null,
+                                     amount: this.currencyToNumber(el.amount || '0.0'),
+                                     description: el.description,
+                                     supplier_id: el.supplier_id || null,
+                                 };
+                             });
+                             this.changePaymentDetail.forEach((el) => {
+                                for (let index = 0; index < this.clonePaymentDetail.length; index++) {
+                                    const element = this.clonePaymentDetail[index];
+                                    if (el.ref_detail_id === element.ref_detail_id) {
+                                        element.mode = el.mode;
+                                        break;
+                                    } 
                                 }
-                             if (this.isEmpty(modeBtn)) {
-                                // chuyển form về mode show
-                                this.formModePayment = MISAEnum.formMode.Show;
-                                this.rowPaymentDetails.forEach((el) => {
-                                    el.isEditAble = false; 
-                                })
-                                this.$emit("setFormMode", MISAEnum.formMode.Show);
-                            } else  if (modeBtn === MISAEnum.ModeBtn.SaveAndClose) {
-                                // reset và đóng form
-                                this.destroyPopup(true);
-                            } else if (modeBtn === MISAEnum.ModeBtn.SaveAndAdd) {
-                                // reset nhưng ko đóng form
-                                this.destroyPopup(false);
-                                this.formModePayment = MISAEnum.formMode.Add;
-                                // lấy 1 id mới
-                                this.getNewPaymentCode();
-                                this.errorMessage = [];
-                            } 
-                            this.oldPayment = JSON.stringify(this.deleteAttrObject(this.payment));
-                                this.oldRowPaymentDetails = JSON.stringify(this.deleteEmptyAttributes(this.rowPaymentDetails));    
-                                 if (this.isRouter) {
-                                    this.isLoading = false;
-                                } else {
-                                    this.$emit("hideShowLoading", false);
-                                }
-                                  this.$emit("handleReLoadData");
-                            })
-                            .catch((error) => {
-                                let response = error.response;
-                                let errorData = response?.data?.Data?.Data;
-                                console.log(errorData);
+                             })
+                            
+                             this.changePaymentDetail.forEach((element) => {
+                                const found = this.clonePaymentDetail.some((item) => item.ref_detail_id === element.ref_detail_id);
+                                if (!found) {
+                                         this.clonePaymentDetail.push({
+                                            ref_detail_id: element.ref_detail_id,
+                                            mode:"delete"
+                                        })      
+                                    }
+                                });
 
-                                if (this.isRouter) {
-                                    this.isLoading = false;
-                                } else {
-                                    this.$emit("hideShowLoading", false);
-                                }
-                                  this.handleCaseCatch(response, errorData);
-                            });
-                     }else if (
-                        !this.isEmpty(this.payment_id_selected) &&
-                        this.formModePayment === MISAEnum.formMode.Duplicate
-                    ) {
-                        this.payment.total_amount = this.totalMoney;
-                        
-                        this.payment.employee_id = this.payment.employee_id || null;
-                        this.payment.refid = uuidv4();
-                        this.rowPaymentDetails.forEach((el) => {
-                            el.ref_detail_id = uuidv4();
-                        })
-                        this.clonePaymentDetail = JSON.stringify(this.rowPaymentDetails);
-                        this.clonePaymentDetail = JSON.parse(this.clonePaymentDetail);
-                        this.clonePaymentDetail = this.clonePaymentDetail.map((el) => {
-                            return {
-                                ref_detail_id: el.ref_detail_id,
-                                debit_account_id: el.debit_account_id || null,
-                                credit_account_id: el.credit_account_id || null,
-                                amount: this.currencyToNumber(el.amount || '0.0'),
-                                description: el.description,
-                                supplier_id: el.supplier_id || null,
-                            };
-                        });
-                        this.postData(MISAEnum.formMode.Duplicate, modeBtn);
-                    } 
-                }else {
-                    this.hideShowDialogError(true);
-                }
+
+                             
+                             // Sửa chứng từ theo id
+                             const requestData = {
+                                 Master: this.clonePayment,
+                                 Details: this.clonePaymentDetail,
+                             };
+                             axios
+                                 .put(
+                                     `https://localhost:7153/api/v1/Payments/updateMasterDetail`,
+                                     requestData
+                                 )
+     
+                                 .then(this.isRouter?this.isLoading=true :this.$emit("hideShowLoading", true) )
+                                 .then((res) => {
+                                     console.log(res);
+                                     if (this.isRouter) {
+                                            this.isShowToastEdit = true;
+                                            setTimeout(() => (this.isShowToastEdit = false), 3000);
+                                     } else {
+                                         this.$emit("hideShowToast", "edit");
+                                     }
+                                  if (this.isEmpty(modeBtn)) {
+                                     // chuyển form về mode show
+                                     this.formModePayment = MISAEnum.formMode.Show;
+                                     this.rowPaymentDetails.forEach((el) => {
+                                         el.isEditAble = false; 
+                                     })
+                                     this.$emit("setFormMode", MISAEnum.formMode.Show);
+                                 } else  if (modeBtn === MISAEnum.ModeBtn.SaveAndClose) {
+                                     // reset và đóng form
+                                     this.destroyPopup(true);
+                                 } else if (modeBtn === MISAEnum.ModeBtn.SaveAndAdd) {
+                                     // reset nhưng ko đóng form
+                                     this.destroyPopup(false);
+                                     this.formModePayment = MISAEnum.formMode.Add;
+                                     // lấy 1 id mới
+                                     this.getNewPaymentCode();
+                                     this.errorMessage = [];
+                                 } 
+                                 this.oldPayment = JSON.stringify(this.deleteAttrObject(this.payment));
+                                     this.oldRowPaymentDetails = JSON.stringify(this.deleteEmptyAttributes(this.rowPaymentDetails));    
+                                      if (this.isRouter) {
+                                         this.isLoading = false;
+                                     } else {
+                                         this.$emit("hideShowLoading", false);
+                                     }
+                                       this.$emit("handleReLoadData");
+                                 })
+                                 .catch((error) => {
+                                     let response = error.response;
+                                     let errorData = response?.data?.Data?.Data;
+                                     console.log(errorData);
+     
+                                     if (this.isRouter) {
+                                         this.isLoading = false;
+                                     } else {
+                                         this.$emit("hideShowLoading", false);
+                                     }
+                                       this.handleCaseCatch(response, errorData);
+                                 });
+                          }else if (
+                             !this.isEmpty(this.payment_id_selected) &&
+                             this.formModePayment === MISAEnum.formMode.Duplicate
+                         ) {
+                             this.payment.total_amount = this.totalMoney;
+                             
+                             this.payment.employee_id = this.payment.employee_id || null;
+                             this.payment.refid = uuidv4();
+                             this.rowPaymentDetails.forEach((el) => {
+                                 el.ref_detail_id = uuidv4();
+                             })
+                             this.clonePaymentDetail = JSON.stringify(this.rowPaymentDetails);
+                             this.clonePaymentDetail = JSON.parse(this.clonePaymentDetail);
+                             this.clonePaymentDetail = this.clonePaymentDetail.map((el) => {
+                                 return {
+                                     ref_detail_id: el.ref_detail_id,
+                                     debit_account_id: el.debit_account_id || null,
+                                     credit_account_id: el.credit_account_id || null,
+                                     amount: this.currencyToNumber(el.amount || '0.0'),
+                                     description: el.description,
+                                     supplier_id: el.supplier_id || null,
+                                 };
+                             });
+                             this.postData(MISAEnum.formMode.Duplicate, modeBtn);
+                         } 
+                     } else {
+                         if (this.rowPaymentDetails.length <= 0) {
+                             this.message = this.$t('MesssgaeErrorLenthDetail');    
+                         } 
+                         this.hideShowDialogError(true);
+                     }
+                } 
             } catch (error) {
                 console.log(error);
             }
@@ -1915,6 +1967,12 @@ export default {
             } catch (error) {
                 console.log(error);
             }
+        },
+
+        handleBlurAmount(index) {
+            if (this.isEmpty(this.rowPaymentDetails[index].amount)) {
+                this.rowPaymentDetails[index].amount = 0;  
+            } 
         },
 
 
@@ -2175,6 +2233,14 @@ export default {
                                 el.isEditAble = false; 
                             })
                             this.$emit("setFormMode", MISAEnum.formMode.Show);
+                              this.changePaymentDetail = JSON.stringify(this.rowPaymentDetails);
+                            this.changePaymentDetail = JSON.parse(this.changePaymentDetail);
+                            this.changePaymentDetail = this.changePaymentDetail.map((el) => {
+                                return {
+                                    ref_detail_id: el?.ref_detail_id,
+                                        mode:"edit"
+                                    };
+                                });
                         } else if (modeBtn === MISAEnum.ModeBtn.SaveAndClose) {
                             
                             // reset và đóng form
@@ -2309,7 +2375,7 @@ export default {
                 this.totalMoney = 0;
                 this.errorMessage = [];
                 this.formModePayment = "";
-
+                this.changePaymentDetail = [];
                 if (isClose) {
                     this.$emit("closeCashDetail");
                     if (this.isRouter) {
@@ -2480,6 +2546,7 @@ export default {
             this.rowPaymentDetails.push({
                 ...rowPaymentDetail,
                 isEditAble: true,
+                ref_detail_id:''
             });
             this.deleteOne = false;
 
@@ -2516,6 +2583,10 @@ export default {
                         supplier_id:null, 
                     },
                 ];
+                this.changePaymentDetail.map((el) => {
+                    el.mode = "delete";
+                    return el;
+                })
                 this.totalMoney = 0;
                 this.isDialogWarning = false;
             } else {
@@ -2714,8 +2785,17 @@ export default {
          * Hàm click trasj row thì xóa
          * Author: KienNT (06/06/2023)
          */
-        handleClickTrash(index) {
+        handleClickTrash(index, ref_detail_id) {
+          
             this.rowPaymentDetails.splice(index, 1);
+            if (this.formModePayment === MISAEnum.formMode.Edit) {
+                this.changePaymentDetail.map((x) => {
+                    if (x.ref_detail_id === ref_detail_id) {
+                        x.mode = "delete"    
+                    } 
+                    return x;
+                })
+            }
         },
 
         /**
