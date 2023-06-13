@@ -2572,17 +2572,18 @@ export default {
                 this.rowPaymentDetails = [
                 {
                         isEditAble: true,
-                        description: this.$t("PaymentFor"),
+                        description: this.payment.journal_memo,
                         debit_account_id: "",
                         credit_account_id: "",
                         amount: "0",
                         debit_account_name: "",
                         credit_account_name: "",
-                        supplierCodeDetail: "",
-                        supplier_name_detail: "",
-                        supplier_id:null, 
+                        supplierCodeDetail: this.supplierCodePayment,
+                        supplier_name_detail: this.payment.payment_supplier_name,
+                        supplier_id:this.payment.supplier_id, 
                     },
                 ];
+            
                 this.changePaymentDetail.map((el) => {
                     el.mode = "delete";
                     return el;
