@@ -781,6 +781,10 @@ export default {
           
         },
 
+         /**
+         * Hàm kết thúc resize master detail
+         * Author: KienNT (14/06/2023)
+         */
         onDragend(event) {
              const mouseY = event.clientY;
             const windowHeight = window.innerHeight;

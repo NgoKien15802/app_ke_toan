@@ -1,6 +1,7 @@
 <template>
     <div
         class="ms-component con-ms-popup ms-popup-is-right popup-is-show account__systerm-detail"
+        @keydown="handlePress"
     >
         <div class="ms-popup--background"></div>
         <div
@@ -306,6 +307,7 @@
                                                             "
                                                             styleElement="margin: none"
                                                             ref="checkbox"
+                                                            :tabindex="8"
                                                         ></MCheckbox>
                                                         <span
                                                             @click="
@@ -380,6 +382,7 @@
                                                                             : ''
                                                                     "
                                                                     fdprocessedid="epqss"
+                                                                    tabindex="9"
                                                                 />
 
                                                                 <div
@@ -438,6 +441,7 @@
                                                             "
                                                             styleElement="margin: none"
                                                             ref="checkbox"
+                                                            :tabindex="19"
                                                         ></MCheckbox>
                                                         <span
                                                             @click="
@@ -481,7 +485,7 @@
                                                             "
                                                             styleElement="margin: none"
                                                             ref="checkbox"
-                                                            tabindex="8"
+                                                            :tabindex="10"
                                                         ></MCheckbox>
 
                                                         <label
@@ -546,6 +550,7 @@
                                                             :valueFromParent="
                                                                 account.detail_by_job_kind
                                                             "
+                                                            :tabindex="11"
                                                         ></TheDropdownAccount>
                                                     </div>
                                                 </div>
@@ -570,7 +575,7 @@
                                                                     'detail_by_project_work'
                                                                 )
                                                             "
-                                                            tabindex="9"
+                                                            :tabindex="20"
                                                             styleElement="margin: none"
                                                             ref="checkbox"
                                                         ></MCheckbox>
@@ -611,6 +616,7 @@
                                                                     );
                                                                 }
                                                             "
+                                                            :tabindex="21"
                                                             @handleReceiveValue="
                                                                 (value) =>
                                                                     handleReceiveValueInput(
@@ -650,9 +656,10 @@
                                                                     'detail_by_order'
                                                                 )
                                                             "
-                                                            tabindex="10"
+                                                            
                                                             styleElement="margin: none"
                                                             ref="checkbox"
+                                                            :tabindex="13"
                                                         ></MCheckbox>
                                                         <span
                                                             @click="
@@ -704,6 +711,7 @@
                                                             :valueFromParent="
                                                                 account.detail_by_order_kind
                                                             "
+                                                             :tabindex="14"
                                                         ></TheDropdownAccount>
                                                     </div>
                                                 </div>
@@ -722,9 +730,6 @@
                                                             :initValue="
                                                                 account.detail_by_contract
                                                             "
-                                                            :tabindex="
-                                                                tabIndexDetail_by_contract
-                                                            "
                                                             @handleCheckbox="
                                                                 handleCheckboxAccount(
                                                                     event,
@@ -733,6 +738,7 @@
                                                             "
                                                             styleElement="margin: none"
                                                             ref="checkbox"
+                                                            :tabindex="22"
                                                         ></MCheckbox>
                                                         <span
                                                             @click="
@@ -778,6 +784,7 @@
                                                                         'detail_by_contract_kind'
                                                                     )
                                                             "
+                                                            :tabindex="23"
                                                             :diabledDropdown="
                                                                 account.detail_by_contract
                                                             "
@@ -810,7 +817,7 @@
                                                                     'detail_by_pu_contract'
                                                                 )
                                                             "
-                                                            tabindex="12"
+                                                            :tabindex="15"
                                                             styleElement="margin: none"
                                                             ref="checkbox"
                                                         ></MCheckbox>
@@ -851,7 +858,7 @@
                                                                     );
                                                                 }
                                                             "
-                                                            tabindex="13"
+                                                            :tabindex="16"
                                                             @handleReceiveValue="
                                                                 (value) =>
                                                                     handleReceiveValueInput(
@@ -891,7 +898,8 @@
                                                             "
                                                             styleElement="margin: none"
                                                             ref="checkbox"
-                                                            tabindex="14"
+                                                            :tabindex="24"
+                                                            
                                                         ></MCheckbox>
 
                                                         <label
@@ -943,6 +951,7 @@
                                                                     );
                                                                 }
                                                             "
+                                                            :tabindex="25"
                                                             @handleReceiveValue="
                                                                 (value) =>
                                                                     handleReceiveValueInput(
@@ -985,7 +994,7 @@
                                                             "
                                                             styleElement="margin: none"
                                                             ref="checkbox"
-                                                            tabindex="15"
+                                                            :tabindex="17"
                                                         ></MCheckbox>
                                                         <span
                                                             @click="
@@ -1037,6 +1046,8 @@
                                                             :valueFromParent="
                                                                 account.detail_by_department_kind
                                                             "
+                                                            :tabindex="18"
+
                                                         ></TheDropdownAccount>
                                                     </div>
                                                 </div>
@@ -1063,6 +1074,7 @@
                                                             "
                                                             styleElement="margin: none"
                                                             ref="checkbox"
+                                                            :tabindex="26"
                                                         ></MCheckbox>
                                                         <span
                                                             @click="
@@ -1108,6 +1120,7 @@
                                                                         'detail_by_list_item_kind'
                                                                     )
                                                             "
+                                                            :tabindex="27"
                                                             :diabledDropdown="
                                                                 account.detail_by_list_item
                                                             "
@@ -1134,10 +1147,11 @@
                 <div class="popup__form-footer-left">
                     <MButton
                         class="btn btn-default close__add-employee"
-                        tabindex="19"
+                        
                         :text="$t('BtnDestroy')"
                         :click="closeAccountSystermDetail"
                         ref="btnDestroy"
+                        tabindex="30"
                     >
                     </MButton>
                 </div>
@@ -1145,10 +1159,11 @@
                     <div>
                         <MButton
                             class="btn btn-default close__add-employee tooltip"
-                            tabindex="17"
+                            
                             :text="$t('BtnSave')"
                             :click="() => btnSaveAndClose(true)"
                             ref="btnSave"
+                            tabindex="28"
                         >
                             <MTooltip
                                 kind="AccountSysterm"
@@ -1159,10 +1174,12 @@
                     <div>
                         <MButton
                             class="btn btn-primary close__add-employee tooltip"
-                            tabindex="18"
+                            
                             :text="$t('BtnSaveEndAdd')"
                             :click="() => btnSaveAndClose(false)"
                             ref="btnSaveEndAdd"
+                            tabindex="29"
+
                         >
                             <MTooltip
                                 kind="AccountSysterm"
@@ -2508,6 +2525,71 @@ export default {
             }
         },
 
+        
+        /**
+         *  handle khi nhấn phím ctrl + s
+         * Author: KienNT (14/06/2023)
+         * @param (event): là event
+         */
+        handlePress(event) {
+            try {
+                const btnDestroy = this.$refs["btnDestroy"];
+
+                if (
+                    event.key === "Tab" &&
+                    event.target.isEqualNode(btnDestroy.$el)
+                ) {
+                    // Prevent the default tab behavior
+                    event.preventDefault();
+                    // focus vào input đầu tiên
+                    this.setFocusInput("txtAccountNumber");
+                }
+
+                // nếu phần tử focus là button thì có border
+                const btnSaveEndAdd = this.$refs["btnSaveEndAdd"];
+                const btnSave = this.$refs["btnSave"];
+                btnSaveEndAdd.$el.addEventListener("focus", function () {
+                    if (btnSaveEndAdd.$el.tagName === "BUTTON") {
+                        btnSaveEndAdd.$el.classList.add("border-focus-white");
+                    }
+                });
+
+                btnSave.$el.addEventListener("focus", function () {
+                    if (btnSave.$el.tagName === "BUTTON") {
+                        btnSave.$el.classList.add("border-focus");
+                    }
+                });
+
+                btnDestroy.$el.addEventListener("focus", function () {
+                    if (btnDestroy.$el.tagName === "BUTTON") {
+                        btnDestroy.$el.classList.add("border-focus");
+                    }
+                });
+
+                btnSaveEndAdd.$el.addEventListener("blur", function () {
+                    if (btnSaveEndAdd.$el.tagName === "BUTTON") {
+                        btnSaveEndAdd.$el.classList.remove(
+                            "border-focus-white"
+                        );
+                    }
+                });
+
+                btnSave.$el.addEventListener("blur", function () {
+                    if (btnSave.$el.tagName === "BUTTON") {
+                        btnSave.$el.classList.remove("border-focus");
+                    }
+                });
+
+                btnDestroy.$el.addEventListener("blur", function () {
+                    if (btnDestroy.$el.tagName === "BUTTON") {
+                        btnDestroy.$el.classList.remove("border-focus");
+                    }
+                });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
         /**
          *  handle ẩn popup account khi nhấn btn hủy
          * Author: KienNT (27/05/2023)
@@ -2570,4 +2652,8 @@ export default {
 <style scoped>
 @import url(@/css/layout/settingUI.css);
 @import url(@/css/layout/accountSystermDetail.css);
+.border-focus-white {
+    border: 1px solid #fff !important;
+    outline: none;
+}
 </style>

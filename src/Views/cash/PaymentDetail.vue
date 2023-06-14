@@ -1,5 +1,5 @@
 <template>
-    <div class="con-ms-popup cash_detail">
+    <div class="con-ms-popup cash_detail"  @keydown="handlePress">
         <div
             class="ms-popup-content ms-popup"
             style="min-width: 100%; max-width: 100%; width: 100%; height: 100%"
@@ -774,6 +774,7 @@
                                                                     : '',
                                                                 formModePayment===MISAEnum.formMode.Show ? 'disabledDopdown' : '']
                                                             "
+                                                            
                                                         >
                                                             <td
                                                                 class="text-align-center min-w40 hover-row"
@@ -801,11 +802,12 @@
                                                                     v-if="
                                                                         rowPaymentDetail.isEditAble
                                                                     "
-                                                                    tabindex="4"
+                                                                    :tabindex="11 + (5*index)"
                                                                     id="description"
                                                                     kind="default"
                                                                     ref="txtdescription"
-                                                                    @setFocus="setFocus"
+                                                                    @setFocus="()=> setFocusDescription(index)"
+                                                                    :isFocus="true"
                                                                     v-model="
                                                                         rowPaymentDetail.description
                                                                     "
@@ -821,6 +823,7 @@
                                                                     v-if="
                                                                         rowPaymentDetail.isEditAble
                                                                     "
+                                                                    :tabindex="12 + (5*index)"
                                                                     :data="
                                                                         dataAccountParent
                                                                     "
@@ -833,7 +836,6 @@
                                                                     :optionWrapperCombobox="
                                                                         optionWrapperComboboxDebitAccount
                                                                     "
-                                                                    tabindex="4"
                                                                     @selectedRecord="
                                                                         (
                                                                             account_id,
@@ -897,7 +899,7 @@
                                                                         margin: 0
                                                                             auto;
                                                                     "
-                                                                    tabindex="4"
+                                                                    :tabindex="13 + (5*index)"
                                                                     @selectedRecord="
                                                                         (
                                                                             account_id,
@@ -942,7 +944,7 @@
                                                                     v-if="
                                                                         rowPaymentDetail.isEditAble
                                                                     "
-                                                                    tabindex="4"
+                                                                    :tabindex="14 + (5*index)"
                                                                     id="amount"
                                                                     kind="default"
                                                                     ref="txtamount"
@@ -978,11 +980,12 @@
                                                                     :optionWrapperCombobox="
                                                                         optionWrapperComboboxSupplierCodeDetail
                                                                     "
-                                                                    tabindex="4"
+                                                                    :tabindex="15 + (5*index)"
                                                                     @selectedRecord="
                                                                         (supplier)=> selectedRecordDetail(supplier,index)
                                                                     "
                                                                     kind="supplierCode"
+                                                                    ref="txtSupplierCodeDetail"
                                                                     :recordData="
                                                                         rowPaymentDetail.supplierCodeDetail
                                                                     "
@@ -1117,7 +1120,7 @@
                                     >
                                         <MButton
                                             class="btn btn-default close__add-employee tooltip"
-                                            tabindex="17"
+                                            :tabindex="16 + (5 * rowPaymentDetails.length - 1)"
                                             :text="$t('AddLine')"
                                             :click="() => AddLineAndClose()"
                                             ref="AddLine"
@@ -1126,7 +1129,7 @@
                                         </MButton
                                         ><MButton
                                             class="btn btn-default close__add-employee tooltip"
-                                            tabindex="17"
+                                            :tabindex="17+ (5 * rowPaymentDetails.length - 1)"
                                             :text="$t('DeleteAllLine')"
                                             :click="DeleteAllLineAndClose"
                                             ref="DeleteAllLine"
@@ -1144,7 +1147,7 @@
                                                 <div>
                                                     <MButton
                                                         class="btn btn-default close__add-employee tooltip"
-                                                        tabindex="17"
+                                                        :tabindex="20 + (5 * rowPaymentDetails.length - 1)"
                                                         :text="formModePayment===MISAEnum.formMode.Show ?$t('Fix') : $t('BtnSave')"
                                                         :click="
                                                             () =>
@@ -1164,40 +1167,17 @@
                                                     </MButton>
                                                 </div>
                                                 <div>
-                                                    <!-- <MButton
-                                                        class="btn btn-primary close__add-employee tooltip"
-                                                        tabindex="18"
-                                                        :text="
-                                                            $t('BtnSaveEndAdd')
-                                                        "
-                                                        :click="
-                                                            () =>
-                                                                btnSaveAndClose(
-                                                                    false
-                                                                )
-                                                        "
-                                                        ref="btnSaveEndAdd"
-                                                    >
-                                                        <MTooltip
-                                                            kind="AccountSysterm"
-                                                            :subtext="
-                                                                $t(
-                                                                    'TooltipSaveAndAdd'
-                                                                )
-                                                            "
-                                                        ></MTooltip>
-                                                    </MButton> -->
+                                                    
                                                 <button
                                                     class="btn combox-btn tooltip"
-                                                    :tabindex="tabindex"
                                                     style="border-radius: 3px;"
                                                     v-if="formModePayment!==MISAEnum.formMode.Show"
                                                 >
                                                 
-                                                    <span class="combox-btn-text combox-btn-left"   @click="btnSaveAndClose(textBtn === this.$t('BtnSaveEndAdd') ? MISAEnum.ModeBtn.SaveAndAdd : MISAEnum.ModeBtn.SaveAndClose)">{{ textBtn }}</span>
+                                                    <button class="combox-btn-text combox-btn-left"  :tabindex="18+ (5 * rowPaymentDetails.length - 1)"  ref="btnSaveEndAdd'"   @click="btnSaveAndClose(textBtn === this.$t('BtnSaveEndAdd') ? MISAEnum.ModeBtn.SaveAndAdd : MISAEnum.ModeBtn.SaveAndClose)">{{ textBtn }}</button>
                                                     <span class="combox-btn-mark"></span>
 
-                                                    <div class="wrap-icon-combox wrap-icon-right" ref="iconContextMenu"  @click="clickBtnRight($event)"><div class="icon__combox-btn"></div></div>
+                                                    <button class="wrap-icon-combox wrap-icon-right" ref="iconContextMenu"  :tabindex="19+ (5 * rowPaymentDetails.length - 1)"  @click="clickBtnRight($event)"><div class="icon__combox-btn"></div></button>
                                                     <MTooltip
                                                         kind="AccountSysterm"
                                                         :subtext="$t('TooltipSaveAndAdd')"
@@ -1212,7 +1192,7 @@
                                         >
                                             <MButton
                                                 class="btn btn-default close__add-employee"
-                                                tabindex="19"
+                                                :tabindex="21+ (5 * rowPaymentDetails.length - 1)"
                                                 :text="$t('BtnDestroy')"
                                                 :click="() =>destroyPopup(true)"
                                                 ref="btnDestroy"
@@ -1723,6 +1703,15 @@ export default {
             this.modeBtn = MISAEnum.ModeBtn.SaveAndAdd;
             localStorage.setItem("modeBtn", MISAEnum.ModeBtn.SaveAndAdd);
             this.btnSaveAndClose(MISAEnum.ModeBtn.SaveAndAdd);
+        },
+
+
+         /**
+         * Hàm set focus input
+         * Author: KienNT (14/06/2023)
+         */
+        setFocusDescription(index) {
+            this.$refs["txtdescription"][index].setFocus();
         },
 
 
@@ -2967,6 +2956,135 @@ export default {
                 console.log(error);
             }
         },
+        /**
+         *  handle khi nhấn phím ctrl + s
+         * Author: KienNT (14/06/2023)
+         * @param (event): là event
+         */
+        handlePress(event) {
+            try {
+                const btnDestroy = this.$refs["btnDestroy"];
+                const InputPaymentNumber = this.$refs["txtPaymentNumber"];
+                const txtSupplierCodeDetail = this.$refs["txtSupplierCodeDetail"];
+                // const txtdescription = this.$refs["txtdescription"][0];
+                if (
+                    event.key === "Tab" &&
+                    event.target.isEqualNode(btnDestroy.$el)
+                ) {
+                    // Prevent the default tab behavior
+                    event.preventDefault();
+                    // focus vào input đầu tiên
+                    this.setFocusInput("txtSupplierMaster");
+                }
+
+                if (
+                    event.key === "Tab" &&
+                    event.target.isEqualNode(InputPaymentNumber.$el.nextElementSibling)
+                ) {
+                    // Prevent the default tab behavior
+
+                    event.preventDefault();
+                    // focus vào input đầu tiên
+                    this.rowPaymentDetails[0].isEditAble = true;
+                    // this.setFocusInput(this.$refs["txtdescription"][0]);
+                }
+
+                // nếu phần tử focus là button thì có border
+                const btnSaveEndAdd = this.$refs["btnSaveEndAdd"];
+                const btnSave = this.$refs["btnSave"];
+                const AddLine = this.$refs["AddLine"];
+                const DeleteAllLine = this.$refs["DeleteAllLine"];
+                if (txtSupplierCodeDetail) {
+                    for (let index = 0; index < txtSupplierCodeDetail.length; index++) {
+                        const element = txtSupplierCodeDetail[index];
+                         if (
+                            element && 
+                            event.key === "Tab" &&
+                            event.target.isEqualNode(element.$el.children[1])
+                         ) {
+                            // Prevent the default tab behavior
+                            event.preventDefault();
+                            // focus vào input đầu tiên
+                            this.rowPaymentDetails[index].isEditAble = false;
+                            // this.setFocusInput(this.$refs["txtdescription"][0]);
+                        }
+                    }
+                }
+               
+
+
+                btnSaveEndAdd.$el.addEventListener("focus", function () {
+                    if (btnSaveEndAdd.$el.tagName === "BUTTON") {
+                        btnSaveEndAdd.$el.classList.add("border-focus-white");
+                    }
+                });
+
+                AddLine.$el.addEventListener("focus", function () {
+                    if (AddLine.$el.tagName === "BUTTON") {
+                        AddLine.$el.classList.add("border-focus-white");
+                        this.rowPaymentDetails.forEach((el) => {
+                            el.isEditAble = false; 
+                         })
+                    }
+                });
+
+                 DeleteAllLine.$el.addEventListener("focus", function () {
+                    if (DeleteAllLine.$el.tagName === "BUTTON") {
+                        DeleteAllLine.$el.classList.add("border-focus-white");
+                    }
+                });
+
+                btnSave.$el.addEventListener("focus", function () {
+                    if (btnSave.$el.tagName === "BUTTON") {
+                        btnSave.$el.classList.add("border-focus");
+                    }
+                });
+
+                btnDestroy.$el.addEventListener("focus", function () {
+                    if (btnDestroy.$el.tagName === "BUTTON") {
+                        btnDestroy.$el.classList.add("border-focus");
+                    }
+                });
+
+                btnSaveEndAdd.$el.addEventListener("blur", function () {
+                    if (btnSaveEndAdd.$el.tagName === "BUTTON") {
+                        btnSaveEndAdd.$el.classList.remove(
+                            "border-focus-white"
+                        );
+                    }
+                });
+
+                AddLine.$el.addEventListener("blur", function () {
+                    if (AddLine.$el.tagName === "BUTTON") {
+                        AddLine.$el.classList.remove(
+                            "border-focus-white"
+                        );
+                    }
+                });
+
+                 DeleteAllLine.$el.addEventListener("blur", function () {
+                    if (DeleteAllLine.$el.tagName === "BUTTON") {
+                        DeleteAllLine.$el.classList.remove(
+                            "border-focus-white"
+                        );
+                    }
+                });
+
+                btnSave.$el.addEventListener("blur", function () {
+                    if (btnSave.$el.tagName === "BUTTON") {
+                        btnSave.$el.classList.remove("border-focus");
+                    }
+                });
+
+                btnDestroy.$el.addEventListener("blur", function () {
+                    if (btnDestroy.$el.tagName === "BUTTON") {
+                        btnDestroy.$el.classList.remove("border-focus");
+                    }
+                });
+            } catch (error) {
+                console.log(error);
+            }
+        },
 
         /**
          * format cho số lớn
@@ -3153,4 +3271,17 @@ export default {
 .paymentList tr td:nth-child(2) span {
     width: 200px;
 }
+
+.border-focus-white {
+    border: 1px solid #50b83c !important;
+    outline: none;
+}
+
+.border-focus {
+    border: 1px solid #50b83c !important;
+    outline: none;
+}
+
+
+
 </style>

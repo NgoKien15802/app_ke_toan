@@ -21,6 +21,7 @@
                 v-model="valueInput"
                 fdprocessedid="epqss"
                 :class="!diabledDropdown ? 'disabledDopdown' : ''"
+                :tabindex="tabindex"
             />
 
             <div v-if="isOpenDropdown" class="option__wrapper-lang">
@@ -82,6 +83,9 @@ export default {
             type: String,
             default: "",
         },
+        tabindex: {
+            type:Number
+        }
     },
 
     watch: {

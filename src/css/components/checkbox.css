@@ -55,3 +55,13 @@
 .input__checkbox:checked ~ .ms__checkbox .ms__checbox-icon {
     display: inline-block;
 }
+
+
+.input__checkbox-wrapper:focus-visible  .ms__checkbox{
+      border: 1px solid var(--color-primary) !important;
+    transform: rotate(0deg);
+}
+
+.input__checkbox-wrapper:focus-visible  .ms__checkbox .ms__checbox-icon{
+    display: inline-block;
+}

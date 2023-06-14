@@ -255,6 +255,7 @@ const MISAResouce = {
         LabelGeneralAccount: "Tài khoản tổng hợp",
         LabelProperty: "Tính chất",
         Labeljournal_memo: "Diễn giải",
+        LabelInterpret:"Diễn giải",
         ForeignCurrencyPlan: "Có hạch toán ngoại tệ",
         Object: "Đối tượng",
 
@@ -554,6 +555,7 @@ const MISAResouce = {
         Property: "Property",
         EnglishName: "English name",
         journal_memo: "Interpret",
+        LabelInterpret:"Interpet",
         Status: "Status",
         Debt: "Debt",
         ExcessYes: "Excess yes",
