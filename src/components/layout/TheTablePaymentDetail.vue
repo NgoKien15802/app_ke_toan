@@ -209,9 +209,11 @@ export default {
 
     watch: {
         paymentIdClick: function (newValue) {
-            this.paymentDetailList = new Array(2).fill(0);
-            this.refidSelected = newValue;
-            this.loadData();
+            if (newValue != '') {
+                this.paymentDetailList = new Array(2).fill(0);
+                this.refidSelected = newValue;
+                this.loadData();
+            }
         },
 
         /**
@@ -258,6 +260,7 @@ export default {
                       
 
                         this.isShowSkeleton = false;
+                        this.$emit("setRefidSelected")
                     })
                     .catch((error) => {
                         console.log(error);

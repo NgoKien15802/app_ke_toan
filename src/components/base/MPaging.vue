@@ -285,4 +285,8 @@ export default {
 </script>
 <style scoped>
 @import url(../../css/components/paging.css);
+
+.page-item.disabled{
+    cursor: not-allowed !important;
+}
 </style>

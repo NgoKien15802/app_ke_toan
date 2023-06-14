@@ -348,10 +348,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-title" v-if="isDetail">
+                    <div class="tab-title">
                         <div class="tab-item">{{ $t("Detail") }}</div>
                     </div>
-                    <div class="grid-model-control" v-if="isDetail">
+                    <div class="grid-model-control">
                         <div
                             class="grid-list scrollbar_customize"
                             style="
@@ -365,6 +365,7 @@
                                 @getTotalRecord="getTotalRecordPaymentDetail"
                                 :pageSizeNumber="pageSizePaymentDetail"
                                 :pageCurrent="pageNumberPaymentDetail"
+                                @setRefidSelected="setRefidSelected"
                             ></TheTablePaymentDetail>
 
                             <!--  paging -->
@@ -675,8 +676,21 @@ export default {
             this.selectedCheckbox = [];
         },
 
+        
+        /**
+         * Hàm thực hiện chọn payment
+         * Author: KienNT (04/06/2023)
+         */
         handleClickPayment(payment) {
             this.paymentIdClick = payment.refid;
+        },
+
+         /**
+         * Hàm thực hiện set lại cái payment
+         * Author: KienNT (04/06/2023)
+         */
+        setRefidSelected() {
+            this.paymentIdClick = "";
         },
 
         /**
@@ -777,8 +791,25 @@ export default {
 
             // Tính toán chiều cao mới của master section dựa trên vị trí kéo thả của divider section
             const newMasterHeight = 100 - ((windowHeight - mouseY) / windowHeight) * 100;
-            this.masterHeight = newMasterHeight;
-          
+          // Kiểm tra xem đã đạt đến đáy màn hình chưa
+            
+            if (Math.ceil(newMasterHeight) <= 90) {
+                this.masterHeight = newMasterHeight;
+                const detailSection = this.$refs["detailSection"];
+                detailSection.firstElementChild.children[1].firstElementChild.classList.remove(
+                    "rorate-180"
+                );
+            } else {
+                const masterSection = this.$refs["masterSection"];
+                const detailSection = this.$refs["detailSection"];
+                masterSection.classList.toggle("full-size");
+                detailSection.classList.toggle("minisize");
+                masterSection.classList.toggle("h-60");
+                detailSection.firstElementChild.children[1].firstElementChild.classList.add(
+                    "rorate-180"
+                );
+                return;
+            }
         },
 
          /**
@@ -893,18 +924,18 @@ export default {
         handleShowDetailSection() {
             const masterSection = this.$refs["masterSection"];
             const detailSection = this.$refs["detailSection"];
-            detailSection.firstElementChild.firstElementChild.firstElementChild.firstElementChild.classList.toggle(
+            detailSection.firstElementChild.children[1].firstElementChild.classList.toggle(
                 "rorate-180"
             );
             masterSection.classList.toggle("full-size");
             detailSection.classList.toggle("minisize");
             masterSection.classList.toggle("h-60");
             if (masterSection.classList.contains('h-60')) {
-                this.masterHeight = 60;
+                this.masterHeight = 54 ;
             } else {
                 this.masterHeight = 100;
             }
-            this.isDetail = !this.isDetail;
+           
         },
         /**
          * Hàm ẩn contextmenu khi click ra ngoài element

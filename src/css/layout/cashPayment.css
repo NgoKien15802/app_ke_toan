@@ -48,7 +48,7 @@
 }
 
 .minisize {
-    max-height: 20px !important;
+    /* max-height: 20px !important; */
     min-height: 20px !important;
     margin-bottom: 0;
 }
