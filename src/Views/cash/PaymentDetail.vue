@@ -3006,7 +3006,6 @@ export default {
                             event.preventDefault();
                             // focus vào input đầu tiên
                             this.rowPaymentDetails[index].isEditAble = false;
-                            // this.setFocusInput(this.$refs["txtdescription"][0]);
                         }
                     }
                 }
