@@ -333,7 +333,12 @@
                 </div>
 
                 <div class="detail-section" ref="detailSection">
-                    <div class="divider-section"  @drag="onDragDivider" draggable="true">
+                    
+                    <div class="divider-section"  >
+                        <div  class="slide-line" @drag="onDragDivider" draggable="true" @dragend="onDragend">
+                            <div  class="resize-icon"></div>
+                            <div  class="resize-icon second"></div>
+                        </div>
                         <div
                             class="collapse-btn"
                             @click="handleShowDetailSection"
@@ -762,18 +767,29 @@ export default {
             }
         },
 
-        // onDragDivider(event) {
-        //     const masterSection = this.$refs.masterSection;
-        //     const detailSection = this.$refs.detailSection;
-        //     // Tính toán sự thay đổi của chiều cao
-        //     const heightDiff = event.clientY;
-        //     console.log(heightDiff);
-        //     // Cập nhật chiều cao của detail section
-        //     detailSection.style.height = `calc(100% - ${heightDiff}px)`;
-            
-        //     // Cập nhật chiều cao của master section
-        //     // this.masterHeight = (heightDiff / this.$el.clientHeight) * 100;
-        // },
+         /**
+         * Hàm resize master detail
+         * Author: KienNT (14/06/2023)
+         */
+        onDragDivider(event) {
+            const mouseY = event.clientY;
+            const windowHeight = window.innerHeight;
+
+            // Tính toán chiều cao mới của master section dựa trên vị trí kéo thả của divider section
+            const newMasterHeight = 100 - ((windowHeight - mouseY) / windowHeight) * 100;
+            this.masterHeight = newMasterHeight;
+          
+        },
+
+        onDragend(event) {
+             const mouseY = event.clientY;
+            const windowHeight = window.innerHeight;
+            // Tính toán chiều cao mới của master section dựa trên vị trí kéo thả của divider section
+            const newMasterHeight = 100 - ((windowHeight - mouseY) / windowHeight) * 100;
+            this.masterHeight = newMasterHeight;
+        },
+
+
 
         /**
          * Hàm thực hiện hành động hàng loạt
