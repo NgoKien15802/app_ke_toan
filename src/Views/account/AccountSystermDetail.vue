@@ -120,11 +120,13 @@
 
                                 <MTooltip
                                     v-if="isTooltip.isTooltipAccountName"
-                                    :subtext="
-                                        $t('LabelAccountName') +
+                                    :subtext="isEmpty(account.account_name)
+                                        ?  $t('LabelAccountName') +
                                         $t('ErrorEmpty')
-                                    "
+                                        : isTooltip.isTooltipAccountName
+                                        ? errorMessage[2] : ''"
                                     kind="error"
+                                    left="40%"
                                 ></MTooltip>
                             </div>
                         </div>
@@ -134,7 +136,10 @@
                             <label class="form__label">{{
                                 $t("LabelEnglishName")
                             }}</label>
-                            <div>
+                            <div :class="{
+                                    'tooltip-error':
+                                        isTooltip.isTooltipEnglishName,
+                                }">
                                 <MInput
                                     name="EnglishName"
                                     tabindex="3"
@@ -146,6 +151,13 @@
                                     "
                                     ref="txtEnglishName"
                                 />
+
+                                <MTooltip
+                                    v-if="isTooltip.isTooltipEnglishName"
+                                    :subtext="errorMessage[3]"
+                                    kind="error"
+                                    left="39%"
+                                ></MTooltip>
                             </div>
                         </div>
                     </div>
@@ -216,7 +228,7 @@
                             <MTooltip
                                 v-if="isTooltip.isTooltipProperty"
                                 :subtext="
-                                    $t('LabelProperty') + $t('ErrorEmpty')
+                                    this.errorMessage[5]
                                 "
                                 kind="error"
                                 ref="tootipCombobox"
@@ -1682,6 +1694,8 @@ export default {
                 this.$t("ErrorAccountNumber"),
                 "txtAccountNumber"
             );
+
+
             // check invalid số bắt đầu = tài khoản tổng hợp
             if (!this.isTooltip.isTooltipAccountNumber) {
                 this.checkFieldInvalid(
@@ -1702,6 +1716,30 @@ export default {
                 "txtAccountName"
             );
 
+
+            if (!this.isTooltip.isTooltipAccountName) {
+                     // check invalid maxlength tên
+                this.checkFieldInvalid(
+                    "isTooltipAccountName",
+                    this.account.account_name,
+                    this.$t("LabelAccountName"),
+                    "lengthHundred",
+                    this.$t("ErrorAccountLengthHundred"),
+                    "txtAccountName"
+                );
+
+            }
+
+                     // check invalid maxlength tên
+                this.checkFieldInvalid(
+                    "isTooltipEnglishName",
+                    this.account.account_name_english,
+                    this.$t("LabelEnglishName"),
+                    "lengthHundred",
+                    this.$t("ErrorAccountLengthHundred"),
+                    "txtEnglishName"
+                );
+          
             // check tính chất
             this.checkField(
                 "isTooltipProperty",
@@ -1897,7 +1935,14 @@ export default {
                             }
 
                         case "character":
-                            if (value.length < 3) {
+                            if (value.length < 3 || value.length > 25) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+
+                        case "lengthHundred":
+                            if (value.length > 100) {
                                 return true;
                             } else {
                                 return false;
@@ -2152,6 +2197,31 @@ export default {
             }
         },
 
+         /**
+         * Hàm thực hiện format property
+         * Author: KienNT (26/05/2023)
+         *  @param (property): là số cần truyền convert sang text
+         */
+        formatPropertyRec(property) {
+            try {
+                switch (property) {
+                    case this.$t("Debt"):
+                        return MISAEnum.Property.Debt;
+                    case this.$t("ExcessYes"):
+                        return MISAEnum.Property.ExcessYes;
+                    case this.$t("Hermaphrodite"):
+                        return MISAEnum.Property.Hermaphrodite;
+                    case this.$t("Nobalance"):
+                        return MISAEnum.Property.Nobalance;
+                    default:
+                        console.log("Unknown property value:", property);
+                        return property;
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
         /**
          * handle format lại object kind
          * Author: KienNT (29/05/2023)
@@ -2317,44 +2387,45 @@ export default {
          * Author: KienNT (28/05/2023)
          * @param (valueInput): Giá trị của value được emit từ con
          */
-        // handleCheckEmpty(valueInput, category) {
-        //     try {
-        //         this.account_category_kind = valueInput;
-        //         if (category && category.length > 0) {
-        //             if (
-        //                 category.filter(
-        //                     (el) => el.name === this.account_category_kind
-        //                 ).length <= 0
-        //             ) {
-        //                 this.isTooltip.isTooltipProperty = true;
-        //                 this.account.account_category_kind = "";
-        //             } else {
-        //                 category.forEach((el) => {
-        //                     if (el.name === this.account_category_kind) {
-        //                         this.account.account_category_kind =
-        //                             el.name === this.$t("Debt")
-        //                                 ? MISAEnum.Property.Debt
-        //                                 : el.name === this.$t("ExcessYes")
-        //                                 ? MISAEnum.Property.ExcessYes
-        //                                 : el.name === this.$t("Hermaphrodite")
-        //                                 ? MISAEnum.Property.Hermaphrodite
-        //                                 : el.name === this.$t("Nobalance")
-        //                                 ? MISAEnum.Property.Nobalance
-        //                                 : null;
-        //                     }
-        //                 });
-        //                 this.isTooltip.isTooltipProperty = false;
-        //             }
-        //         }
-        //         if (this.isEmpty(this.account_category_kind)) {
-        //             this.isTooltip.isTooltipProperty = true;
-        //         } else if (this.account.account_category_kind !== null) {
-        //             this.isTooltip.isTooltipProperty = false;
-        //         }
-        //     } catch (error) {
-        //         console.log(error);
-        //     }
-        // },
+        handleCheckEmpty(valueInput) {
+            try {
+                this.account_category_kind = valueInput;
+                if (this.propertyList && this.propertyList.length > 0) {
+                    if (
+                        this.propertyList.filter(
+                            (el) => el.name === this.account_category_kind
+                        ).length <= 0
+                    ) {
+                        this.isTooltip.isTooltipProperty = true;
+                        this.account.account_category_kind = "";
+                    } else {
+                        this.isTooltip.isTooltipProperty = false;
+                        this.errorMessage.splice(5, 1);
+                        this.account.account_category_kind = this.formatPropertyRec(this.account_category_kind) ;
+                    }
+                }
+                let isValueExist = false;
+
+                // Duyệt qua mảng và kiểm tra giá trị
+                for (var i = 0; i < this.propertyList.length; i++) {
+                if (this.propertyList[i].name === this.account_category_kind) {
+                    isValueExist = true;
+                    break;
+                }
+                }
+                if (this.isEmpty(this.account_category_kind)) {
+                    this.isTooltip.isTooltipProperty = true;
+                } else if (this.account_category_kind.includes(this.propertyList)) {
+                    this.isTooltip.isTooltipProperty = false;
+                }
+                if (!isValueExist) {
+                    this.isTooltip.isTooltipProperty = true;
+                    this.errorMessage[5] = this.$t('Property') + this.$t('NotExist');  
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
 
         /**
          * Click checkbox object type
@@ -2655,5 +2726,11 @@ export default {
 .border-focus-white {
     border: 1px solid #fff !important;
     outline: none;
+}
+.tooltiptext-error{
+    left: 126%;
+}
+.tooltiptext-error::after {
+    display: none !important;
 }
 </style>

@@ -4,7 +4,7 @@
         <span class="tooltiptext">{{ subtext }}</span>
     </span>
 
-    <span v-else-if="kind === 'error'" class="tooltiptext-error">{{
+    <span v-else-if="kind === 'error'" :style="`left: ${left};`" class="tooltiptext-error">{{
         subtext
     }}</span>
 
@@ -99,6 +99,8 @@ export default {
         kindOf: {
             type: String,
         },
+
+        
     },
 };
 </script>

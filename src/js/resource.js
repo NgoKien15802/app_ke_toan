@@ -40,7 +40,8 @@ const MISAResouce = {
         ErrorInvalid: " không đúng định dạng",
         ErrorDate: " không được lớn hơn hiện tại!",
         ErrorDatePayment: " không được lớn hơn ",
-        ErrorAccountNumber: " phải có độ dài >= 3 ký tự",
+        ErrorAccountNumber: " phải có độ dài lớn hơn bằng 3 và nhỏ hơn bằng 25 ký tự!",
+        ErrorAccountLengthHundred: " phải nhỏ hơn bằng 100 ký tự!",
         ErrorPaymentNumber: " không đúng định dạng (xx0000)",
         ErrorAccountNumberStartWith: " phải bắt đầu bằng tài khoản tổng hợp",
         ErrorEmail: " không đúng định dạng",
@@ -247,6 +248,7 @@ const MISAResouce = {
         account_name_english: "Tên tiếng anh",
         description: "Diễn giải",
         state: "Trạng thái",
+        NotExist:" không tồn tại trong danh mục",
 
         // popup Account
         LabelAccountNumber: "Số tài khoản",
@@ -372,7 +374,8 @@ const MISAResouce = {
         ErrorNotText: " not the word, please re-enter",
         ErrorEmail: " Incorrect format",
         ErrorPaymentNumber:" invalid (xx0000)",
-        ErrorAccountNumber: " must be >= 3 characters in length!",
+        ErrorAccountNumber: " must be greater than 3 and less than 25 characters!",
+        ErrorAccountLengthHundred:" must be less than 100 characters!",
         ErrorAccountNumberStartWith: " must start with a general account",
 
         // Paging
@@ -567,6 +570,7 @@ const MISAResouce = {
         account_name_english: "English name",
         description: "Interpret",
         state: "Status",
+        NotExist:" Not exists in category",
 
         // popup account
         LabelAccountNumber: "Account number",

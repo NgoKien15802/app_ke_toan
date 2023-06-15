@@ -3012,40 +3012,40 @@ export default {
                
 
 
-                btnSaveEndAdd.$el.addEventListener("focus", function () {
+                btnSaveEndAdd&& btnSaveEndAdd.$el.addEventListener("focus", function () {
                     if (btnSaveEndAdd.$el.tagName === "BUTTON") {
                         btnSaveEndAdd.$el.classList.add("border-focus-white");
                     }
                 });
 
-                AddLine.$el.addEventListener("focus", function () {
+                AddLine && AddLine.$el.addEventListener("focus", function () {
                     if (AddLine.$el.tagName === "BUTTON") {
                         AddLine.$el.classList.add("border-focus-white");
-                        this.rowPaymentDetails.forEach((el) => {
+                        this.rowPaymentDetails && this.rowPaymentDetails.forEach((el) => {
                             el.isEditAble = false; 
                          })
                     }
                 });
 
-                 DeleteAllLine.$el.addEventListener("focus", function () {
+                 DeleteAllLine && DeleteAllLine.$el.addEventListener("focus", function () {
                     if (DeleteAllLine.$el.tagName === "BUTTON") {
                         DeleteAllLine.$el.classList.add("border-focus-white");
                     }
                 });
 
-                btnSave.$el.addEventListener("focus", function () {
+                btnSave && btnSave.$el.addEventListener("focus", function () {
                     if (btnSave.$el.tagName === "BUTTON") {
                         btnSave.$el.classList.add("border-focus");
                     }
                 });
 
-                btnDestroy.$el.addEventListener("focus", function () {
+                btnDestroy && btnDestroy.$el.addEventListener("focus", function () {
                     if (btnDestroy.$el.tagName === "BUTTON") {
                         btnDestroy.$el.classList.add("border-focus");
                     }
                 });
 
-                btnSaveEndAdd.$el.addEventListener("blur", function () {
+                btnSaveEndAdd && btnSaveEndAdd.$el.addEventListener("blur", function () {
                     if (btnSaveEndAdd.$el.tagName === "BUTTON") {
                         btnSaveEndAdd.$el.classList.remove(
                             "border-focus-white"
@@ -3053,7 +3053,7 @@ export default {
                     }
                 });
 
-                AddLine.$el.addEventListener("blur", function () {
+                AddLine && AddLine.$el.addEventListener("blur", function () {
                     if (AddLine.$el.tagName === "BUTTON") {
                         AddLine.$el.classList.remove(
                             "border-focus-white"
@@ -3061,7 +3061,7 @@ export default {
                     }
                 });
 
-                 DeleteAllLine.$el.addEventListener("blur", function () {
+                 DeleteAllLine && DeleteAllLine.$el.addEventListener("blur", function () {
                     if (DeleteAllLine.$el.tagName === "BUTTON") {
                         DeleteAllLine.$el.classList.remove(
                             "border-focus-white"
@@ -3069,13 +3069,13 @@ export default {
                     }
                 });
 
-                btnSave.$el.addEventListener("blur", function () {
+                btnSave && btnSave.$el.addEventListener("blur", function () {
                     if (btnSave.$el.tagName === "BUTTON") {
                         btnSave.$el.classList.remove("border-focus");
                     }
                 });
 
-                btnDestroy.$el.addEventListener("blur", function () {
+                 btnDestroy && btnDestroy.$el.addEventListener("blur", function () {
                     if (btnDestroy.$el.tagName === "BUTTON") {
                         btnDestroy.$el.classList.remove("border-focus");
                     }

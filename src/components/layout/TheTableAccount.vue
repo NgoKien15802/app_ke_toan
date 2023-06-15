@@ -990,4 +990,5 @@ export default {
 </script>
 <style scoped>
 @import url(../../css/components/table.css);
+
 </style>
