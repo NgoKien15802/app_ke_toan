@@ -55,7 +55,7 @@
     right: 0;
     left: 0;
     z-index: 4;
-    top: calc(var(--size-row) - 2px);
+    top: calc(var(--size-row) - 0px);
     background-color: var(--boder-primary);
 }
 

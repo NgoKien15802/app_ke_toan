@@ -65,7 +65,9 @@ const MISAEnum = {
     ModeBtn: {
         SaveAndAdd: 0,
         SaveAndClose: 1
-    }
+    },
+
+    
 };
 
 export default MISAEnum;

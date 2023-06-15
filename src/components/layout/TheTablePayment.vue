@@ -57,7 +57,7 @@
                     </template>
 
                     <template v-else-if="header === 'total_amount'">
-                        <span  style="display: flex">
+                        <span style="display: flex">
                             <span class="text-align-right">{{
                                 $t(header)
                             }}</span>
@@ -101,9 +101,9 @@
                 v-else
                 v-for="(payment, index) in paymentList"
                 :key="index"
-                @dblclick="($event) => handleClickShow($event,payment)"
+                @dblclick="($event) => handleClickShow($event, payment)"
                 :class="payment?.Selected ? 'tr-hover' : ''"
-                @click="handleActiveRow($event,payment)"
+                @click="handleActiveRow($event, payment)"
                 ref="trElementRef"
             >
                 <template v-for="header in headers" :key="header">
@@ -134,7 +134,9 @@
                             kind="link"
                             className="link-btn btn-link"
                             :text="$t('Show')"
-                            :click="($event) => handleClickShow($event,payment)"
+                            :click="
+                                ($event) => handleClickShow($event, payment)
+                            "
                         ></MButton>
                         <div
                             class="input__icon-box ml-8"
@@ -199,8 +201,12 @@
                                 : '',
                             header === 'journal_memo' ? 'min-w320' : '',
                             header === 'supplier_code' ? 'min-w230' : '',
-                            header === 'payment_supplier_name' ? 'min-w160' : '',
-                            header === 'payment_supplier_address' ? 'min-w300' : '',
+                            header === 'payment_supplier_name'
+                                ? 'min-w160'
+                                : '',
+                            header === 'payment_supplier_address'
+                                ? 'min-w300'
+                                : '',
                         ]"
                         :text="payment[header] || ''"
                         :subtext="payment[header] || ''"
@@ -266,7 +272,6 @@
         </tfoot>
     </table>
 
-
     <MNotData v-if="paymentList.length <= 0 && !isShowSkeleton"></MNotData>
     <MContextmenu
         v-if="isContextMenu"
@@ -285,14 +290,16 @@
         v-if="isDialogWarning || isDialogDeleteMul"
         iconClass="dialog__icon-warning"
         :title="$t('DialogWarning')"
-        :message="isDialogWarning
+        :message="
+            isDialogWarning
                 ? $t('MessageWarningPayment') +
                   ' <' +
-                    paymentCodeSelected +
+                  paymentCodeSelected +
                   '> ' +
                   $t('TxtNo') +
                   '?'
-                : $t('MessageWarningMulPayment') + ' ' + $t('TxtNo') + '?'"
+                : $t('MessageWarningMulPayment') + ' ' + $t('TxtNo') + '?'
+        "
         :BtnWarningNo="$t('BtnDestroyDialog')"
         :textButton="$t('BtnYes')"
         @onBtnWarningNo="onBtnWarningNo"
@@ -304,8 +311,7 @@
         kind="warning"
     ></MDialog>
 
-
-     <MconditionFilter
+    <MconditionFilter
         v-if="isConditionFilter"
         :top="topConditionFilter"
         :left="leftConditionFilter"
@@ -342,19 +348,19 @@ export default {
         keyWordSearch: {
             type: String,
         },
-         isReload: {
+        isReload: {
             type: String,
         },
-         selectedCheckbox: {
+        selectedCheckbox: {
             type: Array,
         },
-           isDeleteOne: {
+        isDeleteOne: {
             type: Boolean,
         },
         isDialogDeleteMultiple: {
             type: Boolean,
         },
-         filterConditonArr: {
+        filterConditonArr: {
             type: Array,
         },
     },
@@ -392,15 +398,15 @@ export default {
             oldCheckedArr: [],
             paymentSelected: "",
             isConditionFilter: false,
-             filterConditon: "",
-             topConditionFilter: 0,
+            filterConditon: "",
+            topConditionFilter: 0,
             leftConditionFilter: 0,
             paymentCodeSelected: "",
             conditionFilterArr: [],
         };
     },
     watch: {
-         /**
+        /**
          * Theo dõi sự thay đổi isDialogDeleteMultiple. khi click vào xóa nhiều
          * Author: KienNT (10/06/2023)
          */
@@ -453,14 +459,14 @@ export default {
             this.loadData();
         },
 
-         isDeleteOne: function () {
+        isDeleteOne: function () {
             if (this.isDeleteOne === true) {
                 this.paymentSelected = this.selectedCheckbox[0];
                 this.handleDeleteRow();
             }
         },
 
-          /**
+        /**
          * Theo dõi sự thay đổi isReload: nếu thay đổi là true thì reload lại trang
          * Author: KienNT (08/06/2023)
          */
@@ -476,10 +482,10 @@ export default {
                 let filterObject = newValue.reduce((acc, el) => {
                     return { ...acc, ...el[Object.keys(el)[0]] };
                 }, {});
-                
+
                 for (const [key, value] of Object.entries(filterObject)) {
-                    if (key === 'total_amount') {
-                        filterObject[key] = this.currencyToNumber(value)
+                    if (key === "total_amount") {
+                        filterObject[key] = this.currencyToNumber(value);
                     }
                 }
 
@@ -497,7 +503,6 @@ export default {
             },
             deep: true,
         },
-
     },
     /**
      * Thực hiện lấy dữ liệu khi chuẩn bị mounted vào DOM
@@ -526,14 +531,16 @@ export default {
                     .then((response) => {
                         this.paymentList = response?.data?.Data.Data;
                         this.totalRecord = response?.data?.Data.TotalRecord;
-                        this.totalMoney = Math.round(response?.data?.Data.TotalRecordPrice) || 0;
+                        this.totalMoney =
+                            Math.round(response?.data?.Data.TotalRecordPrice) ||
+                            0;
                         this.$emit("getTotalRecord", this.totalRecord);
                         this.paymentList = this.paymentList.map((x) => {
                             x.Selected = false;
                             return x;
                         });
                         this.$emit("handleClickPayment", this.paymentList[0]);
-                       if (this.oldCheckedArr.length > 0) {
+                        if (this.oldCheckedArr.length > 0) {
                             this.paymentList.forEach((el) => {
                                 for (
                                     let index = 0;
@@ -614,7 +621,7 @@ export default {
          * Author: KienNT (06/03/2023)
          *   @param (event): là event
          */
-        handleCheckbox(event, refid, refno_finance="") {
+        handleCheckbox(event, refid, refno_finance = "") {
             this.paymentCodeSelected = refno_finance;
             const index = this.oldCheckedArr.indexOf(refid);
             if (!event.target.checked) {
@@ -627,7 +634,7 @@ export default {
                     this.oldCheckedArr.push(refid);
                 }
             }
-             this.$emit("handleSelectChechbox", this.oldCheckedArr);
+            this.$emit("handleSelectChechbox", this.oldCheckedArr);
             const filterSelected = this.paymentList.filter((item) =>
                 this.oldCheckedArr.includes(item.refid)
             );
@@ -643,7 +650,7 @@ export default {
          * Author: KienNT (27/03/2023)
 
          */
-        handleActiveRow(event,payment) {
+        handleActiveRow(event, payment) {
             const trElements = this.$refs["trElementRef"];
             for (let index = 0; index < trElements.length; index++) {
                 const element = trElements[index];
@@ -671,7 +678,7 @@ export default {
                 }
             }
             const checkboxs = this.$refs["checkbox"];
-             for (let index = 0; index < checkboxs.length; index++) {
+            for (let index = 0; index < checkboxs.length; index++) {
                 if (
                     !event.target.isEqualNode(checkboxs[index].$el.firstChild)
                 ) {
@@ -680,7 +687,7 @@ export default {
             }
         },
 
-         /**
+        /**
          * Hàm xóa nhân viên khi click có xóa
          * Author: KienNT (07/03/2023)
          */
@@ -768,7 +775,7 @@ export default {
             this.isConditionFilter = false;
         },
 
-           /**
+        /**
          * Xử lý loading gửi emit lên cha
          * Author: KienNT (09/06/2023)
          * @param (isLoading): tham số là giá trị boolean loading có hay không
@@ -798,7 +805,7 @@ export default {
             }
         },
 
-           /**
+        /**
          * Hàm xóa dilog đi nếu ko muốn xóa chứng từ
          * Author: KienNT (09/06/2023)
          */
@@ -822,8 +829,7 @@ export default {
             this.$emit("handleClickFilter", filterConditonArr);
         },
 
-
-         /**
+        /**
          * Hàm ẩn cclick btn xem
          * Author: KienNT (09/06/2023)
          */
@@ -838,21 +844,22 @@ export default {
                     !event.target.isEqualNode(iconContextMenu[index]) &&
                     !event.target.isEqualNode(checkboxs[index].$el.firstChild)
                 ) {
-                        this.$emit("handleClickShow", payment);
+                    // this.$emit("handleClickShow", payment);
+                    this.$router.push(
+                        `/cash/cashDetail/show/BackToTable/${payment.refid}`
+                    );
                 }
             }
         },
 
-
-         /**
+        /**
          * Hàm chuyển tiền sang số
          * Author: KienNT (12/06/2023)
          */
-         currencyToNumber(currency) {
-            
-            var number = currency.replace(/\./g, '');
+        currencyToNumber(currency) {
+            var number = currency.replace(/\./g, "");
             return parseFloat(number);
-            },
+        },
 
         /**
          * Hàm ẩn contextmenu khi click ra ngoài element
@@ -876,19 +883,22 @@ export default {
         handleEdit(paymentSelected) {
             try {
                 if (paymentSelected) {
-                    this.isContextMenu = !this.isContextMenu;
-                    this.$emit(
-                        "showPopupEdit",
-                        MISAEnum.formMode.Edit,
-                        paymentSelected
+                    this.$router.push(
+                        `/cash/cashDetail/edit/BackToTable/${this.paymentSelected}`
                     );
+                    // this.isContextMenu = !this.isContextMenu;
+                    // this.$emit(
+                    //     "showPopupEdit",
+                    //     MISAEnum.formMode.Edit,
+                    //     paymentSelected
+                    // );
                 }
             } catch (error) {
                 console.log(error);
             }
         },
 
-         /**
+        /**
          * Hàm hiển thị dialog có muốn xóa chứng từ không?
          * Author: KienNT (07/03/2023)
          */
@@ -903,19 +913,16 @@ export default {
             }
         },
 
-         /**
+        /**
          * Hàm lấy được id của payment chọn để nhân bản
          * Author: KienNT (09/06/2023)
          */
         handleDuplicatePayment(paymentSelected) {
             try {
                 if (paymentSelected) {
-                    this.isContextMenu = !this.isContextMenu;
                     this.paymentSelected = paymentSelected;
-                    this.$emit(
-                        "showPopupDuplicate",
-                        MISAEnum.formMode.Duplicate,
-                        paymentSelected
+                    this.$router.push(
+                        `/cash/cashDetail/duplicate/BackToTable/${this.paymentSelected}`
                     );
                 }
             } catch (error) {
@@ -973,4 +980,3 @@ export default {
     border-right: 1px dotted #babec5;
 }
 </style>
-

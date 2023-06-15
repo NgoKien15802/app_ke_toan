@@ -4,7 +4,6 @@
             <!-- header main -->
             <div class="content__main-header">
                 <div class="content__main-left">
-                    
                     <div class="check-all-arrow">
                         <div class="mi-24 block-center">
                             <div class="mi-arrow-check-all"></div>
@@ -40,12 +39,17 @@
                             kind="batchExecution"
                             @hideContextMenu="hideContextMenu"
                             :refElement="this.$refs.iconContextMenu"
-                              @handleRemove="handleDeleteAll"
+                            @handleRemove="handleDeleteAll"
                         ></MContextmenu>
                     </button>
                     <div
                         v-if="selectedCheckbox.length >= 1"
-                        style="display: flex; align-items: center; column-gap: 8px; margin-left: 8px;"
+                        style="
+                            display: flex;
+                            align-items: center;
+                            column-gap: 8px;
+                            margin-left: 8px;
+                        "
                     >
                         <p>
                             {{ $t("SelectedCheckbox") }}
@@ -56,7 +60,7 @@
                             className="link-btn btn-link-delete"
                             :click="handleUndoSeleted"
                             :text="$t('UndoSelected')"
-                            style="line-height: 0;"
+                            style="line-height: 0"
                         ></MButton>
                     </div>
                     <div
@@ -87,11 +91,9 @@
                                               }Option`
                                           ]
                                       ).toLocaleLowerCase() +
-                                      ( 
-                                      filterCondition[
+                                      (filterCondition[
                                           Object.keys(filterCondition)[index]
                                       ][Object.keys(filterCondition)[index]] ||
-                                      
                                       filterCondition[
                                           Object.keys(filterCondition)[index]
                                       ][Object.keys(filterCondition)[index]] ===
@@ -139,7 +141,7 @@
                                                           )[index]
                                                       ]
                                             }"`
-                                          : '')
+                                          : "")
                                     : $t(Object.keys(filterCondition)[0]) +
                                       " " +
                                       $t(
@@ -221,7 +223,6 @@
                             {{ $t("DeleteConditionFilter") }}
                         </div>
                     </div>
-
                 </div>
                 <div class="content__main-right">
                     <div class="content__main-filter">
@@ -315,7 +316,7 @@
                             @setIsDialogDeleteMuliple="
                                 () => (isDialogDeleteMultiple = false)
                             "
-                             @handleClickFilter="handleClickFilter"
+                            @handleClickFilter="handleClickFilter"
                             :filterConditonArr="filterConditonArr"
                         ></TheTablePayment>
                     </div>
@@ -333,11 +334,15 @@
                 </div>
 
                 <div class="detail-section" ref="detailSection">
-                    
-                    <div class="divider-section"  >
-                        <div  class="slide-line" @drag="onDragDivider" draggable="true" @dragend="onDragend">
-                            <div  class="resize-icon"></div>
-                            <div  class="resize-icon second"></div>
+                    <div class="divider-section">
+                        <div
+                            class="slide-line"
+                            @drag="onDragDivider"
+                            draggable="true"
+                            @dragend="onDragend"
+                        >
+                            <div class="resize-icon"></div>
+                            <div class="resize-icon second"></div>
                         </div>
                         <div
                             class="collapse-btn"
@@ -372,13 +377,25 @@
                             <MPaging
                                 :totalRecord="totalRecordPaymentDetail"
                                 :pageCurrent="pageNumberPaymentDetail"
-                                :isDisabledClickPrev="isDisabledClickPrevPaymentDetail"
-                                @handleClickOptionItem="handleClickOptionItemPaymentDetail"
+                                :isDisabledClickPrev="
+                                    isDisabledClickPrevPaymentDetail
+                                "
+                                @handleClickOptionItem="
+                                    handleClickOptionItemPaymentDetail
+                                "
                                 @handleClickPrev="handleClickPrevPaymentDetail"
                                 @handleClickNext="handleClickNextPaymentDetail"
-                                @handleClickPageIndex="handleClickPageIndexPaymentDetail"
-                                @setIsDisabledClickPrev="setIsDisabledClickPrevPaymentDetail"
-                                :style="totalRecordPaymentDetail > 0 ? 'margin-top: 26px;' : ''"
+                                @handleClickPageIndex="
+                                    handleClickPageIndexPaymentDetail
+                                "
+                                @setIsDisabledClickPrev="
+                                    setIsDisabledClickPrevPaymentDetail
+                                "
+                                :style="
+                                    totalRecordPaymentDetail > 0
+                                        ? 'margin-top: 26px;'
+                                        : ''
+                                "
                             ></MPaging>
                         </div>
                     </div>
@@ -388,7 +405,7 @@
     </TheCash>
     <!-- loading -->
     <Mloading v-if="isLoading"></Mloading>
-    <TheCashDetail
+    <!-- <TheCashDetail
         v-if="isCashDetail"
         @closeCashDetail="closeCashDetail"
         :formMode="formMode"
@@ -398,27 +415,26 @@
         @hideShowToast="hideShowToast"
         :payment_id_selected="payment_id_selected"
         @setPaymentSelected="setPaymentSelected"
-    ></TheCashDetail>
+    ></TheCashDetail> -->
 
-      <!-- Toast -->
-                <MToast
-                    v-if="
-                        isShowToastAdd ||
-                        isShowToastEdit ||
-                        isShowToastDelete ||
-                        isShowToastDuplicate 
-                    "
-                    classIcon="toast__icon-success"
-                    :kind="$t('ToastTitleSuccess')"
-                    :text="
-                        (isShowToastAdd && $t('ToastAddSuccessPayment')) ||
-                        (isShowToastEdit && $t('ToastEditSuccessPayment')) ||
-                        (isShowToastDelete && $t('ToastDeleteSuccessPayment')) ||
-                        (isShowToastDuplicate && $t('ToastDuplicateSuccessPayment'))
-                    "
-                    classTitle="toast__title-success"
-                ></MToast>
-
+    <!-- Toast -->
+    <MToast
+        v-if="
+            isShowToastAdd ||
+            isShowToastEdit ||
+            isShowToastDelete ||
+            isShowToastDuplicate
+        "
+        classIcon="toast__icon-success"
+        :kind="$t('ToastTitleSuccess')"
+        :text="
+            (isShowToastAdd && $t('ToastAddSuccessPayment')) ||
+            (isShowToastEdit && $t('ToastEditSuccessPayment')) ||
+            (isShowToastDelete && $t('ToastDeleteSuccessPayment')) ||
+            (isShowToastDuplicate && $t('ToastDuplicateSuccessPayment'))
+        "
+        classTitle="toast__title-success"
+    ></MToast>
 </template>
 
 <script>
@@ -427,7 +443,6 @@ import TheTablePayment from "@/components/layout/TheTablePayment.vue";
 import MISAEnum from "@/js/enum";
 import MISAResouce from "@/js/resource";
 import TheTablePaymentDetail from "@/components/layout/TheTablePaymentDetail.vue";
-import TheCashDetail from "./PaymentDetail.vue";
 import axios from "axios";
 export default {
     name: "CashPayment",
@@ -435,7 +450,6 @@ export default {
         TheCash,
         TheTablePayment,
         TheTablePaymentDetail,
-        TheCashDetail,
     },
     data() {
         return {
@@ -448,16 +462,16 @@ export default {
             textTitlePayment: "",
             selectedCheckbox: [],
             totalRecord: 0,
-            totalRecordPaymentDetail:0,
+            totalRecordPaymentDetail: 0,
             paymentSelected: "",
             pageSize: 0,
             pageSizePaymentDetail: 0,
             pageNumber: 1,
-            pageNumberPaymentDetail:1,
+            pageNumberPaymentDetail: 1,
             keyWordSearch: "",
             isReload: false,
             isDisabledClickPrev: true,
-            isDisabledClickPrevPaymentDetail:true,
+            isDisabledClickPrevPaymentDetail: true,
             isDeleteOne: false,
             leftContextMenu: "",
             topContextMenu: "",
@@ -471,7 +485,7 @@ export default {
             selectedpaymentIds: [],
             isDialogDeleteMultiple: false,
             masterHeight: 54,
-            filterConditonArr:[]
+            filterConditonArr: [],
         };
     },
 
@@ -495,16 +509,14 @@ export default {
             this.totalRecord = totalRecord;
         },
 
-
-         /**
+        /**
          * Hàm gán số bản ghi từ con emit lên
          * Author: KienNT (07/06/2023)
          *  @param (totalRecord): tham số 1 là số bản ghi
          */
-        getTotalRecordPaymentDetail(totalRecord){
+        getTotalRecordPaymentDetail(totalRecord) {
             this.totalRecordPaymentDetail = totalRecord;
         },
-
 
         closeCashDetail() {
             this.isCashDetail = false;
@@ -515,9 +527,7 @@ export default {
          */
         showCashDetail() {
             try {
-                this.paymentSelected = "";
-                this.isCashDetail = true;
-                this.formMode = MISAEnum.formMode.Add;
+                this.$router.push("/cash/cashDetail/add/BackToTable");
             } catch (error) {
                 console.log(error);
             }
@@ -537,12 +547,11 @@ export default {
             }
         },
 
-
         /**
          * Hàm click icon previous trang detail
          * Author: KienNT (07/06/2023)
          */
-        handleClickPrevPaymentDetail(){
+        handleClickPrevPaymentDetail() {
             if (this.pageNumberPaymentDetail > 1) {
                 this.pageNumberPaymentDetail -= 1;
                 this.isDisabledClickPrevPaymentDetail = false;
@@ -552,7 +561,7 @@ export default {
             }
         },
 
-         /**
+        /**
          * Hàm thực hiện reload lại trang
          * Author: KienNT (08/06/2023)
          */
@@ -578,7 +587,7 @@ export default {
             this.filterConditonArr = filterConditonArr;
         },
 
-             /**
+        /**
          * Hàm xoá 1 điều kiện lọc
          * Author: KienNT (11/06/2023)
          */
@@ -614,7 +623,7 @@ export default {
             }
         },
 
-         /**
+        /**
          * Hàm ẩn dialog đi khi xóa nhiều bản ghi emit từ con
          * Author: KienNT (09/06/2023)
          */
@@ -635,15 +644,15 @@ export default {
             }
         },
 
-          /**
+        /**
          * Hàm emit từ con để set lại payment_id_selected
          * Author: KienNT (09/06/2023)
          */
         setPaymentSelected() {
-            this.payment_id_selected = null;      
+            this.payment_id_selected = null;
         },
 
-         /**
+        /**
          * Hàm emit từ con để set lại reload lần sau
          * Author: KienNT (08/06/2023)
          */
@@ -651,7 +660,7 @@ export default {
             this.isReload = false;
         },
 
-         /**
+        /**
          * Hàm thực hiện set lại cho formMode
          * Author: KienNT (08/06/2023)
          */
@@ -659,14 +668,13 @@ export default {
             this.formMode = formMode;
         },
 
-          /**
+        /**
          * Hàm set lại isDeleteOne của component con gửi lên
          * Author: KienNT (09/06/2023)
          */
         setIsDeleteOne() {
             this.isDeleteOne = false;
         },
-
 
         /**
          * Hàm thực hiện cho các checkbox bỏ chọn
@@ -676,7 +684,6 @@ export default {
             this.selectedCheckbox = [];
         },
 
-        
         /**
          * Hàm thực hiện chọn payment
          * Author: KienNT (04/06/2023)
@@ -685,7 +692,7 @@ export default {
             this.paymentIdClick = payment.refid;
         },
 
-         /**
+        /**
          * Hàm thực hiện set lại cái payment
          * Author: KienNT (04/06/2023)
          */
@@ -707,8 +714,7 @@ export default {
             this.pageNumber = index;
         },
 
-
-        handleClickPageIndexPaymentDetail(index){
+        handleClickPageIndexPaymentDetail(index) {
             if (index > 1) {
                 this.isDisabledClickPrevPaymentDetail = false;
             }
@@ -726,16 +732,15 @@ export default {
             this.isDisabledClickPrev = true;
         },
 
-         /**
+        /**
          * Hàm thực hiện disabled div prev khi click vào chọn bản ghi trên 1 trang từ con emit lên
          * Author: KienNT (07/06/2023)
          */
-        setIsDisabledClickPrevPaymentDetail(){
+        setIsDisabledClickPrevPaymentDetail() {
             this.isDisabledClickPrevPaymentDetail = true;
         },
 
-
-          /**
+        /**
          * Hàm ẩn cclick btn xem
          * Author: KienNT (09/06/2023)
          */
@@ -745,7 +750,7 @@ export default {
             this.formMode = MISAEnum.formMode.Show;
         },
 
-          /**
+        /**
          * Hàm hiển thị popup và truyền formMode cho Popup, payment được chọn
          * Author: KienNT (09/06/2023)
          */
@@ -765,7 +770,7 @@ export default {
             this.pageNumber = 1;
         },
 
-        handleClickOptionItemPaymentDetail(pageSize){
+        handleClickOptionItemPaymentDetail(pageSize) {
             this.pageSizePaymentDetail = pageSize;
             this.pageNumberPaymentDetail = 1;
         },
@@ -781,7 +786,7 @@ export default {
             }
         },
 
-         /**
+        /**
          * Hàm resize master detail
          * Author: KienNT (14/06/2023)
          */
@@ -790,9 +795,10 @@ export default {
             const windowHeight = window.innerHeight;
 
             // Tính toán chiều cao mới của master section dựa trên vị trí kéo thả của divider section
-            const newMasterHeight = 100 - ((windowHeight - mouseY) / windowHeight) * 100;
-          // Kiểm tra xem đã đạt đến đáy màn hình chưa
-            
+            const newMasterHeight =
+                100 - ((windowHeight - mouseY) / windowHeight) * 100;
+            // Kiểm tra xem đã đạt đến đáy màn hình chưa
+
             if (Math.ceil(newMasterHeight) <= 90) {
                 this.masterHeight = newMasterHeight;
                 const detailSection = this.$refs["detailSection"];
@@ -812,19 +818,18 @@ export default {
             }
         },
 
-         /**
+        /**
          * Hàm kết thúc resize master detail
          * Author: KienNT (14/06/2023)
          */
         onDragend(event) {
-             const mouseY = event.clientY;
+            const mouseY = event.clientY;
             const windowHeight = window.innerHeight;
             // Tính toán chiều cao mới của master section dựa trên vị trí kéo thả của divider section
-            const newMasterHeight = 100 - ((windowHeight - mouseY) / windowHeight) * 100;
+            const newMasterHeight =
+                100 - ((windowHeight - mouseY) / windowHeight) * 100;
             this.masterHeight = newMasterHeight;
         },
-
-
 
         /**
          * Hàm thực hiện hành động hàng loạt
@@ -859,7 +864,6 @@ export default {
             }
         },
 
-        
         /**
          * Hàm thực hiện CALL API Export
          * Author: KienNT (10/06/2023)
@@ -900,14 +904,14 @@ export default {
          * Hàm click icon Next trang
          * Author: KienNT (07/06/2023)
          */
-        handleClickNextPaymentDetail(){
+        handleClickNextPaymentDetail() {
             this.pageNumberPaymentDetail += 1;
             if (this.pageNumberPaymentDetail > 1) {
                 this.isDisabledClickPrevPaymentDetail = false;
             }
         },
 
-         /**
+        /**
          * Hàm hiển thị popup và truyền formMode cho Popup, payment được chọn
          * Author: KienNT (09/06/2023)
          */
@@ -930,12 +934,11 @@ export default {
             masterSection.classList.toggle("full-size");
             detailSection.classList.toggle("minisize");
             masterSection.classList.toggle("h-60");
-            if (masterSection.classList.contains('h-60')) {
-                this.masterHeight = 54 ;
+            if (masterSection.classList.contains("h-60")) {
+                this.masterHeight = 54;
             } else {
                 this.masterHeight = 100;
             }
-           
         },
         /**
          * Hàm ẩn contextmenu khi click ra ngoài element
@@ -950,11 +953,10 @@ export default {
          * Author: KienNT (07/06/2023)
          */
         numberWithCommas(x) {
-            return  x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") ;
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         },
 
-
-          /**
+        /**
          * Hàm hiện thị toast khi thực hiện thêm, sửa, xóa thành công
          * Author: KienNT (09/06/2023)
          * @param (isToast): tham số là true, false ẩn hiển

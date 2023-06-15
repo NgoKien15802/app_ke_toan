@@ -16,13 +16,16 @@
                                 </div>
                             </div>
                             <router-link
-                                to="/cash/cashDetail"
+                                :to="{
+                                    path: '/cash/cashDetail/add/BackToProcess',
+                                }"
                                 class="icon__cash payment"
                             >
                                 <div class="icon__title-cash">
                                     {{ $t("Payment") }}
                                 </div>
                             </router-link>
+
                             <div class="icon__cash audit">
                                 <div class="icon__title-cash">
                                     {{ $t("Stocktaking") }}
@@ -78,7 +81,6 @@ export default {
             ],
         };
     },
-   
 };
 </script>
 

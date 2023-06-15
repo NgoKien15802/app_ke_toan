@@ -4,9 +4,12 @@
         <span class="tooltiptext">{{ subtext }}</span>
     </span>
 
-    <span v-else-if="kind === 'error'" :style="`left: ${left};`" class="tooltiptext-error">{{
-        subtext
-    }}</span>
+    <span
+        v-else-if="kind === 'error'"
+        :style="`left: ${left};`"
+        class="tooltiptext-error"
+        >{{ subtext }}</span
+    >
 
     <td
         v-else-if="kind === 'data'"
@@ -32,7 +35,7 @@
             }"
         >
             <slot></slot>
-            {{ text }}
+            <span class="text-only-line">{{ text }}</span>
         </div>
         <span class="tooltipData account">{{ subtext }}</span>
     </td>
@@ -99,8 +102,6 @@ export default {
         kindOf: {
             type: String,
         },
-
-        
     },
 };
 </script>

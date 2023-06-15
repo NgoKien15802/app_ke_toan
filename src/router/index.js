@@ -2,11 +2,12 @@ import { createRouter, createWebHistory } from "vue-router";
 
 import EmployeeList from "@/Views/employee/EmployeeList.vue";
 import CustomerList from "@/Views/customer/CustomerList.vue";
-import TheCashDetail from "@/Views/cash/PaymentDetail.vue";
+
 import AccountSysterm from "@/Views/account/AccountSysterm";
 import CashPayment from "@/Views/cash/CashPayment";
 import CashProcess from "@/Views/cash/CashProcess";
-import MISAEnum from "@/js/enum";
+import NotFound from "@/Views/notFound/NotFound.vue";
+import PaymentDetail from "@/Views/cash/PaymentDetail.vue";
 
 /**
  * Định nghĩa route
@@ -16,11 +17,16 @@ const routes = [
     { path: "/", component: EmployeeList },
     { path: "/cash/employee", component: EmployeeList },
     { path: "/cash/customer", component: CustomerList },
-    { path: "/cash/cashDetail", component: TheCashDetail, props: { formMode:MISAEnum.formMode.Add, isRouter:true }},
+    {
+        path: "/cash/cashDetail/:formMode/:kind?/:payment_id_selected?",
+        component: PaymentDetail,
+        props: true,
+    },
     { path: "/cash/accountSysterm", component: AccountSysterm },
     { path: "/cash/payment", component: CashPayment },
     { path: "/cash/process", component: CashProcess },
-    { path: "/:pathMatch(.*)*", component: Error },
+    { path: "/404", name: "errorpage", component: NotFound },
+    { path: "/:pathMatch(.*)*", redirect: "/404" },
 ];
 
 /**

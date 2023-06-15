@@ -81,6 +81,7 @@ const MISAResouce = {
         Report: "Báo cáo",
         FinancialAnalysis: "Phân tích tài chính",
         QuickAdd: "Thêm nhanh",
+        BackToHome:"Quay về quy trình",
 
         // tooltip
         TooltipIdentityNumber: "Số chứng minh nhân dân",
@@ -411,6 +412,7 @@ const MISAResouce = {
         Report: "Report",
         FinancialAnalysis: "Financial analysis",
         QuickAdd: "Quick add",
+        BackToHome:"Back to process",
 
         // popup
         EmployeeInfo: "Add new employee",

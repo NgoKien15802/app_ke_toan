@@ -1,29 +1,32 @@
 <template>
-    <div class="toast__list">
-        <div class="toast">
-            <div class="toast__left m-flex">
-                <div class="wrap-icon">
-                    <img
-                        :class="classIcon"
-                        src="../../assets/img/success.png"
-                        alt=""
-                    />
+    <div id="loading-bg">
+        <div class="toast__list">
+            <div class="toast">
+                <div class="toast__left m-flex">
+                    <div class="wrap-icon">
+                        <img
+                            :class="classIcon"
+                            src="../../assets/img/success.png"
+                            alt=""
+                        />
+                    </div>
+                    <p class="toast__text">
+                        <span class="toast__title" :class="classTitle"
+                            >{{ kind }}!</span
+                        >
+                        {{ text }}
+                    </p>
                 </div>
-                <p class="toast__text">
-                    <span class="toast__title" :class="classTitle"
-                        >{{ kind }}!</span
-                    >
-                    {{ text }}
-                </p>
-            </div>
-            <div class="toast__right m-flex">
-                <a class="toast__action" href=""></a>
-                <div class="wrap-icon ml-16">
-                    <div class="icon__close-toast"></div>
+                <div class="toast__right m-flex">
+                    <a class="toast__action" href=""></a>
+                    <div class="wrap-icon ml-16">
+                        <div class="icon__close-toast"></div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    
 </template>
 <script>
 export default {
@@ -55,4 +58,8 @@ export default {
 </script>
 <style scoped>
 @import url(../../css/components/toast.css);
+
+#loading-bg{
+    background: rgba(0, 0, 0, 0.62) !important;
+}
 </style>

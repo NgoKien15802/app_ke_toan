@@ -1,5 +1,5 @@
 <template>
-    <div class="con-ms-popup cash_detail"  @keydown="handlePress">
+    <div class="con-ms-popup cash_detail" @keydown="handlePress">
         <div
             class="ms-popup-content ms-popup"
             style="min-width: 100%; max-width: 100%; width: 100%; height: 100%"
@@ -31,13 +31,18 @@
                                                     <button
                                                         class="input__icon dropdown-icon"
                                                         fdprocessedid="jeq9qa"
-                                                          :class="formModePayment===MISAEnum.formMode.Show ? 'disabledDopdown' : ''"
+                                                        :class="
+                                                            formModePayment ===
+                                                            MISAEnum.formMode
+                                                                .Show
+                                                                ? 'disabledDopdown'
+                                                                : ''
+                                                        "
                                                     >
                                                         <div
                                                             class="input__icon-dropdown"
                                                             ref="iconDropdownOtherExpenses"
                                                         ></div>
-                                                        
                                                     </button>
                                                     <input
                                                         readonly="true"
@@ -46,7 +51,13 @@
                                                         class="input__type dropdown-input paging-input input__lang"
                                                         v-model="otherExpenses"
                                                         fdprocessedid="epqss"
-                                                          :class="formModePayment===MISAEnum.formMode.Show ? 'disabledDopdown' : ''"
+                                                        :class="
+                                                            formModePayment ===
+                                                            MISAEnum.formMode
+                                                                .Show
+                                                                ? 'disabledDopdown'
+                                                                : ''
+                                                        "
                                                     />
 
                                                     <!-- <div
@@ -159,7 +170,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="body-layout body__popup-detail">
+                                <div
+                                    class="body-layout body__popup-detail scrollbar_customize"
+                                >
                                     <div class="w-full bg left-0">
                                         <div class="body-layout-main">
                                             <div class="flex">
@@ -208,7 +221,6 @@
                                                                         @selectedRecord="
                                                                             selectedSupplierPayment
                                                                         "
-
                                                                         :scrollElement="
                                                                             scrollElementSupplier
                                                                         "
@@ -216,7 +228,9 @@
                                                                         :recordData="
                                                                             supplierCodePayment
                                                                         "
-                                                                        @setFocus="setFocus"
+                                                                        @setFocus="
+                                                                            setFocus
+                                                                        "
                                                                         ref="txtSupplierMaster"
                                                                         :headersColumn="[
                                                                             'supplier_code',
@@ -228,7 +242,12 @@
                                                                         @setValueInputComboboxTable="
                                                                             setValueInputComboboxTable
                                                                         "
-                                                                         :isDisabled="formModePayment===MISAEnum.formMode.Show"
+                                                                        :isDisabled="
+                                                                            formModePayment ===
+                                                                            MISAEnum
+                                                                                .formMode
+                                                                                .Show
+                                                                        "
                                                                     ></MComboboxTable>
                                                                 </div>
                                                                 <div
@@ -252,7 +271,12 @@
                                                                         v-model="
                                                                             payment.payment_supplier_name
                                                                         "
-                                                                        :isDisabled="formModePayment===MISAEnum.formMode.Show"
+                                                                        :isDisabled="
+                                                                            formModePayment ===
+                                                                            MISAEnum
+                                                                                .formMode
+                                                                                .Show
+                                                                        "
                                                                     />
                                                                 </div>
                                                             </div>
@@ -279,7 +303,12 @@
                                                                         v-model="
                                                                             payment.payment_receiver
                                                                         "
-                                                                         :isDisabled="formModePayment===MISAEnum.formMode.Show"
+                                                                        :isDisabled="
+                                                                            formModePayment ===
+                                                                            MISAEnum
+                                                                                .formMode
+                                                                                .Show
+                                                                        "
                                                                     />
                                                                 </div>
                                                                 <div
@@ -302,7 +331,12 @@
                                                                         v-model="
                                                                             payment.payment_supplier_address
                                                                         "
-                                                                         :isDisabled="formModePayment===MISAEnum.formMode.Show"
+                                                                        :isDisabled="
+                                                                            formModePayment ===
+                                                                            MISAEnum
+                                                                                .formMode
+                                                                                .Show
+                                                                        "
                                                                     />
                                                                 </div>
                                                             </div>
@@ -328,7 +362,12 @@
                                                                         v-model="
                                                                             payment.journal_memo
                                                                         "
-                                                                         :isDisabled="formModePayment===MISAEnum.formMode.Show"
+                                                                        :isDisabled="
+                                                                            formModePayment ===
+                                                                            MISAEnum
+                                                                                .formMode
+                                                                                .Show
+                                                                        "
                                                                     />
                                                                 </div>
                                                             </div>
@@ -375,7 +414,12 @@
                                                                         @setValueInputComboboxTable="
                                                                             setValueInputComboboxTableEmployee
                                                                         "
-                                                                         :isDisabled="formModePayment===MISAEnum.formMode.Show"
+                                                                        :isDisabled="
+                                                                            formModePayment ===
+                                                                            MISAEnum
+                                                                                .formMode
+                                                                                .Show
+                                                                        "
                                                                     ></MComboboxTable>
                                                                 </div>
                                                                 <div
@@ -408,8 +452,15 @@
                                                                                 'Quantity'
                                                                             )
                                                                         "
-                                                                         :isDisabled="formModePayment===MISAEnum.formMode.Show"
-                                                                        @handleKeyUp="handleKeyUpDocumentIncluded"
+                                                                        :isDisabled="
+                                                                            formModePayment ===
+                                                                            MISAEnum
+                                                                                .formMode
+                                                                                .Show
+                                                                        "
+                                                                        @handleKeyUp="
+                                                                            handleKeyUpDocumentIncluded
+                                                                        "
                                                                     />
                                                                 </div>
                                                                 <div
@@ -455,21 +506,24 @@
                                                                         )
                                                                     }}
                                                                 </label>
-                                                                
-                                                                    <MInput
-                                                                        type="date"
-                                                                        tabindex="8"
-                                                                        name="AccountingDate"
-                                                                        id="AccountingDate"
-                                                                        kind="default"
-                                                                        ref="txtAccountingDate"
-                                                                        v-model="
-                                                                            payment.posted_date
-                                                                        "
-                                                                        
-                                                                        :isDisabled="formModePayment===MISAEnum.formMode.Show"
-                                                                    />
-                                                                    
+
+                                                                <MInput
+                                                                    type="date"
+                                                                    tabindex="8"
+                                                                    name="AccountingDate"
+                                                                    id="AccountingDate"
+                                                                    kind="default"
+                                                                    ref="txtAccountingDate"
+                                                                    v-model="
+                                                                        payment.posted_date
+                                                                    "
+                                                                    :isDisabled="
+                                                                        formModePayment ===
+                                                                        MISAEnum
+                                                                            .formMode
+                                                                            .Show
+                                                                    "
+                                                                />
                                                             </div>
                                                             <div
                                                                 class="left-separate m-row-padding"
@@ -511,7 +565,12 @@
                                                                         :isShowTooltip="
                                                                             isTooltip.isTooltipPaymentDate
                                                                         "
-                                                                        :isDisabled="formModePayment===MISAEnum.formMode.Show"
+                                                                        :isDisabled="
+                                                                            formModePayment ===
+                                                                            MISAEnum
+                                                                                .formMode
+                                                                                .Show
+                                                                        "
                                                                     />
                                                                     <MTooltip
                                                                         v-if="
@@ -523,8 +582,7 @@
                                                                             ) +
                                                                             $t(
                                                                                 'ErrorDatePayment'
-                                                                            )
-                                                                            +
+                                                                            ) +
                                                                             $t(
                                                                                 'Labelposted_date'
                                                                             ).toLocaleLowerCase()
@@ -543,46 +601,67 @@
                                                                         $t(
                                                                             "LabelPaymentNumber"
                                                                         )
-                                                                        
-                                                                    }} <span class="required">*</span></label
+                                                                    }}
+                                                                    <span
+                                                                        class="required"
+                                                                        >*</span
+                                                                    ></label
                                                                 >
-                                                                    <div :class="{
+                                                                <div
+                                                                    :class="{
                                                                         'tooltip-error':
                                                                             isTooltip.isTooltipPaymentNumber,
-                                                                    }">
+                                                                    }"
+                                                                >
                                                                     <MInput
                                                                         tabindex="10"
                                                                         id="PaymentNumber"
                                                                         kind="default"
                                                                         ref="txtPaymentNumber"
-                                                                        @setFocus="setFocus"
+                                                                        @setFocus="
+                                                                            setFocus
+                                                                        "
                                                                         v-model="
                                                                             payment.refno_finance
                                                                         "
-                                                                        :isDisabled="formModePayment===MISAEnum.formMode.Show"
+                                                                        :isDisabled="
+                                                                            formModePayment ===
+                                                                            MISAEnum
+                                                                                .formMode
+                                                                                .Show
+                                                                        "
                                                                         :isShowTooltip="
                                                                             isTooltip.isTooltipPaymentNumber
                                                                         "
-                                                                        :required="true"
+                                                                        :required="
+                                                                            true
+                                                                        "
                                                                         @blur="
-                                                                            isEmpty(payment.refno_finance)
+                                                                            isEmpty(
+                                                                                payment.refno_finance
+                                                                            )
                                                                                 ? (isTooltip.isTooltipPaymentNumber = true)
                                                                                 : (isTooltip.isTooltipPaymentNumber = false)
                                                                         "
                                                                     />
                                                                     <MTooltip
-                                                                        v-if="isTooltip.isTooltipPaymentNumber"
-                                                                      
+                                                                        v-if="
+                                                                            isTooltip.isTooltipPaymentNumber
+                                                                        "
                                                                         :subtext="
-                                                                                isEmpty(
-                                                                                     payment.refno_finance
-                                                                                )
-                                                                                    ?  $t('LabelPaymentNumber') +
-                                                                                    $t('ErrorEmpty') 
-                                                                                    : errorExistId
-                                                                                    ? errorExistId
-                                                                                    : message
-                                                                            "
+                                                                            isEmpty(
+                                                                                payment.refno_finance
+                                                                            )
+                                                                                ? $t(
+                                                                                      'LabelPaymentNumber'
+                                                                                  ) +
+                                                                                  $t(
+                                                                                      'ErrorEmpty'
+                                                                                  )
+                                                                                : errorExistId
+                                                                                ? errorExistId
+                                                                                : message
+                                                                        "
                                                                         kind="error"
                                                                     ></MTooltip>
                                                                 </div>
@@ -603,7 +682,13 @@
                                                     <h1
                                                         class="summary-info-number"
                                                     >
-                                                        {{ isNaN(totalMoney ) ?  0 : numberWithCommas(totalMoney) }}
+                                                        {{
+                                                            isNaN(totalMoney)
+                                                                ? 0
+                                                                : numberWithCommas(
+                                                                      totalMoney
+                                                                  )
+                                                        }}
                                                     </h1>
                                                 </div>
                                             </div>
@@ -625,7 +710,9 @@
                                                     >
                                                 </div>
                                             </div>
-                                            <div class="wrap__table scrollbar_customize">
+                                            <div
+                                                class="wrap__table scrollbar_customize"
+                                            >
                                                 <table
                                                     id="tbEmployeeList"
                                                     class="paymentList popup__payment-detail"
@@ -756,7 +843,6 @@
                                                     <tbody>
                                                         <tr
                                                             class="popup__payment-detail-row"
-                                                            
                                                             v-for="(
                                                                 rowPaymentDetail,
                                                                 index
@@ -768,23 +854,31 @@
                                                                     index
                                                                 )
                                                             "
-                                                            :class="
-                                                                [rowPaymentDetail.isEditAble
+                                                            :class="[
+                                                                rowPaymentDetail.isEditAble
                                                                     ? 'tr-hover_editable'
                                                                     : '',
-                                                                formModePayment===MISAEnum.formMode.Show ? 'disabledDopdown' : '']
-                                                            "
-                                                            
+                                                                formModePayment ===
+                                                                MISAEnum
+                                                                    .formMode
+                                                                    .Show
+                                                                    ? 'disabledDopdown'
+                                                                    : '',
+                                                            ]"
                                                         >
                                                             <td
                                                                 class="text-align-center min-w40 hover-row"
-                                                                :class="
-                                                                    [rowPaymentDetail.isEditAble
+                                                                :class="[
+                                                                    rowPaymentDetail.isEditAble
                                                                         ? 'tr-hover_editable'
                                                                         : '',
-                                                                    formModePayment===MISAEnum.formMode.Show ? 'disabledDopdown' : ''
-                                                                    ]
-                                                                "
+                                                                    formModePayment ===
+                                                                    MISAEnum
+                                                                        .formMode
+                                                                        .Show
+                                                                        ? 'disabledDopdown'
+                                                                        : '',
+                                                                ]"
                                                             >
                                                                 <span
                                                                     class="block-center"
@@ -802,12 +896,23 @@
                                                                     v-if="
                                                                         rowPaymentDetail.isEditAble
                                                                     "
-                                                                    :tabindex="11 + (5*index)"
+                                                                    :tabindex="
+                                                                        11 +
+                                                                        5 *
+                                                                            index
+                                                                    "
                                                                     id="description"
                                                                     kind="default"
                                                                     ref="txtdescription"
-                                                                    @setFocus="()=> setFocusDescription(index)"
-                                                                    :isFocus="true"
+                                                                    @setFocus="
+                                                                        () =>
+                                                                            setFocusDescription(
+                                                                                index
+                                                                            )
+                                                                    "
+                                                                    :isFocus="
+                                                                        true
+                                                                    "
                                                                     v-model="
                                                                         rowPaymentDetail.description
                                                                     "
@@ -823,7 +928,11 @@
                                                                     v-if="
                                                                         rowPaymentDetail.isEditAble
                                                                     "
-                                                                    :tabindex="12 + (5*index)"
+                                                                    :tabindex="
+                                                                        12 +
+                                                                        5 *
+                                                                            index
+                                                                    "
                                                                     :data="
                                                                         dataAccountParent
                                                                     "
@@ -860,7 +969,7 @@
                                                                     :recordData="
                                                                         rowPaymentDetail.debit_account_name
                                                                     "
-                                                                     kindAccount="accountPaymentDetail"
+                                                                    kindAccount="accountPaymentDetail"
                                                                     :headersColumn="[
                                                                         'account_number',
                                                                         'account_name',
@@ -870,7 +979,9 @@
                                                                         'account_name',
                                                                     ]"
                                                                     @setValueInputComboboxTable="
-                                                                        setValueInputComboboxTableDebitAccount(index)
+                                                                        setValueInputComboboxTableDebitAccount(
+                                                                            index
+                                                                        )
                                                                     "
                                                                     kindOf="debitAccount"
                                                                 ></MComboboxTable>
@@ -899,7 +1010,11 @@
                                                                         margin: 0
                                                                             auto;
                                                                     "
-                                                                    :tabindex="13 + (5*index)"
+                                                                    :tabindex="
+                                                                        13 +
+                                                                        5 *
+                                                                            index
+                                                                    "
                                                                     @selectedRecord="
                                                                         (
                                                                             account_id,
@@ -929,7 +1044,9 @@
                                                                         'account_name',
                                                                     ]"
                                                                     @setValueInputComboboxTable="
-                                                                        setValueInputComboboxTableCreditAccount(index)
+                                                                        setValueInputComboboxTableCreditAccount(
+                                                                            index
+                                                                        )
                                                                     "
                                                                     kindOf="debitAccount"
                                                                 ></MComboboxTable>
@@ -944,7 +1061,11 @@
                                                                     v-if="
                                                                         rowPaymentDetail.isEditAble
                                                                     "
-                                                                    :tabindex="14 + (5*index)"
+                                                                    :tabindex="
+                                                                        14 +
+                                                                        5 *
+                                                                            index
+                                                                    "
                                                                     id="amount"
                                                                     kind="default"
                                                                     ref="txtamount"
@@ -954,11 +1075,23 @@
                                                                     v-model="
                                                                         rowPaymentDetail.amount
                                                                     "
-                                                                     @filterNonNumeric="
-                                                                            filterNonNumericAmount(index)
-                                                                        "
-                                                                    @handleKeyUp="()=> handleKeyUpAmount(index)"
-                                                                    @blur="() => handleBlurAmount(index)"
+                                                                    @filterNonNumeric="
+                                                                        filterNonNumericAmount(
+                                                                            index
+                                                                        )
+                                                                    "
+                                                                    @handleKeyUp="
+                                                                        () =>
+                                                                            handleKeyUpAmount(
+                                                                                index
+                                                                            )
+                                                                    "
+                                                                    @blur="
+                                                                        () =>
+                                                                            handleBlurAmount(
+                                                                                index
+                                                                            )
+                                                                    "
                                                                 />
                                                                 <span v-else>{{
                                                                     rowPaymentDetail.amount
@@ -980,9 +1113,19 @@
                                                                     :optionWrapperCombobox="
                                                                         optionWrapperComboboxSupplierCodeDetail
                                                                     "
-                                                                    :tabindex="15 + (5*index)"
+                                                                    :tabindex="
+                                                                        15 +
+                                                                        5 *
+                                                                            index
+                                                                    "
                                                                     @selectedRecord="
-                                                                        (supplier)=> selectedRecordDetail(supplier,index)
+                                                                        (
+                                                                            supplier
+                                                                        ) =>
+                                                                            selectedRecordDetail(
+                                                                                supplier,
+                                                                                index
+                                                                            )
                                                                     "
                                                                     kind="supplierCode"
                                                                     ref="txtSupplierCodeDetail"
@@ -998,7 +1141,9 @@
                                                                     ]"
                                                                     kindAccount="accountPaymentDetail"
                                                                     @setValueInputComboboxTable="
-                                                                        setValueInputComboboxTableDetail(index)
+                                                                        setValueInputComboboxTableDetail(
+                                                                            index
+                                                                        )
                                                                     "
                                                                     styleTranX="transform: translateX(-293px)"
                                                                 ></MComboboxTable>
@@ -1019,22 +1164,32 @@
                                                             </td>
                                                             <td
                                                                 class="min-w40 hover-row"
-                                                                :class="
-                                                                    [rowPaymentDetail.isEditAble
+                                                                :class="[
+                                                                    rowPaymentDetail.isEditAble
                                                                         ? 'tr-hover_editable'
                                                                         : '',
-                                                                    formModePayment===MISAEnum.formMode.Show ? 'disabledDopdown' : '']
-                                                                "
+                                                                    formModePayment ===
+                                                                    MISAEnum
+                                                                        .formMode
+                                                                        .Show
+                                                                        ? 'disabledDopdown'
+                                                                        : '',
+                                                                ]"
                                                             >
                                                                 <div
                                                                     style="
                                                                         cursor: pointer;
                                                                         margin: 0
                                                                             auto;
-                                                                            
                                                                     "
-                                                                     :class=" formModePayment===MISAEnum.formMode.Show  ? 'disabledDopdown' : ''"
-                                                                   
+                                                                    :class="
+                                                                        formModePayment ===
+                                                                        MISAEnum
+                                                                            .formMode
+                                                                            .Show
+                                                                            ? 'disabledDopdown'
+                                                                            : ''
+                                                                    "
                                                                     class="trash"
                                                                     @click="
                                                                         handleClickTrash(
@@ -1046,7 +1201,7 @@
                                                             </td>
                                                         </tr>
                                                     </tbody>
-                                                    <tfoot >
+                                                    <tfoot>
                                                         <tr
                                                             class="table__payment-field"
                                                         >
@@ -1085,7 +1240,13 @@
                                                                     ><span
                                                                         class="text-align-right"
                                                                         >{{
-                                                                            isNaN(totalMoney ) ?  0 : numberWithCommas(totalMoney) 
+                                                                            isNaN(
+                                                                                totalMoney
+                                                                            )
+                                                                                ? 0
+                                                                                : numberWithCommas(
+                                                                                      totalMoney
+                                                                                  )
                                                                         }}</span
                                                                     ></span
                                                                 >
@@ -1120,20 +1281,38 @@
                                     >
                                         <MButton
                                             class="btn btn-default close__add-employee tooltip"
-                                            :tabindex="16 + (5 * rowPaymentDetails.length - 1)"
+                                            :tabindex="
+                                                16 +
+                                                (5 * rowPaymentDetails.length -
+                                                    1)
+                                            "
                                             :text="$t('AddLine')"
                                             :click="() => AddLineAndClose()"
                                             ref="AddLine"
-                                            :class=" formModePayment===MISAEnum.formMode.Show ? 'disabledDopdown' : ''"
+                                            :class="
+                                                formModePayment ===
+                                                MISAEnum.formMode.Show
+                                                    ? 'disabledDopdown'
+                                                    : ''
+                                            "
                                         >
                                         </MButton
                                         ><MButton
                                             class="btn btn-default close__add-employee tooltip"
-                                            :tabindex="17+ (5 * rowPaymentDetails.length - 1)"
+                                            :tabindex="
+                                                17 +
+                                                (5 * rowPaymentDetails.length -
+                                                    1)
+                                            "
                                             :text="$t('DeleteAllLine')"
                                             :click="DeleteAllLineAndClose"
                                             ref="DeleteAllLine"
-                                            :class=" formModePayment===MISAEnum.formMode.Show ? 'disabledDopdown' : ''"
+                                            :class="
+                                                formModePayment ===
+                                                MISAEnum.formMode.Show
+                                                    ? 'disabledDopdown'
+                                                    : ''
+                                            "
                                         >
                                         </MButton>
                                     </div>
@@ -1147,16 +1326,29 @@
                                                 <div>
                                                     <MButton
                                                         class="btn btn-default close__add-employee tooltip"
-                                                        :tabindex="20 + (5 * rowPaymentDetails.length - 1)"
-                                                        :text="formModePayment===MISAEnum.formMode.Show ?$t('Fix') : $t('BtnSave')"
-                                                        :click="
-                                                            () =>
-                                                                btnSaveAndClose('')
+                                                        :tabindex="
+                                                            20 +
+                                                            (5 *
+                                                                rowPaymentDetails.length -
+                                                                1)
                                                         "
+                                                        :text="
+                                                            formModePayment ===
+                                                            MISAEnum.formMode
+                                                                .Show
+                                                                ? $t('Fix')
+                                                                : $t('BtnSave')
+                                                        "
+                                                        :click="clickBtnSave"
                                                         ref="btnSave"
                                                     >
                                                         <MTooltip
-                                                            v-if="formModePayment!==MISAEnum.formMode.Show"
+                                                            v-if="
+                                                                formModePayment !==
+                                                                MISAEnum
+                                                                    .formMode
+                                                                    .Show
+                                                            "
                                                             kind="AccountSysterm"
                                                             :subtext="
                                                                 $t(
@@ -1167,23 +1359,64 @@
                                                     </MButton>
                                                 </div>
                                                 <div>
-                                                    
-                                                <button
-                                                    class="btn combox-btn tooltip"
-                                                    style="border-radius: 3px;"
-                                                    v-if="formModePayment!==MISAEnum.formMode.Show"
-                                                >
-                                                
-                                                    <button class="combox-btn-text combox-btn-left"  :tabindex="18+ (5 * rowPaymentDetails.length - 1)"  ref="btnSaveEndAdd'"   @click="btnSaveAndClose(textBtn === this.$t('BtnSaveEndAdd') ? MISAEnum.ModeBtn.SaveAndAdd : MISAEnum.ModeBtn.SaveAndClose)">{{ textBtn }}</button>
-                                                    <span class="combox-btn-mark"></span>
+                                                    <button
+                                                        class="btn combox-btn tooltip"
+                                                        style="
+                                                            border-radius: 3px;
+                                                        "
+                                                        v-if="
+                                                            formModePayment !==
+                                                            MISAEnum.formMode
+                                                                .Show
+                                                        "
+                                                    >
+                                                        <button
+                                                            class="combox-btn-text combox-btn-left"
+                                                            :tabindex="
+                                                                18 +
+                                                                (5 *
+                                                                    rowPaymentDetails.length -
+                                                                    1)
+                                                            "
+                                                            ref="btnSaveEndAdd'"
+                                                            @click="
+                                                                handleClickSaveAndAdd
+                                                            "
+                                                        >
+                                                            {{ textBtn }}
+                                                        </button>
+                                                        <span
+                                                            class="combox-btn-mark"
+                                                        ></span>
 
-                                                    <button class="wrap-icon-combox wrap-icon-right" ref="iconContextMenu"  :tabindex="19+ (5 * rowPaymentDetails.length - 1)"  @click="clickBtnRight($event)"><div class="icon__combox-btn"></div></button>
-                                                    <MTooltip
-                                                        kind="AccountSysterm"
-                                                        :subtext="$t('TooltipSaveAndAdd')"
-                                                    ></MTooltip>
-                                                </button>
-
+                                                        <button
+                                                            class="wrap-icon-combox wrap-icon-right"
+                                                            ref="iconContextMenu"
+                                                            :tabindex="
+                                                                19 +
+                                                                (5 *
+                                                                    rowPaymentDetails.length -
+                                                                    1)
+                                                            "
+                                                            @click="
+                                                                clickBtnRight(
+                                                                    $event
+                                                                )
+                                                            "
+                                                        >
+                                                            <div
+                                                                class="icon__combox-btn"
+                                                            ></div>
+                                                        </button>
+                                                        <MTooltip
+                                                            kind="AccountSysterm"
+                                                            :subtext="
+                                                                $t(
+                                                                    'TooltipSaveAndAdd'
+                                                                )
+                                                            "
+                                                        ></MTooltip>
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -1192,9 +1425,16 @@
                                         >
                                             <MButton
                                                 class="btn btn-default close__add-employee"
-                                                :tabindex="21+ (5 * rowPaymentDetails.length - 1)"
+                                                :tabindex="
+                                                    21 +
+                                                    (5 *
+                                                        rowPaymentDetails.length -
+                                                        1)
+                                                "
                                                 :text="$t('BtnDestroy')"
-                                                :click="() =>destroyPopup(true)"
+                                                :click="
+                                                    () => destroyPopup(true)
+                                                "
                                                 ref="btnDestroy"
                                             >
                                             </MButton>
@@ -1217,7 +1457,7 @@
         :textButton="$t('BtnYes')"
         :btnDestroyNotify="$t('BtnDestroy')"
         @onClickBtnDestroy="onClickBtnDestroy"
-        @destroyPopup="()=>destroyPopup(true)"
+        @destroyPopup="() => destroyPopup(true)"
         @onClickBtnYes="onClickBtnYes"
         kind="notify"
     ></MDialog>
@@ -1226,28 +1466,43 @@
         v-if="isDialogWarning || isDialogWarningDuplicate"
         iconClass="dialog__icon-warning"
         :title="$t('DialogWarning')"
-        :message="isDialogWarning ? $t('MessageWarningDeleteLine') : (isDialogWarningDuplicate ? errorExistId   + $t('MessageWarningDuplicate') : '') "
+        :message="
+            isDialogWarning
+                ? $t('MessageWarningDeleteLine')
+                : isDialogWarningDuplicate
+                ? errorExistId + $t('MessageWarningDuplicate')
+                : ''
+        "
         :BtnWarningNo="$t('BtnDestroyDialog')"
         :textButton="$t('BtnYes')"
         @onBtnWarningNo="onBtnWarningNo"
-        @onBtnWarningYes="()=>onBtnWarningYes(isDialogWarning ? 'isDialogWarning' : (isDialogWarningDuplicate ? 'isDialogWarningDuplicate':''))"
+        @onBtnWarningYes="
+            () =>
+                onBtnWarningYes(
+                    isDialogWarning
+                        ? 'isDialogWarning'
+                        : isDialogWarningDuplicate
+                        ? 'isDialogWarningDuplicate'
+                        : ''
+                )
+        "
         kind="warning"
     ></MDialog>
 
     <MDialog
-            v-if="isDialogError"
-            iconClass="dialog__icon-error"
-            :title="$t('DialogNotifyError')"
-            :message="message"
-            :textButton="$t('BtnClose')"
-            @hideShowDialogError="hideShowDialogError"
-            kind="error"
-        ></MDialog>
+        v-if="isDialogError"
+        iconClass="dialog__icon-error"
+        :title="$t('DialogNotifyError')"
+        :message="message"
+        :textButton="$t('BtnClose')"
+        @hideShowDialogError="hideShowDialogError"
+        kind="error"
+    ></MDialog>
 
-      <!-- loading -->
+    <!-- loading -->
     <Mloading v-if="isLoading"></Mloading>
 
-      <MContextmenu
+    <MContextmenu
         v-if="isContextMenu"
         :left="leftContextMenu"
         :top="topContextMenu"
@@ -1258,13 +1513,20 @@
         @handleBtnSaveEndClose="handleBtnSaveEndClose"
     ></MContextmenu>
 
-      <MToast
-        v-if="isShowToastAdd || isShowToastEdit"
+    <MToast
+        v-if="
+            isShowToastAdd ||
+            isShowToastEdit ||
+            isShowToastDelete ||
+            isShowToastDuplicate
+        "
         classIcon="toast__icon-success"
         :kind="$t('ToastTitleSuccess')"
         :text="
-           (isShowToastAdd && $t('ToastAddSuccessPayment')) ||
-                        (isShowToastEdit && $t('ToastEditSuccessPayment'))
+            (isShowToastAdd && $t('ToastAddSuccessPayment')) ||
+            (isShowToastEdit && $t('ToastEditSuccessPayment')) ||
+            (isShowToastDelete && $t('ToastDeleteSuccessPayment')) ||
+            (isShowToastDuplicate && $t('ToastDuplicateSuccessPayment'))
         "
         classTitle="toast__title-success"
     ></MToast>
@@ -1272,11 +1534,15 @@
 
 <script>
 import moment from "moment";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import MISAEnum from "@/js/enum";
 import axios from "axios";
+import MToast from "@/components/base/Mtoast.vue";
 export default {
-    name: "CashDetail",
+    name: "PaymentDetail",
+    components: {
+        MToast,
+    },
 
     props: {
         formMode: {
@@ -1285,9 +1551,9 @@ export default {
         payment_id_selected: {
             type: String,
         },
-        isRouter: {
-           type:Boolean 
-        }
+        kind: {
+            type: String,
+        },
     },
 
     data() {
@@ -1303,15 +1569,15 @@ export default {
                 employee_id: "",
                 refno_finance: "",
                 document_included: "",
-                supplier_id: null, 
-                total_amount:0
+                supplier_id: null,
+                total_amount: 0,
             },
             otherExpenses: this.$t("OtherExpenses"),
             isOpenOtherExpenses: false,
             supplierCodePayment: "",
-            supplier_name_detail_fake : "",
+            supplier_name_detail_fake: "",
             supplier_id_detail_fake: "",
-            isShowToastEdit:false,
+            isShowToastEdit: false,
             employeeId: "",
             optionItem: [
                 {
@@ -1319,13 +1585,13 @@ export default {
                     isActive: true,
                 },
             ],
-            invalidPaymentNumber:"",
+            invalidPaymentNumber: "",
             totalMoney: 0,
-           
+
             isTooltip: {
                 isTooltipAccountingDate: false,
                 isTooltipPaymentDate: false,
-                isTooltipPaymentNumber:false
+                isTooltipPaymentNumber: false,
             },
             rowPaymentDetails: [
                 {
@@ -1337,29 +1603,31 @@ export default {
                     debit_account_name: "",
                     credit_account_name: "",
                     supplierCodeDetail: "",
-                    supplier_id:null,
-                    supplier_name_detail:""
+                    supplier_id: null,
+                    supplier_name_detail: "",
                 },
             ],
-            isDialogWarningDuplicate:false,
+            isDialogWarningDuplicate: false,
             cloneRowPaymentDetails: [],
             clonePaymentDetail: [],
-            clonePayment: {}, 
+            clonePayment: {},
             cloneDetail: [],
-            changePaymentDetail:[], 
-            errorMessage:[],
-            message:"",
+            changePaymentDetail: [],
+            errorMessage: [],
+            message: "",
             deleteOne: false,
             isShowToastAdd: false,
-            errorExistId:"", 
+            isShowToastDelete: false,
+            isShowToastDuplicate: false,
+            errorExistId: "",
             isContextMenu: false,
             isDialogNotify: false,
             isDialogWarning: false,
             oldPayment: [],
-            oldRowPaymentDetails:[],
+            oldRowPaymentDetails: [],
             formModePayment: "",
-            isDialogError:false,
-            textBtn: this.$t('BtnSaveEndClose'),
+            isDialogError: false,
+            textBtn: this.$t("BtnSaveEndClose"),
             isLoading: false,
             iconComboboxSupplierCode: null,
             iconComboboxEmployeeId: null,
@@ -1371,7 +1639,7 @@ export default {
             scrollElementSupplier: null,
             leftContextMenu: 0,
             topContextMenu: 0,
-            modeBtn:MISAEnum.ModeBtn.SaveAndClose,
+            modeBtn: MISAEnum.ModeBtn.SaveAndClose,
             iconComboboxDebitAccount: null,
             btnIconComboboxDebitAccount: null,
             optionWrapperComboboxDebitAccount: null,
@@ -1424,7 +1692,6 @@ export default {
             ...this.cloneRowPaymentDetails,
             isEditAble: true,
         };
-
     },
     beforeUnmount() {
         window.removeEventListener("keydown", this.handlePressKeyShort);
@@ -1434,48 +1701,54 @@ export default {
     watch: {
         "payment.journal_memo": function (newValue, oldValue) {
             this.rowPaymentDetails = this.rowPaymentDetails.map((el) => {
-
                 if (el.description === oldValue) {
                     el.description = newValue;
                 }
-
                 return el;
             });
         },
 
         supplierCodePayment: function (newValue, oldValue) {
             this.rowPaymentDetails = this.rowPaymentDetails.map((el) => {
-
                 if (el.supplierCodeDetail === oldValue) {
                     el.supplierCodeDetail = newValue;
                 }
                 return el;
             });
-
         },
 
         "payment.supplier_id": function (newValue, oldValue) {
             this.rowPaymentDetails = this.rowPaymentDetails.map((el) => {
-
                 if (el.supplier_id === oldValue) {
                     el.supplier_id = newValue;
                 }
                 return el;
             });
         },
-        
-       
-         rowPaymentDetails: {
+
+        rowPaymentDetails: {
             handler: function (newValue) {
                 try {
-                    newValue.forEach((el,index)=>{
-                        if(el.supplierCodeDetail === this.supplierCodePayment && this.isEmpty(this.rowPaymentDetails[index].supplier_name_detail)){
-                            this.rowPaymentDetails[index].supplier_name_detail = this.supplier_name_detail_fake;
-                            this.rowPaymentDetails[index].supplier_id = this.supplier_id_detail_fake;
+                    newValue.forEach((el, index) => {
+                        if (
+                            el.supplierCodeDetail ===
+                                this.supplierCodePayment &&
+                            this.isEmpty(
+                                this.rowPaymentDetails[index]
+                                    .supplier_name_detail
+                            )
+                        ) {
+                            this.rowPaymentDetails[index].supplier_name_detail =
+                                this.supplier_name_detail_fake;
+                            this.rowPaymentDetails[index].supplier_id =
+                                this.supplier_id_detail_fake;
                         }
-                    })
+                    });
                     this.totalMoney = newValue.reduce((acc, el) => {
-                        return acc + Math.round(this.currencyToNumber(el?.amount || 0.0));
+                        return (
+                            acc +
+                            Math.round(this.currencyToNumber(el?.amount || 0.0))
+                        );
                     }, 0);
                 } catch (error) {
                     console.log(error);
@@ -1484,11 +1757,7 @@ export default {
             deep: true,
         },
 
-
-
-
         "payment.payment_supplier_name": function (newValue, oldValue) {
-
             if (
                 this.payment.journal_memo ===
                 this.$t("PaymentFor") + " " + oldValue
@@ -1498,7 +1767,6 @@ export default {
             }
         },
         "payment.posted_date": function (newValue, oldValue) {
-
             if (this.formMode === MISAEnum.formMode.Add) {
                 if (this.payment.ref_date === oldValue) {
                     this.payment.ref_date = newValue;
@@ -1507,7 +1775,7 @@ export default {
             }
         },
 
-         /**
+        /**
          * Theo dõi mảng errorMessage thay đổi thì check nếu có lỗi thì gán cho message
          * Author: KienNT (10/06/2023)
          */
@@ -1530,13 +1798,18 @@ export default {
             deep: true,
         },
 
-       
+        formMode: function (newValue) {
+            this.formModePayment = this.formatForm(newValue);
+        },
     },
 
     created() {
-        this.formModePayment = this.formMode;
+        this.formModePayment = this.formatForm(this.formMode);
         this.modeBtn = localStorage.getItem("modeBtn") || this.modeBtn;
-         this.textBtn =  this.modeBtn === MISAEnum.ModeBtn.SaveAndAdd.toString() ? this.$t('BtnSaveEndAdd') : this.$t('BtnSaveEndClose');
+        this.textBtn =
+            this.modeBtn === MISAEnum.ModeBtn.SaveAndAdd.toString()
+                ? this.$t("BtnSaveEndAdd")
+                : this.$t("BtnSaveEndClose");
         /**
          * Call API lấy ra id bất kỳ khi click btn thêm mới
          * Author: KienNT (06/06/2023)
@@ -1555,42 +1828,47 @@ export default {
         ) {
             this.getMasterDetailById(MISAEnum.formMode.Duplicate);
         } else if (this.formModePayment === MISAEnum.formMode.Edit) {
-                /**
+            /**
                  * Call API lấy ra id để sửa
                  Author: KienNT (08/06/2023)
                  */
-           
+
             this.getMasterDetailById();
         } else if (this.formModePayment === MISAEnum.formMode.Show) {
-             /**
+            /**
                  * Call API lấy ra id để xem
                  Author: KienNT (08/06/2023)
                  */
-             this.getMasterDetailById();
+            this.getMasterDetailById();
         }
     },
 
     methods: {
-
-         /**
+        /**
          * Hàm lấy ra payment master detail theo id
          * Author: KienNT (09/06/2023)
          */
         getMasterDetailById(formMode = "") {
             try {
-                    axios.get('https://localhost:7153/api/v1/Payments/masterdetail', {
-                    headers: {
-                        'refid': this.payment_id_selected
-                    }
-                    })
-                    .then(this.$emit("hideShowLoading", true))
+                axios
+                    .get(
+                        "https://localhost:7153/api/v1/Payments/masterdetail",
+                        {
+                            headers: {
+                                refid: this.payment_id_selected,
+                            },
+                        }
+                    )
+                    .then((this.isLoading = true))
                     .then((res) => {
                         const master = res.data.Data.Master;
                         const details = res.data.Data.Details;
                         if (formMode === MISAEnum.formMode.Duplicate) {
                             this.getNewPaymentCode();
-                        } else if(this.formModePayment===MISAEnum.formMode.Edit) {
-                           this.setFocusInput("txtSupplierMaster"); 
+                        } else if (
+                            this.formModePayment === MISAEnum.formMode.Edit
+                        ) {
+                            this.setFocusInput("txtSupplierMaster");
                         }
                         this.payment = master;
                         this.employeeId = master?.fullname;
@@ -1601,10 +1879,12 @@ export default {
                         this.payment.ref_date = this.formatDate(
                             master?.ref_date
                         );
-                        this.payment.total_amount = this.numberWithCommas(master?.total_amount)
+                        this.payment.total_amount = this.numberWithCommas(
+                            master?.total_amount
+                        );
                         details.forEach((el, index) => {
                             this.rowPaymentDetails[index] = {
-                                ref_detail_id:el?.ref_detail_id,
+                                ref_detail_id: el?.ref_detail_id,
                                 ...this.rowPaymentDetails[index],
                                 description: el?.description,
                                 credit_account_name: el?.credit_account,
@@ -1613,22 +1893,34 @@ export default {
                                 debit_account_id: el?.debit_account_id,
                                 amount: this.numberWithCommas(el?.amount),
                                 supplier_id: el?.supplier_id,
-                                supplierCodeDetail: el?.payment_detail_supplier_code,
-                                supplier_name_detail: el?.payment_detail_supplier_name
+                                supplierCodeDetail:
+                                    el?.payment_detail_supplier_code,
+                                supplier_name_detail:
+                                    el?.payment_detail_supplier_name,
                             };
                         });
-                    
-                        this.changePaymentDetail = JSON.stringify(this.rowPaymentDetails);
-                        this.changePaymentDetail = JSON.parse(this.changePaymentDetail);
-                        this.changePaymentDetail = this.changePaymentDetail.map((el) => {
-                            return {
-                                ref_detail_id: el?.ref_detail_id,
-                                mode:"edit"
-                            };
-                        });
-                        this.oldPayment = JSON.stringify(this.deleteAttrObject(this.payment));
-                        this.oldRowPaymentDetails = JSON.stringify(this.deleteEmptyAttributes(this.rowPaymentDetails));
-                        this.$emit("hideShowLoading", false);
+
+                        this.changePaymentDetail = JSON.stringify(
+                            this.rowPaymentDetails
+                        );
+                        this.changePaymentDetail = JSON.parse(
+                            this.changePaymentDetail
+                        );
+                        this.changePaymentDetail = this.changePaymentDetail.map(
+                            (el) => {
+                                return {
+                                    ref_detail_id: el?.ref_detail_id,
+                                    mode: "edit",
+                                };
+                            }
+                        );
+                        this.oldPayment = JSON.stringify(
+                            this.deleteAttrObject(this.payment)
+                        );
+                        this.oldRowPaymentDetails = JSON.stringify(
+                            this.deleteEmptyAttributes(this.rowPaymentDetails)
+                        );
+                        this.isLoading = false;
                     })
                     .catch((res) => {
                         console.log(res);
@@ -1641,11 +1933,11 @@ export default {
          * Hàm lấy employee code mới
          * Author: KienNT (01/03/2023)
          */
-        getNewPaymentCode(isSave=false) {
+        getNewPaymentCode(isSave = false) {
             try {
                 axios
                     .get("https://localhost:7153/api/v1/Payments/NewRecordCode")
-                    .then(this.isRouter?this.isLoading=true :this.$emit("hideShowLoading", true) )
+                    .then((this.isLoading = true))
                     .then((response) => {
                         this.payment.refno_finance = response.data?.Data;
                         // this.newEmployee.Gender = MISAEnum.Gender.Male;
@@ -1657,17 +1949,17 @@ export default {
                          * Gọi hàm set focus bên input
                          * Author: KienNT (06/06/2023)
                          */
-                       
-                        this.oldPayment = JSON.stringify(this.deleteAttrObject(this.payment));
 
-                        this.oldRowPaymentDetails = JSON.stringify(this.deleteEmptyAttributes(this.rowPaymentDetails));
-                        if (this.isRouter) {
-                            this.isLoading = false;                            
-                        } else {
-                             this.$emit("hideShowLoading", false);
-                        }
-                         if (isSave) {
-                           this.btnSaveAndClose('');  
+                        this.oldPayment = JSON.stringify(
+                            this.deleteAttrObject(this.payment)
+                        );
+
+                        this.oldRowPaymentDetails = JSON.stringify(
+                            this.deleteEmptyAttributes(this.rowPaymentDetails)
+                        );
+                        this.isLoading = false;
+                        if (isSave) {
+                            this.btnSaveAndClose("");
                         } else {
                             this.setFocusInput("txtSupplierMaster");
                         }
@@ -1680,33 +1972,30 @@ export default {
             }
         },
 
-         /**
+        /**
          * Hàm click btn right
          * Author: KienNT (08/06/2023)
          */
-        
+
         clickBtnRight(event) {
             this.isContextMenu = !this.isContextMenu;
-            this.leftContextMenu =
-                event.target.getBoundingClientRect().x - 70 ;
-            this.topContextMenu =
-                event.target.getBoundingClientRect().y - 60;
+            this.leftContextMenu = event.target.getBoundingClientRect().x - 70;
+            this.topContextMenu = event.target.getBoundingClientRect().y - 60;
         },
 
-         /**
+        /**
          * Hàm click contextmenu cất và thêm
          * Author: KienNT (08/06/2023)
          */
-        handleBtnSaveEndAdd() {                                                                                                                                             
+        handleBtnSaveEndAdd() {
             this.isContextMenu = !this.isContextMenu;
-            this.textBtn = this.$t('BtnSaveEndAdd')
+            this.textBtn = this.$t("BtnSaveEndAdd");
             this.modeBtn = MISAEnum.ModeBtn.SaveAndAdd;
             localStorage.setItem("modeBtn", MISAEnum.ModeBtn.SaveAndAdd);
             this.btnSaveAndClose(MISAEnum.ModeBtn.SaveAndAdd);
         },
 
-
-         /**
+        /**
          * Hàm set focus input
          * Author: KienNT (14/06/2023)
          */
@@ -1714,237 +2003,342 @@ export default {
             this.$refs["txtdescription"][index].setFocus();
         },
 
-
-          /**
+        /**
          * Hàm click contextmenu cất và đóng
          * Author: KienNT (08/06/2023)
          */
         handleBtnSaveEndClose() {
             this.isContextMenu = !this.isContextMenu;
-            this.textBtn = this.$t('BtnSaveEndClose')                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+            this.textBtn = this.$t("BtnSaveEndClose");
             this.modeBtn = MISAEnum.ModeBtn.SaveAndClose;
             localStorage.setItem("modeBtn", MISAEnum.ModeBtn.SaveAndClose);
             this.btnSaveAndClose(MISAEnum.ModeBtn.SaveAndClose);
         },
 
-
-          /**
+        /**
          * Hàm validate thành công thì cất data và đóng form, cất và thêm thì cất và data reset form
          * Author: KienNT (08/06/2023)
-         *  @param (value): tham số 1: là true, false hiển thị popup
          */
         btnSaveAndClose(modeBtn = "") {
-             try {
-                 let checkState = false;
-                 if (this.formModePayment===MISAEnum.formMode.Show) {
-                     this.formModePayment = MISAEnum.formMode.Edit;
-                     checkState = false;
-                 } else if (this.formModePayment === MISAEnum.formMode.Edit||this.formModePayment === MISAEnum.formMode.Add||this.formModePayment === MISAEnum.formMode.Duplicate) {
-                     checkState = true;
-                 }
-                 if (checkState) {
-                     if (this.handleValidate() && this.rowPaymentDetails.length > 0) {
-                         if (this.formModePayment === MISAEnum.formMode.Add) {
-                             // this.postData(MISAEnum.formMode.Add, isCloseForm);
-     
-                             this.payment.total_amount = this.totalMoney;
-                             this.payment.employee_id = this.payment.employee_id || null;
-                             this.payment.refid = uuidv4();
-                             this.rowPaymentDetails.forEach((el) => {
-                                 el.ref_detail_id = uuidv4();
-                             })
-                             this.clonePaymentDetail = JSON.stringify(this.rowPaymentDetails);
-                             this.clonePaymentDetail = JSON.parse(this.clonePaymentDetail);
-                             this.clonePaymentDetail = this.clonePaymentDetail.map((el) => {
-                                 return {
-                                     ref_detail_id: el.ref_detail_id,
-                                     debit_account_id: el.debit_account_id || null,
-                                     credit_account_id: el.credit_account_id || null,
-                                     amount: this.currencyToNumber(el.amount || '0.0'),
-                                     description: el.description,
-                                     supplier_id: el.supplier_id || null,
-                                 };
-                             });
-                             this.postData(MISAEnum.formMode.Add, modeBtn);
-                         }
-                         // đóng form
-     
-                         else if (this.formModePayment === MISAEnum.formMode.Edit  && checkState) {
-                             this.payment.total_amount = this.totalMoney;
-                             this.payment.employee_id = this.payment.employee_id || null;
-                             this.clonePayment = JSON.stringify(this.payment);
-                             this.clonePayment = JSON.parse(this.clonePayment);
-                             const {
-                                 refid,
-                                 journal_memo,
-                                 posted_date,
-                                 ref_date,
-                                 payment_supplier_name,
-                                 payment_receiver,
-                                 payment_supplier_address,
-                                 employee_id,
-                                 refno_finance,
-                                 document_included,
-                                 supplier_id,
-                                 total_amount,
-                                 ...cast
-                             } = this.clonePayment;
-                             this.clonePayment = {
-                                 refid,
-                                 journal_memo,
-                                 posted_date,
-                                 ref_date,
-                                 payment_supplier_name,
-                                 payment_receiver,
-                                 payment_supplier_address,
-                                 employee_id,
-                                 refno_finance,
-                                 document_included,
-                                 supplier_id,
-                                 total_amount
-                             }
-                             console.log(cast);
-                             this.rowPaymentDetails.forEach((el) => {
+            try {
+                let checkState = false;
+                if (this.formModePayment === MISAEnum.formMode.Show) {
+                    this.formModePayment = MISAEnum.formMode.Edit;
+                    checkState = false;
+                } else if (
+                    this.formModePayment === MISAEnum.formMode.Edit ||
+                    this.formModePayment === MISAEnum.formMode.Add ||
+                    this.formModePayment === MISAEnum.formMode.Duplicate
+                ) {
+                    checkState = true;
+                }
+                if (checkState) {
+                    if (
+                        this.handleValidate() &&
+                        this.rowPaymentDetails.length > 0
+                    ) {
+                        if (this.formModePayment === MISAEnum.formMode.Add) {
+                            // this.postData(MISAEnum.formMode.Add, isCloseForm);
+
+                            this.payment.total_amount = this.totalMoney;
+                            this.payment.employee_id =
+                                this.payment.employee_id || null;
+                            this.payment.refid = uuidv4();
+                            this.rowPaymentDetails.forEach((el) => {
+                                el.ref_detail_id = uuidv4();
+                            });
+                            this.clonePaymentDetail = JSON.stringify(
+                                this.rowPaymentDetails
+                            );
+                            this.clonePaymentDetail = JSON.parse(
+                                this.clonePaymentDetail
+                            );
+                            this.clonePaymentDetail =
+                                this.clonePaymentDetail.map((el) => {
+                                    return {
+                                        ref_detail_id: el.ref_detail_id,
+                                        debit_account_id:
+                                            el.debit_account_id || null,
+                                        credit_account_id:
+                                            el.credit_account_id || null,
+                                        amount: this.currencyToNumber(
+                                            el.amount || "0.0"
+                                        ),
+                                        description: el.description,
+                                        supplier_id: el.supplier_id || null,
+                                    };
+                                });
+                            this.postData(MISAEnum.formMode.Add, modeBtn);
+                        }
+                        // đóng form
+                        else if (
+                            this.formModePayment === MISAEnum.formMode.Edit &&
+                            checkState
+                        ) {
+                            this.payment.total_amount = this.totalMoney;
+                            this.payment.employee_id =
+                                this.payment.employee_id || null;
+                            this.clonePayment = JSON.stringify(this.payment);
+                            this.clonePayment = JSON.parse(this.clonePayment);
+                            const {
+                                refid,
+                                journal_memo,
+                                posted_date,
+                                ref_date,
+                                payment_supplier_name,
+                                payment_receiver,
+                                payment_supplier_address,
+                                employee_id,
+                                refno_finance,
+                                document_included,
+                                supplier_id,
+                                total_amount,
+                                ...cast
+                            } = this.clonePayment;
+                            this.clonePayment = {
+                                refid,
+                                journal_memo,
+                                posted_date,
+                                ref_date,
+                                payment_supplier_name,
+                                payment_receiver,
+                                payment_supplier_address,
+                                employee_id,
+                                refno_finance,
+                                document_included,
+                                supplier_id,
+                                total_amount,
+                            };
+                            console.log(cast);
+                            this.rowPaymentDetails.forEach((el) => {
                                 if (this.isEmpty(el.ref_detail_id)) {
                                     el.ref_detail_id = uuidv4();
                                     this.changePaymentDetail.push({
                                         ref_detail_id: el.ref_detail_id,
-                                        mode: "add"
-                                    })
-                                }  
-                             })
+                                        mode: "add",
+                                    });
+                                }
+                            });
 
-                             this.clonePaymentDetail = JSON.stringify(this.rowPaymentDetails);
-                             this.clonePaymentDetail = JSON.parse(this.clonePaymentDetail);
-                             this.clonePaymentDetail = this.clonePaymentDetail.map((el) => {
-                                 return {
-                                     ref_detail_id: el?.ref_detail_id,
-                                     debit_account_id: el.debit_account_id || null,
-                                     credit_account_id: el.credit_account_id || null,
-                                     amount: this.currencyToNumber(el.amount || '0.0'),
-                                     description: el.description,
-                                     supplier_id: el.supplier_id || null,
-                                 };
-                             });
-                             this.changePaymentDetail.forEach((el) => {
-                                for (let index = 0; index < this.clonePaymentDetail.length; index++) {
-                                    const element = this.clonePaymentDetail[index];
-                                    if (el.ref_detail_id === element.ref_detail_id) {
+                            this.clonePaymentDetail = JSON.stringify(
+                                this.rowPaymentDetails
+                            );
+                            this.clonePaymentDetail = JSON.parse(
+                                this.clonePaymentDetail
+                            );
+                            this.clonePaymentDetail =
+                                this.clonePaymentDetail.map((el) => {
+                                    return {
+                                        ref_detail_id: el?.ref_detail_id,
+                                        debit_account_id:
+                                            el.debit_account_id || null,
+                                        credit_account_id:
+                                            el.credit_account_id || null,
+                                        amount: this.currencyToNumber(
+                                            el.amount || "0.0"
+                                        ),
+                                        description: el.description,
+                                        supplier_id: el.supplier_id || null,
+                                    };
+                                });
+                            this.changePaymentDetail.forEach((el) => {
+                                for (
+                                    let index = 0;
+                                    index < this.clonePaymentDetail.length;
+                                    index++
+                                ) {
+                                    const element =
+                                        this.clonePaymentDetail[index];
+                                    if (
+                                        el.ref_detail_id ===
+                                        element.ref_detail_id
+                                    ) {
                                         element.mode = el.mode;
                                         break;
-                                    } 
-                                }
-                             })
-                            
-                             this.changePaymentDetail.forEach((element) => {
-                                const found = this.clonePaymentDetail.some((item) => item.ref_detail_id === element.ref_detail_id);
-                                if (!found) {
-                                         this.clonePaymentDetail.push({
-                                            ref_detail_id: element.ref_detail_id,
-                                            mode:"delete"
-                                        })      
                                     }
+                                }
+                            });
+
+                            this.changePaymentDetail.forEach((element) => {
+                                const found = this.clonePaymentDetail.some(
+                                    (item) =>
+                                        item.ref_detail_id ===
+                                        element.ref_detail_id
+                                );
+                                if (!found) {
+                                    this.clonePaymentDetail.push({
+                                        ref_detail_id: element.ref_detail_id,
+                                        mode: "delete",
+                                    });
+                                }
+                            });
+
+                            // Sửa chứng từ theo id
+                            const requestData = {
+                                Master: this.clonePayment,
+                                Details: this.clonePaymentDetail,
+                            };
+
+                            axios
+                                .put(
+                                    `https://localhost:7153/api/v1/Payments/updateMasterDetail`,
+                                    requestData
+                                )
+
+                                .then((this.isLoading = true))
+                                .then((res) => {
+                                    console.log(res);
+                                    if (this.isEmpty(modeBtn)) {
+                                        // chuyển form về mode show
+                                        this.isShowToastEdit = true;
+                                        setTimeout(() => {
+                                            this.isShowToastEdit = false;
+                                            if (this.kind === "BackToProcess") {
+                                                this.$router.push(
+                                                    `/cash/cashDetail/show/BackToProcess/${this.payment_id_selected}`
+                                                );
+                                            } else if (
+                                                this.kind === "BackToTable"
+                                            ) {
+                                                this.$router.push(
+                                                    `/cash/cashDetail/show/BackToTable/${this.payment_id_selected}`
+                                                );
+                                            }
+                                            this.rowPaymentDetails.forEach(
+                                                (el) => {
+                                                    el.isEditAble = false;
+                                                }
+                                            );
+                                            this.oldPayment = JSON.stringify(
+                                                this.deleteAttrObject(
+                                                    this.payment
+                                                )
+                                            );
+                                            this.oldRowPaymentDetails =
+                                                JSON.stringify(
+                                                    this.deleteEmptyAttributes(
+                                                        this.rowPaymentDetails
+                                                    )
+                                                );
+                                            this.isLoading = false;
+                                        }, 3000);
+                                    } else if (
+                                        modeBtn ===
+                                        MISAEnum.ModeBtn.SaveAndClose
+                                    ) {
+                                        // reset và đóng form
+                                        // reset và đóng form
+                                        this.isShowToastEdit = true;
+                                        setTimeout(() => {
+                                            this.isShowToastEdit = false;
+                                            this.destroyPopup(true);
+                                            this.oldPayment = JSON.stringify(
+                                                this.deleteAttrObject(
+                                                    this.payment
+                                                )
+                                            );
+                                            this.oldRowPaymentDetails =
+                                                JSON.stringify(
+                                                    this.deleteEmptyAttributes(
+                                                        this.rowPaymentDetails
+                                                    )
+                                                );
+                                            this.isLoading = false;
+                                        }, 3000);
+                                    } else if (
+                                        modeBtn === MISAEnum.ModeBtn.SaveAndAdd
+                                    ) {
+                                        // reset nhưng ko đóng form
+                                        // reset và đóng form
+                                        this.isShowToastEdit = true;
+                                        setTimeout(() => {
+                                            this.isShowToastEdit = false;
+                                            this.destroyPopup(false);
+                                            if (this.kind === "BackToProcess") {
+                                                this.$router.push(
+                                                    "/cash/cashDetail/add/BackToProcess"
+                                                );
+                                            } else if (
+                                                this.kind === "BackToTable"
+                                            ) {
+                                                this.$router.push(
+                                                    "/cash/cashDetail/add/BackToTable"
+                                                );
+                                            }
+                                            // lấy 1 id mới
+                                            this.getNewPaymentCode();
+                                            this.errorMessage = [];
+                                            this.oldPayment = JSON.stringify(
+                                                this.deleteAttrObject(
+                                                    this.payment
+                                                )
+                                            );
+                                            this.oldRowPaymentDetails =
+                                                JSON.stringify(
+                                                    this.deleteEmptyAttributes(
+                                                        this.rowPaymentDetails
+                                                    )
+                                                );
+                                            this.isLoading = false;
+                                        }, 3000);
+                                    }
+
+                                    // this.$emit("handleReLoadData");
+                                })
+                                .catch((error) => {
+                                    let response = error.response;
+                                    let errorData = response?.data?.Data?.Data;
+                                    console.log(errorData);
+                                    this.isLoading = false;
+                                    this.handleCaseCatch(response, errorData);
                                 });
-
-
-                             
-                             // Sửa chứng từ theo id
-                             const requestData = {
-                                 Master: this.clonePayment,
-                                 Details: this.clonePaymentDetail,
-                             };
-                             axios
-                                 .put(
-                                     `https://localhost:7153/api/v1/Payments/updateMasterDetail`,
-                                     requestData
-                                 )
-     
-                                 .then(this.isRouter?this.isLoading=true :this.$emit("hideShowLoading", true) )
-                                 .then((res) => {
-                                     console.log(res);
-                                     if (this.isRouter) {
-                                            this.isShowToastEdit = true;
-                                            setTimeout(() => (this.isShowToastEdit = false), 3000);
-                                     } else {
-                                         this.$emit("hideShowToast", "edit");
-                                     }
-                                  if (this.isEmpty(modeBtn)) {
-                                     // chuyển form về mode show
-                                     this.formModePayment = MISAEnum.formMode.Show;
-                                     this.rowPaymentDetails.forEach((el) => {
-                                         el.isEditAble = false; 
-                                     })
-                                     this.$emit("setFormMode", MISAEnum.formMode.Show);
-                                 } else  if (modeBtn === MISAEnum.ModeBtn.SaveAndClose) {
-                                     // reset và đóng form
-                                     this.destroyPopup(true);
-                                 } else if (modeBtn === MISAEnum.ModeBtn.SaveAndAdd) {
-                                     // reset nhưng ko đóng form
-                                     this.destroyPopup(false);
-                                     this.formModePayment = MISAEnum.formMode.Add;
-                                     // lấy 1 id mới
-                                     this.getNewPaymentCode();
-                                     this.errorMessage = [];
-                                 } 
-                                 this.oldPayment = JSON.stringify(this.deleteAttrObject(this.payment));
-                                     this.oldRowPaymentDetails = JSON.stringify(this.deleteEmptyAttributes(this.rowPaymentDetails));    
-                                      if (this.isRouter) {
-                                         this.isLoading = false;
-                                     } else {
-                                         this.$emit("hideShowLoading", false);
-                                     }
-                                       this.$emit("handleReLoadData");
-                                 })
-                                 .catch((error) => {
-                                     let response = error.response;
-                                     let errorData = response?.data?.Data?.Data;
-                                     console.log(errorData);
-     
-                                     if (this.isRouter) {
-                                         this.isLoading = false;
-                                     } else {
-                                         this.$emit("hideShowLoading", false);
-                                     }
-                                       this.handleCaseCatch(response, errorData);
-                                 });
-                          }else if (
-                             !this.isEmpty(this.payment_id_selected) &&
-                             this.formModePayment === MISAEnum.formMode.Duplicate
-                         ) {
-                             this.payment.total_amount = this.totalMoney;
-                             
-                             this.payment.employee_id = this.payment.employee_id || null;
-                             this.payment.refid = uuidv4();
-                             this.rowPaymentDetails.forEach((el) => {
-                                 el.ref_detail_id = uuidv4();
-                             })
-                             this.clonePaymentDetail = JSON.stringify(this.rowPaymentDetails);
-                             this.clonePaymentDetail = JSON.parse(this.clonePaymentDetail);
-                             this.clonePaymentDetail = this.clonePaymentDetail.map((el) => {
-                                 return {
-                                     ref_detail_id: el.ref_detail_id,
-                                     debit_account_id: el.debit_account_id || null,
-                                     credit_account_id: el.credit_account_id || null,
-                                     amount: this.currencyToNumber(el.amount || '0.0'),
-                                     description: el.description,
-                                     supplier_id: el.supplier_id || null,
-                                 };
-                             });
-                             this.postData(MISAEnum.formMode.Duplicate, modeBtn);
-                         } 
-                     } else {
-                         if (this.rowPaymentDetails.length <= 0) {
-                             this.message = this.$t('MesssgaeErrorLenthDetail');    
-                         } 
-                         this.hideShowDialogError(true);
-                     }
-                } 
+                        } else if (
+                            !this.isEmpty(this.payment_id_selected) &&
+                            this.formModePayment === MISAEnum.formMode.Duplicate
+                        ) {
+                            this.payment.total_amount = this.totalMoney;
+                            this.payment.employee_id =
+                                this.payment.employee_id || null;
+                            this.payment.refid = uuidv4();
+                            this.rowPaymentDetails.forEach((el) => {
+                                el.ref_detail_id = uuidv4();
+                            });
+                            this.clonePaymentDetail = JSON.stringify(
+                                this.rowPaymentDetails
+                            );
+                            this.clonePaymentDetail = JSON.parse(
+                                this.clonePaymentDetail
+                            );
+                            this.clonePaymentDetail =
+                                this.clonePaymentDetail.map((el) => {
+                                    return {
+                                        ref_detail_id: el.ref_detail_id,
+                                        debit_account_id:
+                                            el.debit_account_id || null,
+                                        credit_account_id:
+                                            el.credit_account_id || null,
+                                        amount: this.currencyToNumber(
+                                            el.amount || "0.0"
+                                        ),
+                                        description: el.description,
+                                        supplier_id: el.supplier_id || null,
+                                    };
+                                });
+                            this.postData(MISAEnum.formMode.Duplicate, modeBtn);
+                        }
+                    } else {
+                        if (this.rowPaymentDetails.length <= 0) {
+                            this.message = this.$t("MesssgaeErrorLenthDetail");
+                        }
+                        this.hideShowDialogError(true);
+                    }
+                }
             } catch (error) {
                 console.log(error);
             }
         },
 
-         /**
+        /**
          * Hàm ẩn hiện dialog và focus vào ô input lỗi đầu tiên
          * Author: KienNT (11/06/2023)
          * @param (isDialogError): tham số là true, false để hiển thị dialog
@@ -1960,10 +2354,9 @@ export default {
 
         handleBlurAmount(index) {
             if (this.isEmpty(this.rowPaymentDetails[index].amount)) {
-                this.rowPaymentDetails[index].amount = 0;  
-            } 
+                this.rowPaymentDetails[index].amount = 0;
+            }
         },
-
 
         /**
          *  focus vào ô input lỗi đầu tiên
@@ -1989,65 +2382,62 @@ export default {
             }
         },
 
-        
         /**
-         * validate 
+         * validate
          * Author: KienNT (10/06/2023)
          *
          */
         handleValidate() {
-             // check mã
-                this.checkField(
-                    "isTooltipPaymentNumber",
-                    this.payment.refno_finance,
-                    this.$t("LabelPaymentNumber"),
-                    "txtPaymentNumber"
-                );
+            // check mã
+            this.checkField(
+                "isTooltipPaymentNumber",
+                this.payment.refno_finance,
+                this.$t("LabelPaymentNumber"),
+                "txtPaymentNumber"
+            );
 
-                
-                 // check invalid số chứng từ
-                this.checkFieldInvalid(
-                    "isTooltipPaymentNumber",
-                    this.payment.refno_finance,
-                    this.$t("LabelPaymentNumber"),
-                    "invalid",
-                    this.$t("ErrorPaymentNumber"),
-                    "txtPaymentNumber"
-                );
+            // check invalid số chứng từ
+            this.checkFieldInvalid(
+                "isTooltipPaymentNumber",
+                this.payment.refno_finance,
+                this.$t("LabelPaymentNumber"),
+                "invalid",
+                this.$t("ErrorPaymentNumber"),
+                "txtPaymentNumber"
+            );
 
-                // check invalid
-                // nếu có value thì mới check input date
-                this.checkFieldInvalid(
-                    "isTooltipPaymentDate",
-                    this.payment.ref_date,
-                    this.$t("LabelPaymentDate"),
-                    "date",
-                    this.$t("ErrorDatePayment") + this.$t('Labelposted_date').toLocaleLowerCase(),
-                    "txtPaymentDate",
-                    this.payment.posted_date
-                );
-             // nếu ko có lỗi thì ẩn popup
-                let check = true;
+            // check invalid
+            // nếu có value thì mới check input date
+            this.checkFieldInvalid(
+                "isTooltipPaymentDate",
+                this.payment.ref_date,
+                this.$t("LabelPaymentDate"),
+                "date",
+                this.$t("ErrorDatePayment") +
+                    this.$t("Labelposted_date").toLocaleLowerCase(),
+                "txtPaymentDate",
+                this.payment.posted_date
+            );
+            // nếu ko có lỗi thì ẩn popup
+            let check = true;
 
-                const refNames = Object.values(this.errorMessage);
-                for (let index = 0; index < refNames.length; index++) {
-                    const element = refNames[index];
-                    if (
-                        element !== "space" &&
-                        element !== this.invalidPaymentNumber 
-                    ) {
-                        check = false;
-                    }
+            const refNames = Object.values(this.errorMessage);
+            for (let index = 0; index < refNames.length; index++) {
+                const element = refNames[index];
+                if (
+                    element !== "space" &&
+                    element !== this.invalidPaymentNumber
+                ) {
+                    check = false;
                 }
+            }
 
-                if (check === false) {
-                    return false;
-                } else {
-                    return true;
-                }
+            if (check === false) {
+                return false;
+            } else {
+                return true;
+            }
         },
-
-
 
         /**
          * Hàm check isEmpty
@@ -2072,7 +2462,7 @@ export default {
                         this.errorMessage.splice(index, 1);
                         this.isTooltip.isTooltipPaymentNumber = false;
                     }
-                   
+
                     this.isTooltip[fieldName] = true;
                     // nếu chưa có lỗi thì thêm ptu lỗi đó vào
                     if (
@@ -2121,14 +2511,16 @@ export default {
             kind,
             errorText,
             field,
-            fieldValue1=""
+            fieldValue1 = ""
         ) {
             try {
                 if (!this.isEmpty(fieldValue)) {
                     // check input phải là số
-                    if (this.isInValid(fieldValue,fieldValue1, kind)) {
+                    if (this.isInValid(fieldValue, fieldValue1, kind)) {
                         if (
-                            this.errorMessage.includes(this.invalidPaymentNumber)
+                            this.errorMessage.includes(
+                                this.invalidPaymentNumber
+                            )
                         ) {
                             const index = this.errorMessage.indexOf(
                                 this.invalidPaymentNumber
@@ -2136,7 +2528,7 @@ export default {
                             this.errorMessage.splice(index, 1);
                             this.isTooltip.isTooltipPaymentNumber = false;
                         }
-                      
+
                         this.isTooltip[fieldName] = true;
                         // nếu chưa có lỗi thì thêm ptu lỗi đó vào
                         if (
@@ -2197,7 +2589,7 @@ export default {
             }
         },
 
-          /**
+        /**
          * Hàm post account với từng modeForm: Thêm và nhân bản
          * Author: KienNT (28/05/2023)
          */
@@ -2212,61 +2604,166 @@ export default {
                         "https://localhost:7153/api/v1/Payments/InsertMasterDetail",
                         requestData
                     )
-                    .then(this.isRouter?this.isLoading=true :this.$emit("hideShowLoading", true) )
+                    .then((this.isLoading = true))
                     .then((res) => {
                         console.log(res);
                         if (this.isEmpty(modeBtn)) {
                             // chuyển form về mode show
-                            this.formModePayment = MISAEnum.formMode.Show;
+                            if (this.kind === "BackToProcess") {
+                                this.$router.push(
+                                    "/cash/cashDetail/show/BackToProcess"
+                                );
+                            } else if (this.kind === "BackToTable") {
+                                this.$router.push(
+                                    "/cash/cashDetail/show/BackToTable"
+                                );
+                            }
+
                             this.rowPaymentDetails.forEach((el) => {
-                                el.isEditAble = false; 
-                            })
-                            this.$emit("setFormMode", MISAEnum.formMode.Show);
-                              this.changePaymentDetail = JSON.stringify(this.rowPaymentDetails);
-                            this.changePaymentDetail = JSON.parse(this.changePaymentDetail);
-                            this.changePaymentDetail = this.changePaymentDetail.map((el) => {
-                                return {
-                                    ref_detail_id: el?.ref_detail_id,
-                                        mode:"edit"
+                                el.isEditAble = false;
+                            });
+                            this.changePaymentDetail = JSON.stringify(
+                                this.rowPaymentDetails
+                            );
+                            this.changePaymentDetail = JSON.parse(
+                                this.changePaymentDetail
+                            );
+                            this.changePaymentDetail =
+                                this.changePaymentDetail.map((el) => {
+                                    return {
+                                        ref_detail_id: el?.ref_detail_id,
+                                        mode: "edit",
                                     };
                                 });
+
+                            if (formMode === MISAEnum.formMode.Duplicate) {
+                                this.isShowToastDuplicate = true;
+                                setTimeout(() => {
+                                    this.isShowToastDuplicate = false;
+                                    this.oldPayment = JSON.stringify(
+                                        this.deleteAttrObject(this.payment)
+                                    );
+                                    this.oldRowPaymentDetails = JSON.stringify(
+                                        this.deleteEmptyAttributes(
+                                            this.rowPaymentDetails
+                                        )
+                                    );
+                                    this.isLoading = false;
+                                }, 3000);
+                            } else if (formMode === MISAEnum.formMode.Add) {
+                                this.isShowToastAdd = true;
+                                setTimeout(() => {
+                                    this.isShowToastAdd = false;
+                                    this.oldPayment = JSON.stringify(
+                                        this.deleteAttrObject(this.payment)
+                                    );
+                                    this.oldRowPaymentDetails = JSON.stringify(
+                                        this.deleteEmptyAttributes(
+                                            this.rowPaymentDetails
+                                        )
+                                    );
+                                    this.isLoading = false;
+                                }, 3000);
+                            }
                         } else if (modeBtn === MISAEnum.ModeBtn.SaveAndClose) {
-                            
                             // reset và đóng form
-                            this.destroyPopup(true);
+                            if (formMode === MISAEnum.formMode.Duplicate) {
+                                this.isShowToastDuplicate = true;
+                                setTimeout(() => {
+                                    this.isShowToastDuplicate = false;
+                                    this.destroyPopup(true);
+                                    this.oldPayment = JSON.stringify(
+                                        this.deleteAttrObject(this.payment)
+                                    );
+                                    this.oldRowPaymentDetails = JSON.stringify(
+                                        this.deleteEmptyAttributes(
+                                            this.rowPaymentDetails
+                                        )
+                                    );
+                                    this.isLoading = false;
+                                }, 3000);
+                            } else if (formMode === MISAEnum.formMode.Add) {
+                                this.isShowToastAdd = true;
+                                setTimeout(() => {
+                                    this.isShowToastAdd = false;
+                                    this.destroyPopup(true);
+                                    this.oldPayment = JSON.stringify(
+                                        this.deleteAttrObject(this.payment)
+                                    );
+                                    this.oldRowPaymentDetails = JSON.stringify(
+                                        this.deleteEmptyAttributes(
+                                            this.rowPaymentDetails
+                                        )
+                                    );
+                                    this.isLoading = false;
+                                }, 3000);
+                            }
                         } else if (modeBtn === MISAEnum.ModeBtn.SaveAndAdd) {
                             // reset nhưng ko đóng form
-                            this.destroyPopup(false);
-                            this.formModePayment = MISAEnum.formMode.Add;
-                            // lấy 1 id mới
-                            this.getNewPaymentCode();
-                            this.errorMessage = [];
+                            if (formMode === MISAEnum.formMode.Duplicate) {
+                                this.isShowToastDuplicate = true;
+                                setTimeout(() => {
+                                    this.isShowToastDuplicate = false;
+                                    this.destroyPopup(false);
+                                    if (this.kind === "BackToProcess") {
+                                        this.$router.push(
+                                            "/cash/cashDetail/add/BackToProcess"
+                                        );
+                                    } else if (this.kind === "BackToTable") {
+                                        this.$router.push(
+                                            "/cash/cashDetail/add/BackToTable"
+                                        );
+                                    }
+                                    // lấy 1 id mới
+                                    this.getNewPaymentCode();
+                                    this.errorMessage = [];
+                                    this.oldPayment = JSON.stringify(
+                                        this.deleteAttrObject(this.payment)
+                                    );
+                                    this.oldRowPaymentDetails = JSON.stringify(
+                                        this.deleteEmptyAttributes(
+                                            this.rowPaymentDetails
+                                        )
+                                    );
+                                    this.isLoading = false;
+                                }, 3000);
+                            } else if (formMode === MISAEnum.formMode.Add) {
+                                this.isShowToastAdd = true;
+                                setTimeout(() => {
+                                    this.isShowToastAdd = false;
+                                    this.destroyPopup(false);
+                                    if (this.kind === "BackToProcess") {
+                                        this.$router.push(
+                                            "/cash/cashDetail/add/BackToProcess"
+                                        );
+                                    } else if (this.kind === "BackToTable") {
+                                        this.$router.push(
+                                            "/cash/cashDetail/add/BackToTable"
+                                        );
+                                    }
+                                    // lấy 1 id mới
+                                    this.getNewPaymentCode();
+                                    this.errorMessage = [];
+                                    this.oldPayment = JSON.stringify(
+                                        this.deleteAttrObject(this.payment)
+                                    );
+                                    this.oldRowPaymentDetails = JSON.stringify(
+                                        this.deleteEmptyAttributes(
+                                            this.rowPaymentDetails
+                                        )
+                                    );
+                                    this.isLoading = false;
+                                }, 3000);
+                            }
                         }
-                        if (formMode === MISAEnum.formMode.Duplicate) {
-                            this.$emit("setPaymentSelected")
-                            this.$emit("hideShowToast", "duplicate");
-                        } else {
-                            this.isShowToastAdd = true;
-                            setTimeout(() => (this.isShowToastAdd = false), 3000);
-                        }
-                        this.oldPayment = JSON.stringify(this.deleteAttrObject(this.payment));
-                        this.oldRowPaymentDetails = JSON.stringify(this.deleteEmptyAttributes(this.rowPaymentDetails)); 
-                        if (this.isRouter) {
-                            this.isLoading = false;  
-                        } else {
-                            this.$emit("hideShowLoading", false);
-                        }
-                        this.$emit("handleReLoadData");
+
+                        // this.$emit("handleReLoadData");
                     })
                     .catch((error) => {
                         let response = error.response;
                         let errorData = response?.data?.Data?.Data;
                         console.log(errorData);
-                        if (this.isRouter) {
-                            this.isLoading = false;  
-                        } else {
-                            this.$emit("hideShowLoading", false);
-                        }
+                        this.isLoading = false;
                         this.handleCaseCatch(response, errorData);
                     });
             } catch (error) {
@@ -2293,7 +2790,7 @@ export default {
                                     }
                                     this.invalidPaymentNumber = errorData[key];
                                     break;
-                                
+
                                 default:
                                     break;
                             }
@@ -2323,8 +2820,7 @@ export default {
             }
         },
 
-
-       /**
+        /**
          * Hàm đóng popup khi click btn hủy
          * Author: KienNT nhân viên(09/06/2023)
          */
@@ -2340,35 +2836,41 @@ export default {
                     employee_id: "",
                     refno_finance: "",
                     document_included: "",
-                    supplier_id: null, 
-                    total_amount:0
-                }
+                    supplier_id: null,
+                    total_amount: 0,
+                };
                 this.rowPaymentDetails = [
                     {
-                    isEditAble: false,
-                    description: this.$t("PaymentFor"),
-                    debit_account_id: "",
-                    credit_account_id: "",
-                    amount: "0",
-                    debit_account_name: "",
-                    credit_account_name: "",
-                    supplierCodeDetail: "",
-                    supplier_id:null,
-                    supplier_name_detail:""
-                 }
-                ]
+                        isEditAble: false,
+                        description: this.$t("PaymentFor"),
+                        debit_account_id: "",
+                        credit_account_id: "",
+                        amount: "0",
+                        debit_account_name: "",
+                        credit_account_name: "",
+                        supplierCodeDetail: "",
+                        supplier_id: null,
+                        supplier_name_detail: "",
+                    },
+                ];
                 this.supplierCodePayment = "";
                 this.supplier_name_detail_fake = "";
                 this.supplier_id_detail_fake = "";
                 this.employeeId = "";
                 this.totalMoney = 0;
                 this.errorMessage = [];
-                this.formModePayment = "";
                 this.changePaymentDetail = [];
-                if (isClose) {
-                    this.$emit("closeCashDetail");
-                    if (this.isRouter) {
-                        this.$router.push('/cash/process')
+                if (
+                    isClose &&
+                    !this.isShowToastAdd &&
+                    !this.isShowToastEdit &&
+                    !this.isShowToastDuplicate &&
+                    !this.isShowToastDelete
+                ) {
+                    if (this.kind === "BackToProcess") {
+                        this.$router.push("/cash/process");
+                    } else if (this.kind === "BackToTable") {
+                        this.$router.push("/cash/payment");
                     }
                 }
             } catch (error) {
@@ -2410,7 +2912,6 @@ export default {
             this.payment.payment_receiver = supplier.supplier_name;
             this.payment.payment_supplier_address = supplier.supplier_address;
 
-          
             this.rowPaymentDetails = this.rowPaymentDetails.map((el) => {
                 if (this.isEmpty(el.supplierCodeDetail)) {
                     el.supplierCodeDetail = supplier.supplier_code;
@@ -2418,11 +2919,9 @@ export default {
                 }
                 return el;
             });
-            
 
             this.supplierCodePayment = supplier.supplier_code;
 
-          
             this.supplier_name_detail_fake = supplier.supplier_name;
             this.supplier_id_detail_fake = supplier.supplier_id;
 
@@ -2440,7 +2939,7 @@ export default {
             });
         },
 
-          /**
+        /**
          * Hàm ẩn contextmenu khi click ra ngoài element
          * Author: KienNT (08/06/2023)
          */
@@ -2452,9 +2951,11 @@ export default {
          * Hàm handle click combobox item trong supplier detail
          * Author: KienNT (06/06/2023)
          */
-        selectedRecordDetail(supplier,index) {
-            this.rowPaymentDetails[index].supplier_name_detail = supplier.supplier_name;
-            this.rowPaymentDetails[index].supplierCodeDetail = supplier.supplier_code;
+        selectedRecordDetail(supplier, index) {
+            this.rowPaymentDetails[index].supplier_name_detail =
+                supplier.supplier_name;
+            this.rowPaymentDetails[index].supplierCodeDetail =
+                supplier.supplier_code;
             this.rowPaymentDetails[index].supplier_id = supplier.supplier_id;
         },
 
@@ -2520,7 +3021,7 @@ export default {
                         credit_account_name: "",
                         supplierCodeDetail: "",
                         supplier_name_detail: "",
-                        supplier_id:null, 
+                        supplier_id: null,
                     },
                 ];
                 return;
@@ -2535,7 +3036,7 @@ export default {
             this.rowPaymentDetails.push({
                 ...rowPaymentDetail,
                 isEditAble: true,
-                ref_detail_id:''
+                ref_detail_id: "",
             });
             this.deleteOne = false;
 
@@ -2549,7 +3050,6 @@ export default {
                 ...this.cloneRowPaymentDetails,
                 isEditAble: true,
             };
-          
         },
 
         /**
@@ -2557,9 +3057,9 @@ export default {
          * Author: KienNT (06/06/2023)
          */
         onBtnWarningYes(text) {
-            if (text === 'isDialogWarning') {
+            if (text === "isDialogWarning") {
                 this.rowPaymentDetails = [
-                {
+                    {
                         isEditAble: true,
                         description: this.payment.journal_memo,
                         debit_account_id: "",
@@ -2568,22 +3068,22 @@ export default {
                         debit_account_name: "",
                         credit_account_name: "",
                         supplierCodeDetail: this.supplierCodePayment,
-                        supplier_name_detail: this.payment.payment_supplier_name,
-                        supplier_id:this.payment.supplier_id, 
+                        supplier_name_detail:
+                            this.payment.payment_supplier_name,
+                        supplier_id: this.payment.supplier_id,
                     },
                 ];
-            
+
                 this.changePaymentDetail.map((el) => {
                     el.mode = "delete";
                     return el;
-                })
+                });
                 this.totalMoney = 0;
                 this.isDialogWarning = false;
             } else {
                 this.isDialogWarningDuplicate = false;
                 this.getNewPaymentCode(true);
             }
-            
         },
 
         /**
@@ -2604,11 +3104,12 @@ export default {
          * Author: KienNT (06/06/2023)
          */
         onBtnWarningNo() {
-            this.isDialogWarning ? this.isDialogWarning = false : this.isDialogWarningDuplicate = false;
+            this.isDialogWarning
+                ? (this.isDialogWarning = false)
+                : (this.isDialogWarningDuplicate = false);
         },
 
-
-         /**
+        /**
          *  handle ngăn chặn nhập chữ
          * Author: KienNT (07/06/2023)
          */
@@ -2617,13 +3118,15 @@ export default {
                 this.payment.document_included.replace(/[^0-9]/g, "");
         },
 
- /**
+        /**
          *  handle ngăn chặn nhập chữ
          * Author: KienNT (07/06/2023)
          */
-        filterNonNumericAmount(index){
-            this.rowPaymentDetails[index].amount =  this.rowPaymentDetails[index].amount.replace(/[^0-9]/g, "");
-        },  
+        filterNonNumericAmount(index) {
+            this.rowPaymentDetails[index].amount = this.rowPaymentDetails[
+                index
+            ].amount.replace(/[^0-9]/g, "");
+        },
 
         /**
          *  handle khi mở dropdown
@@ -2640,7 +3143,15 @@ export default {
         //     }
         // },
 
-           /**
+        handleClickSaveAndAdd() {
+            this.btnSaveAndClose(
+                this.textBtn === this.$t("BtnSaveEndAdd")
+                    ? MISAEnum.ModeBtn.SaveAndAdd
+                    : MISAEnum.ModeBtn.SaveAndClose
+            );
+        },
+
+        /**
          * Hàm ẩn hiện dialog notify
          * Author: KienNT (10/06/2023)
          * @param (isDialogNotify): tham số là true, false để hiển thị dialog notify
@@ -2654,6 +3165,34 @@ export default {
             }
         },
 
+        /**
+         * Click cất
+         * Author: KienNT (10/06/2023)
+         */
+        clickBtnSave() {
+            this.btnSaveAndClose("");
+            if (this.formModePayment === MISAEnum.formMode.Edit) {
+                if (this.kind === "BackToProcess") {
+                    this.$router.push(
+                        `/cash/cashDetail/edit/BackToProcess/${this.payment_id_selected}`
+                    );
+                } else if (this.kind === "BackToTable") {
+                    this.$router.push(
+                        `/cash/cashDetail/edit/BackToTable/${this.payment_id_selected}`
+                    );
+                }
+            } else if (this.formModePayment === MISAEnum.formMode.Show) {
+                if (this.kind === "BackToProcess") {
+                    this.$router.push(
+                        `/cash/cashDetail/show/BackToProcess/${this.payment_id_selected}`
+                    );
+                } else if (this.kind === "BackToTable") {
+                    this.$router.push(
+                        `/cash/cashDetail/show/BackToTable/${this.payment_id_selected}`
+                    );
+                }
+            }
+        },
 
         /**
          *  handle khi đóng popup
@@ -2661,19 +3200,27 @@ export default {
          */
         closeCashDetail() {
             if (this.isDialogError === false) {
-                    // kiểm tra dữ liệu đã thay đổi chưa
-                const newPaymentData = JSON.stringify(this.deleteAttrObject(this.payment));
-                const newPaymentDetailData = JSON.stringify(this.deleteEmptyAttributes(this.rowPaymentDetails));
-                if (this.oldPayment !== newPaymentData || this.oldRowPaymentDetails !== newPaymentDetailData) {
+                // kiểm tra dữ liệu đã thay đổi chưa
+                const newPaymentData = JSON.stringify(
+                    this.deleteAttrObject(this.payment)
+                );
+                const newPaymentDetailData = JSON.stringify(
+                    this.deleteEmptyAttributes(this.rowPaymentDetails)
+                );
+                if (
+                    this.oldPayment !== newPaymentData ||
+                    this.oldRowPaymentDetails !== newPaymentDetailData
+                ) {
                     this.isDialogNotify = true;
                     return;
                 } else {
-                    this.$emit("closeCashDetail");
-                    if (this.isRouter) {
-                        this.$router.push('/cash/process')
+                    if (this.kind === "BackToProcess") {
+                        this.$router.push("/cash/process");
+                    } else if (this.kind === "BackToTable") {
+                        this.$router.push("/cash/payment");
                     }
                 }
-             }
+            }
         },
 
         /**
@@ -2698,16 +3245,19 @@ export default {
             if (event.ctrlKey && event.key === "s") {
                 // Ngăn chặn trình duyệt thực hiện hành động mặc định của phím "Ctrl + S" là lưu trang web
                 event.preventDefault();
-                 if (this.formModePayment !== MISAEnum.formMode.Show) {
-                   this.btnSaveAndClose("");
+                if (this.formModePayment !== MISAEnum.formMode.Show) {
+                    this.btnSaveAndClose("");
                 }
-                
             }
 
             if (event.ctrlKey && event.shiftKey && event.key === "S") {
                 event.preventDefault();
                 if (this.formModePayment !== MISAEnum.formMode.Show) {
-                    this.btnSaveAndClose(this.textBtn === this.$t('BtnSaveEndAdd') ? MISAEnum.ModeBtn.SaveAndAdd : MISAEnum.ModeBtn.SaveAndClose);
+                    this.btnSaveAndClose(
+                        this.textBtn === this.$t("BtnSaveEndAdd")
+                            ? MISAEnum.ModeBtn.SaveAndAdd
+                            : MISAEnum.ModeBtn.SaveAndClose
+                    );
                 }
             }
         },
@@ -2758,17 +3308,20 @@ export default {
          * Hàm handle khi nhấn phím tại input kèm theo
          * Author: KienNT (07/06/2023)
          */
-         handleKeyUpDocumentIncluded(){
-            this.payment.document_included = this.numberWithCommas(this.payment.document_included);
+        handleKeyUpDocumentIncluded() {
+            this.payment.document_included = this.numberWithCommas(
+                this.payment.document_included
+            );
         },
-
 
         /**
          * Hàm handle khi nhấn phím tại input số tiền
          * Author: KienNT (07/06/2023)
          */
         handleKeyUpAmount(index) {
-            this.rowPaymentDetails[index].amount = this.numberWithCommas(this.rowPaymentDetails[index].amount)
+            this.rowPaymentDetails[index].amount = this.numberWithCommas(
+                this.rowPaymentDetails[index].amount
+            );
         },
 
         /**
@@ -2776,15 +3329,14 @@ export default {
          * Author: KienNT (06/06/2023)
          */
         handleClickTrash(index, ref_detail_id) {
-          
             this.rowPaymentDetails.splice(index, 1);
             if (this.formModePayment === MISAEnum.formMode.Edit) {
                 this.changePaymentDetail.map((x) => {
                     if (x.ref_detail_id === ref_detail_id) {
-                        x.mode = "delete"    
-                    } 
+                        x.mode = "delete";
+                    }
                     return x;
-                })
+                });
             }
         },
 
@@ -2796,7 +3348,7 @@ export default {
             this.employeeId = "";
         },
 
-          /**
+        /**
          * Hàm xóa đi tất cả attr = null, false, undefined
          * Author: KienNT (10/06/2023)
          */
@@ -2806,7 +3358,8 @@ export default {
                 if (
                     clone[key] === undefined ||
                     clone[key] === false ||
-                    clone[key] === null || clone[key]===''
+                    clone[key] === null ||
+                    clone[key] === ""
                 ) {
                     delete clone[key];
                 }
@@ -2827,7 +3380,9 @@ export default {
                     if (
                         clone[key] === undefined ||
                         clone[key] === false ||
-                        clone[key] === null || clone[key]==='' || clone[key] === true
+                        clone[key] === null ||
+                        clone[key] === "" ||
+                        clone[key] === true
                     ) {
                         delete clone[key];
                     }
@@ -2838,13 +3393,12 @@ export default {
             return result;
         },
 
-
         /**
          * Hàm kiểm tra ngày chứng từ <= ngày hạch toán ko?
          * Author: KienNT (02/03/2023)
          * @param (value,kind): tham số 1 là giá trị chuỗi từ input và tham số 2 là loại: date,...
          */
-        isInValid(value,value1="", kind) {
+        isInValid(value, value1 = "", kind) {
             try {
                 if (!this.isEmpty(value)) {
                     let timenow;
@@ -2899,7 +3453,7 @@ export default {
                             if (!regex.test(value)) {
                                 return true;
                             } else {
-                                return false;  
+                                return false;
                             }
                         default:
                             break;
@@ -2909,7 +3463,6 @@ export default {
                 console.log(error);
             }
         },
-
 
         /**
          * nghe sự kiện window. Nếu click ko phải là dropdown thì ẩn dropdown
@@ -2939,7 +3492,7 @@ export default {
                 console.log(error);
             }
         },
-       
+
         /**
          * Hàm kiểm tra input có rỗng không
          * Author: KienNT (06/06/2023)
@@ -2965,7 +3518,8 @@ export default {
             try {
                 const btnDestroy = this.$refs["btnDestroy"];
                 const InputPaymentNumber = this.$refs["txtPaymentNumber"];
-                const txtSupplierCodeDetail = this.$refs["txtSupplierCodeDetail"];
+                const txtSupplierCodeDetail =
+                    this.$refs["txtSupplierCodeDetail"];
                 // const txtdescription = this.$refs["txtdescription"][0];
                 if (
                     event.key === "Tab" &&
@@ -2979,7 +3533,9 @@ export default {
 
                 if (
                     event.key === "Tab" &&
-                    event.target.isEqualNode(InputPaymentNumber.$el.nextElementSibling)
+                    event.target.isEqualNode(
+                        InputPaymentNumber.$el.nextElementSibling
+                    )
                 ) {
                     // Prevent the default tab behavior
 
@@ -2995,13 +3551,17 @@ export default {
                 const AddLine = this.$refs["AddLine"];
                 const DeleteAllLine = this.$refs["DeleteAllLine"];
                 if (txtSupplierCodeDetail) {
-                    for (let index = 0; index < txtSupplierCodeDetail.length; index++) {
+                    for (
+                        let index = 0;
+                        index < txtSupplierCodeDetail.length;
+                        index++
+                    ) {
                         const element = txtSupplierCodeDetail[index];
-                         if (
-                            element && 
+                        if (
+                            element &&
                             event.key === "Tab" &&
                             event.target.isEqualNode(element.$el.children[1])
-                         ) {
+                        ) {
                             // Prevent the default tab behavior
                             event.preventDefault();
                             // focus vào input đầu tiên
@@ -3009,77 +3569,88 @@ export default {
                         }
                     }
                 }
-               
 
+                btnSaveEndAdd &&
+                    btnSaveEndAdd.$el.addEventListener("focus", function () {
+                        if (btnSaveEndAdd.$el.tagName === "BUTTON") {
+                            btnSaveEndAdd.$el.classList.add(
+                                "border-focus-white"
+                            );
+                        }
+                    });
 
-                btnSaveEndAdd&& btnSaveEndAdd.$el.addEventListener("focus", function () {
-                    if (btnSaveEndAdd.$el.tagName === "BUTTON") {
-                        btnSaveEndAdd.$el.classList.add("border-focus-white");
-                    }
-                });
+                AddLine &&
+                    AddLine.$el.addEventListener("focus", function () {
+                        if (AddLine.$el.tagName === "BUTTON") {
+                            AddLine.$el.classList.add("border-focus-white");
+                            this.rowPaymentDetails &&
+                                this.rowPaymentDetails.forEach((el) => {
+                                    el.isEditAble = false;
+                                });
+                        }
+                    });
 
-                AddLine && AddLine.$el.addEventListener("focus", function () {
-                    if (AddLine.$el.tagName === "BUTTON") {
-                        AddLine.$el.classList.add("border-focus-white");
-                        this.rowPaymentDetails && this.rowPaymentDetails.forEach((el) => {
-                            el.isEditAble = false; 
-                         })
-                    }
-                });
+                DeleteAllLine &&
+                    DeleteAllLine.$el.addEventListener("focus", function () {
+                        if (DeleteAllLine.$el.tagName === "BUTTON") {
+                            DeleteAllLine.$el.classList.add(
+                                "border-focus-white"
+                            );
+                        }
+                    });
 
-                 DeleteAllLine && DeleteAllLine.$el.addEventListener("focus", function () {
-                    if (DeleteAllLine.$el.tagName === "BUTTON") {
-                        DeleteAllLine.$el.classList.add("border-focus-white");
-                    }
-                });
+                btnSave &&
+                    btnSave.$el.addEventListener("focus", function () {
+                        if (btnSave.$el.tagName === "BUTTON") {
+                            btnSave.$el.classList.add("border-focus");
+                        }
+                    });
 
-                btnSave && btnSave.$el.addEventListener("focus", function () {
-                    if (btnSave.$el.tagName === "BUTTON") {
-                        btnSave.$el.classList.add("border-focus");
-                    }
-                });
+                btnDestroy &&
+                    btnDestroy.$el.addEventListener("focus", function () {
+                        if (btnDestroy.$el.tagName === "BUTTON") {
+                            btnDestroy.$el.classList.add("border-focus");
+                        }
+                    });
 
-                btnDestroy && btnDestroy.$el.addEventListener("focus", function () {
-                    if (btnDestroy.$el.tagName === "BUTTON") {
-                        btnDestroy.$el.classList.add("border-focus");
-                    }
-                });
+                btnSaveEndAdd &&
+                    btnSaveEndAdd.$el.addEventListener("blur", function () {
+                        if (btnSaveEndAdd.$el.tagName === "BUTTON") {
+                            btnSaveEndAdd.$el.classList.remove(
+                                "border-focus-white"
+                            );
+                        }
+                    });
 
-                btnSaveEndAdd && btnSaveEndAdd.$el.addEventListener("blur", function () {
-                    if (btnSaveEndAdd.$el.tagName === "BUTTON") {
-                        btnSaveEndAdd.$el.classList.remove(
-                            "border-focus-white"
-                        );
-                    }
-                });
+                AddLine &&
+                    AddLine.$el.addEventListener("blur", function () {
+                        if (AddLine.$el.tagName === "BUTTON") {
+                            AddLine.$el.classList.remove("border-focus-white");
+                        }
+                    });
 
-                AddLine && AddLine.$el.addEventListener("blur", function () {
-                    if (AddLine.$el.tagName === "BUTTON") {
-                        AddLine.$el.classList.remove(
-                            "border-focus-white"
-                        );
-                    }
-                });
+                DeleteAllLine &&
+                    DeleteAllLine.$el.addEventListener("blur", function () {
+                        if (DeleteAllLine.$el.tagName === "BUTTON") {
+                            DeleteAllLine.$el.classList.remove(
+                                "border-focus-white"
+                            );
+                        }
+                    });
 
-                 DeleteAllLine && DeleteAllLine.$el.addEventListener("blur", function () {
-                    if (DeleteAllLine.$el.tagName === "BUTTON") {
-                        DeleteAllLine.$el.classList.remove(
-                            "border-focus-white"
-                        );
-                    }
-                });
+                btnSave &&
+                    btnSave.$el.addEventListener("blur", function () {
+                        if (btnSave.$el.tagName === "BUTTON") {
+                            btnSave.$el.classList.remove("border-focus");
+                        }
+                    });
 
-                btnSave && btnSave.$el.addEventListener("blur", function () {
-                    if (btnSave.$el.tagName === "BUTTON") {
-                        btnSave.$el.classList.remove("border-focus");
-                    }
-                });
-
-                 btnDestroy && btnDestroy.$el.addEventListener("blur", function () {
-                    if (btnDestroy.$el.tagName === "BUTTON") {
-                        btnDestroy.$el.classList.remove("border-focus");
-                    }
-                });
+                btnDestroy &&
+                    btnDestroy.$el.addEventListener("blur", function () {
+                        if (btnDestroy.$el.tagName === "BUTTON") {
+                            btnDestroy.$el.classList.remove("border-focus");
+                        }
+                    });
             } catch (error) {
                 console.log(error);
             }
@@ -3089,15 +3660,38 @@ export default {
          * format cho số lớn
          * Author: KienNT (07/06/2023)
          */
-         numberWithCommas(x) {
-            return  x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") ;
+        numberWithCommas(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         },
 
+        /**
+         * chuyeenr tiền về số
+         * Author: KienNT (07/06/2023)
+         */
         currencyToNumber(currency) {
-            
-            var number = currency.replace(/\./g, '');
+            var number = currency.replace(/\./g, "");
             return parseFloat(number);
+        },
+
+        /**
+         * chuyển form mode
+         * Author: KienNT (07/06/2023)
+         */
+        formatForm(value) {
+            switch (value) {
+                case "add":
+                    return MISAEnum.formMode.Add;
+                case "edit":
+                    return MISAEnum.formMode.Edit;
+                case "show":
+                    return MISAEnum.formMode.Show;
+                case "duplicate":
+                    return MISAEnum.formMode.Duplicate;
+
+                default:
+                    break;
             }
+        },
     },
 
     computed: {
@@ -3116,8 +3710,8 @@ export default {
                     console.log(error);
                 }
             };
-        }, 
-    }
+        },
+    },
 };
 </script>
 
@@ -3280,7 +3874,4 @@ export default {
     border: 1px solid #50b83c !important;
     outline: none;
 }
-
-
-
 </style>
