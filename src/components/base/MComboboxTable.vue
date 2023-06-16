@@ -32,7 +32,7 @@
             class="input__type combobox-input input--required reset-input"
             autocomplete="off"
             ref="departmentInput"
-             :class="isDisabled ? 'disabledDopdown' : ''"
+            :class="isDisabled ? 'disabledDopdown' : ''"
         />
 
         <div
@@ -380,13 +380,13 @@ export default {
         styleTranX: {
             type: String,
         },
-        kindAccount:{
-            type:String
+        kindAccount: {
+            type: String,
         },
         isDisabled: {
-            type:Boolean,
+            type: Boolean,
             default: false,
-        }
+        },
     },
     data() {
         return {
@@ -422,7 +422,6 @@ export default {
             //         this.dataTable && this.dataTable[0]?.account_number;
             // }
             this.record = newValue;
-
         },
     },
 
@@ -1006,8 +1005,6 @@ export default {
             refIconCombobox.classList.remove("rorate-180");
         },
 
-        
-
         /**
          * nghe sự kiện window. Nếu click ko phải là combobox
          * Author: KienNT (07/03/2023)
@@ -1044,7 +1041,10 @@ export default {
          */
         handleBlurInput() {
             this.isFocus = false;
-            this.$emit("handleCheckEmpty", this.record);
+            this.$emit("handleCheckEmpty", this.record, this.dataTable);
+            if (this.kind === "generalAccount") {
+                this.$emit("handleBlurInput");
+            }
         },
 
         /**
@@ -1074,7 +1074,7 @@ export default {
             this.record = this.recordData;
             this.loadData();
         }
-        if(this.kindAccount==="accountPaymentDetail"){
+        if (this.kindAccount === "accountPaymentDetail") {
             this.record = this.recordData;
         }
     },

@@ -40,8 +40,10 @@ const MISAResouce = {
         ErrorInvalid: " không đúng định dạng",
         ErrorDate: " không được lớn hơn hiện tại!",
         ErrorDatePayment: " không được lớn hơn ",
-        ErrorAccountNumber: " phải có độ dài lớn hơn bằng 3 và nhỏ hơn bằng 25 ký tự!",
+        ErrorAccountNumber:
+            " phải có độ dài lớn hơn bằng 3 và nhỏ hơn bằng 25 ký tự!",
         ErrorAccountLengthHundred: " phải nhỏ hơn bằng 100 ký tự!",
+        ErrorAccountLengthText: " phải nhỏ hơn bằng 255 ký tự!",
         ErrorPaymentNumber: " không đúng định dạng (xx0000)",
         ErrorAccountNumberStartWith: " phải bắt đầu bằng tài khoản tổng hợp",
         ErrorEmail: " không đúng định dạng",
@@ -81,7 +83,7 @@ const MISAResouce = {
         Report: "Báo cáo",
         FinancialAnalysis: "Phân tích tài chính",
         QuickAdd: "Thêm nhanh",
-        BackToHome:"Quay về quy trình",
+        BackToHome: "Quay về quy trình",
 
         // tooltip
         TooltipIdentityNumber: "Số chứng minh nhân dân",
@@ -147,8 +149,8 @@ const MISAResouce = {
         MessageWarningPayment: "Bạn có muốn chứng từ ",
         MessageWarningDeleteLine:
             "Bạn có thực sự muốn xóa tất cả các dòng đã nhập không?",
-        MesssgaeErrorLenthDetail:"Bạn phải nhập chứng từ chi tiết.",
-        
+        MesssgaeErrorLenthDetail: "Bạn phải nhập chứng từ chi tiết.",
+
         MessageWarningDuplicate:
             ". Bạn có muốn chương trình tự động tăng số chứng từ không?",
         MessageWarningAccount: "Bạn có muốn xóa tài khoản ",
@@ -249,7 +251,7 @@ const MISAResouce = {
         account_name_english: "Tên tiếng anh",
         description: "Diễn giải",
         state: "Trạng thái",
-        NotExist:" không tồn tại trong danh mục",
+        NotExist: " không tồn tại trong danh mục",
 
         // popup Account
         LabelAccountNumber: "Số tài khoản",
@@ -258,7 +260,7 @@ const MISAResouce = {
         LabelGeneralAccount: "Tài khoản tổng hợp",
         LabelProperty: "Tính chất",
         Labeljournal_memo: "Diễn giải",
-        LabelInterpret:"Diễn giải",
+        LabelInterpret: "Diễn giải",
         ForeignCurrencyPlan: "Có hạch toán ngoại tệ",
         Object: "Đối tượng",
 
@@ -374,9 +376,11 @@ const MISAResouce = {
         ErrorNotNumber: " not a number, please re-enter",
         ErrorNotText: " not the word, please re-enter",
         ErrorEmail: " Incorrect format",
-        ErrorPaymentNumber:" invalid (xx0000)",
-        ErrorAccountNumber: " must be greater than 3 and less than 25 characters!",
-        ErrorAccountLengthHundred:" must be less than 100 characters!",
+        ErrorPaymentNumber: " invalid (xx0000)",
+        ErrorAccountNumber:
+            " must be greater than 3 and less than 25 characters!",
+        ErrorAccountLengthHundred: " must be less than 100 characters!",
+        ErrorAccountLengthText: " must be less than 255 characters!",
         ErrorAccountNumberStartWith: " must start with a general account",
 
         // Paging
@@ -412,7 +416,7 @@ const MISAResouce = {
         Report: "Report",
         FinancialAnalysis: "Financial analysis",
         QuickAdd: "Quick add",
-        BackToHome:"Back to process",
+        BackToHome: "Back to process",
 
         // popup
         EmployeeInfo: "Add new employee",
@@ -474,17 +478,18 @@ const MISAResouce = {
         MessageNotify: "Data has changed. Do you want to save it?",
         MessageWarning: "Do you want to delete an employee ",
         MessageWarningPayment: "Do you want to delete paymen ",
-        
+
         MessageWarningDeleteLine:
             "Do you really want to delete all entered lines?",
-        MesssgaeErrorLenthDetail:"You must enter detailed voucher.",
-        
-        MessageWarningDuplicate:". Do you want the program to automatically increase the number of vouchers?",
+        MesssgaeErrorLenthDetail: "You must enter detailed voucher.",
+
+        MessageWarningDuplicate:
+            ". Do you want the program to automatically increase the number of vouchers?",
         MessageWarningAccount: "Do you want to delete account ",
         MessageUpdateAccount:
             'Do you want to set "Using" status for all <Account> children?',
         MessageWarningMul: "Do you want to delete all selected employees ",
-        MessageWarningMulPayment:"Do you want to delete all payment ",
+        MessageWarningMulPayment: "Do you want to delete all payment ",
         TxtNo: "no",
         DialogNotifyErrorDelete: "Delete failed",
         MessageErrorDeleteAccount:
@@ -499,11 +504,10 @@ const MISAResouce = {
         ToastDuplicateSuccess: "Staff has been duplicated",
         ToastTitleSuccess: "Success",
 
-         ToastAddSuccessPayment: "Payment has been added",
+        ToastAddSuccessPayment: "Payment has been added",
         ToastDeleteSuccessPayment: "Payment has been deleted",
         ToastEditSuccessPayment: "Payment has been edited",
         ToastDuplicateSuccessPayment: "Payment has been duplicated",
-        
 
         ToastAddSuccessAccount: "Account has been added",
         ToastDeleteSuccessAccount: "Account has been deleted",
@@ -560,7 +564,7 @@ const MISAResouce = {
         Property: "Property",
         EnglishName: "English name",
         journal_memo: "Interpret",
-        LabelInterpret:"Interpet",
+        LabelInterpret: "Interpet",
         Status: "Status",
         Debt: "Debt",
         ExcessYes: "Excess yes",
@@ -572,7 +576,7 @@ const MISAResouce = {
         account_name_english: "English name",
         description: "Interpret",
         state: "Status",
-        NotExist:" Not exists in category",
+        NotExist: " Not exists in category",
 
         // popup account
         LabelAccountNumber: "Account number",
@@ -586,7 +590,7 @@ const MISAResouce = {
         followDetail: "Track tracking details",
         supplier_name: "Object",
         payment_detail_supplier_name: "Object",
-        payment_supplier_name:"Object",
+        payment_supplier_name: "Object",
         Account: "Account",
         TransferAccountingAccounts: "Transfer accounting accounts",
 
@@ -617,7 +621,7 @@ const MISAResouce = {
         total_amount: "Amount of money",
         amount: "Amount",
         supplier_code: "Object code",
-        payment_supplier_code:"Object code",
+        payment_supplier_code: "Object code",
         payment_detail_supplier_code: "Object code",
         Address: "Address",
         Detail: "Detail",
@@ -626,7 +630,7 @@ const MISAResouce = {
         ObjectName: "Object name",
         PaymentTitle: "Payment",
         supplier_address: "Address",
-        payment_supplier_address:"Address",
+        payment_supplier_address: "Address",
 
         // payment detail
         Tutorial: "Tutorial",
