@@ -331,6 +331,7 @@ const MISAResouce = {
         OtherExpenses: "7. Chi khác",
         supplier_tax_code: "Mã số thuế",
         supplier_phone_number: "Điện thoại",
+        GradeError: " thứ ",
 
         //other
         Username: "Ngô Trung Kiên",
@@ -660,6 +661,7 @@ const MISAResouce = {
         OtherExpenses: "7. Other expenses",
         supplier_tax_code: "Tax code",
         supplier_phone_number: "Phone number",
+        GradeError: " grade ",
 
         //other
         Username: "Kien Ngo Trung",

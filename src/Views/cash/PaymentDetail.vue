@@ -989,34 +989,70 @@
                                                             <td
                                                                 class="min-w350 td ms-table--td dynamic-column border-left-none"
                                                             >
-                                                                <MInput
-                                                                    v-if="
-                                                                        rowPaymentDetail.isEditAble
-                                                                    "
-                                                                    :tabindex="
-                                                                        11 +
-                                                                        5 *
-                                                                            index
-                                                                    "
-                                                                    id="description"
-                                                                    kind="default"
-                                                                    ref="txtdescription"
-                                                                    @setFocus="
-                                                                        () =>
-                                                                            setFocusDescription(
+                                                                <div
+                                                                    :class="{
+                                                                        'tooltip-error':
+                                                                            rowPaymentDetail.isTooltipDescription,
+                                                                    }"
+                                                                >
+                                                                    <MInput
+                                                                        v-if="
+                                                                            rowPaymentDetail.isEditAble
+                                                                        "
+                                                                        :tabindex="
+                                                                            11 +
+                                                                            5 *
                                                                                 index
+                                                                        "
+                                                                        id="description"
+                                                                        kind="default"
+                                                                        ref="txtdescription"
+                                                                        @setFocus="
+                                                                            () =>
+                                                                                setFocusDescription(
+                                                                                    index
+                                                                                )
+                                                                        "
+                                                                        :isFocus="
+                                                                            true
+                                                                        "
+                                                                        v-model="
+                                                                            rowPaymentDetail.description
+                                                                        "
+                                                                        :isShowTooltip="
+                                                                            rowPaymentDetail.isTooltipDescription
+                                                                        "
+                                                                    />
+                                                                    <span
+                                                                        ref="txtdescription"
+                                                                        :tabindex="
+                                                                            11 +
+                                                                            5 *
+                                                                                index
+                                                                        "
+                                                                        v-else
+                                                                        >{{
+                                                                            rowPaymentDetail.description
+                                                                        }}</span
+                                                                    >
+                                                                    <MTooltip
+                                                                        v-if="
+                                                                            rowPaymentDetail.isTooltipDescription
+                                                                        "
+                                                                        kind="error"
+                                                                        :subtext="
+                                                                            $t(
+                                                                                'description'
+                                                                            ) +
+                                                                            $t(
+                                                                                'ErrorAccountLengthText'
                                                                             )
-                                                                    "
-                                                                    :isFocus="
-                                                                        true
-                                                                    "
-                                                                    v-model="
-                                                                        rowPaymentDetail.description
-                                                                    "
-                                                                />
-                                                                <span v-else>{{
-                                                                    rowPaymentDetail.description
-                                                                }}</span>
+                                                                        "
+                                                                        style="
+                                                                            width: 270px;
+                                                                        "
+                                                                    ></MTooltip>
+                                                                </div>
                                                             </td>
                                                             <td
                                                                 class="min-w100"
@@ -1154,45 +1190,82 @@
                                                             <td
                                                                 class="text-align-right min-w120"
                                                             >
-                                                                <MInput
-                                                                    v-if="
-                                                                        rowPaymentDetail.isEditAble
-                                                                    "
-                                                                    :tabindex="
-                                                                        14 +
-                                                                        5 *
-                                                                            index
-                                                                    "
-                                                                    id="amount"
-                                                                    kind="default"
-                                                                    ref="txtamount"
-                                                                    style="
-                                                                        text-align: end;
-                                                                    "
-                                                                    v-model="
-                                                                        rowPaymentDetail.amount
-                                                                    "
-                                                                    @filterNonNumeric="
-                                                                        filterNonNumericAmount(
-                                                                            index
-                                                                        )
-                                                                    "
-                                                                    @handleKeyUp="
-                                                                        () =>
-                                                                            handleKeyUpAmount(
+                                                                <div
+                                                                    :class="{
+                                                                        'tooltip-error':
+                                                                            rowPaymentDetail.isTooltipAmount,
+                                                                    }"
+                                                                >
+                                                                    <MInput
+                                                                        v-if="
+                                                                            rowPaymentDetail.isEditAble
+                                                                        "
+                                                                        :tabindex="
+                                                                            14 +
+                                                                            5 *
+                                                                                index
+                                                                        "
+                                                                        id="amount"
+                                                                        kind="default"
+                                                                        ref="txtamount"
+                                                                        style="
+                                                                            text-align: end;
+                                                                        "
+                                                                        v-model="
+                                                                            rowPaymentDetail.amount
+                                                                        "
+                                                                        @filterNonNumeric="
+                                                                            filterNonNumericAmount(
                                                                                 index
                                                                             )
-                                                                    "
-                                                                    @blur="
-                                                                        () =>
-                                                                            handleBlurAmount(
+                                                                        "
+                                                                        @handleKeyUp="
+                                                                            () =>
+                                                                                handleKeyUpAmount(
+                                                                                    index
+                                                                                )
+                                                                        "
+                                                                        @blur="
+                                                                            () =>
+                                                                                handleBlurAmount(
+                                                                                    index
+                                                                                )
+                                                                        "
+                                                                        :isShowTooltip="
+                                                                            rowPaymentDetail.isTooltipAmount
+                                                                        "
+                                                                    />
+                                                                    <span
+                                                                        :tabindex="
+                                                                            14 +
+                                                                            5 *
                                                                                 index
+                                                                        "
+                                                                        ref="txtamount"
+                                                                        v-else
+                                                                        >{{
+                                                                            rowPaymentDetail.amount
+                                                                        }}</span
+                                                                    >
+
+                                                                    <MTooltip
+                                                                        v-if="
+                                                                            rowPaymentDetail.isTooltipAmount
+                                                                        "
+                                                                        kind="error"
+                                                                        :subtext="
+                                                                            $t(
+                                                                                'amount'
+                                                                            ) +
+                                                                            $t(
+                                                                                'ErrorAccountLength18'
                                                                             )
-                                                                    "
-                                                                />
-                                                                <span v-else>{{
-                                                                    rowPaymentDetail.amount
-                                                                }}</span>
+                                                                        "
+                                                                        style="
+                                                                            width: 270px;
+                                                                        "
+                                                                    ></MTooltip>
+                                                                </div>
                                                             </td>
                                                             <td
                                                                 class="min-w160"
@@ -1706,6 +1779,8 @@ export default {
                     supplierCodeDetail: "",
                     supplier_id: null,
                     supplier_name_detail: "",
+                    isTooltipDescription: false,
+                    isTooltipAmount: false,
                 },
             ],
             isDialogWarningDuplicate: false,
@@ -2580,6 +2655,45 @@ export default {
                 "txtPaymentDate",
                 this.payment.posted_date
             );
+
+            // check maxlength diễn giải detail
+            for (
+                let index = 0;
+                index < this.rowPaymentDetails.length;
+                index++
+            ) {
+                const element = this.rowPaymentDetails[index];
+                this.checkFieldInvalidPaymentDetail(
+                    element.isTooltipDescription,
+                    element.description,
+                    this.$t("journal_memo") +
+                        this.$t("GradeError") +
+                        (index + 1),
+                    "length255",
+                    this.$t("ErrorAccountLengthText"),
+                    this.$refs["txtdescription"][index],
+                    index
+                );
+            }
+
+            // check maxlength diễn giải detail
+            for (
+                let index = 0;
+                index < this.rowPaymentDetails.length;
+                index++
+            ) {
+                const element = this.rowPaymentDetails[index];
+                this.checkFieldInvalidPaymentDetailAmount(
+                    element.isTooltipAmount,
+                    element.amount,
+                    this.$t("amount") + this.$t("GradeError") + (index + 1),
+                    "length18",
+                    this.$t("ErrorAccountLength18"),
+                    this.$refs["txtamount"][index],
+                    index
+                );
+            }
+
             // nếu ko có lỗi thì ẩn popup
             let check = true;
 
@@ -2724,6 +2838,218 @@ export default {
                             0,
                             "space"
                         );
+                    }
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
+         * Hàm validate diễn giải
+         * Author: KienNT (17/06/2023)
+         */
+        checkFieldInvalidPaymentDetail(
+            isTooltip,
+            fieldValue,
+            errorLabel,
+            kind,
+            errorText,
+            field,
+            index,
+            fieldValue1 = ""
+        ) {
+            try {
+                if (!this.isEmpty(fieldValue)) {
+                    // check input phải là số
+                    if (this.isInValid(fieldValue, fieldValue1, kind)) {
+                        if (
+                            this.errorMessage.includes(
+                                this.invalidPaymentNumber
+                            )
+                        ) {
+                            const index = this.errorMessage.indexOf(
+                                this.invalidPaymentNumber
+                            );
+                            this.errorMessage.splice(index, 1);
+                            this.isTooltip.isTooltipPaymentNumber = false;
+                        }
+
+                        this.rowPaymentDetails[
+                            index
+                        ].isTooltipDescription = true;
+                        // nếu chưa có lỗi thì thêm ptu lỗi đó vào
+                        if (
+                            !this.errorMessage.includes(errorLabel + errorText)
+                        ) {
+                            if (field.tagName && field.tagName === "SPAN") {
+                                this.errorMessage[field.tabIndex] =
+                                    errorLabel + errorText;
+                            } else {
+                                this.errorMessage[
+                                    field.$el.nextElementSibling.tabIndex
+                                ] = errorLabel + errorText;
+                            }
+                        }
+                    } else {
+                        this.rowPaymentDetails[
+                            index
+                        ].isTooltipDescription = false;
+                        if (
+                            this.errorMessage.includes(errorLabel + errorText)
+                        ) {
+                            if (field.tagName && field.tagName === "SPAN") {
+                                this.errorMessage.splice(field.tabIndex, 1);
+                            } else {
+                                this.errorMessage.splice(
+                                    field.$el.nextElementSibling.tabIndex,
+                                    1
+                                );
+                            }
+                            if (field.tagName && field.tagName === "SPAN") {
+                                this.errorMessage.splice(
+                                    field.tabIndex,
+                                    0,
+                                    "space"
+                                );
+                            } else {
+                                this.errorMessage.splice(
+                                    field.$el.nextElementSibling.tabIndex,
+                                    0,
+                                    "space"
+                                );
+                            }
+                        }
+                    }
+                } else {
+                    this.rowPaymentDetails[index].isTooltipDescription = false;
+                    if (this.errorMessage.includes(errorLabel + errorText)) {
+                        if (field.tagName && field.tagName === "SPAN") {
+                            this.errorMessage.splice(field.tabIndex, 1);
+                        } else {
+                            this.errorMessage.splice(
+                                field.$el.nextElementSibling.tabIndex,
+                                1
+                            );
+                        }
+
+                        if (field.tagName && field.tagName === "SPAN") {
+                            this.errorMessage.splice(
+                                field.tabIndex,
+                                0,
+                                "space"
+                            );
+                        } else {
+                            this.errorMessage.splice(
+                                field.$el.nextElementSibling.tabIndex,
+                                0,
+                                "space"
+                            );
+                        }
+                    }
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        /**
+         * Hàm validate số tiền
+         * Author: KienNT (17/06/2023)
+         */
+        checkFieldInvalidPaymentDetailAmount(
+            isTooltip,
+            fieldValue,
+            errorLabel,
+            kind,
+            errorText,
+            field,
+            index,
+            fieldValue1 = ""
+        ) {
+            try {
+                if (!this.isEmpty(fieldValue)) {
+                    // check input phải là số
+                    if (this.isInValid(fieldValue, fieldValue1, kind)) {
+                        if (
+                            this.errorMessage.includes(
+                                this.invalidPaymentNumber
+                            )
+                        ) {
+                            const index = this.errorMessage.indexOf(
+                                this.invalidPaymentNumber
+                            );
+                            this.errorMessage.splice(index, 1);
+                            this.isTooltip.isTooltipPaymentNumber = false;
+                        }
+
+                        this.rowPaymentDetails[index].isTooltipAmount = true;
+                        // nếu chưa có lỗi thì thêm ptu lỗi đó vào
+                        if (
+                            !this.errorMessage.includes(errorLabel + errorText)
+                        ) {
+                            if (field.tagName && field.tagName === "SPAN") {
+                                this.errorMessage[field.tabIndex] =
+                                    errorLabel + errorText;
+                            } else {
+                                this.errorMessage[
+                                    field.$el.nextElementSibling.tabIndex
+                                ] = errorLabel + errorText;
+                            }
+                        }
+                    } else {
+                        this.rowPaymentDetails[index].isTooltipAmount = false;
+                        if (
+                            this.errorMessage.includes(errorLabel + errorText)
+                        ) {
+                            if (field.tagName && field.tagName === "SPAN") {
+                                this.errorMessage.splice(field.tabIndex, 1);
+                            } else {
+                                this.errorMessage.splice(
+                                    field.$el.nextElementSibling.tabIndex,
+                                    1
+                                );
+                            }
+                            if (field.tagName && field.tagName === "SPAN") {
+                                this.errorMessage.splice(
+                                    field.tabIndex,
+                                    0,
+                                    "space"
+                                );
+                            } else {
+                                this.errorMessage.splice(
+                                    field.$el.nextElementSibling.tabIndex,
+                                    0,
+                                    "space"
+                                );
+                            }
+                        }
+                    }
+                } else {
+                    this.rowPaymentDetails[index].isTooltipAmount = false;
+                    if (this.errorMessage.includes(errorLabel + errorText)) {
+                        if (field.tagName && field.tagName === "SPAN") {
+                            this.errorMessage.splice(field.tabIndex, 1);
+                        } else {
+                            this.errorMessage.splice(
+                                field.$el.nextElementSibling.tabIndex,
+                                1
+                            );
+                        }
+
+                        if (field.tagName && field.tagName === "SPAN") {
+                            this.errorMessage.splice(
+                                field.tabIndex,
+                                0,
+                                "space"
+                            );
+                        } else {
+                            this.errorMessage.splice(
+                                field.$el.nextElementSibling.tabIndex,
+                                0,
+                                "space"
+                            );
+                        }
                     }
                 }
             } catch (error) {
@@ -3013,6 +3339,8 @@ export default {
                         supplierCodeDetail: "",
                         supplier_id: null,
                         supplier_name_detail: "",
+                        isTooltipDescription: false,
+                        isTooltipAmount: false,
                     },
                 ];
                 this.supplierCodePayment = "";
@@ -3184,6 +3512,8 @@ export default {
                         supplierCodeDetail: "",
                         supplier_name_detail: "",
                         supplier_id: null,
+                        isTooltipDescription: false,
+                        isTooltipAmount: false,
                     },
                 ];
                 return;
@@ -3233,6 +3563,8 @@ export default {
                         supplier_name_detail:
                             this.payment.payment_supplier_name,
                         supplier_id: this.payment.supplier_id,
+                        isTooltipDescription: false,
+                        isTooltipAmount: false,
                     },
                 ];
 
@@ -4056,5 +4388,9 @@ export default {
 .border-focus {
     border: 1px solid #50b83c !important;
     outline: none;
+}
+
+.paymentList tr td:nth-child(2) span.tooltiptext-error {
+    width: 270px;
 }
 </style>
