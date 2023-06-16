@@ -174,52 +174,29 @@
                             >{{ $t("LabelGeneralAccount") }}
                         </label>
 
-                        <div
-                            :class="{
-                                'tooltip-error':
-                                    isTooltip.isTooltipGeneralAccount,
-                            }"
-                        >
-                            <MComboboxTable
-                                :data="dataAccountParent"
-                                :iconCombobox="iconComboboxGeneralAccount"
-                                :btnIconCombobox="btnIconComboboxGeneralAccount"
-                                :optionWrapperCombobox="
-                                    optionWrapperComboboxGeneralAccount
-                                "
-                                tabindex="4"
-                                @selectedRecord="selectedParent"
-                                kind="generalAccount"
-                                :recordData="parent_id"
-                                :headersColumn="[
-                                    'account_number',
-                                    'account_name',
-                                ]"
-                                ref="txtParentId"
-                                :isShowTooltip="
-                                    isTooltip.isTooltipGeneralAccount
-                                "
-                                :headersData="[
-                                    'account_number',
-                                    'account_name',
-                                ]"
-                                @setValueInputComboboxTable="
-                                    setValueInputComboboxTable
-                                "
-                                :resetData="resetData"
-                                @handleBlurInput="handleBlurInputGeneralAccount"
-                                @handleCheckEmpty="
-                                    handleCheckEmptyGeneralAccount
-                                "
-                                @setResetData="setResetData"
-                            ></MComboboxTable>
-                            <MTooltip
-                                v-if="isTooltip.isTooltipGeneralAccount"
-                                :subtext="errorMessage[4]"
-                                kind="error"
-                                ref="tootipCombobox"
-                            ></MTooltip>
-                        </div>
+                        <MComboboxTable
+                            :data="dataAccountParent"
+                            :iconCombobox="iconComboboxGeneralAccount"
+                            :btnIconCombobox="btnIconComboboxGeneralAccount"
+                            :optionWrapperCombobox="
+                                optionWrapperComboboxGeneralAccount
+                            "
+                            tabindex="4"
+                            @selectedRecord="selectedParent"
+                            kind="generalAccount"
+                            :recordData="parent_id"
+                            :headersColumn="['account_number', 'account_name']"
+                            ref="txtParentId"
+                            :isShowTooltip="isTooltip.isTooltipGeneralAccount"
+                            :headersData="['account_number', 'account_name']"
+                            @setValueInputComboboxTable="
+                                setValueInputComboboxTable
+                            "
+                            :resetData="resetData"
+                            @handleBlurInput="handleBlurInputGeneralAccount"
+                            @handleCheckEmpty="handleCheckEmptyGeneralAccount"
+                            @setResetData="setResetData"
+                        ></MComboboxTable>
                     </div>
                     <div class="w-1/2">
                         <label class="form__label"
@@ -1402,7 +1379,6 @@ export default {
                 isTooltipProperty: false,
             },
             isDisabledAccountNumber: false,
-
             isForeignCurrencyPlan: false,
 
             account_object_type_Array: [
@@ -1585,7 +1561,6 @@ export default {
                                 el.isActive = false;
                             }
                         });
-
                         this.parent_id = this.accounts.find(
                             (el) => el.account_id === this.account.parent_id
                         )?.account_number;
@@ -1610,6 +1585,9 @@ export default {
         btnSaveAndClose(isCloseForm) {
             try {
                 if (this.handleValidate()) {
+                    if (this.isEmpty(this.parent_id)) {
+                        this.account.parent_id = null;
+                    }
                     if (this.isEmpty(this.account.parent_id)) {
                         this.account.grade = 1;
                         this.account.misa_code_id = null;
@@ -1766,7 +1744,8 @@ export default {
                 const element = refNames[index];
                 if (
                     element !== "space" &&
-                    element !== this.invalidAccount_number
+                    element !== this.invalidAccount_number &&
+                    element !== this.isEmptyParentId
                 ) {
                     check = false;
                 }
@@ -1803,7 +1782,13 @@ export default {
                         this.errorMessage.splice(index, 1);
                         this.isTooltip.isTooltipAccountNumber = false;
                     }
-
+                    if (this.errorMessage.includes(this.isEmptyParentId)) {
+                        const index = this.errorMessage.indexOf(
+                            this.isEmptyParentId
+                        );
+                        this.isTooltip.isTooltipGeneralAccount = false;
+                        this.errorMessage.splice(index, 1);
+                    }
                     this.isTooltip[fieldName] = true;
                     // nếu chưa có lỗi thì thêm ptu lỗi đó vào
                     if (
@@ -1867,7 +1852,13 @@ export default {
                             this.errorMessage.splice(index, 1);
                             this.isTooltip.isTooltipAccountNumber = false;
                         }
-
+                        if (this.errorMessage.includes(this.isEmptyParentId)) {
+                            const index = this.errorMessage.indexOf(
+                                this.isEmptyParentId
+                            );
+                            this.errorMessage.splice(index, 1);
+                            this.isTooltip.isTooltipGeneralAccount = false;
+                        }
                         this.isTooltip[fieldName] = true;
                         // nếu chưa có lỗi thì thêm ptu lỗi đó vào
                         if (
@@ -2153,17 +2144,6 @@ export default {
 
                                     break;
 
-                                case "InvalidParentId":
-                                    this.isTooltip.isTooltipGeneralAccount = true;
-                                    this.isEmptyParentId = errorData[key];
-                                    this.handleValidateBE(
-                                        errorData,
-                                        errorData[key],
-                                        "txtParentId"
-                                    );
-
-                                    break;
-
                                 default:
                                     break;
                             }
@@ -2190,6 +2170,36 @@ export default {
 
                 default:
                     break;
+            }
+        },
+
+        /**
+         * Hàm validate form phía backend trả về
+         * Author: KienNT (10/04/2023)
+         */
+        handleValidateBE(errorData, resultError, fieldName) {
+            this.checkIsExistsInError(
+                errorData["InvalidParentId"],
+                "txtParentId"
+            );
+
+            if (!this.errorMessage.includes(resultError)) {
+                this.errorMessage[this.getTabIndex(fieldName)] = resultError;
+            }
+        },
+
+        /**
+         * Hàm check xem lỗi nàu có tồn tại trong mảng chứa lỗi thì xóa đi
+         * Author: KienNT (10/04/2023)
+         */
+        checkIsExistsInError(errorData, fieldName) {
+            if (this.isEmpty(errorData)) {
+                this.errorMessage.splice(this.getTabIndex(fieldName), 1);
+                this.errorMessage.splice(
+                    this.getTabIndex(fieldName),
+                    0,
+                    "space"
+                );
             }
         },
 
@@ -2421,7 +2431,12 @@ export default {
                         this.account.account_category_kind = "";
                     } else {
                         this.isTooltip.isTooltipProperty = false;
-                        this.errorMessage.splice(5, 1);
+                        const index = this.errorMessage.indexOf(
+                            this.$t("Property") + this.$t("NotExist")
+                        );
+                        if (index !== -1) {
+                            this.errorMessage.splice(index, 1);
+                        }
                         this.account.account_category_kind =
                             this.formatPropertyRec(this.account_category_kind);
                     }
@@ -2440,12 +2455,27 @@ export default {
                 if (this.isEmpty(this.account_category_kind)) {
                     this.isTooltip.isTooltipProperty = true;
                 } else if (
-                    this.account_category_kind.includes(this.propertyList)
+                    this.propertyList.filter((el) =>
+                        el.name.startsWith(this.account_category_kind)
+                    ).length > 0
                 ) {
                     this.isTooltip.isTooltipProperty = false;
+                    const index = this.errorMessage.indexOf(
+                        this.$t("Property") + this.$t("NotExist")
+                    );
+                    if (index !== -1) {
+                        this.errorMessage.splice(index, 1);
+                    }
                 }
                 if (!isValueExist) {
                     this.isTooltip.isTooltipProperty = true;
+                    if (this.errorMessage.includes(this.isEmptyParentId)) {
+                        const index = this.errorMessage.indexOf(
+                            this.isEmptyParentId
+                        );
+                        this.isTooltip.isTooltipGeneralAccount = false;
+                        this.errorMessage.splice(index, 1);
+                    }
                     this.errorMessage[5] =
                         this.$t("Property") + this.$t("NotExist");
                 }
@@ -2453,6 +2483,37 @@ export default {
                 console.log(error);
             }
         },
+
+        // handleCheckEmptyGeneralAccount(valueInput, dataTable) {
+        //     try {
+        //         this.parent_id = valueInput;
+        //         if (dataTable && dataTable.length > 0) {
+        //             if (
+        //                 dataTable.filter((el) =>
+        //                     el.account_number.startsWith(this.parent_id)
+        //                 ).length <= 0
+        //             ) {
+        //                 this.account.parent_id = null;
+        //             } else {
+        //                 dataTable.forEach((el) => {
+        //                     if (el.account_number === this.parent_id) {
+        //                         this.account.parent_id = el.account_id;
+        //                     }
+        //                 });
+        //                 if (this.errorMessage.includes(this.isEmptyParentId)) {
+        //                     const index = this.errorMessage.indexOf(
+        //                         this.isEmptyParentId
+        //                     );
+        //                     this.isTooltip.isTooltipGeneralAccount = false;
+        //                     this.errorMessage.splice(index, 1);
+        //                 }
+        //                 this.isEmptyParentId = "";
+        //             }
+        //         }
+        //     } catch (error) {
+        //         console.log(error);
+        //     }
+        // },
 
         // handleBlurInputGeneralAccount() {
         //     if (this.isEmpty(this.parent_id)) {
@@ -2464,54 +2525,6 @@ export default {
         //         this.errorMessage.splice(4, 1);
         //     }
         // },
-
-        /**
-         * Hàm lấy giá trị input bên cb sau đó check isEmpty
-         * Author: KienNT (09/03/2023)
-         * @param (valueInput): Giá trị của value được emit từ con
-         */
-        handleCheckEmptyGeneralAccount(valueInput, dataTable) {
-            try {
-                if (!this.isEmpty(valueInput)) {
-                    this.parent_id = valueInput;
-                    if (dataTable && dataTable.length > 0) {
-                        if (
-                            dataTable.filter((el) =>
-                                el.account_number.startsWith(this.parent_id)
-                            ).length <= 0
-                        ) {
-                            this.isTooltip.isTooltipGeneralAccount = true;
-                            this.account.parent_id = null;
-                            this.errorMessage[4] =
-                                this.$t("LabelGeneralAccount") +
-                                this.$t("NotExist");
-                        } else {
-                            dataTable.forEach((el) => {
-                                if (el.account_number === this.parent_id) {
-                                    this.account.parent_id = el.account_id;
-                                }
-                            });
-                            this.isTooltip.isTooltipGeneralAccount = false;
-                            this.errorMessage.splice(4, 1);
-                        }
-                    }
-                    if (this.isEmpty(this.parent_id)) {
-                        this.isTooltip.isTooltipGeneralAccount = true;
-                        this.errorMessage[4] =
-                            this.$t("LabelGeneralAccount") +
-                            this.$t("NotExist");
-                    } else if (this.account.parent_id !== null) {
-                        this.isTooltip.isTooltipGeneralAccount = false;
-                        this.errorMessage.splice(4, 1);
-                    }
-                } else {
-                    this.isTooltip.isTooltipGeneralAccount = false;
-                    this.errorMessage.splice(4, 1);
-                }
-            } catch (error) {
-                console.log(error);
-            }
-        },
 
         /**
          * Click checkbox object type

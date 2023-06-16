@@ -1041,7 +1041,7 @@ export default {
          */
         handleBlurInput() {
             this.isFocus = false;
-            this.$emit("handleCheckEmpty", this.record, this.dataTable);
+            // this.$emit("handleCheckEmpty", this.record, this.dataTable);
             if (this.kind === "generalAccount") {
                 this.$emit("handleBlurInput");
             }

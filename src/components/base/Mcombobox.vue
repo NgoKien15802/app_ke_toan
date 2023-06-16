@@ -110,14 +110,13 @@ export default {
         departmentName: function (newValue) {
             this.department = newValue;
         },
-    },
-
-    beforeUpdate() {
-        if (this.department) {
-            this.$emit("handleCheckEmpty", this.department);
-        } else {
-            this.$emit("handleChangeDepartmentId");
-        }
+        department: function (newValue) {
+            if (newValue) {
+                this.$emit("handleCheckEmpty", newValue);
+            } else {
+                this.$emit("handleChangeDepartmentId");
+            }
+        },
     },
 
     /**

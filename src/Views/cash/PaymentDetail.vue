@@ -262,22 +262,41 @@
                                                                             )
                                                                         }}</label
                                                                     >
-                                                                    <MInput
-                                                                        tabindex="2"
-                                                                        id="ObjectName"
-                                                                        name="MartialStatusName"
-                                                                        kind="default"
-                                                                        ref="txtObjectName"
-                                                                        v-model="
-                                                                            payment.payment_supplier_name
-                                                                        "
-                                                                        :isDisabled="
-                                                                            formModePayment ===
-                                                                            MISAEnum
-                                                                                .formMode
-                                                                                .Show
-                                                                        "
-                                                                    />
+                                                                    <div
+                                                                        :class="{
+                                                                            'tooltip-error':
+                                                                                isTooltip.isTooltipSupplier_name,
+                                                                        }"
+                                                                    >
+                                                                        <MInput
+                                                                            tabindex="2"
+                                                                            id="ObjectName"
+                                                                            name="MartialStatusName"
+                                                                            kind="default"
+                                                                            ref="txtObjectName"
+                                                                            v-model="
+                                                                                payment.payment_supplier_name
+                                                                            "
+                                                                            :isDisabled="
+                                                                                formModePayment ===
+                                                                                MISAEnum
+                                                                                    .formMode
+                                                                                    .Show
+                                                                            "
+                                                                            :isShowTooltip="
+                                                                                isTooltip.isTooltipSupplier_name
+                                                                            "
+                                                                        />
+                                                                        <MTooltip
+                                                                            v-if="
+                                                                                isTooltip.isTooltipSupplier_name
+                                                                            "
+                                                                            kind="error"
+                                                                            :subtext="
+                                                                                errorMessage[2]
+                                                                            "
+                                                                        ></MTooltip>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <div
@@ -295,21 +314,40 @@
                                                                             )
                                                                         }}</label
                                                                     >
-                                                                    <MInput
-                                                                        tabindex="3"
-                                                                        id="Receiver"
-                                                                        kind="default"
-                                                                        ref="txtReceiver"
-                                                                        v-model="
-                                                                            payment.payment_receiver
-                                                                        "
-                                                                        :isDisabled="
-                                                                            formModePayment ===
-                                                                            MISAEnum
-                                                                                .formMode
-                                                                                .Show
-                                                                        "
-                                                                    />
+                                                                    <div
+                                                                        :class="{
+                                                                            'tooltip-error':
+                                                                                isTooltip.isTooltipRecever,
+                                                                        }"
+                                                                    >
+                                                                        <MInput
+                                                                            tabindex="3"
+                                                                            id="Receiver"
+                                                                            kind="default"
+                                                                            ref="txtReceiver"
+                                                                            v-model="
+                                                                                payment.payment_receiver
+                                                                            "
+                                                                            :isDisabled="
+                                                                                formModePayment ===
+                                                                                MISAEnum
+                                                                                    .formMode
+                                                                                    .Show
+                                                                            "
+                                                                            :isShowTooltip="
+                                                                                isTooltip.isTooltipRecever
+                                                                            "
+                                                                        />
+                                                                        <MTooltip
+                                                                            v-if="
+                                                                                isTooltip.isTooltipRecever
+                                                                            "
+                                                                            kind="error"
+                                                                            :subtext="
+                                                                                errorMessage[3]
+                                                                            "
+                                                                        ></MTooltip>
+                                                                    </div>
                                                                 </div>
                                                                 <div
                                                                     class="w-4/7"
@@ -323,21 +361,41 @@
                                                                             )
                                                                         }}</label
                                                                     >
-                                                                    <MInput
-                                                                        tabindex="4"
-                                                                        id="Address"
-                                                                        kind="default"
-                                                                        ref="txtAddress"
-                                                                        v-model="
-                                                                            payment.payment_supplier_address
-                                                                        "
-                                                                        :isDisabled="
-                                                                            formModePayment ===
-                                                                            MISAEnum
-                                                                                .formMode
-                                                                                .Show
-                                                                        "
-                                                                    />
+                                                                    <div
+                                                                        :class="{
+                                                                            'tooltip-error':
+                                                                                isTooltip.isTooltipAddress,
+                                                                        }"
+                                                                    >
+                                                                        <MInput
+                                                                            tabindex="4"
+                                                                            id="Address"
+                                                                            kind="default"
+                                                                            ref="txtAddress"
+                                                                            v-model="
+                                                                                payment.payment_supplier_address
+                                                                            "
+                                                                            :isDisabled="
+                                                                                formModePayment ===
+                                                                                MISAEnum
+                                                                                    .formMode
+                                                                                    .Show
+                                                                            "
+                                                                            :isShowTooltip="
+                                                                                isTooltip.isTooltipAddress
+                                                                            "
+                                                                        />
+
+                                                                        <MTooltip
+                                                                            v-if="
+                                                                                isTooltip.isTooltipAddress
+                                                                            "
+                                                                            kind="error"
+                                                                            :subtext="
+                                                                                errorMessage[4]
+                                                                            "
+                                                                        ></MTooltip>
+                                                                    </div>
                                                                 </div>
                                                             </div>
 
@@ -354,21 +412,40 @@
                                                                             )
                                                                         }}</label
                                                                     >
-                                                                    <MInput
-                                                                        tabindex="5"
-                                                                        id="journal_memo"
-                                                                        kind="default"
-                                                                        ref="txtJournal_memo"
-                                                                        v-model="
-                                                                            payment.journal_memo
-                                                                        "
-                                                                        :isDisabled="
-                                                                            formModePayment ===
-                                                                            MISAEnum
-                                                                                .formMode
-                                                                                .Show
-                                                                        "
-                                                                    />
+                                                                    <div
+                                                                        :class="{
+                                                                            'tooltip-error':
+                                                                                isTooltip.isTooltipJournal_memo,
+                                                                        }"
+                                                                    >
+                                                                        <MInput
+                                                                            tabindex="5"
+                                                                            id="journal_memo"
+                                                                            kind="default"
+                                                                            ref="txtJournal_memo"
+                                                                            v-model="
+                                                                                payment.journal_memo
+                                                                            "
+                                                                            :isDisabled="
+                                                                                formModePayment ===
+                                                                                MISAEnum
+                                                                                    .formMode
+                                                                                    .Show
+                                                                            "
+                                                                            :isShowTooltip="
+                                                                                isTooltip.isTooltipJournal_memo
+                                                                            "
+                                                                        />
+                                                                        <MTooltip
+                                                                            v-if="
+                                                                                isTooltip.isTooltipJournal_memo
+                                                                            "
+                                                                            kind="error"
+                                                                            :subtext="
+                                                                                errorMessage[5]
+                                                                            "
+                                                                        ></MTooltip>
+                                                                    </div>
                                                                 </div>
                                                             </div>
 
@@ -434,34 +511,54 @@
                                                                             )
                                                                         }}</label
                                                                     >
-                                                                    <MInput
-                                                                        tabindex="7"
-                                                                        id="Attach"
-                                                                        name="MartialStatusName"
-                                                                        kind="default"
-                                                                        ref="txtAttach"
-                                                                        v-model="
-                                                                            payment.document_included
-                                                                        "
-                                                                        @filterNonNumeric="
-                                                                            filterNonNumeric
-                                                                        "
-                                                                        className="kindNumber"
-                                                                        :placeHolder="
-                                                                            $t(
-                                                                                'Quantity'
-                                                                            )
-                                                                        "
-                                                                        :isDisabled="
-                                                                            formModePayment ===
-                                                                            MISAEnum
-                                                                                .formMode
-                                                                                .Show
-                                                                        "
-                                                                        @handleKeyUp="
-                                                                            handleKeyUpDocumentIncluded
-                                                                        "
-                                                                    />
+                                                                    <div
+                                                                        :class="{
+                                                                            'tooltip-error':
+                                                                                isTooltip.isTooltipDocument_included,
+                                                                        }"
+                                                                    >
+                                                                        <MInput
+                                                                            tabindex="7"
+                                                                            id="Attach"
+                                                                            name="MartialStatusName"
+                                                                            kind="default"
+                                                                            ref="txtAttach"
+                                                                            v-model="
+                                                                                payment.document_included
+                                                                            "
+                                                                            @filterNonNumeric="
+                                                                                filterNonNumeric
+                                                                            "
+                                                                            className="kindNumber"
+                                                                            :placeHolder="
+                                                                                $t(
+                                                                                    'Quantity'
+                                                                                )
+                                                                            "
+                                                                            :isDisabled="
+                                                                                formModePayment ===
+                                                                                MISAEnum
+                                                                                    .formMode
+                                                                                    .Show
+                                                                            "
+                                                                            @handleKeyUp="
+                                                                                handleKeyUpDocumentIncluded
+                                                                            "
+                                                                            :isShowTooltip="
+                                                                                isTooltip.isTooltipDocument_included
+                                                                            "
+                                                                        />
+
+                                                                        <MTooltip
+                                                                            v-if="
+                                                                                isTooltip.isTooltipDocument_included
+                                                                            "
+                                                                            kind="error"
+                                                                            :subtext="
+                                                                                errorMessage[7]
+                                                                            "
+                                                                        ></MTooltip>
+                                                                    </div>
                                                                 </div>
                                                                 <div
                                                                     class="original__vouchers"
@@ -1592,6 +1689,10 @@ export default {
                 isTooltipAccountingDate: false,
                 isTooltipPaymentDate: false,
                 isTooltipPaymentNumber: false,
+                isTooltipJournal_memo: false,
+                isTooltipDocument_included: false,
+                isTooltipSupplier_name: false,
+                isTooltipRecever: false,
             },
             rowPaymentDetails: [
                 {
@@ -2404,6 +2505,67 @@ export default {
                 "invalid",
                 this.$t("ErrorPaymentNumber"),
                 "txtPaymentNumber"
+            );
+
+            // check invalid maxlength số chứng từ
+            if (!this.isTooltip.isTooltipPaymentNumber) {
+                this.checkFieldInvalid(
+                    "isTooltipPaymentNumber",
+                    this.payment.refno_finance,
+                    this.$t("LabelPaymentNumber"),
+                    "length50",
+                    this.$t("ErrorAccountLength50"),
+                    "txtPaymentNumber"
+                );
+            }
+
+            // check invalid maxlength tên đối tượng
+            this.checkFieldInvalid(
+                "isTooltipSupplier_name",
+                this.payment.payment_supplier_name,
+                this.$t("LabelObjectName"),
+                "length255",
+                this.$t("ErrorAccountLengthText"),
+                "txtObjectName"
+            );
+
+            // check invalid maxlength người nhận
+            this.checkFieldInvalid(
+                "isTooltipRecever",
+                this.payment.payment_receiver,
+                this.$t("LabelReceiver"),
+                "length255",
+                this.$t("ErrorAccountLengthText"),
+                "txtReceiver"
+            );
+
+            // check invalid maxlength Địa chỉ
+            this.checkFieldInvalid(
+                "isTooltipAddress",
+                this.payment.payment_supplier_address,
+                this.$t("LabelAddress"),
+                "length255",
+                this.$t("ErrorAccountLengthText"),
+                "txtAddress"
+            );
+
+            // check invalid maxlength lý do chi master
+            this.checkFieldInvalid(
+                "isTooltipJournal_memo",
+                this.payment.journal_memo,
+                this.$t("LabelPaymentReason"),
+                "length255",
+                this.$t("ErrorAccountLengthText"),
+                "txtJournal_memo"
+            );
+
+            this.checkFieldInvalid(
+                "isTooltipDocument_included",
+                this.payment.document_included,
+                this.$t("LabelAttach"),
+                "length18",
+                this.$t("ErrorAccountLength18"),
+                "txtAttach"
             );
 
             // check invalid
@@ -3451,6 +3613,27 @@ export default {
                         case "invalid":
                             regex = /^xx[0-9]{1,}$/g;
                             if (!regex.test(value)) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+
+                        case "length50":
+                            if (value.length > 50) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+
+                        case "length255":
+                            if (value.length > 255) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+
+                        case "length18":
+                            if (value.length > 18) {
                                 return true;
                             } else {
                                 return false;

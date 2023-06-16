@@ -26,7 +26,6 @@
             </div>
         </div>
     </div>
-    
 </template>
 <script>
 export default {
@@ -59,7 +58,7 @@ export default {
 <style scoped>
 @import url(../../css/components/toast.css);
 
-#loading-bg{
+#loading-bg {
     background: rgba(0, 0, 0, 0.62) !important;
 }
 </style>

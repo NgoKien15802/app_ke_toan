@@ -43,7 +43,9 @@ const MISAResouce = {
         ErrorAccountNumber:
             " phải có độ dài lớn hơn bằng 3 và nhỏ hơn bằng 25 ký tự!",
         ErrorAccountLengthHundred: " phải nhỏ hơn bằng 100 ký tự!",
+        ErrorAccountLength50: " phải nhỏ hơn bằng 50 ký tự!",
         ErrorAccountLengthText: " phải nhỏ hơn bằng 255 ký tự!",
+        ErrorAccountLength18: " phải nhỏ hơn bằng 18 ký tự!",
         ErrorPaymentNumber: " không đúng định dạng (xx0000)",
         ErrorAccountNumberStartWith: " phải bắt đầu bằng tài khoản tổng hợp",
         ErrorEmail: " không đúng định dạng",
@@ -252,6 +254,8 @@ const MISAResouce = {
         description: "Diễn giải",
         state: "Trạng thái",
         NotExist: " không tồn tại trong danh mục",
+        GeneralAccountNotExist:
+            "Tài khoản tổng hợp không tồn tại trong danh mục",
 
         // popup Account
         LabelAccountNumber: "Số tài khoản",
@@ -381,6 +385,10 @@ const MISAResouce = {
             " must be greater than 3 and less than 25 characters!",
         ErrorAccountLengthHundred: " must be less than 100 characters!",
         ErrorAccountLengthText: " must be less than 255 characters!",
+        ErrorAccountLength18: " must be less than 18 characters!",
+
+        ErrorAccountLength50: "  must be less than 50 characters!",
+
         ErrorAccountNumberStartWith: " must start with a general account",
 
         // Paging
