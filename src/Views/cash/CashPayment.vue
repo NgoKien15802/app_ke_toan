@@ -486,6 +486,7 @@ export default {
             isDialogDeleteMultiple: false,
             masterHeight: 54,
             filterConditonArr: [],
+            conditionFilters: "",
         };
     },
 
@@ -497,6 +498,24 @@ export default {
         keyWordSearch: function () {
             this.pageNumber = 1;
             this.isDisabledClickPrev = true;
+        },
+
+        filterConditonArr: {
+            handler(newValue) {
+                let filterObject = newValue.reduce((acc, el) => {
+                    return { ...acc, ...el[Object.keys(el)[0]] };
+                }, {});
+
+                for (const [key, value] of Object.entries(filterObject)) {
+                    if (key === "total_amount") {
+                        filterObject[key] = this.currencyToNumber(value);
+                    }
+                }
+
+                filterObject = `'${JSON.stringify(filterObject)}'`;
+                this.conditionFilters = filterObject || "";
+            },
+            deep: true,
         },
     },
     methods: {
@@ -856,7 +875,7 @@ export default {
                     );
                 } else {
                     this.apiExport(
-                        `https://localhost:7153/api/v1/Payments/ExportToExcel?keyword=${this.keyWordSearch}`
+                        `https://localhost:7153/api/v1/Payments/ExportToExcel?keyword=${this.keyWordSearch}&conditionFilters=${this.conditionFilters}`
                     );
                 }
             } catch (error) {
