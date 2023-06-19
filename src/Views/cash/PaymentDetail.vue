@@ -1583,8 +1583,9 @@
                                                         <MTooltip
                                                             kind="AccountSysterm"
                                                             :subtext="
+                                                                textBtn +
                                                                 $t(
-                                                                    'TooltipSaveAndAdd'
+                                                                    'TooltipSaveAndAddSK'
                                                                 )
                                                             "
                                                         ></MTooltip>
