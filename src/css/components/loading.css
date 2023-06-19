@@ -8,7 +8,7 @@
     left: 0;
     bottom: 0;
     z-index: 9999;
-    background: rgba(0, 0, 0, 0.12);
+    background: rgba(0, 0, 0, 0.02);
 }
 
 .loading {
@@ -40,7 +40,7 @@
     box-sizing: border-box;
     background: transparent url(/src/assets/loading.svg) no-repeat center;
     background-size: 100%;
-      z-index: 9999;
+    z-index: 9999;
 }
 
 .loading .effect-1 {

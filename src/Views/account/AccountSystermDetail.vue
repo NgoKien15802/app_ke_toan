@@ -1401,9 +1401,11 @@ export default {
             errorMessage: [],
             message: "",
             errorExistId: "",
+            invalidParent_id: "",
             invalidAccount_number: "",
             isDialogError: false,
             cloneAccount: {},
+            state_parent: 2,
         };
     },
     mounted() {
@@ -1588,6 +1590,7 @@ export default {
                     if (this.isEmpty(this.parent_id)) {
                         this.account.parent_id = null;
                     }
+
                     if (this.isEmpty(this.account.parent_id)) {
                         this.account.grade = 1;
                         this.account.misa_code_id = null;
@@ -1596,12 +1599,37 @@ export default {
                         if (this.isEmpty(this.account.parent_id)) {
                             this.account.state = MISAEnum.Status.Using;
                         }
+                        if (this.state_parent === MISAEnum.Status.StopUsing) {
+                            this.message = `${this.$t(
+                                "LabelAccountNumber"
+                            )} < ${this.parent_id} > ${this.$t("ErrorCRUD")}`;
+                            this.hideShowDialogError(true);
+                            return;
+                        }
 
                         this.postData(MISAEnum.formMode.Add, isCloseForm);
                     } else if (
                         !this.isEmpty(this.account_id_selected) &&
                         this.formModeAccount === MISAEnum.formMode.Duplicate
                     ) {
+                        if (this.isEmpty(this.account.parent_id)) {
+                            this.account.state = MISAEnum.Status.Using;
+                        }
+                        if (this.account.parent_id !== null) {
+                            const state_parent = this.accounts.find(
+                                (el) => el.account_id === this.account.parent_id
+                            )?.state;
+                            if (state_parent === this.$t("StopUsing")) {
+                                this.message = `${this.$t(
+                                    "LabelAccountNumber"
+                                )} < ${this.parent_id} > ${this.$t(
+                                    "ErrorCRUD"
+                                )}`;
+                                this.hideShowDialogError(true);
+                                return;
+                            }
+                        }
+
                         this.postData(MISAEnum.formMode.Duplicate, isCloseForm);
                     } else if (
                         !this.isEmpty(this.account_id_selected) &&
@@ -1780,6 +1808,13 @@ export default {
                         this.errorMessage.splice(index, 1);
                         this.isTooltip.isTooltipAccountNumber = false;
                     }
+                    if (this.errorMessage.includes(this.invalidParent_id)) {
+                        const index = this.errorMessage.indexOf(
+                            this.invalidParent_id
+                        );
+                        this.errorMessage.splice(index, 1);
+                    }
+
                     if (
                         this.errorMessage.includes(this.invalidAccount_number)
                     ) {
@@ -1813,6 +1848,13 @@ export default {
                         );
                         this.errorMessage.splice(index, 1);
                     }
+                    if (this.errorMessage.includes(this.invalidParent_id)) {
+                        const index = this.errorMessage.indexOf(
+                            this.invalidParent_id
+                        );
+                        this.errorMessage.splice(index, 1);
+                    }
+
                     this.isTooltip[fieldName] = false;
                     if (
                         this.errorMessage.includes(
@@ -2132,6 +2174,13 @@ export default {
                             );
                             this.errorMessage.splice(index, 1);
                         }
+                        if (this.errorMessage.includes(this.invalidParent_id)) {
+                            const index = this.errorMessage.indexOf(
+                                this.invalidParent_id
+                            );
+                            this.errorMessage.splice(index, 1);
+                        }
+
                         for (let key in errorData) {
                             switch (key) {
                                 case "account_number":
@@ -2156,7 +2205,14 @@ export default {
                                     );
 
                                     break;
+                                case "InvalidParentId":
+                                    this.isTooltip.isTooltipAccountName = true;
+                                    this.invalidParent_id = errorData[key];
+                                    this.errorMessage[0] =
+                                        this.invalidParent_id;
 
+                                    this.isDialogError = true;
+                                    break;
                                 default:
                                     break;
                             }
@@ -2591,12 +2647,13 @@ export default {
          * Hàm lấy parent_id từ combobox
          * Author: KienNT (28/05/2023)
          */
-        selectedParent(account_id, grade, misa_code_id, account_number) {
+        selectedParent(account_id, grade, misa_code_id, account_number, state) {
             try {
                 this.account.parent_id = account_id;
                 this.account.grade = grade + 1;
                 this.account.misa_code_id = misa_code_id;
                 this.account.state = MISAEnum.Status.Using;
+                this.state_parent = state;
                 this.parent_id = account_number;
             } catch (error) {
                 console.log(error);

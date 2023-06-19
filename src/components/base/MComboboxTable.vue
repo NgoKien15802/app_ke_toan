@@ -782,7 +782,8 @@ export default {
                                     this.dataTable[index].account_id,
                                     this.dataTable[index].grade,
                                     this.dataTable[index].misa_code_id,
-                                    this.dataTable[index].account_number
+                                    this.dataTable[index].account_number,
+                                    this.dataTable[index].state
                                 );
                             }
 
@@ -974,7 +975,8 @@ export default {
                     account.account_id,
                     account.grade,
                     account.misa_code_id,
-                    account.account_number
+                    account.account_number,
+                    account.state
                 );
                 this.record = account.account_number;
             } else if (this.kind === "supplierCode") {

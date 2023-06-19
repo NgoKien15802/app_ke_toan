@@ -83,6 +83,7 @@
                         @onDoubleClick="onDoubleClick"
                         @hideShowToast="hideShowToast"
                         @showPopupDuplicate="showAccountSystermDuplicate"
+                        @sendAccountList="sendAccountList"
                     ></TheTableAccount>
                 </div>
 
@@ -116,7 +117,17 @@
                 ></AccountSystermDetail>
 
                 <!-- loading -->
-                <Mloading v-if="isLoading"></Mloading>
+                <Mloading
+                    v-if="isLoading"
+                    :style="{
+                        left:
+                            formMode === MISAEnum.formMode.Add ||
+                            formMode === MISAEnum.formMode.Edit ||
+                            formMode === MISAEnum.formMode.Duplicate
+                                ? 'calc(77% - 27px)'
+                                : '',
+                    }"
+                ></Mloading>
 
                 <!-- Toast -->
                 <MToast
@@ -180,6 +191,7 @@ export default {
     data() {
         return {
             MISAResouce,
+            MISAEnum,
             isExpand: false,
             isLoading: false,
             isShowToastAdd: false,
@@ -466,6 +478,7 @@ export default {
          */
         closeAccountSysterm() {
             this.isAccountSysterm = false;
+            this.formMode = "";
         },
 
         /**
@@ -488,6 +501,14 @@ export default {
             } catch (error) {
                 console.log(error);
             }
+        },
+
+        /**
+         * Hàm lấy đc danh sách account sau khi load
+         * Author: KienNT (26/05/2023)
+         */
+        sendAccountList(accounts) {
+            this.accounts = accounts;
         },
 
         /**

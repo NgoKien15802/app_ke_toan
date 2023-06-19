@@ -256,6 +256,8 @@ const MISAResouce = {
         NotExist: " không tồn tại trong danh mục",
         GeneralAccountNotExist:
             "Tài khoản tổng hợp không tồn tại trong danh mục",
+        ErrorCRUD:
+            " đang ở trạng thái <Ngừng sử dụng>. Bạn không được phép chọn Thuộc tài khoản này.",
 
         // popup Account
         LabelAccountNumber: "Số tài khoản",
@@ -587,6 +589,8 @@ const MISAResouce = {
         state: "Status",
         NotExist: " Not exists in category",
 
+        ErrorCRUD:
+            "is in the <Discontinued> state. You are not allowed to select Belong to this account.",
         // popup account
         LabelAccountNumber: "Account number",
         LabelAccountName: "Account name",

@@ -487,6 +487,9 @@ export default {
                             this.totalRecord,
                             this.totalRecordParent
                         );
+                        if (this.keyWord === "") {
+                            this.$emit("sendAccountList", this.accounts);
+                        }
                         // this.hideShowLoading(false);
                         this.isShowSkeleton = false;
                     })
