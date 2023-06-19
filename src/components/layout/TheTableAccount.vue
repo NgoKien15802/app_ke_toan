@@ -9,7 +9,7 @@
                         header === 'account_number' ? 'min-w160' : '',
                         header === 'account_name' ? 'min-w250' : '',
                         header === 'account_category_kind' ? 'min-w160' : '',
-                        header === 'account_name_english' ? 'min-200' : '',
+                        header === 'account_name_english' ? 'min-w200' : '',
                         header === 'description' ? 'min-w350' : '',
                         header === 'state' ? 'min-w100' : '',
                         header === 'feature' ? 'min-w120' : '',
@@ -137,7 +137,7 @@
                             header === 'account_category_kind'
                                 ? 'min-w160'
                                 : '',
-                            header === 'account_name_english' ? 'min-200' : '',
+                            header === 'account_name_english' ? 'min-w200' : '',
                             header === 'description' ? 'min-w350' : '',
                             header === 'state' ? 'min-w160' : '',
                         ]"
@@ -425,7 +425,10 @@ export default {
                             : `https://localhost:7153/api/v1/Accounts/AccountSearchPaging?keyword=${this.keyWord}&pageSize=${this.pageSize}&pageNumber=${this.pageNumber}`
                     )
                     // .then(this.hideShowLoading(true))
-                    .then((this.accounts = new Array(this.pageSize).fill(0),this.isShowSkeleton = true))
+                    .then(
+                        ((this.accounts = new Array(this.pageSize).fill(0)),
+                        (this.isShowSkeleton = true))
+                    )
                     .then((response) => {
                         this.accounts = response?.data?.Data?.Data;
                         if (this.isCallExpand) {
@@ -990,5 +993,4 @@ export default {
 </script>
 <style scoped>
 @import url(../../css/components/table.css);
-
 </style>

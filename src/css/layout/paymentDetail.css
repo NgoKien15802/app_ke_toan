@@ -84,7 +84,7 @@
 .paymentList thead tr th:first-child,
 .paymentList tbody tr td:first-child {
     position: sticky;
-    bottom: 0;
+    /* bottom: 0; */
     z-index: 2;
     border-right: 0;
 }

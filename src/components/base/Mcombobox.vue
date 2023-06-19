@@ -348,6 +348,11 @@ export default {
          * @param {department, index)}: department: đối tượng department, index của department)
          */
         itemOnClick(department, index) {
+            this.departments.forEach((el) => {
+                if (el.isActive) {
+                    el.isActive = false;
+                }
+            });
             this.selectedDepartment = index;
             const refIconCombobox = this.$refs["iconCombobox"];
             this.department = department.name;

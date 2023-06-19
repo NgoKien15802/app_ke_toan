@@ -318,6 +318,12 @@
                             "
                             @handleClickFilter="handleClickFilter"
                             :filterConditonArr="filterConditonArr"
+                            :columnEditable="columnEditable"
+                            :selectedArrToSetting="selectedArrToSetting"
+                            @handleChangeHeader="handleChangeHeader"
+                            @changeSelectedArrToSetting="
+                                changeSelectedArrToSetting
+                            "
                         ></TheTablePayment>
                     </div>
                     <!--  paging -->
@@ -435,12 +441,23 @@
         "
         classTitle="toast__title-success"
     ></MToast>
+
+    <TheSettingUI
+        v-if="isSettingUI"
+        @closePopupSetting="closePopupSetting"
+        @handleSavaSelected="handleSavaSelected"
+        :selectedArrRecv="selectedArrRecv"
+        @handleClickSavaSelected="handleClickSavaSelected"
+        :columnEditableRecv="columnEditable"
+        :columnList="columnList"
+    ></TheSettingUI>
 </template>
 
 <script>
 import TheCash from "@/components/layout/sidebar/TheCash.vue";
 import TheTablePayment from "@/components/layout/TheTablePayment.vue";
 import MISAEnum from "@/js/enum";
+import TheSettingUI from "@/components/layout/TheSettingUI.vue";
 import MISAResouce from "@/js/resource";
 import TheTablePaymentDetail from "@/components/layout/TheTablePaymentDetail.vue";
 import axios from "axios";
@@ -450,6 +467,7 @@ export default {
         TheCash,
         TheTablePayment,
         TheTablePaymentDetail,
+        TheSettingUI,
     },
     data() {
         return {
@@ -487,6 +505,11 @@ export default {
             masterHeight: 54,
             filterConditonArr: [],
             conditionFilters: "",
+            isSettingUI: false,
+            columnEditable: [],
+            columnList: [],
+            selectedArrRecv: [],
+            selectedArrToSetting: [],
         };
     },
 
@@ -553,6 +576,14 @@ export default {
         },
 
         /**
+         * Hàm thực hiện gán lại header
+         * Author: KienNT 17/06/2023
+         */
+        handleChangeHeader(column) {
+            this.columnList = column;
+        },
+
+        /**
          * Hàm click icon previous trang
          * Author: KienNT (04/06/2023)
          */
@@ -586,6 +617,15 @@ export default {
          */
         handleReLoadData() {
             this.isReload = true;
+        },
+
+        /**
+         * Hàm ẩn setting UI
+         * Author: KienNT (17/06/2023)
+         */
+        // popup setting:
+        closePopupSetting() {
+            this.isSettingUI = false;
         },
 
         /**
@@ -687,12 +727,44 @@ export default {
             this.formMode = formMode;
         },
 
+        changeSelectedArrToSetting() {
+            this.selectedArrRecv = [];
+        },
+
+        /**
+         * Hàm hiển thị tùy chỉnh giao diện
+         * Author: KienNT (17/06/2023)
+         */
+        handleShowSettingUI() {
+            this.isSettingUI = true;
+        },
+
+        /**
+         * Hàm gán giá trị mảng các checkbox được check bên tùy chỉnh UI
+         * Author: KienNT (17/06/2023)
+         *  @param (selectedCheckbox): tham số 1 là mảng checkbox được chọn
+         */
+        handleSavaSelected(selectedArrRecv) {
+            this.selectedArrRecv = selectedArrRecv;
+        },
+
         /**
          * Hàm set lại isDeleteOne của component con gửi lên
          * Author: KienNT (09/06/2023)
          */
         setIsDeleteOne() {
             this.isDeleteOne = false;
+        },
+
+        /**
+         * Hàm gán giá trị mảng các checkbox được check bên tùy chỉnh UI khi click btn cất
+         * Author: KienNT (17/06/2023)
+         *  @param (selectedArrToSetting): tham số 1 là mảng checkbox được chọn
+         */
+        handleClickSavaSelected(selectedArrToSetting, columnEditable) {
+            this.isSettingUI = false;
+            this.selectedArrToSetting = selectedArrToSetting.slice();
+            this.columnEditable = columnEditable.slice();
         },
 
         /**
@@ -741,6 +813,15 @@ export default {
                 this.isDisabledClickPrevPaymentDetail = true;
             }
             this.pageNumberPaymentDetail = index;
+        },
+
+        /**
+         * Hàm chuyển tiền sang số
+         * Author: KienNT (12/06/2023)
+         */
+        currencyToNumber(currency) {
+            var number = currency.replace(/\./g, "");
+            return parseFloat(number);
         },
 
         /**

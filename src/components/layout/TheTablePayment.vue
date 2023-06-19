@@ -26,6 +26,18 @@
                         header === 'Selected' ? 'min-w40' : '',
                     ]"
                     ref="thElement"
+                    :style="
+                        !isShowSkeleton
+                            ? {
+                                  'min-width':
+                                      columnWidth.length > 0
+                                          ? columnWidth.filter(
+                                                (el) => el.textColumn == header
+                                            )[0][header] + 'px'
+                                          : '',
+                              }
+                            : ''
+                    "
                 >
                     <template v-if="header === 'Selected'">
                         <MCheckbox
@@ -363,6 +375,12 @@ export default {
         filterConditonArr: {
             type: Array,
         },
+        selectedArrToSetting: {
+            type: Array,
+        },
+        columnEditable: {
+            type: Array,
+        },
     },
     data() {
         return {
@@ -402,7 +420,10 @@ export default {
             topConditionFilter: 0,
             leftConditionFilter: 0,
             paymentCodeSelected: "",
+            cloneHeader: [],
             conditionFilterArr: [],
+            selectedArrToSettingUI: [],
+            columnWidth: [],
         };
     },
     watch: {
@@ -503,6 +524,63 @@ export default {
             },
             deep: true,
         },
+
+        selectedArrToSetting: {
+            handler(newValue, oldValue) {
+                if (newValue.length !== oldValue.length) {
+                    this.selectedArrToSettingUI = newValue;
+                    // Lấy phần tử từ thứ 2 đến phần tử kế cuối của headers
+
+                    let filteredHeaders = this.cloneHeader
+                        .slice(1, -1)
+                        .filter((el) => {
+                            return this.selectedArrToSettingUI.includes(el);
+                        });
+                    // Thêm hai phần tử đầu và cuối vào kết quả lọc
+                    filteredHeaders = [
+                        this.cloneHeader[0],
+                        ...filteredHeaders,
+                        this.cloneHeader[this.cloneHeader.length - 1],
+                    ];
+                    this.isShowSkeleton = true;
+                    const clonePaymentList = this.paymentList;
+                    this.paymentList = new Array(10).fill(0);
+                    setTimeout(() => {
+                        this.paymentList = clonePaymentList;
+                        this.headers = filteredHeaders;
+                        this.isShowSkeleton = false;
+                        console.log(this.columnWidth);
+                    }, 2000);
+                }
+            },
+            deep: true,
+        },
+
+        headers: {
+            handler(newValue) {
+                this.$emit("handleChangeHeader", newValue);
+            },
+            deep: true,
+        },
+
+        columnEditable: {
+            handler(newValue, oldValue) {
+                if (newValue.length !== oldValue.length) {
+                    this.columnWidth = newValue;
+                    this.columnWidth.unshift({
+                        Selected: 40,
+                        nameCoumn: this.$t("Selected"),
+                        textColumn: "Selected",
+                    });
+                    this.columnWidth.push({
+                        Feature: 120,
+                        nameCoumn: this.$t("Feature"),
+                        textColumn: "Feature",
+                    });
+                }
+            },
+            deep: true,
+        },
     },
     /**
      * Thực hiện lấy dữ liệu khi chuẩn bị mounted vào DOM
@@ -511,6 +589,8 @@ export default {
     created() {
         try {
             this.paymentList = new Array(3).fill(0);
+            this.cloneHeader = this.headers;
+            this.$emit("changeSelectedArrToSetting");
             this.loadData();
         } catch (error) {
             console.log(error);
@@ -539,7 +619,10 @@ export default {
                             x.Selected = false;
                             return x;
                         });
-                        this.$emit("handleClickPayment", this.paymentList[0]);
+                        this.$emit(
+                            "handleClickPayment",
+                            this.paymentList[0] || ""
+                        );
                         if (this.oldCheckedArr.length > 0) {
                             this.paymentList.forEach((el) => {
                                 for (

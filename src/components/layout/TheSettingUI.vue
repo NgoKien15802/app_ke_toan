@@ -1,7 +1,7 @@
 <template>
     <div
         class="ms-component con-ms-popup ms-popup-is-right popup-is-show setting_UI"
-        style=""
+        style="z-index: 10"
     >
         <div class="ms-popup--background"></div>
         <div
@@ -294,7 +294,6 @@
                                                                 >
                                                                     <div
                                                                         class="editable"
-                                                                        candraggable="true"
                                                                         drilldown=""
                                                                     >
                                                                         <div
@@ -325,9 +324,7 @@
                                                                                     <span
                                                                                         class="text-area--validate"
                                                                                     >
-                                                                                        <textarea
-                                                                                            mstextfield=""
-                                                                                            rows="1"
+                                                                                        <MInput
                                                                                             class="ms-textarea grid-editor"
                                                                                             style="
                                                                                                 height: 27px;
@@ -346,7 +343,7 @@
                                                                                                         $event
                                                                                                     )
                                                                                             "
-                                                                                        ></textarea>
+                                                                                        ></MInput>
                                                                                     </span>
                                                                                 </div>
                                                                             </div>
@@ -358,27 +355,28 @@
                                                                     v-if="
                                                                         isEditable
                                                                     "
-                                                                    @click="
-                                                                        (
-                                                                            $event
-                                                                        ) =>
-                                                                            handleShowEditable(
-                                                                                $event
-                                                                            )
-                                                                    "
                                                                 >
                                                                     <div
                                                                         class="editable"
-                                                                        candraggable="true"
-                                                                        drilldown=""
+                                                                        @click="
+                                                                            handleShowEditableColumnWidth(
+                                                                                index
+                                                                            )
+                                                                        "
                                                                     >
                                                                         <div
                                                                             class="flex items-center flex-1 w-full"
                                                                         >
-                                                                            <div
+                                                                            <span
                                                                                 class="td-text"
                                                                                 style="
                                                                                     justify-content: left;
+                                                                                "
+                                                                                v-if="
+                                                                                    !columnEditable[
+                                                                                        index
+                                                                                    ]
+                                                                                        .isEdit
                                                                                 "
                                                                             >
                                                                                 {{
@@ -391,48 +389,29 @@
                                                                                             .textColumn
                                                                                     ]
                                                                                 }}
-                                                                            </div>
-                                                                            <div
+                                                                            </span>
+
+                                                                            <MInput
+                                                                                v-else
                                                                                 style="
-                                                                                    width: 100%;
-                                                                                    display: none;
+                                                                                    height: 27px;
                                                                                 "
-                                                                            >
-                                                                                <div
-                                                                                    class="ms-component ms-con-textarea"
-                                                                                >
-                                                                                    <span
-                                                                                        class="text-area--validate"
-                                                                                    >
-                                                                                        <textarea
-                                                                                            mstextfield=""
-                                                                                            rows="1"
-                                                                                            class="ms-textarea grid-editor"
-                                                                                            style="
-                                                                                                height: 27px;
-                                                                                            "
-                                                                                            v-model="
-                                                                                                columnEditable[
-                                                                                                    index
-                                                                                                ][
-                                                                                                    columnEditable[
-                                                                                                        index
-                                                                                                    ]
-                                                                                                        .textColumn
-                                                                                                ]
-                                                                                            "
-                                                                                            @blur="
-                                                                                                (
-                                                                                                    $event
-                                                                                                ) =>
-                                                                                                    handleBlurEditable(
-                                                                                                        $event
-                                                                                                    )
-                                                                                            "
-                                                                                        ></textarea>
-                                                                                    </span>
-                                                                                </div>
-                                                                            </div>
+                                                                                v-model="
+                                                                                    columnEditable[
+                                                                                        index
+                                                                                    ][
+                                                                                        columnEditable[
+                                                                                            index
+                                                                                        ]
+                                                                                            .textColumn
+                                                                                    ]
+                                                                                "
+                                                                                @blur="
+                                                                                    handleBlurEditableColumnWidth(
+                                                                                        index
+                                                                                    )
+                                                                                "
+                                                                            />
                                                                         </div>
                                                                     </div>
                                                                 </td>
@@ -543,119 +522,105 @@ export default {
             selectedAll: false,
             isEditable: false,
             selectedArr: [
-                "EmployeeCode",
-                "FullName",
-                "Gender",
-                "DateOfBirth",
-                "IdentityNumber",
-                "PositionName",
-                "DepartmentName",
-                "BankAccount",
-                "BankName",
-                "BankBranch",
+                "posted_date",
+                "ref_date",
+                "refno_finance",
+                "journal_memo",
+                "total_amount",
+                "supplier_code",
+                "payment_supplier_name",
+                "payment_supplier_address",
             ],
             columns: [
                 {
                     isSelected: true,
-                    nameColumn: "EmployeeCode",
+                    nameColumn: "posted_date",
                 },
                 {
                     isSelected: true,
-                    nameColumn: "FullName",
+                    nameColumn: "ref_date",
                 },
                 {
                     isSelected: true,
-                    nameColumn: "Gender",
+                    nameColumn: "refno_finance",
                 },
                 {
                     isSelected: true,
-                    nameColumn: "DateOfBirth",
+                    nameColumn: "journal_memo",
                 },
                 {
                     isSelected: true,
-                    nameColumn: "IdentityNumber",
+                    nameColumn: "total_amount",
                 },
                 {
                     isSelected: true,
-                    nameColumn: "PositionName",
+                    nameColumn: "supplier_code",
                 },
                 {
                     isSelected: true,
-                    nameColumn: "DepartmentName",
+                    nameColumn: "payment_supplier_name",
                 },
 
                 {
                     isSelected: true,
-                    nameColumn: "BankAccount",
-                },
-                {
-                    isSelected: true,
-                    nameColumn: "BankName",
-                },
-                {
-                    isSelected: true,
-                    nameColumn: "BankBranch",
+                    nameColumn: "payment_supplier_address",
                 },
             ],
             columnEditable: [
                 {
-                    EmployeeCode: 160,
-                    nameCoumn: this.$t("EmployeeCode"),
-                    textColumn: "EmployeeCode",
+                    posted_date: "160",
+                    nameCoumn: this.$t("posted_date"),
+                    textColumn: "posted_date",
+                    isEdit: false,
                 },
 
                 {
-                    FullName: 250,
-                    nameCoumn: this.$t("FullName"),
-                    textColumn: "FullName",
+                    ref_date: "250",
+                    nameCoumn: this.$t("ref_date"),
+                    textColumn: "ref_date",
+                    isEdit: false,
                 },
 
                 {
-                    Gender: 100,
-                    nameCoumn: this.$t("Gender"),
-                    textColumn: "Gender",
+                    refno_finance: "100",
+                    nameCoumn: this.$t("refno_finance"),
+                    textColumn: "refno_finance",
+                    isEdit: false,
                 },
 
                 {
-                    DateOfBirth: 160,
-                    nameCoumn: this.$t("DateOfBirth"),
-                    textColumn: "DateOfBirth",
+                    journal_memo: "160",
+                    nameCoumn: this.$t("journal_memo"),
+                    textColumn: "journal_memo",
+                    isEdit: false,
                 },
 
                 {
-                    IdentityNumber: 200,
-                    nameCoumn: this.$t("IdentityNumber"),
-                    textColumn: "IdentityNumber",
+                    total_amount: "200",
+                    nameCoumn: this.$t("total_amount"),
+                    textColumn: "total_amount",
+                    isEdit: false,
                 },
 
                 {
-                    PositionName: 160,
-                    nameCoumn: this.$t("PositionName"),
-                    textColumn: "PositionName",
+                    supplier_code: "160",
+                    nameCoumn: this.$t("supplier_code"),
+                    textColumn: "supplier_code",
+                    isEdit: false,
                 },
 
                 {
-                    DepartmentName: 200,
-                    nameCoumn: this.$t("DepartmentName"),
-                    textColumn: "DepartmentName",
+                    payment_supplier_name: "200",
+                    nameCoumn: this.$t("payment_supplier_name"),
+                    textColumn: "payment_supplier_name",
+                    isEdit: false,
                 },
 
                 {
-                    BankAccount: 160,
-                    nameCoumn: this.$t("BankAccount"),
-                    textColumn: "BankAccount",
-                },
-
-                {
-                    BankName: 160,
-                    nameCoumn: this.$t("BankName"),
-                    textColumn: "BankName",
-                },
-
-                {
-                    BankBranch: 120,
-                    nameCoumn: this.$t("BankBranch"),
-                    textColumn: "BankBranch",
+                    payment_supplier_address: "160",
+                    nameCoumn: this.$t("payment_supplier_address"),
+                    textColumn: "payment_supplier_address",
+                    isEdit: false,
                 },
             ],
         };
@@ -800,10 +765,14 @@ export default {
          * Author: KienNT (30/04/2023)
          */
         btnSave() {
+            const cloneColumnEditable = this.columnEditable.slice();
+            cloneColumnEditable.forEach((el) => {
+                delete el.isEdit;
+            });
             this.$emit(
                 "handleClickSavaSelected",
                 this.selectedArr,
-                this.columnEditable
+                cloneColumnEditable
             );
         },
 
@@ -833,6 +802,11 @@ export default {
                 }
             }
         },
+
+        handleShowEditableColumnWidth(index) {
+            this.columnEditable[index].isEdit = true;
+        },
+
         /**
          * Xử lý cho edit tên cột
          * Author: KienNT (06/05/2023)
@@ -864,6 +838,10 @@ export default {
                 event.target.parentElement.childNodes[1].firstChild.firstChild.firstChild.style.border =
                     "1px solid var(--color-primary)";
             }
+        },
+
+        handleBlurEditableColumnWidth(index) {
+            this.columnEditable[index].isEdit = false;
         },
 
         /**

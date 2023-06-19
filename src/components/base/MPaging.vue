@@ -70,9 +70,9 @@
                     :page-count="
                         countRecord
                             ? Math.ceil(totalRecord / pageIndex)
-                            : (totalRecord > 1000) ? 
-                                  Math.ceil(totalRecord / pageIndex)
-                              :  Math.ceil(totalRecord / pageIndex)
+                            : totalRecord > 1000
+                            ? Math.ceil(totalRecord / pageIndex)
+                            : Math.ceil(totalRecord / pageIndex)
                     "
                     :page-range="3"
                     :margin-pages="1"
@@ -118,8 +118,8 @@ export default {
             type: Number,
         },
         style: {
-            type:String
-        }
+            type: String,
+        },
     },
     data() {
         return {
@@ -147,6 +147,7 @@ export default {
             pageIndex: 20,
             pageNumber: 1,
             offset: 0,
+            page: 1,
         };
     },
     components: {
@@ -155,6 +156,7 @@ export default {
     watch: {
         pageCurrent: function () {
             this.pageNumber = this.pageCurrent;
+            this.page = this.pageCurrent;
             this.offset = (this.pageNumber - 1) * this.pageIndex;
         },
     },
@@ -230,9 +232,13 @@ export default {
                     }
                 });
 
-                const count = this.optionItem.filter((el)=> el.isActive === true).length;
-                if(count === 2){
-                    var firstActiveElement = this.optionItem.find((el)=>el.isActive === true);
+                const count = this.optionItem.filter(
+                    (el) => el.isActive === true
+                ).length;
+                if (count === 2) {
+                    var firstActiveElement = this.optionItem.find(
+                        (el) => el.isActive === true
+                    );
                     firstActiveElement.isActive = false;
                 }
                 this.optionItem.forEach((el) => {
@@ -286,7 +292,7 @@ export default {
 <style scoped>
 @import url(../../css/components/paging.css);
 
-.page-item.disabled{
+.page-item.disabled {
     cursor: not-allowed !important;
 }
 </style>

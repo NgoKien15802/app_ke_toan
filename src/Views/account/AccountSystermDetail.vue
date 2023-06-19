@@ -1623,6 +1623,12 @@ export default {
                                 } else {
                                     // reset nhưng ko đóng form
                                     this.account = {};
+                                    this.account_category_kind =
+                                        this.$t("Debt");
+                                    this.account.account_category_kind =
+                                        this.formatPropertyRec(
+                                            this.account_category_kind
+                                        );
                                     this.cloneAccount = JSON.stringify(
                                         this.deleteAttrObject(this.account)
                                     );
@@ -1632,9 +1638,10 @@ export default {
                                         this.$t("AddNewAccount")
                                     );
                                     this.setFocusInput("txtAccountNumber");
+                                    this.formModeAccount =
+                                        MISAEnum.formMode.Add;
                                     this.parent_id = "";
-                                    this.account_category_kind =
-                                        this.$t("Debt");
+
                                     this.account_object_type = "";
                                     this.errorMessage = [];
                                     this.resetData = true;
@@ -2035,6 +2042,7 @@ export default {
                 this.parent_id = "";
                 this.account_category_kind = "";
                 this.errorMessage = [];
+                this.formModeAccount = null;
                 this.$emit("closeAccountSysterm");
             } catch (error) {
                 console.log(error);
@@ -2062,6 +2070,11 @@ export default {
                         } else {
                             // reset nhưng ko đóng form
                             this.account = {};
+                            this.account_category_kind = this.$t("Debt");
+                            this.account.account_category_kind =
+                                this.formatPropertyRec(
+                                    this.account_category_kind
+                                );
                             this.cloneAccount = JSON.stringify(
                                 this.deleteAttrObject(this.account)
                             );
@@ -2070,9 +2083,10 @@ export default {
                                 "handleChangeTitlePopup",
                                 this.$t("AddNewAccount")
                             );
+                            this.formModeAccount = MISAEnum.formMode.Add;
                             this.setFocusInput("txtAccountNumber");
                             this.parent_id = "";
-                            this.account_category_kind = "";
+
                             this.account_object_type = "";
                             this.errorMessage = [];
                             this.resetData = true;
@@ -2080,7 +2094,6 @@ export default {
 
                         if (formMode === MISAEnum.formMode.Duplicate) {
                             this.$emit("setAccountIdSelected");
-                            this.formModeAccount = null;
                             this.$emit(
                                 "hideShowToast",
                                 "duplicate",
@@ -2428,7 +2441,7 @@ export default {
                         ).length <= 0
                     ) {
                         this.isTooltip.isTooltipProperty = true;
-                        this.account.account_category_kind = "";
+                        this.account.account_category_kind = null;
                     } else {
                         this.isTooltip.isTooltipProperty = false;
                         const index = this.errorMessage.indexOf(

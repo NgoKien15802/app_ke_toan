@@ -1371,7 +1371,9 @@
                                                             </td>
                                                         </tr>
                                                     </tbody>
-                                                    <tfoot>
+                                                    <tfoot
+                                                        style="position: static"
+                                                    >
                                                         <tr
                                                             class="table__payment-field"
                                                         >
@@ -1943,10 +1945,9 @@ export default {
             }
         },
         "payment.posted_date": function (newValue, oldValue) {
-            if (this.formMode === MISAEnum.formMode.Add) {
+            if (this.formModePayment === MISAEnum.formMode.Add) {
                 if (this.payment.ref_date === oldValue) {
                     this.payment.ref_date = newValue;
-                    console.log(this.payment.ref_date, newValue);
                 }
             }
         },
@@ -4392,5 +4393,18 @@ export default {
 
 .paymentList tr td:nth-child(2) span.tooltiptext-error {
     width: 270px;
+}
+
+.paymentList thead tr th:last-child,
+.paymentList tbody tr td:last-child {
+    position: sticky;
+    /* bottom: 0; */
+    z-index: 2;
+    border-right: 0;
+}
+
+.paymentList thead tr th:last-child,
+.paymentList tbody tr td:last-child {
+    right: 0;
 }
 </style>

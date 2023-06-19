@@ -650,7 +650,7 @@ export default {
 
             setTimeout(() => {
                 this.loadData();
-            }, 500);
+            }, 1000);
             this.$refs["optionWrapperCombobox"].classList.add("d-block");
         },
 
