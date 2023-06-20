@@ -1669,7 +1669,7 @@ export default {
                                     this.formModeAccount =
                                         MISAEnum.formMode.Add;
                                     this.parent_id = "";
-
+                                    this.state_parent = 2;
                                     this.account_object_type = "";
                                     this.errorMessage = [];
                                     this.resetData = true;
@@ -2128,6 +2128,7 @@ export default {
                             this.formModeAccount = MISAEnum.formMode.Add;
                             this.setFocusInput("txtAccountNumber");
                             this.parent_id = "";
+                            this.state_parent = 2;
 
                             this.account_object_type = "";
                             this.errorMessage = [];
